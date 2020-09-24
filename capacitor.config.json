@@ -1,5 +1,5 @@
 {
-  "appId": "io.ionic.starter",
+  "appId": "com.joshsfrogs.admin",
   "appName": "JoshsFrogsAdmin",
   "bundledWebRuntime": false,
   "npmClient": "npm",
