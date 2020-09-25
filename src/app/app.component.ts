@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+
+import { faHome, faInventory, faTags } from '@fortawesome/pro-duotone-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -11,16 +12,23 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
   styles: []
 })
 export class AppComponent implements OnInit {
+  faHome = faHome;
+  faInventory = faInventory;
+  faTags = faTags;
+
   public menuShown = false;
 
   public menuItems = [
     {
+      icon: faHome,
       name: 'Home',
       route: 'home'
     }, {
+      icon: faInventory,
       name: 'Inventory',
       route: 'inventory'
     }, {
+      icon: faTags,
       name: 'Plant Labels',
       route: 'plant_labels'
     }];
