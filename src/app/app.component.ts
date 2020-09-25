@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -11,6 +12,18 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 })
 export class AppComponent implements OnInit {
   public menuShown = false;
+
+  public menuItems = [
+    {
+      name: 'Home',
+      route: 'home'
+    }, {
+      name: 'Inventory',
+      route: 'inventory'
+    }, {
+      name: 'Plant Labels',
+      route: 'plant_labels'
+    }];
 
   constructor(
     private platform: Platform,
@@ -29,12 +42,10 @@ export class AppComponent implements OnInit {
 
   showMenu() {
     this.menuShown = true;
-    console.log(this);
   }
 
   hideMenu() {
     this.menuShown = false;
-    console.log(this);
   }
 
   ngOnInit() { }
