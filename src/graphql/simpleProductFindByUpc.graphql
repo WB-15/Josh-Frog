@@ -1,0 +1,74 @@
+query simpleProductFindByUpc ($upc: String!) {
+ simpleProductFindByUpc(
+    upc: $upc
+  ) {
+    id,
+    slug,
+    sku,
+    upc,
+    title,
+    active,
+    price,
+    cost,
+    weight,
+    shippingNeeds,
+    shippingRestrictions,
+    warehouses {
+      id,
+      name
+    },
+    bins {
+        id,
+        binId
+    },
+    inventoryCaches {
+      id,
+      quantityAvailableForSale
+    },
+    explicitDepartment {
+      id,
+      slug,
+      name,
+      parent {
+        id,
+        slug,
+        name
+      }
+    }
+    brand {
+      id,
+      slug,
+      name
+    },
+    supplier {
+      id,
+      slug,
+      name
+    }
+    medias {
+      id,
+      mediaType,
+      url
+    },
+    explicitCategories {
+      id,
+      slug,
+      name,
+      parent {
+        id,
+        slug,
+        name,
+        parent {
+          id,
+          slug,
+          name
+        }
+      }
+    },
+    weatherShippingRuleSet {
+      id,
+      slug,
+      name
+    }
+  }
+}

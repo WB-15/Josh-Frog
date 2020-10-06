@@ -1,0 +1,78 @@
+query simpleProductFilter (
+  $pageable: GraphQLPageableInput!,
+  $title: String,
+  $sku: String,
+  $active: Boolean,
+  $brand: String,
+  $supplier: String,
+  $category: String,
+) {
+  simpleProductFilter (
+    title: {pattern: $title},
+    sku: {pattern: $sku},
+    active: {value: $active},
+    brand: $brand,
+    supplier: $supplier,
+    category: $category,
+    page: $pageable,
+    sort: {field: "sku", direction: ASC}
+  ) {
+    data {
+      id,
+      slug,
+      sku,
+      title,
+      active,
+      explicitDepartment {
+        id,
+        slug,
+        name,
+        parent {
+          id,
+          slug,
+          name
+        }
+      }
+      brand {
+        id,
+        slug,
+        name
+      },
+      supplier {
+        id,
+        slug,
+        name
+      }
+      price,
+      shippingNeeds,
+      medias {
+        id,
+        mediaType,
+        url
+      },
+      explicitCategories {
+        id,
+        slug,
+        name,
+        parent {
+          id,
+          slug,
+          name,
+          parent {
+            id,
+            slug,
+            name
+          }
+        }
+      },
+      weatherShippingRuleSet {
+        id,
+        slug,
+        name
+      }
+    },
+    count,
+    page,
+    pageSize
+  }
+}

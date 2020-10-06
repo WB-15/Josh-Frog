@@ -1,0 +1,48 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+  <h1 class="text-2xl font-semibold text-gray-900">Catalog</h1>
+
+  <div class="flex">
+    <div class="block mx-auto">
+      <label for="searchSku" class="hidden">Search</label>
+      <div class="relative pt-3 pb-4">
+        <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+          <span class="icon is-medium is-left">
+            <fa-icon [icon]="faSearch"></fa-icon>
+          </span>
+        </div>
+        <input id="searchSku" class="form-input block w-full pl-10 pr-2 rounded-lg" placeholder="Search SKUs" autocomplete="off" autocapitalize="words" [(ngModel)]="searchSku" (keyup)='search()' />
+      </div>
+      <label for="searchTitle" class="hidden">Search</label>
+      <div class="relative pt-3 pb-4">
+        <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+          <span class="icon is-medium is-left">
+            <fa-icon [icon]="faSearch"></fa-icon>
+          </span>
+        </div>
+        <input id="searchTitle" class="form-input block w-full pl-10 pr-2 rounded-lg" placeholder="Search Name" autocomplete="off" autocapitalize="words" [(ngModel)]="searchTitle" (keyup)='search()' />
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading > 0" class="p-20 text-center">
+    <span class="icon is-medium is-left">
+      <fa-icon [icon]="faSpinnerThird" [spin]="true"></fa-icon>
+    </span>
+    Loading...
+  </div>
+
+  <div *ngIf="(loading == 0) && searchResults" class="p-4">
+    <div *ngFor="let result of searchResults" class="flex bg-white hover:bg-gray-200 border-gray-200 border-r border-b items-center">
+      <div class="flex-none h-10 w-10 m-1 mr-3 rounded-lg bg-white">
+        <app-thumbnail-sm [src]="result.medias[0]?.url" [alt]="result.title"></app-thumbnail-sm>
+      </div>
+
+      <div class="m-1 mr-3">
+        <p class="font-semibold">{{result.sku}}</p>
+        <p class="font-narrow">{{result.title}}</p>
+      </div>
+    </div>
+
+    <app-pagination [count]="count" [pageSize]="pageable.pageSize" [page]="pageable.page" (pageChanged)="setPage($event)"></app-pagination>
+  </div>
+</div>

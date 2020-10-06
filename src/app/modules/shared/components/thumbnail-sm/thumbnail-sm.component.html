@@ -1,0 +1,2 @@
+<img *ngIf="src" class="h-full w-full object-contain rounded-lg" [src]="(src | hostname) + '?width=100'" [alt]="alt"
+     srcset="{{(src | hostname) + '?width=100 100w,' + (src | hostname) + '?width=200 200w,' + (src | hostname) + '?width=300 300w,' + (src | hostname) + '?width=400 400w'}}">

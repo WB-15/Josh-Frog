@@ -1,0 +1,131 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+  <h1 class="text-2xl font-semibold text-gray-900">Receiving</h1>
+
+  <div class="flex">
+    <div class="block mx-auto">
+      <label for="search" class="hidden">Search</label>
+      <div class="relative pt-3 pb-4">
+        <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+          <span class="icon is-medium is-left">
+            <fa-icon [icon]="faSearch"></fa-icon>
+          </span>
+        </div>
+        <input id="search" class="form-input block w-full pl-10 pr-2 rounded-lg" [ngClass]="searchResults?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search SKUs" autocomplete="off" autocapitalize="words"
+           [(ngModel)]="searchTerm" (keyup)='search()' />
+        <div *ngIf="searchResults" class="block absolute bg-gray-100 z-30 w-full">
+          <div *ngFor="let result of searchResults" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
+            <div class="flex-none h-10 w-10 m-1 mr-3 rounded-lg bg-white">
+              <app-thumbnail-sm [src]="result.medias[0]?.url" [alt]="result.title"></app-thumbnail-sm>
+            </div>
+
+            <div class="m-1 mr-3">
+              <p class="font-semibold">{{result.sku}}</p>
+              <p class="font-narrow">{{result.title}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading > 0" class="p-20 text-center">
+    <span class="icon is-medium is-left">
+      <fa-icon [icon]="faSpinnerThird" [spin]="true"></fa-icon>
+    </span>
+    Loading...
+  </div>
+
+  <div *ngIf="(loading == 0) && simpleProduct">
+    <div class="flex flex-row">
+      <div class="flex-none h-40 w-40 m-1 mr-3 rounded-lg bg-white">
+        <app-thumbnail-md [src]="simpleProduct.medias[0]?.url" [alt]="simpleProduct.title"></app-thumbnail-md>
+      </div>
+      <div class="self-center">
+        <p class="font-semibold text-2xl">{{simpleProduct.sku}}</p>
+        <p>{{simpleProduct.title}}</p>
+        <p *ngIf="simpleProduct.bins?.length == 0" class="font-narrow">No Bin</p>
+        <p *ngIf="simpleProduct.bins?.length > 0" class="text-xl font-semibold">{{simpleProduct.bins[0].binId}}</p>
+      </div>
+    </div>
+
+    <div *ngIf="quantityRecieved && quantityRecieved > 0" class="p-4 bg-gray-200 rounded-lg">
+      <div class="py-10 pl-2">
+        Received <strong>{{quantityRecieved}}</strong> into inventory.
+      </div>
+    </div>
+
+    <div *ngIf="!quantityRecieved" class="p-4 bg-gray-200 rounded-lg">
+      <div class="p-2">
+        <label for="qty" class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">RECEIVING</label>
+        <div class="max-w-xs">
+          <div class="mt-1 flex rounded-md shadow-sm">
+            <div class="relative flex-grow focus-within:z-10">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faHandReceiving"></fa-icon>
+                </span>
+              </div>
+              <input id="qty" class="form-input block w-full pl-10 rounded-none rounded-l-lg" type="number" placeholder="Quantity" autocomplete="off" [(ngModel)]="quantityEntry" />
+            </div>
+            <button class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 rounded-r-md text-gray-700 bg-blue-100 transition ease-in-out duration-150"
+              [disabled]="!(quantityEntry && quantityEntry > 0)" [ngClass]="{'opacity-50': !(quantityEntry && quantityEntry > 0), 'hover:text-gray-800': (quantityEntry && quantityEntry > 0), 'hover:bg-blue-200': (quantityEntry && quantityEntry > 0)}" (click)="receive()">
+              <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faChevronCircleRight"></fa-icon>
+                </span>
+              <span class="ml-2 leading-5 font-medium">Receive</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-4">
+
+      <div class="p-2">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">DEPARTMENT</p>
+        <p class="font-narrow">{{simpleProduct.explicitDepartment?.name ? simpleProduct.explicitDepartment.name : "None"}}</p>
+      </div>
+
+      <div class="p-2">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WAREHOUSE(S)</p>
+        <p *ngIf="simpleProduct.warehouses?.length == 0" class="font-narrow">None</p>
+        <p *ngFor="let warehouse of simpleProduct.warehouses" class="font-narrow">{{warehouse.name}}</p>
+      </div>
+
+      <div class="p-2">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">BIN(S)</p>
+        <p *ngIf="simpleProduct.bins?.length == 0" class="font-narrow">None</p>
+        <p *ngFor="let bin of simpleProduct.bins" class="font-narrow">{{bin.binId}}</p>
+      </div>
+
+      <div class="p-2">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">BRAND & SUPPLIER</p>
+        <p class="font-narrow">{{simpleProduct.brand?.name}} {{simpleProduct.supplier?.name ? " by " + simpleProduct.supplier.name : ''}}</p>
+      </div>
+
+      <div class="p-2">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">UPC</p>
+        <p class="font-narrow">{{simpleProduct.upc ? simpleProduct.upc : 'No UPC'}}</p>
+      </div>
+
+      <div class="p-2">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">PRICING</p>
+        <p class="font-narrow"><span class="text-gray-500">Retail:</span> {{simpleProduct.price | currency: 'USD'}}</p>
+        <!--<p class="font-narrow">Wholesale: {{simpleProduct.price | currency: 'USD'}}</p>-->
+        <p class="font-narrow"><span class="text-gray-500">Cost:</span> {{simpleProduct.cost | currency: 'USD'}}</p>
+      </div>
+
+      <div class="p-2">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">SHIPPING NEEDS</p>
+        <p class="font-narrow">{{simpleProduct.shippingNeeds ? simpleProduct.shippingNeeds : 'Method Not Set'}}</p>
+        <p class="font-narrow">{{simpleProduct.weatherShippingRuleSet?.name}}</p>
+        <p class="font-narrow">{{simpleProduct.weight ? simpleProduct.weight + "lbs" : 'Weight Not Set'}}</p>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+</div>

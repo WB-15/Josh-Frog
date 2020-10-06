@@ -1,0 +1,17 @@
+{
+  "/api/": {
+    "target": "http://joshsfrogstest.com",
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/login": {
+    "target": "http://joshsfrogstest.com",
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/media/": {
+    "target": "http://joshsfrogstest.com",
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

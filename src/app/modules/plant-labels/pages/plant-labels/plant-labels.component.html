@@ -1,8 +1,122 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
   <h1 class="text-2xl font-semibold text-gray-900">Plant Labels</h1>
 
-  <p>
-    plant-labels works!
-  </p>
+  <div class="flex">
+    <div class="block mx-auto">
+      <label for="search" class="hidden">Search</label>
+      <div class="relative pt-3 pb-4">
+        <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+          <span class="icon is-medium is-left">
+            <fa-icon [icon]="faSearch"></fa-icon>
+          </span>
+        </div>
+        <input id="search" class="form-input block w-full pl-10 pr-2 rounded-lg" [ngClass]="searchResults?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search Name" autocomplete="off" autocapitalize="words"
+               [(ngModel)]="searchTerm" (keyup)='search()' />
+        <div *ngIf="searchResults" class="block absolute bg-gray-100 z-30 w-full">
+          <div *ngFor="let result of searchResults" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
+            <div class="flex-none h-10 w-10 m-1 mr-3 rounded-lg bg-white">
+              <app-thumbnail-sm [src]="result.medias[0]?.url" [alt]="result.title"></app-thumbnail-sm>
+            </div>
+
+            <div class="m-1 mr-3">
+              <p class="font-semibold">{{result.sku}}</p>
+              <p class="font-narrow">{{result.title}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading > 0" class="p-20 text-center">
+    <span class="icon is-medium is-left">
+      <fa-icon [icon]="faSpinnerThird" [spin]="true"></fa-icon>
+    </span>
+    Loading...
+  </div>
+
+  <div *ngIf="(loading == 0) && simpleProduct">
+    <div class="flex flex-row">
+      <div class="flex-none h-40 w-40 m-1 mr-3 rounded-lg bg-white">
+        <app-thumbnail-md [src]="simpleProduct.medias[0]?.url" [alt]="simpleProduct.title"></app-thumbnail-md>
+      </div>
+      <div class="self-center">
+        <p class="font-semibold text-2xl">{{simpleProduct.sku}}</p>
+        <p>{{simpleProduct.title}}</p>
+        <!-- TODO: someday plants will have bins
+        <p *ngIf="simpleProduct.bins?.length == 0" class="font-narrow">No Bin</p>
+        <p *ngIf="simpleProduct.bins?.length > 0" class="text-xl font-semibold">{{simpleProduct.bins[0].binId}}</p>
+        -->
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="(loading == 0) && simpleProduct" class="p-4 bg-gray-200 rounded-lg">
+    <div class="p-2">
+
+      <fieldset class="mt-6">
+        <legend class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">LABEL TYPE</legend>
+        <div class="mt-2">
+          <div class="flex items-center">
+            <input id="no_price" name="price_option" value="no_price" type="radio" class="form-radio h-4 w-4 text-blue-600 transition duration-150 ease-in-out" [(ngModel)]="priceOption">
+            <label for="no_price" class="ml-3">
+              <span class="block text-sm leading-5 font-medium text-gray-700">No Price</span>
+            </label>
+          </div>
+          <div class="mt-2 flex items-center">
+            <input id="web_price" name="price_option" value="web_price" type="radio" class="form-radio h-4 w-4 text-blue-600 transition duration-150 ease-in-out" [(ngModel)]="priceOption">
+            <label for="web_price" class="ml-3">
+              <span class="block text-sm leading-5 font-medium text-gray-700">Web Price ({{simpleProduct.price | currency: 'USD'}})</span>
+            </label>
+          </div>
+          <div class="mt-2 flex items-center">
+            <input id="custom_price" name="price_option" value="custom_price" type="radio" class="form-radio h-4 w-4 text-blue-600 transition duration-150 ease-in-out" [(ngModel)]="priceOption">
+            <label for="custom_price" class="ml-3">
+              <span class="block text-sm leading-5 font-medium text-gray-700">Custom Price</span>
+            </label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset *ngIf="priceOption == 'custom_price'" class="mt-6">
+        <label for="qty" class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">CUSTOM PRICE</label>
+        <div class="max-w-xs">
+          <div class="mt-1 flex rounded-md shadow-sm">
+            <div class="relative flex-grow focus-within:z-10">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span class="icon is-medium is-left">
+                    <fa-icon [icon]="faDollarSign"></fa-icon>
+                  </span>
+              </div>
+              <input id="custom_price_entry" class="form-input block w-full pl-10 rounded-none rounded-l-lg" type="number" placeholder="{{simpleProduct.price}}" step="0.01" autocomplete="off" [(ngModel)]="customPrice" />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="mt-6">
+        <label for="qty" class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">QUANTITY</label>
+        <div class="max-w-xs">
+          <div class="mt-1 flex rounded-md shadow-sm">
+            <div class="relative flex-grow focus-within:z-10">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span class="icon is-medium is-left">
+                    <fa-icon [icon]="faTags"></fa-icon>
+                  </span>
+              </div>
+              <input id="qty" class="form-input block w-full pl-10 rounded-none rounded-l-lg" type="number" placeholder="1" autocomplete="off" [(ngModel)]="quantityEntry" />
+            </div>
+            <button class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 rounded-r-md text-gray-700 bg-blue-100 transition ease-in-out duration-150 hover:text-gray-800 hover:bg-blue-200" (click)="print()">
+                <span class="icon is-medium is-left">
+                    <fa-icon [icon]="faChevronCircleRight"></fa-icon>
+                  </span>
+              <span class="ml-2 leading-5 font-medium">Print</span>
+            </button>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+
 </div>
 

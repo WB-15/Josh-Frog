@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "Josh's Frogs Client": {
+      "schemaPath": "src/graphql/schema.json",
+      "extensions": {
+        "endpoints": {
+          "dev": {
+            "url": "http://joshsfrogstest.com/api/graphql",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
