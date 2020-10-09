@@ -12,6 +12,7 @@ import {
 import { BarcodeService } from '../../../shared/services/barcode.service';
 import {
   GraphQlPageableInput,
+  InventoryAddGQL,
   SimpleProductEntity,
   SimpleProductFilterGQL,
   SimpleProductFindBySkuGQL,
@@ -32,7 +33,7 @@ export class ReceivingComponent implements OnInit, OnDestroy {
 
   searchTerm = '';
   quantityEntry: number;
-  quantityRecieved: number;
+  quantityReceived: number;
 
   upc = '';
   sku = '';
@@ -50,7 +51,8 @@ export class ReceivingComponent implements OnInit, OnDestroy {
     private simpleProductInfo: SimpleProductInfoGQL,
     private simpleProductFindByUpcGQL: SimpleProductFindByUpcGQL,
     private simpleProductFindBySkuGQL: SimpleProductFindBySkuGQL,
-    private simpleProductFilterGQL: SimpleProductFilterGQL
+    private simpleProductFilterGQL: SimpleProductFilterGQL,
+    private inventoryAddGQL: InventoryAddGQL
   ) {}
 
   ngOnInit() {
@@ -67,7 +69,7 @@ export class ReceivingComponent implements OnInit, OnDestroy {
               (result) => {
                 this.simpleProduct = result as SimpleProductEntity;
                 this.loading--;
-                this.quantityRecieved = null;
+                this.quantityReceived = null;
                 this.quantityEntry = null;
                 this.changeDetectorRef.detectChanges();
               },
@@ -94,7 +96,7 @@ export class ReceivingComponent implements OnInit, OnDestroy {
               (result) => {
                 this.simpleProduct = result as SimpleProductEntity;
                 this.loading--;
-                this.quantityRecieved = null;
+                this.quantityReceived = null;
                 this.quantityEntry = null;
                 this.changeDetectorRef.detectChanges();
               },
@@ -121,7 +123,7 @@ export class ReceivingComponent implements OnInit, OnDestroy {
         (result) => {
           this.simpleProduct = result as SimpleProductEntity;
           this.loading--;
-          this.quantityRecieved = null;
+          this.quantityReceived = null;
           this.quantityEntry = null;
           this.changeDetectorRef.detectChanges();
         },
@@ -134,7 +136,18 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   }
 
   receive() {
-    this.quantityRecieved = this.quantityEntry;
+    this.quantityReceived = this.quantityEntry;
+    this.inventoryAddGQL
+      .mutate({ id: this.simpleProduct.id, quantity: this.quantityReceived })
+      .pipe(map((result) => result.data.inventoryAdd))
+      .subscribe(
+        (result) => {
+          console.log(result);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
   }
 
   search() {

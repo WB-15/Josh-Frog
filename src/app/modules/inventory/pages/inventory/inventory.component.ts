@@ -8,6 +8,8 @@ import { BarcodeService } from '../../../shared/services/barcode.service';
 
 import {
   GraphQlPageableInput,
+  InventoryGetGQL,
+  InventoryResult,
   SimpleProductEntity,
   SimpleProductFilterGQL,
   SimpleProductFindBySkuGQL,
@@ -34,6 +36,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   upcScannedSubscription: Subscription;
   skuScannedSubscription: Subscription;
 
+  inventoryResult: InventoryResult;
   simpleProduct: SimpleProductEntity;
   searchResults: SimpleProductEntity[];
 
@@ -43,7 +46,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
     private simpleProductInfo: SimpleProductInfoGQL,
     private simpleProductFindByUpcGQL: SimpleProductFindByUpcGQL,
     private simpleProductFindBySkuGQL: SimpleProductFindBySkuGQL,
-    private simpleProductFilterGQL: SimpleProductFilterGQL
+    private simpleProductFilterGQL: SimpleProductFilterGQL,
+    private inventoryGetGQL: InventoryGetGQL
   ) {}
 
   ngOnInit() {
@@ -61,11 +65,13 @@ export class InventoryComponent implements OnInit, OnDestroy {
                 this.simpleProduct = result as SimpleProductEntity;
                 this.loading--;
                 this.changeDetectorRef.detectChanges();
+                this.getInventory();
               },
               (error) => {
                 console.error(error);
                 this.loading--;
                 this.changeDetectorRef.detectChanges();
+                this.inventoryResult = null;
               }
             );
         }
@@ -86,11 +92,13 @@ export class InventoryComponent implements OnInit, OnDestroy {
                 this.simpleProduct = result as SimpleProductEntity;
                 this.loading--;
                 this.changeDetectorRef.detectChanges();
+                this.getInventory();
               },
               (error) => {
                 console.error(error);
                 this.loading--;
                 this.changeDetectorRef.detectChanges();
+                this.inventoryResult = null;
               }
             );
         }
@@ -111,10 +119,28 @@ export class InventoryComponent implements OnInit, OnDestroy {
           this.simpleProduct = result as SimpleProductEntity;
           this.loading--;
           this.changeDetectorRef.detectChanges();
+          this.getInventory();
         },
         (error) => {
           console.error(error);
           this.loading--;
+          this.changeDetectorRef.detectChanges();
+          this.inventoryResult = null;
+        }
+      );
+  }
+
+  getInventory() {
+    this.inventoryGetGQL
+      .mutate({ id: this.simpleProduct.id })
+      .pipe(map((result) => result.data.inventoryGet))
+      .subscribe(
+        (result) => {
+          this.inventoryResult = result as InventoryResult;
+          this.changeDetectorRef.detectChanges();
+        },
+        (error) => {
+          this.inventoryResult = null;
           this.changeDetectorRef.detectChanges();
         }
       );

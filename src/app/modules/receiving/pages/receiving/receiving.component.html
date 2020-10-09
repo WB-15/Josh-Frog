@@ -48,13 +48,13 @@
       </div>
     </div>
 
-    <div *ngIf="quantityRecieved && quantityRecieved > 0" class="p-4 bg-gray-200 rounded-lg">
+    <div *ngIf="quantityReceived && quantityReceived > 0" class="p-4 bg-gray-200 rounded-lg">
       <div class="py-10 pl-2">
-        Received <strong>{{quantityRecieved}}</strong> into inventory.
+        Received <strong>{{quantityReceived}}</strong> into inventory.
       </div>
     </div>
 
-    <div *ngIf="!quantityRecieved" class="p-4 bg-gray-200 rounded-lg">
+    <div *ngIf="!quantityReceived" class="p-4 bg-gray-200 rounded-lg">
       <div class="p-2">
         <label for="qty" class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">RECEIVING</label>
         <div class="max-w-xs">

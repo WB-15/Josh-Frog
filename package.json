@@ -69,6 +69,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "capacitor-socket-mobile": "file:node_modules/capacitor-socket-mobile",
+    "capacitor-brother-printer": "file:node_modules/capacitor-brother-printer",
     "codelyzer": "^6.0.0",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~5.0.0",

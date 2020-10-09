@@ -45,13 +45,25 @@ export class BarcodeService {
           this.barcodeDataSubject$.next(barcodeDataEvent);
 
           if (barcodeDataEvent.type === 'UPC A') {
+            this.orderDataSubject$.next(null);
+            this.binDataSubject$.next(null);
+            this.skuDataSubject$.next(null);
             this.upcDataSubject$.next(barcodeDataEvent.data);
           } else if (barcodeDataEvent.type === 'Code 128') {
             if (barcodeDataEvent.data.charAt(0) === '#') {
+              this.orderDataSubject$.next(null);
+              this.skuDataSubject$.next(null);
+              this.upcDataSubject$.next(null);
               this.binDataSubject$.next(barcodeDataEvent.data.substr(1));
             } else if (barcodeDataEvent.data.charAt(0) === '*') {
+              this.orderDataSubject$.next(null);
+              this.binDataSubject$.next(null);
+              this.upcDataSubject$.next(null);
               this.skuDataSubject$.next(barcodeDataEvent.data.substr(1));
             } else {
+              this.binDataSubject$.next(null);
+              this.skuDataSubject$.next(null);
+              this.upcDataSubject$.next(null);
               this.orderDataSubject$.next(barcodeDataEvent.data);
             }
           }

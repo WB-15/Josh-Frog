@@ -412,34 +412,34 @@ export type GraphQlPage_SupplierEntity = {
 };
 
 export type GraphQlPageableInput = {
+  /** Size of each page. */
+  pageSize?: Maybe<Scalars['Int']>;
   /** The number of the page to display. */
   page?: Maybe<Scalars['Int']>;
   /** Sort conditions for the current view. */
   sort?: Maybe<Array<Maybe<GraphQlSortInput>>>;
-  /** Size of each page. */
-  pageSize?: Maybe<Scalars['Int']>;
 };
 
 export type GraphQlSingleValueFilter_BooleanInput = {
-  /** Filter condition (default: eq). */
-  condition?: Maybe<QueryCondition>;
-  /** Abbreviation for 'condition'. */
-  c?: Maybe<QueryCondition>;
   /** Field value. */
   value?: Maybe<Scalars['Boolean']>;
+  /** Abbreviation for 'condition'. */
+  c?: Maybe<QueryCondition>;
   /** Abbreviation for 'value'. */
   v?: Maybe<Scalars['Boolean']>;
+  /** Filter condition (default: eq). */
+  condition?: Maybe<QueryCondition>;
 };
 
 export type GraphQlSortInput = {
-  /** Abbreviation for 'field'. */
-  f?: Maybe<Scalars['String']>;
-  /** Direction of sorting (default: asc). */
-  direction?: Maybe<SortDirection>;
-  /** Abbreviation for 'direction'. */
-  d?: Maybe<SortDirection>;
   /** Name of the field to sort by. */
   field?: Maybe<Scalars['String']>;
+  /** Abbreviation for 'field'. */
+  f?: Maybe<Scalars['String']>;
+  /** Abbreviation for 'direction'. */
+  d?: Maybe<SortDirection>;
+  /** Direction of sorting (default: asc). */
+  direction?: Maybe<SortDirection>;
 };
 
 
@@ -451,6 +451,18 @@ export type InventoryCacheEntity = {
   id?: Maybe<Scalars['UUID']>;
   /** Cache's quantity available for sale */
   quantityAvailableForSale?: Maybe<Scalars['Long']>;
+};
+
+export type InventoryResult = {
+  __typename?: 'InventoryResult';
+  /** Result's global total quantity */
+  globalQuantityTotal?: Maybe<Scalars['Long']>;
+  /** Result's product */
+  product?: Maybe<SimpleProductEntity>;
+  /** Result's global available quantity */
+  globalQuantityAvailable?: Maybe<Scalars['Long']>;
+  /** Result's global unshipped quantity */
+  globalQuantityUnshipped?: Maybe<Scalars['Long']>;
 };
 
 export type KitItemEntity = {
@@ -491,10 +503,10 @@ export type KitProductEntity = {
   price?: Maybe<Scalars['BigDecimal']>;
   /** Product's implicit animals */
   implicitAnimals?: Maybe<Array<Maybe<AnimalEntity>>>;
-  /** Product's average rating */
-  averageRating?: Maybe<Scalars['BigDecimal']>;
   /** Product's popularity */
   popularity?: Maybe<Scalars['BigDecimal']>;
+  /** Product's average rating */
+  averageRating?: Maybe<Scalars['BigDecimal']>;
   /** Product's explicit categories */
   explicitCategories?: Maybe<Array<Maybe<CategoryEntity>>>;
   /** Entity's UUID */
@@ -636,32 +648,38 @@ export type Mutation = {
   simpleProductCreate?: Maybe<SimpleProductEntity>;
   /** Updates bin on a simple product */
   simpleProductSetBin?: Maybe<SimpleProductEntity>;
-  /** Creates a new user, with password hash */
-  userCreate?: Maybe<UserEntity>;
   /** Updates an existing address */
   addressUpdate?: Maybe<AddressEntity>;
+  /** Creates a new user, with password hash */
+  userCreate?: Maybe<UserEntity>;
   /** Sets a category's parent */
   categorySetParent?: Maybe<CategoryEntity>;
   /** Registers a new user, with raw password */
   userRegister?: Maybe<UserEntity>;
+  /** Adds inventory for a simple product */
+  inventoryAdd?: Maybe<InventoryResult>;
   /** Removes all quantity of selected simple product from user's cart */
   cartRemoveAllSimpleProduct?: Maybe<CartEntity>;
+  /** Sets inventory for a simple product */
+  inventorySet?: Maybe<InventoryResult>;
   /** Triggers a re-sync of all categories with Magento */
   maintenanceMagentoSyncAllCategories?: Maybe<Scalars['Boolean']>;
   /** Verifies an existing address */
   addressVerify?: Maybe<AddressEntity>;
   /** Creates a new address */
   addressCreate?: Maybe<AddressEntity>;
+  /** Gets inventory for a simple product */
+  inventoryGet?: Maybe<InventoryResult>;
   /** Refreshes a simple product (with Magento) by entity id */
   simpleProductRefresh?: Maybe<SimpleProductEntity>;
-  /** Changes quantity of selected kit product in user's cart */
-  cartChangeQuantityKitProduct?: Maybe<CartEntity>;
   /** Creates a new category */
   categoryCreate?: Maybe<CategoryEntity>;
-  /** Sets the shipping zip code, as a shortcut for shipping rates */
-  cartSetShippingZip?: Maybe<CartEntity>;
+  /** Changes quantity of selected kit product in user's cart */
+  cartChangeQuantityKitProduct?: Maybe<CartEntity>;
   /** Triggers a re-index of hibernate cache */
   maintenanceCacheFlushAll?: Maybe<Scalars['Boolean']>;
+  /** Sets the shipping zip code, as a shortcut for shipping rates */
+  cartSetShippingZip?: Maybe<CartEntity>;
   /** Sets the shipping address to one of the user's addresses */
   cartSetShippingAddress?: Maybe<CartEntity>;
   /** Changes quantity of selected simple product in user's cart */
@@ -676,10 +694,10 @@ export type Mutation = {
   cartAddKitProduct?: Maybe<CartEntity>;
   /** Sets active flag */
   categorySetActive?: Maybe<CategoryEntity>;
-  /** Adds quantity of selected simple product to user's cart */
-  cartAddSimpleProduct?: Maybe<CartEntity>;
   /** Creates a new department */
   departmentCreate?: Maybe<DepartmentEntity>;
+  /** Adds quantity of selected simple product to user's cart */
+  cartAddSimpleProduct?: Maybe<CartEntity>;
   /** Sets the billing address to one of the user's addresses */
   cartSetBillingAddress?: Maybe<CartEntity>;
 };
@@ -727,15 +745,6 @@ export type MutationSimpleProductSetBinArgs = {
 
 
 /** Mutation root */
-export type MutationUserCreateArgs = {
-  lastName: Scalars['String'];
-  firstName: Scalars['String'];
-  passwordHash: Scalars['String'];
-  email: Scalars['String'];
-};
-
-
-/** Mutation root */
 export type MutationAddressUpdateArgs = {
   country: Scalars['String'];
   lastName: Scalars['String'];
@@ -748,6 +757,15 @@ export type MutationAddressUpdateArgs = {
   id: Scalars['UUID'];
   line2?: Maybe<Scalars['String']>;
   line1: Scalars['String'];
+};
+
+
+/** Mutation root */
+export type MutationUserCreateArgs = {
+  lastName: Scalars['String'];
+  firstName: Scalars['String'];
+  passwordHash: Scalars['String'];
+  email: Scalars['String'];
 };
 
 
@@ -768,9 +786,23 @@ export type MutationUserRegisterArgs = {
 
 
 /** Mutation root */
+export type MutationInventoryAddArgs = {
+  quantity: Scalars['Long'];
+  id: Scalars['UUID'];
+};
+
+
+/** Mutation root */
 export type MutationCartRemoveAllSimpleProductArgs = {
   productId: Scalars['UUID'];
   cartId?: Maybe<Scalars['UUID']>;
+};
+
+
+/** Mutation root */
+export type MutationInventorySetArgs = {
+  quantity: Scalars['Long'];
+  id: Scalars['UUID'];
 };
 
 
@@ -797,8 +829,21 @@ export type MutationAddressCreateArgs = {
 
 
 /** Mutation root */
+export type MutationInventoryGetArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** Mutation root */
 export type MutationSimpleProductRefreshArgs = {
   magentoId: Scalars['String'];
+};
+
+
+/** Mutation root */
+export type MutationCategoryCreateArgs = {
+  name: Scalars['String'];
+  slug: Scalars['String'];
 };
 
 
@@ -807,13 +852,6 @@ export type MutationCartChangeQuantityKitProductArgs = {
   quantity: Scalars['Long'];
   productId: Scalars['UUID'];
   cartId?: Maybe<Scalars['UUID']>;
-};
-
-
-/** Mutation root */
-export type MutationCategoryCreateArgs = {
-  name: Scalars['String'];
-  slug: Scalars['String'];
 };
 
 
@@ -868,17 +906,17 @@ export type MutationCategorySetActiveArgs = {
 
 
 /** Mutation root */
-export type MutationCartAddSimpleProductArgs = {
-  quantity: Scalars['Long'];
-  productId: Scalars['UUID'];
-  cartId?: Maybe<Scalars['UUID']>;
+export type MutationDepartmentCreateArgs = {
+  name: Scalars['String'];
+  slug: Scalars['String'];
 };
 
 
 /** Mutation root */
-export type MutationDepartmentCreateArgs = {
-  name: Scalars['String'];
-  slug: Scalars['String'];
+export type MutationCartAddSimpleProductArgs = {
+  quantity: Scalars['Long'];
+  productId: Scalars['UUID'];
+  cartId?: Maybe<Scalars['UUID']>;
 };
 
 
@@ -904,10 +942,10 @@ export type ProductEntity = {
   implicitCategories?: Maybe<Array<Maybe<CategoryEntity>>>;
   /** Product's Magento Id */
   magentoId?: Maybe<Scalars['String']>;
-  /** Product's active flag */
-  active?: Maybe<Scalars['Boolean']>;
   /** Product's UPC */
   upc?: Maybe<Scalars['String']>;
+  /** Product's active flag */
+  active?: Maybe<Scalars['Boolean']>;
   /** Product's published revision */
   publishedRevision?: Maybe<ProductRevisionEntity>;
   /** Entity's class */
@@ -1362,10 +1400,10 @@ export type SimpleProductEntity = {
   countRating?: Maybe<Scalars['BigDecimal']>;
   /** Product's price */
   price?: Maybe<Scalars['BigDecimal']>;
-  /** Product's average rating */
-  averageRating?: Maybe<Scalars['BigDecimal']>;
   /** Product's popularity */
   popularity?: Maybe<Scalars['BigDecimal']>;
+  /** Product's average rating */
+  averageRating?: Maybe<Scalars['BigDecimal']>;
   /** Simple product's supplier */
   supplier?: Maybe<SupplierEntity>;
   /** Entity's UUID */
@@ -1434,10 +1472,10 @@ export type SupplierEntity = {
 
 export type UserEntity = {
   __typename?: 'UserEntity';
-  /** User's last name */
-  lastName?: Maybe<Scalars['String']>;
   /** User's first name */
   firstName?: Maybe<Scalars['String']>;
+  /** User's last name */
+  lastName?: Maybe<Scalars['String']>;
   /** User's addresses */
   addresses?: Maybe<Array<Maybe<AddressEntity>>>;
   /** User's email is confirmed */
@@ -1540,6 +1578,41 @@ export type WeatherShippingRuleSetEntity = {
   /** Weather shipping rule set's slug */
   slug?: Maybe<Scalars['String']>;
 };
+
+export type InventoryAddMutationVariables = Exact<{
+  id: Scalars['UUID'];
+  quantity: Scalars['Long'];
+}>;
+
+
+export type InventoryAddMutation = (
+  { __typename?: 'Mutation' }
+  & { inventoryAdd?: Maybe<(
+    { __typename?: 'InventoryResult' }
+    & Pick<InventoryResult, 'globalQuantityUnshipped' | 'globalQuantityAvailable' | 'globalQuantityTotal'>
+    & { product?: Maybe<(
+      { __typename?: 'SimpleProductEntity' }
+      & Pick<SimpleProductEntity, 'id' | 'slug' | 'sku' | 'title'>
+    )> }
+  )> }
+);
+
+export type InventoryGetMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type InventoryGetMutation = (
+  { __typename?: 'Mutation' }
+  & { inventoryGet?: Maybe<(
+    { __typename?: 'InventoryResult' }
+    & Pick<InventoryResult, 'globalQuantityUnshipped' | 'globalQuantityAvailable' | 'globalQuantityTotal'>
+    & { product?: Maybe<(
+      { __typename?: 'SimpleProductEntity' }
+      & Pick<SimpleProductEntity, 'id' | 'slug' | 'sku' | 'title'>
+    )> }
+  )> }
+);
 
 export type SimpleProductFilterQueryVariables = Exact<{
   pageable: GraphQlPageableInput;
@@ -1765,6 +1838,52 @@ export type UserInfoQuery = (
   )> }
 );
 
+export const InventoryAddDocument = gql`
+    mutation inventoryAdd($id: UUID!, $quantity: Long!) {
+  inventoryAdd(id: $id, quantity: $quantity) {
+    product {
+      id
+      slug
+      sku
+      title
+    }
+    globalQuantityUnshipped
+    globalQuantityAvailable
+    globalQuantityTotal
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class InventoryAddGQL extends Apollo.Mutation<InventoryAddMutation, InventoryAddMutationVariables> {
+    document = InventoryAddDocument;
+    
+  }
+export const InventoryGetDocument = gql`
+    mutation inventoryGet($id: UUID!) {
+  inventoryGet(id: $id) {
+    product {
+      id
+      slug
+      sku
+      title
+    }
+    globalQuantityUnshipped
+    globalQuantityAvailable
+    globalQuantityTotal
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class InventoryGetGQL extends Apollo.Mutation<InventoryGetMutation, InventoryGetMutationVariables> {
+    document = InventoryGetDocument;
+    
+  }
 export const SimpleProductFilterDocument = gql`
     query simpleProductFilter($pageable: GraphQLPageableInput!, $title: String, $sku: String, $active: Boolean, $brand: String, $supplier: String, $category: String) {
   simpleProductFilter(title: {pattern: $title}, sku: {pattern: $sku}, active: {value: $active}, brand: $brand, supplier: $supplier, category: $category, page: $pageable, sort: {field: "sku", direction: ASC}) {

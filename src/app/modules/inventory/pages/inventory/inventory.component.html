@@ -46,8 +46,12 @@
         <app-thumbnail-md [src]="simpleProduct.medias[0]?.url" [alt]="simpleProduct.title"></app-thumbnail-md>
       </div>
       <div class="self-center">
+        <p *ngIf="inventoryResult?.globalQuantityTotal == 0" class="font-semibold text-xl text-center">Out of Stock</p>
+        <p *ngIf="inventoryResult?.globalQuantityTotal > 0" class="font-semibold text-xl text-center">{{inventoryResult.globalQuantityTotal}} in Stock</p>
+        <!-- TODO: when full inventory support exists, replace above with this
         <p *ngIf="simpleProduct.inventoryCaches?.length == 0" class="font-semibold text-xl text-center">Not Stocked</p>
         <p *ngFor="let inventory of simpleProduct.inventoryCaches" class="font-semibold text-3xl text-center">{{inventory.quantityAvailableForSale}}</p>
+        -->
       </div>
     </div>
 

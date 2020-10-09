@@ -1,0 +1,15 @@
+mutation inventoryGet ($id: UUID!) {
+    inventoryGet(
+        id: $id
+    ) {
+        product {
+            id,
+            slug,
+            sku,
+            title
+        }
+        globalQuantityUnshipped,
+        globalQuantityAvailable,
+        globalQuantityTotal
+    }
+}

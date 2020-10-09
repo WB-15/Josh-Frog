@@ -1,0 +1,16 @@
+mutation inventoryAdd ($id: UUID!, $quantity: Long!) {
+    inventoryAdd(
+        id: $id,
+        quantity: $quantity
+    ) {
+        product {
+            id,
+            slug,
+            sku,
+            title
+        }
+        globalQuantityUnshipped,
+        globalQuantityAvailable,
+        globalQuantityTotal
+    }
+}

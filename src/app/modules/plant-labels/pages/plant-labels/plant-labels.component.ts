@@ -18,6 +18,7 @@ import {
   SimpleProductInfoGQL
 } from '../../../../../generated/graphql';
 import { BarcodeService } from '../../../shared/services/barcode.service';
+import { PrinterService } from '../../../shared/services/printer.service';
 
 @Component({
   selector: 'app-plant-labels',
@@ -49,6 +50,7 @@ export class PlantLabelsComponent implements OnInit, OnDestroy {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private barcodeService: BarcodeService,
+    private printerService: PrinterService,
     private simpleProductInfo: SimpleProductInfoGQL,
     private simpleProductFindByUpcGQL: SimpleProductFindByUpcGQL,
     private simpleProductFindBySkuGQL: SimpleProductFindBySkuGQL,
@@ -104,6 +106,26 @@ export class PlantLabelsComponent implements OnInit, OnDestroy {
             );
         }
       }
+    );
+  }
+
+  print() {
+    let price = null;
+    if (this.priceOption === 'web_price') {
+      price = this.simpleProduct.price;
+    } else if (this.priceOption === 'custom_price') {
+      if (this.customPrice) {
+        price = this.customPrice;
+      } else {
+        price = this.simpleProduct.price;
+      }
+    }
+
+    this.printerService.printLabel(
+      this.simpleProduct.sku,
+      this.simpleProduct.title,
+      price,
+      this.quantityEntry
     );
   }
 
