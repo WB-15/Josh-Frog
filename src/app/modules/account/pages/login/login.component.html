@@ -47,6 +47,9 @@
           </span>
         Sign in
       </button>
+      <p class="text-sm text-red-800" *ngIf="error">
+        An error occurred signing you in.  Please check your username and password, then try again.
+      </p>
     </div>
   </form>
 </div>

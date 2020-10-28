@@ -21,7 +21,7 @@ query simpleProductFindByUpc ($upc: String!) {
         id,
         binId
     },
-    inventoryCaches {
+    inventoryQuantityCaches {
       id,
       quantityAvailableForSale
     },

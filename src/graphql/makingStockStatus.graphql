@@ -1,0 +1,21 @@
+mutation makingStockStatus ($warehouse: String!) {
+    makingStockStatus (
+        warehouse: $warehouse
+    ) {
+        product {
+            id,
+            title,
+            sku,
+            medias {
+                id,
+                mediaType,
+                url
+            }
+        }
+        warehouseQuantityAvailable,
+        warehouseWeeklyConsumptionRate,
+        warehouseWeeklyConsumptionVariance,
+        warehouseRunOutDays85,
+        warehouseRunOutDays97
+    }
+}

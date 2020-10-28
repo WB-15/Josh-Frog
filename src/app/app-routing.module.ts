@@ -22,6 +22,12 @@ const routes: Routes = [
       import('./modules/catalog/catalog.module').then((m) => m.CatalogModule)
   },
   {
+    path: 'making',
+    canActivate: [AuthGuardService],
+    loadChildren: () =>
+      import('./modules/making/making.module').then((m) => m.MakingModule)
+  },
+  {
     path: 'receiving',
     canActivate: [AuthGuardService],
     loadChildren: () =>

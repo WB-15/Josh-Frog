@@ -16,6 +16,7 @@ import {
   SimpleProductFindByUpcGQL,
   SimpleProductInfoGQL
 } from '../../../../../generated/graphql';
+import { DialogService } from '../../../shared/services/dialog.service';
 
 @Component({
   selector: 'app-inventory',
@@ -27,6 +28,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   faSearch = faSearch;
 
   searchTerm = '';
+  pendingSearchTerm: string = null;
 
   upc = '';
   sku = '';
@@ -42,6 +44,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: DialogService,
     private barcodeService: BarcodeService,
     private simpleProductInfo: SimpleProductInfoGQL,
     private simpleProductFindByUpcGQL: SimpleProductFindByUpcGQL,
@@ -70,8 +73,9 @@ export class InventoryComponent implements OnInit, OnDestroy {
               (error) => {
                 console.error(error);
                 this.loading--;
-                this.changeDetectorRef.detectChanges();
                 this.inventoryResult = null;
+                this.dialogService.showErrorMessageBox(error);
+                this.changeDetectorRef.detectChanges();
               }
             );
         }
@@ -97,8 +101,9 @@ export class InventoryComponent implements OnInit, OnDestroy {
               (error) => {
                 console.error(error);
                 this.loading--;
-                this.changeDetectorRef.detectChanges();
                 this.inventoryResult = null;
+                this.dialogService.showErrorMessageBox(error);
+                this.changeDetectorRef.detectChanges();
               }
             );
         }
@@ -124,8 +129,9 @@ export class InventoryComponent implements OnInit, OnDestroy {
         (error) => {
           console.error(error);
           this.loading--;
-          this.changeDetectorRef.detectChanges();
           this.inventoryResult = null;
+          this.dialogService.showErrorMessageBox(error);
+          this.changeDetectorRef.detectChanges();
         }
       );
   }
@@ -141,30 +147,51 @@ export class InventoryComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.inventoryResult = null;
+          this.dialogService.showErrorMessageBox(error);
           this.changeDetectorRef.detectChanges();
         }
       );
   }
 
   search() {
-    const pageable: GraphQlPageableInput = {
-      page: 1,
-      pageSize: 5
-    };
+    if (this.pendingSearchTerm == null) {
+      if (this.searchTerm === '') {
+        this.searchResults = [];
+      } else {
+        this.pendingSearchTerm = this.searchTerm;
+        const pageable: GraphQlPageableInput = {
+          page: 1,
+          pageSize: 5
+        };
 
-    this.simpleProductFilterGQL
-      .fetch({ pageable, sku: this.searchTerm + '%' })
-      .pipe(map((result) => result.data.simpleProductFilter.data))
-      .subscribe(
-        (result) => {
-          this.searchResults = result as SimpleProductEntity[];
-          console.log(this.searchResults);
-          this.changeDetectorRef.detectChanges();
-        },
-        (error) => {
-          this.changeDetectorRef.detectChanges();
-        }
-      );
+        this.simpleProductFilterGQL
+          .fetch({ pageable, sku: this.pendingSearchTerm + '%' })
+          .pipe(map((result) => result.data.simpleProductFilter.data))
+          .subscribe(
+            (result) => {
+              this.searchResults = result as SimpleProductEntity[];
+              this.changeDetectorRef.detectChanges();
+              if (this.pendingSearchTerm !== this.searchTerm) {
+                this.pendingSearchTerm = null;
+                this.search();
+              } else {
+                this.pendingSearchTerm = null;
+              }
+            },
+            (error) => {
+              console.error(error);
+              this.dialogService.showErrorMessageBox(error);
+              this.changeDetectorRef.detectChanges();
+              if (this.pendingSearchTerm !== this.searchTerm) {
+                this.pendingSearchTerm = null;
+                this.search();
+              } else {
+                this.pendingSearchTerm = null;
+              }
+            }
+          );
+      }
+    }
   }
 
   ngOnDestroy(): void {

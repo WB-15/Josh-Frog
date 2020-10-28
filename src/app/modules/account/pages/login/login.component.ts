@@ -2,32 +2,36 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { UserService } from '../../../shared/services/user.service';
+import { DialogService } from '../../../shared/services/dialog.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styles: [],
+  styles: []
 })
 export class LoginComponent implements OnInit {
   email: string;
   password: string;
+  error = false;
 
   constructor(
-      private userService: UserService,
-      private router: Router) { }
+    private dialogService: DialogService,
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   ngOnInit() {}
 
   login() {
-    // TODO: subscribe to get success/failure
+    this.error = false;
     this.userService.login(this.email, this.password).subscribe(
-        (response) => {
-          this.router.navigate(['']);
-        },
-        (error) => {
-          console.error(error);
-        }
+      (response) => {
+        this.router.navigate(['']);
+      },
+      (error) => {
+        console.error(error);
+        this.dialogService.showErrorMessageBox(error);
+      }
     );
-    // TODO: redirect
   }
 }

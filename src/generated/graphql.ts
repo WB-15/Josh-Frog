@@ -421,36 +421,56 @@ export type GraphQlPageableInput = {
 };
 
 export type GraphQlSingleValueFilter_BooleanInput = {
-  /** Field value. */
-  value?: Maybe<Scalars['Boolean']>;
-  /** Abbreviation for 'condition'. */
-  c?: Maybe<QueryCondition>;
-  /** Abbreviation for 'value'. */
-  v?: Maybe<Scalars['Boolean']>;
   /** Filter condition (default: eq). */
   condition?: Maybe<QueryCondition>;
+  /** Field value. */
+  value?: Maybe<Scalars['Boolean']>;
+  /** Abbreviation for 'value'. */
+  v?: Maybe<Scalars['Boolean']>;
+  /** Abbreviation for 'condition'. */
+  c?: Maybe<QueryCondition>;
 };
 
 export type GraphQlSortInput = {
+  /** Direction of sorting (default: asc). */
+  direction?: Maybe<SortDirection>;
+  /** Abbreviation for 'direction'. */
+  d?: Maybe<SortDirection>;
   /** Name of the field to sort by. */
   field?: Maybe<Scalars['String']>;
   /** Abbreviation for 'field'. */
   f?: Maybe<Scalars['String']>;
-  /** Abbreviation for 'direction'. */
-  d?: Maybe<SortDirection>;
-  /** Direction of sorting (default: asc). */
-  direction?: Maybe<SortDirection>;
 };
 
 
-export type InventoryCacheEntity = {
-  __typename?: 'InventoryCacheEntity';
+export type InventoryDetails = {
+  __typename?: 'InventoryDetails';
+  /** Result's warehouse quantity available */
+  warehouseQuantityAvailable?: Maybe<Scalars['Long']>;
+  /** Result's product */
+  product?: Maybe<SimpleProductEntity>;
+  /** Result's warehouse weekly consumption rate */
+  warehouseWeeklyConsumptionRate?: Maybe<Scalars['Float']>;
+  /** Result's warehouse weekly consumption variance */
+  warehouseWeeklyConsumptionVariance?: Maybe<Scalars['Float']>;
+  /** Result's warehouse run out days, 97% confidence */
+  warehouseRunOutDays97?: Maybe<Scalars['Float']>;
+  /** Result's warehouse run out days, 85% confidence */
+  warehouseRunOutDays85?: Maybe<Scalars['Float']>;
+};
+
+export type InventoryQuantityCacheEntity = {
+  __typename?: 'InventoryQuantityCacheEntity';
   /** Entity's class */
   cls?: Maybe<Scalars['String']>;
   /** Entity's UUID */
   id?: Maybe<Scalars['UUID']>;
+  /** Cache's warehouse */
+  warehouse?: Maybe<WarehouseEntity>;
   /** Cache's quantity available for sale */
   quantityAvailableForSale?: Maybe<Scalars['Long']>;
+  /** Cache's timestamp */
+  timestamp?: Maybe<Scalars['Instant']>;
 };
 
 export type InventoryResult = {
@@ -463,6 +483,22 @@ export type InventoryResult = {
   globalQuantityAvailable?: Maybe<Scalars['Long']>;
   /** Result's global unshipped quantity */
   globalQuantityUnshipped?: Maybe<Scalars['Long']>;
+};
+
+export type InventoryStatsCacheEntity = {
+  __typename?: 'InventoryStatsCacheEntity';
+  /** Cache's weekly consumption variance */
+  weeklyConsumptionVariance?: Maybe<Scalars['Float']>;
+  /** Cache's weekly consumption rate */
+  weeklyConsumptionRate?: Maybe<Scalars['Float']>;
+  /** Entity's class */
+  cls?: Maybe<Scalars['String']>;
+  /** Entity's UUID */
+  id?: Maybe<Scalars['UUID']>;
+  /** Cache's warehouse */
+  warehouse?: Maybe<WarehouseEntity>;
+  /** Cache's timestamp */
+  timestamp?: Maybe<Scalars['Instant']>;
 };
 
 export type KitItemEntity = {
@@ -503,10 +539,10 @@ export type KitProductEntity = {
   price?: Maybe<Scalars['BigDecimal']>;
   /** Product's implicit animals */
   implicitAnimals?: Maybe<Array<Maybe<AnimalEntity>>>;
-  /** Product's popularity */
-  popularity?: Maybe<Scalars['BigDecimal']>;
   /** Product's average rating */
   averageRating?: Maybe<Scalars['BigDecimal']>;
+  /** Product's popularity */
+  popularity?: Maybe<Scalars['BigDecimal']>;
   /** Product's explicit categories */
   explicitCategories?: Maybe<Array<Maybe<CategoryEntity>>>;
   /** Entity's UUID */
@@ -642,10 +678,10 @@ export type Mutation = {
   departmentSetParent?: Maybe<DepartmentEntity>;
   /** Refreshes a sales order (with Magento) by entity id */
   magentoSalesOrderRefresh?: Maybe<MagentoSalesOrderEntity>;
-  /** Deletes an existing address */
-  addressDelete: Scalars['Boolean'];
   /** Creates a new simple product */
   simpleProductCreate?: Maybe<SimpleProductEntity>;
+  /** Deletes an existing address */
+  addressDelete: Scalars['Boolean'];
   /** Updates bin on a simple product */
   simpleProductSetBin?: Maybe<SimpleProductEntity>;
   /** Updates an existing address */
@@ -656,22 +692,26 @@ export type Mutation = {
   categorySetParent?: Maybe<CategoryEntity>;
   /** Registers a new user, with raw password */
   userRegister?: Maybe<UserEntity>;
+  /** Provides making stock status */
+  makingStockStatus?: Maybe<Array<Maybe<InventoryDetails>>>;
   /** Adds inventory for a simple product */
   inventoryAdd?: Maybe<InventoryResult>;
-  /** Removes all quantity of selected simple product from user's cart */
-  cartRemoveAllSimpleProduct?: Maybe<CartEntity>;
   /** Sets inventory for a simple product */
   inventorySet?: Maybe<InventoryResult>;
+  /** Removes all quantity of selected simple product from user's cart */
+  cartRemoveAllSimpleProduct?: Maybe<CartEntity>;
   /** Triggers a re-sync of all categories with Magento */
   maintenanceMagentoSyncAllCategories?: Maybe<Scalars['Boolean']>;
   /** Verifies an existing address */
   addressVerify?: Maybe<AddressEntity>;
-  /** Creates a new address */
-  addressCreate?: Maybe<AddressEntity>;
   /** Gets inventory for a simple product */
   inventoryGet?: Maybe<InventoryResult>;
+  /** Creates a new address */
+  addressCreate?: Maybe<AddressEntity>;
   /** Refreshes a simple product (with Magento) by entity id */
   simpleProductRefresh?: Maybe<SimpleProductEntity>;
+  /** Refreshes a new user with Magento */
+  userRefresh?: Maybe<UserEntity>;
   /** Creates a new category */
   categoryCreate?: Maybe<CategoryEntity>;
   /** Changes quantity of selected kit product in user's cart */
@@ -694,10 +734,10 @@ export type Mutation = {
   cartAddKitProduct?: Maybe<CartEntity>;
   /** Sets active flag */
   categorySetActive?: Maybe<CategoryEntity>;
-  /** Creates a new department */
-  departmentCreate?: Maybe<DepartmentEntity>;
   /** Adds quantity of selected simple product to user's cart */
   cartAddSimpleProduct?: Maybe<CartEntity>;
+  /** Creates a new department */
+  departmentCreate?: Maybe<DepartmentEntity>;
   /** Sets the billing address to one of the user's addresses */
   cartSetBillingAddress?: Maybe<CartEntity>;
 };
@@ -723,17 +763,17 @@ export type MutationMagentoSalesOrderRefreshArgs = {
 
 
 /** Mutation root */
-export type MutationAddressDeleteArgs = {
-  id: Scalars['UUID'];
-};
-
-
-/** Mutation root */
 export type MutationSimpleProductCreateArgs = {
   price: Scalars['BigDecimal'];
   title: Scalars['String'];
   sku: Scalars['String'];
   slug: Scalars['String'];
+};
+
+
+/** Mutation root */
+export type MutationAddressDeleteArgs = {
+  id: Scalars['UUID'];
 };
 
 
@@ -786,9 +826,24 @@ export type MutationUserRegisterArgs = {
 
 
 /** Mutation root */
+export type MutationMakingStockStatusArgs = {
+  warehouse: Scalars['String'];
+};
+
+
+/** Mutation root */
 export type MutationInventoryAddArgs = {
   quantity: Scalars['Long'];
   id: Scalars['UUID'];
+  warehouse?: Maybe<Scalars['String']>;
+};
+
+
+/** Mutation root */
+export type MutationInventorySetArgs = {
+  quantity: Scalars['Long'];
+  id: Scalars['UUID'];
+  warehouse?: Maybe<Scalars['String']>;
 };
 
 
@@ -800,16 +855,16 @@ export type MutationCartRemoveAllSimpleProductArgs = {
 
 
 /** Mutation root */
-export type MutationInventorySetArgs = {
-  quantity: Scalars['Long'];
+export type MutationAddressVerifyArgs = {
+  commit: Scalars['Boolean'];
   id: Scalars['UUID'];
 };
 
 
 /** Mutation root */
-export type MutationAddressVerifyArgs = {
-  commit: Scalars['Boolean'];
+export type MutationInventoryGetArgs = {
   id: Scalars['UUID'];
+  warehouse?: Maybe<Scalars['String']>;
 };
 
 
@@ -829,13 +884,13 @@ export type MutationAddressCreateArgs = {
 
 
 /** Mutation root */
-export type MutationInventoryGetArgs = {
-  id: Scalars['UUID'];
+export type MutationSimpleProductRefreshArgs = {
+  magentoId: Scalars['String'];
 };
 
 
 /** Mutation root */
-export type MutationSimpleProductRefreshArgs = {
+export type MutationUserRefreshArgs = {
   magentoId: Scalars['String'];
 };
 
@@ -906,17 +961,17 @@ export type MutationCategorySetActiveArgs = {
 
 
 /** Mutation root */
-export type MutationDepartmentCreateArgs = {
-  name: Scalars['String'];
-  slug: Scalars['String'];
-};
-
-
-/** Mutation root */
 export type MutationCartAddSimpleProductArgs = {
   quantity: Scalars['Long'];
   productId: Scalars['UUID'];
   cartId?: Maybe<Scalars['UUID']>;
+};
+
+
+/** Mutation root */
+export type MutationDepartmentCreateArgs = {
+  name: Scalars['String'];
+  slug: Scalars['String'];
 };
 
 
@@ -960,10 +1015,10 @@ export type ProductEntity = {
   price?: Maybe<Scalars['BigDecimal']>;
   /** Product's implicit animals */
   implicitAnimals?: Maybe<Array<Maybe<AnimalEntity>>>;
-  /** Product's average rating */
-  averageRating?: Maybe<Scalars['BigDecimal']>;
   /** Product's popularity */
   popularity?: Maybe<Scalars['BigDecimal']>;
+  /** Product's average rating */
+  averageRating?: Maybe<Scalars['BigDecimal']>;
   /** Product's explicit categories */
   explicitCategories?: Maybe<Array<Maybe<CategoryEntity>>>;
   /** Entity's UUID */
@@ -1412,8 +1467,6 @@ export type SimpleProductEntity = {
   sku?: Maybe<Scalars['String']>;
   /** Simple product's brand */
   brand?: Maybe<BrandEntity>;
-  /** Simple product's inventory caches */
-  inventoryCaches?: Maybe<Array<Maybe<InventoryCacheEntity>>>;
   /** Product's explicit animals */
   explicitAnimals?: Maybe<Array<Maybe<AnimalEntity>>>;
   /** Product's slug */
@@ -1422,6 +1475,8 @@ export type SimpleProductEntity = {
   shippingNeeds?: Maybe<ShippingNeedsType>;
   /** Simple product's bins */
   bins?: Maybe<Array<Maybe<BinEntity>>>;
+  /** Simple product's inventory quantity caches */
+  inventoryQuantityCaches?: Maybe<Array<Maybe<InventoryQuantityCacheEntity>>>;
   /** Simple product's cost */
   cost?: Maybe<Scalars['BigDecimal']>;
   /** Product's implicit categories */
@@ -1438,6 +1493,8 @@ export type SimpleProductEntity = {
   publishedRevision?: Maybe<ProductRevisionEntity>;
   /** Entity's class */
   cls?: Maybe<Scalars['String']>;
+  /** Simple product's inventory stats caches */
+  inventoryStatsCaches?: Maybe<Array<Maybe<InventoryStatsCacheEntity>>>;
   /** Product's medias */
   medias?: Maybe<Array<Maybe<MediaEntity>>>;
   /** Product's implicit animals */
@@ -1614,6 +1671,27 @@ export type InventoryGetMutation = (
   )> }
 );
 
+export type MakingStockStatusMutationVariables = Exact<{
+  warehouse: Scalars['String'];
+}>;
+
+
+export type MakingStockStatusMutation = (
+  { __typename?: 'Mutation' }
+  & { makingStockStatus?: Maybe<Array<Maybe<(
+    { __typename?: 'InventoryDetails' }
+    & Pick<InventoryDetails, 'warehouseQuantityAvailable' | 'warehouseWeeklyConsumptionRate' | 'warehouseWeeklyConsumptionVariance' | 'warehouseRunOutDays85' | 'warehouseRunOutDays97'>
+    & { product?: Maybe<(
+      { __typename?: 'SimpleProductEntity' }
+      & Pick<SimpleProductEntity, 'id' | 'title' | 'sku'>
+      & { medias?: Maybe<Array<Maybe<(
+        { __typename?: 'MediaEntity' }
+        & Pick<MediaEntity, 'id' | 'mediaType' | 'url'>
+      )>>> }
+    )> }
+  )>>> }
+);
+
 export type SimpleProductFilterQueryVariables = Exact<{
   pageable: GraphQlPageableInput;
   title?: Maybe<Scalars['String']>;
@@ -1621,6 +1699,7 @@ export type SimpleProductFilterQueryVariables = Exact<{
   active?: Maybe<Scalars['Boolean']>;
   brand?: Maybe<Scalars['String']>;
   supplier?: Maybe<Scalars['String']>;
+  department?: Maybe<Scalars['String']>;
   category?: Maybe<Scalars['String']>;
 }>;
 
@@ -1684,9 +1763,9 @@ export type SimpleProductFindBySkuQuery = (
     )>>>, bins?: Maybe<Array<Maybe<(
       { __typename?: 'BinEntity' }
       & Pick<BinEntity, 'id' | 'binId'>
-    )>>>, inventoryCaches?: Maybe<Array<Maybe<(
-      { __typename?: 'InventoryCacheEntity' }
-      & Pick<InventoryCacheEntity, 'id' | 'quantityAvailableForSale'>
+    )>>>, inventoryQuantityCaches?: Maybe<Array<Maybe<(
+      { __typename?: 'InventoryQuantityCacheEntity' }
+      & Pick<InventoryQuantityCacheEntity, 'id' | 'quantityAvailableForSale'>
     )>>>, explicitDepartment?: Maybe<(
       { __typename?: 'DepartmentEntity' }
       & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
@@ -1737,9 +1816,9 @@ export type SimpleProductFindByUpcQuery = (
     )>>>, bins?: Maybe<Array<Maybe<(
       { __typename?: 'BinEntity' }
       & Pick<BinEntity, 'id' | 'binId'>
-    )>>>, inventoryCaches?: Maybe<Array<Maybe<(
-      { __typename?: 'InventoryCacheEntity' }
-      & Pick<InventoryCacheEntity, 'id' | 'quantityAvailableForSale'>
+    )>>>, inventoryQuantityCaches?: Maybe<Array<Maybe<(
+      { __typename?: 'InventoryQuantityCacheEntity' }
+      & Pick<InventoryQuantityCacheEntity, 'id' | 'quantityAvailableForSale'>
     )>>>, explicitDepartment?: Maybe<(
       { __typename?: 'DepartmentEntity' }
       & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
@@ -1790,9 +1869,9 @@ export type SimpleProductInfoQuery = (
     )>>>, bins?: Maybe<Array<Maybe<(
       { __typename?: 'BinEntity' }
       & Pick<BinEntity, 'id' | 'binId'>
-    )>>>, inventoryCaches?: Maybe<Array<Maybe<(
-      { __typename?: 'InventoryCacheEntity' }
-      & Pick<InventoryCacheEntity, 'id' | 'quantityAvailableForSale'>
+    )>>>, inventoryQuantityCaches?: Maybe<Array<Maybe<(
+      { __typename?: 'InventoryQuantityCacheEntity' }
+      & Pick<InventoryQuantityCacheEntity, 'id' | 'quantityAvailableForSale'>
     )>>>, explicitDepartment?: Maybe<(
       { __typename?: 'DepartmentEntity' }
       & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
@@ -1884,9 +1963,38 @@ export const InventoryGetDocument = gql`
     document = InventoryGetDocument;
     
   }
+export const MakingStockStatusDocument = gql`
+    mutation makingStockStatus($warehouse: String!) {
+  makingStockStatus(warehouse: $warehouse) {
+    product {
+      id
+      title
+      sku
+      medias {
+        id
+        mediaType
+        url
+      }
+    }
+    warehouseQuantityAvailable
+    warehouseWeeklyConsumptionRate
+    warehouseWeeklyConsumptionVariance
+    warehouseRunOutDays85
+    warehouseRunOutDays97
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class MakingStockStatusGQL extends Apollo.Mutation<MakingStockStatusMutation, MakingStockStatusMutationVariables> {
+    document = MakingStockStatusDocument;
+    
+  }
 export const SimpleProductFilterDocument = gql`
-    query simpleProductFilter($pageable: GraphQLPageableInput!, $title: String, $sku: String, $active: Boolean, $brand: String, $supplier: String, $category: String) {
-  simpleProductFilter(title: {pattern: $title}, sku: {pattern: $sku}, active: {value: $active}, brand: $brand, supplier: $supplier, category: $category, page: $pageable, sort: {field: "sku", direction: ASC}) {
+    query simpleProductFilter($pageable: GraphQLPageableInput!, $title: String, $sku: String, $active: Boolean, $brand: String, $supplier: String, $department: String, $category: String) {
+  simpleProductFilter(title: {pattern: $title}, sku: {pattern: $sku}, active: {value: $active}, brand: $brand, supplier: $supplier, department: $department, category: $category, page: $pageable, sort: {field: "sku", direction: ASC}) {
     data {
       id
       slug
@@ -1977,7 +2085,7 @@ export const SimpleProductFindBySkuDocument = gql`
       id
       binId
     }
-    inventoryCaches {
+    inventoryQuantityCaches {
       id
       quantityAvailableForSale
     }
@@ -2059,7 +2167,7 @@ export const SimpleProductFindByUpcDocument = gql`
       id
       binId
     }
-    inventoryCaches {
+    inventoryQuantityCaches {
       id
       quantityAvailableForSale
     }
@@ -2141,7 +2249,7 @@ export const SimpleProductInfoDocument = gql`
       id
       binId
     }
-    inventoryCaches {
+    inventoryQuantityCaches {
       id
       quantityAvailableForSale
     }

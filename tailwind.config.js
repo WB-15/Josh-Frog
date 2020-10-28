@@ -1,12 +1,19 @@
 module.exports = {
   future: {
     removeDeprecatedGapUtilities: true,
-    purgeLayersByDefault: true,
+    purgeLayersByDefault: true
   },
   purge: [],
   theme: {
-    extend: {},
+    extend: {
+      transitionProperty: {
+        height: 'height',
+        spacing: 'margin, padding'
+      }
+    }
   },
-  variants: {},
-  plugins: [require('@tailwindcss/ui')],
-}
+  variants: {
+    borderRadius: ['first', 'last']
+  },
+  plugins: [require('@tailwindcss/ui')]
+};

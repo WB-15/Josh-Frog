@@ -13,7 +13,8 @@ import {
   faInventory,
   faHandReceiving,
   faTags,
-  faPlusCircle
+  faPlusCircle,
+  faRulerVertical
 } from '@fortawesome/pro-duotone-svg-icons';
 
 import { UserService } from './modules/shared/services/user.service';
@@ -31,6 +32,7 @@ import {
 export class AppComponent implements OnInit, OnDestroy {
   faHome = faHome;
   faImagePolaroid = faImagePolaroid;
+  faRulerVertical = faRulerVertical;
   faHandReceiving = faHandReceiving;
   faInventory = faInventory;
   faTruckLoading = faTruckLoading;
@@ -55,6 +57,11 @@ export class AppComponent implements OnInit, OnDestroy {
       icon: faImagePolaroid,
       name: 'Catalog',
       route: 'catalog'
+    },
+    {
+      icon: faRulerVertical,
+      name: 'Making',
+      route: 'making'
     },
     {
       icon: faHandReceiving,

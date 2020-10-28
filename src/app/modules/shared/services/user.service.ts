@@ -42,7 +42,7 @@ export class UserService {
       // if the user details haven't expired AND the timestamp isn't too far in the future to be valid
       if (
         Date.now() < expirationTimestamp &&
-        Date.now() > expirationTimestamp - 4 * 60 * 60 * 1000
+        Date.now() > expirationTimestamp - 24 * 60 * 60 * 1000
       ) {
         if (userDetails) {
           this.user = JSON.parse(userDetails) as UserEntity;
@@ -58,13 +58,25 @@ export class UserService {
     const data = this.httpClient
       .post<LoginResponse>(this.BASE_URL + '/login', { username, password })
       .pipe(shareReplay(1));
-    data.subscribe((response) => {
-      // Javascript date format is in milliseconds since epoch UTC, expires_in is in seconds
-      const expirationTimestamp = Date.now() + response.expires_in * 1000;
-      localStorage.setItem(this.ACCESS_TOKEN_KEY, response.access_token);
-      localStorage.setItem(this.EXPIRATION_KEY, String(expirationTimestamp));
-      this.userInfo();
-    });
+    data.subscribe(
+      (response) => {
+        if (response.roles.includes('ROLE_ADMIN')) {
+          // Javascript date format is in milliseconds since epoch UTC, expires_in is in seconds
+          const expirationTimestamp = Date.now() + response.expires_in * 1000;
+          localStorage.setItem(this.ACCESS_TOKEN_KEY, response.access_token);
+          localStorage.setItem(
+            this.EXPIRATION_KEY,
+            String(expirationTimestamp)
+          );
+          this.userInfo();
+        } else {
+          console.error('Not an admin user.');
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
     return data;
   }
 
@@ -79,7 +91,7 @@ export class UserService {
       expirationTimestamp &&
       accessToken &&
       Date.now() < expirationTimestamp &&
-      Date.now() > expirationTimestamp - 4 * 60 * 60 * 1000
+      Date.now() > expirationTimestamp - 24 * 60 * 60 * 1000
     );
   }
 

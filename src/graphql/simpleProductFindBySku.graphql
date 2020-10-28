@@ -21,7 +21,7 @@ query simpleProductFindBySku ($sku: String!) {
             id,
             binId
         },
-        inventoryCaches {
+        inventoryQuantityCaches {
             id,
             quantityAvailableForSale
         },

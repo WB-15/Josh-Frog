@@ -1,0 +1,15 @@
+<p></p>
+
+<div class="p-2">
+  <p class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">CURRENT INVENTORY</p>
+  <p class="font-narrow">Available: {{inventoryDetails.warehouseQuantityAvailable | number: '0.0-0'}} units</p>
+  <p class="font-narrow">Confidence: {{(inventoryDetails?.warehouseQuantityAvailable > 0 ? ((inventoryDetails.warehouseQuantityAvailable - inventoryDetails.warehouseWeeklyConsumptionRate) / (this.inventoryDetails.warehouseWeeklyConsumptionVariance | sqrt) | confidence) : 0) | number: '0.2-2'}} %</p>
+  <p class="font-narrow text-gray-400 italic">Inventory will last one week</p>
+</div>
+
+<div class="p-2">
+  <p class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WEEKLY CONSUMPTION</p>
+  <p class="font-narrow">Rate: {{inventoryDetails?.warehouseWeeklyConsumptionRate | number: '0.2-2'}} units</p>
+  <p class="font-narrow text-gray-500">Variance: ±{{inventoryDetails?.warehouseWeeklyConsumptionVariance | sqrt | number: '0.2-2'}} units</p>
+  <p class="font-narrow text-gray-400 italic">Computed over last 13 weeks</p>
+</div>

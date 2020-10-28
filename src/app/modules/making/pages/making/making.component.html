@@ -1,0 +1,129 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+  <h1 class="text-2xl font-semibold text-gray-900">Making</h1>
+
+  <div *ngIf="loading > 0" class="p-20 text-center">
+    <span class="icon is-medium is-left">
+      <fa-icon [icon]="faSpinnerThird" [spin]="true"></fa-icon>
+    </span>
+    Loading...
+  </div>
+
+  <div *ngIf="(loading == 0) && inventoryDetailsOutOfStock">
+    <h2 class="text-xl font-semibold text-gray-900">Out of Stock ({{inventoryDetailsOutOfStock.length}})</h2>
+    <div class="p-4">
+      <div *ngFor="let inventoryDetail of inventoryDetailsOutOfStock" class="relative bg-white hover:bg-gray-200 border-gray-200 border-r border-b first:rounded-t-lg last:rounded-b-lg" (click)="showStatsDialog(inventoryDetail)">
+        <div class="flex">
+          <div class="flex-none h-10 w-10 m-1 mr-3 rounded-lg bg-white z-20">
+            <app-thumbnail-sm [src]="inventoryDetail.product.medias[0]?.url" [alt]="inventoryDetail.product.title"></app-thumbnail-sm>
+          </div>
+
+          <div class="m-1 mr-3 flex-1 z-20">
+            <p class="font-semibold">{{inventoryDetail.product.sku}}</p>
+            <p class="font-narrow">{{inventoryDetail.product.title}}</p>
+          </div>
+
+          <div class="m-1 mr-3 flex-none h-10 w-32 ml-3 z-20 text-center">
+            <span class="font-semibold">Out of Stock</span>
+          </div>
+
+          <div class="absolute opacity-100 bg-red-100 h-6 w-32 z-10 border" style="bottom: 2px; right: 0.75rem">
+            <p class="font-narrow text-center">Make {{(inventoryDetail?.warehouseWeeklyConsumptionRate + (inventoryDetail.warehouseWeeklyConsumptionVariance | sqrt)) | number: '0.0-0'}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div  *ngIf="(loading == 0) && inventoryDetailsLessThanTwoDays">
+    <h2 class="text-xl font-semibold text-gray-900">Less Than Two-Day Supply ({{inventoryDetailsLessThanTwoDays.length}})</h2>
+    <div class="p-4">
+      <div *ngFor="let inventoryDetail of inventoryDetailsLessThanTwoDays" class="bg-white hover:bg-gray-200 border-gray-200 border-r border-b first:rounded-t-lg last:rounded-b-lg" (click)="showStatsDialog(inventoryDetail)">
+        <div class="flex">
+          <div class="flex-none h-10 w-10 m-1 mr-3 rounded-lg bg-white">
+            <app-thumbnail-sm [src]="inventoryDetail.product.medias[0]?.url" [alt]="inventoryDetail.product.title"></app-thumbnail-sm>
+          </div>
+
+          <div class="m-1 mr-3 flex-1">
+            <p class="font-semibold">{{inventoryDetail.product.sku}}</p>
+            <p class="font-narrow">{{inventoryDetail.product.title}}</p>
+          </div>
+
+          <div class="m-1 mr-3 flex-none h-10 w-32 ml-3 z-20 text-center">
+            <span class="font-semibold">{{inventoryDetail.warehouseQuantityAvailable}}</span>&nbsp;<span class="font-narrow">({{inventoryDetail.warehouseRunOutDays85 * 24 | number: '1.0-0'}} hrs)</span>
+          </div>
+
+          <div class="absolute opacity-50 bg-gray-200 h-6 w-32 z-10 border" style="bottom: 2px; right: 0.75rem">
+            <div class="bg-red-200" style="height: 100%; width: 50%">
+              Make {{(inventoryDetail.warehouseWeeklyConsumptionRate + (inventoryDetail.warehouseWeeklyConsumptionVariance | sqrt) - inventoryDetail.warehouseQuantityAvailable) | number: '0.0-0'}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="(loading == 0) && inventoryDetailsLessThanOneWeek">
+    <h2 class="text-xl font-semibold text-gray-900">Less Than One-Week Supply ({{inventoryDetailsLessThanOneWeek.length}})</h2>
+    <div class="p-4">
+      <div class="flex">
+        <div *ngFor="let inventoryDetail of inventoryDetailsLessThanOneWeek" class="flex bg-white hover:bg-gray-200 border-gray-200 border-r border-b items-center first:rounded-t-lg last:rounded-b-lg" (click)="showStatsDialog(inventoryDetail)">
+          <div class="flex-none h-10 w-10 m-1 mr-3 rounded-lg bg-white">
+            <app-thumbnail-sm [src]="inventoryDetail.product.medias[0]?.url" [alt]="inventoryDetail.product.title"></app-thumbnail-sm>
+          </div>
+
+          <div class="m-1 mr-3 flex-1">
+            <p class="font-semibold">{{inventoryDetail.product.sku}}</p>
+            <p class="font-narrow">{{inventoryDetail.product.title}}</p>
+          </div>
+
+          <div class="m-1 mr-3 flex-none h-10 w-32 ml-3 z-20 text-center">
+            <span class="font-semibold">{{inventoryDetail.warehouseQuantityAvailable}}</span>&nbsp;<span class="font-narrow">({{inventoryDetail.warehouseRunOutDays85 | number: '1.0-0'}} days)</span>
+          </div>
+
+          <div class="absolute opacity-50 bg-gray-200 h-6 w-32 z-10 border" style="bottom: 2px; right: 0.75rem">
+            <div class="bg-red-200" style="height: 100%; width: 50%">
+              Make {{(inventoryDetail.warehouseWeeklyConsumptionRate + (inventoryDetail.warehouseWeeklyConsumptionVariance | sqrt) - inventoryDetail.warehouseQuantityAvailable) | number: '0.0-0'}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="(loading == 0) && inventoryDetailsMoreThanOneWeek">
+    <h2 class="text-xl font-semibold text-gray-900">Fully Stocked ({{inventoryDetailsMoreThanOneWeek.length}})
+      <span *ngIf="hideFullyStocked" (click)="hideFullyStocked = false">
+        <fa-icon [icon]="faArrowCircleDown"></fa-icon>
+      </span>
+      <span *ngIf="!hideFullyStocked" (click)="hideFullyStocked = true">
+        <fa-icon [icon]="faArrowCircleUp"></fa-icon>
+      </span>
+    </h2>
+    <div class="p-4">
+      <div class="transition transition-height duration-500 ease-in-out overflow-hidden" [ngClass]="{ 'h-0': hideFullyStocked, 'h-auto': !hideFullyStocked }">
+        <div *ngFor="let inventoryDetail of inventoryDetailsMoreThanOneWeek" class="relative bg-white hover:bg-gray-200 border-gray-200 border-r border-b first:rounded-t-lg last:rounded-b-lg" (click)="showStatsDialog(inventoryDetail)">
+          <div class="flex">
+            <div class="flex-none h-10 w-10 m-1 mr-3 rounded-lg bg-white">
+              <app-thumbnail-sm [src]="inventoryDetail.product.medias[0]?.url" [alt]="inventoryDetail.product.title"></app-thumbnail-sm>
+            </div>
+
+            <div class="m-1 mr-3 flex-1">
+              <p class="font-semibold">{{inventoryDetail.product.sku}}</p>
+              <p class="font-narrow">{{inventoryDetail.product.title}}</p>
+            </div>
+
+            <div class="m-1 mr-3 flex-none h-10 w-32 ml-3 text-center">
+              <span class="font-semibold">{{inventoryDetail.warehouseQuantityAvailable}}</span>&nbsp;<span class="font-narrow">({{inventoryDetail.warehouseRunOutDays85 | number: '1.0-0'}} days)</span>
+            </div>
+
+            <div class="absolute opacity-50 bg-green-200 h-6 w-32 z-10 border" style="bottom: 2px; right: 0.75rem">
+              <p class="font-narrow text-center">Fully Stocked</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+

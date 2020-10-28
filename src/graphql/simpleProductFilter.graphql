@@ -5,6 +5,7 @@ query simpleProductFilter (
   $active: Boolean,
   $brand: String,
   $supplier: String,
+  $department: String
   $category: String,
 ) {
   simpleProductFilter (
@@ -13,6 +14,7 @@ query simpleProductFilter (
     active: {value: $active},
     brand: $brand,
     supplier: $supplier,
+    department: $department,
     category: $category,
     page: $pageable,
     sort: {field: "sku", direction: ASC}

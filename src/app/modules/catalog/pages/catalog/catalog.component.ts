@@ -8,6 +8,7 @@ import {
   SimpleProductEntity,
   SimpleProductFilterGQL
 } from '../../../../../generated/graphql';
+import { DialogService } from '../../../shared/services/dialog.service';
 
 @Component({
   selector: 'app-catalog',
@@ -32,6 +33,7 @@ export class CatalogComponent implements OnInit {
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: DialogService,
     private simpleProductFilterGQL: SimpleProductFilterGQL
   ) {}
 
@@ -69,6 +71,7 @@ export class CatalogComponent implements OnInit {
         },
         (error) => {
           this.loading--;
+          this.dialogService.showErrorMessageBox(error);
           this.changeDetectorRef.detectChanges();
         }
       );
