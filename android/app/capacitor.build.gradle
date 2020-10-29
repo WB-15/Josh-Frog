@@ -9,8 +9,8 @@ android {
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
-    implementation project(':capacitor-socket-mobile')
     implementation project(':capacitor-brother-printer')
+    implementation project(':capacitor-socket-mobile')
 
 }
 

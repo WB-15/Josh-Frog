@@ -1,0 +1,20 @@
+{
+  "appId": "com.joshsfrogs.admin",
+  "appName": "JoshsFrogsAdmin",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {},
+  "server": {
+    "androidScheme": "http",
+    "hostname": "app.joshsfrogstest.com"
+  },
+  "android": {
+    "webContentsDebuggingEnabled": true
+  }
+}

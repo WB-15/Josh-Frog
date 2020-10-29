@@ -10,6 +10,7 @@ Make sure the following source files exist:
 * /resources/android/icon-foreground (432x432 or better)
 
 ``` shell script
+ yarn global add cordova-res
  cordova-res android --skip-config --copy --icon-background-source '#FFFFFF'
 ```
 

@@ -27,7 +27,8 @@ export class UserService {
     private userInfoGQL: UserInfoGQL,
     private platform: Platform
   ) {
-    if (platform.is('capacitor')) {
+    console.log(platform.platforms());
+    if (platform.is('capacitor') || platform.is('electron')) {
       this.BASE_URL = 'http://joshsfrogstest.com';
     }
 
