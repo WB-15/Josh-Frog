@@ -21,6 +21,7 @@ import {
 } from '../../../../../generated/graphql';
 import { MessageBoxOptions } from '../../../shared/components/message-box/message-box.component';
 import { DialogService } from '../../../shared/services/dialog.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-receiving',
@@ -33,8 +34,11 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   faHandReceiving = faHandReceiving;
   faChevronCircleRight = faChevronCircleRight;
 
-  searchTerm = '';
-  pendingSearchTerm: string = null;
+  searchSku = '';
+  pendingSearchSku: string = null;
+  searchTitle = '';
+  pendingSearchTitle: string = null;
+
   quantityEntry: number;
   quantityReceived: number;
 
@@ -46,9 +50,11 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   skuScannedSubscription: Subscription;
 
   simpleProduct: SimpleProductEntity;
-  searchResults: SimpleProductEntity[];
+  searchBySkuResults: SimpleProductEntity[];
+  searchByTitleResults: SimpleProductEntity[];
 
   constructor(
+    private route: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
     private dialogService: DialogService,
     private barcodeService: BarcodeService,
@@ -60,6 +66,12 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      if (params.id) {
+        this.load(params.id);
+      }
+    });
+
     this.upcScannedSubscription = this.barcodeService.upcScanned$.subscribe(
       (upc) => {
         this.upc = upc;
@@ -118,8 +130,10 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   }
 
   load(id: string) {
-    this.searchTerm = '';
-    this.searchResults = [];
+    this.searchSku = '';
+    this.searchTitle = '';
+    this.searchBySkuResults = [];
+    this.searchByTitleResults = [];
     this.loading++;
     this.changeDetectorRef.detectChanges();
     this.simpleProductInfo
@@ -151,48 +165,101 @@ export class ReceivingComponent implements OnInit, OnDestroy {
       .subscribe(
         (result) => {
           console.log(result);
+          this.changeDetectorRef.detectChanges();
         },
         (error) => {
           console.error(error);
           this.dialogService.showErrorMessageBox(error);
+          this.changeDetectorRef.detectChanges();
         }
       );
   }
 
-  search() {
-    if (this.pendingSearchTerm == null) {
-      if (this.searchTerm === '') {
-        this.searchResults = [];
+  searchBySku() {
+    this.searchTitle = '';
+    this.searchByTitleResults = [];
+    if (this.pendingSearchSku == null) {
+      if (this.searchSku === '') {
+        this.searchBySkuResults = [];
       } else {
-        this.pendingSearchTerm = this.searchTerm;
+        this.pendingSearchSku = this.searchSku;
         const pageable: GraphQlPageableInput = {
           page: 1,
           pageSize: 5
         };
 
         this.simpleProductFilterGQL
-          .fetch({ pageable, sku: this.pendingSearchTerm + '%' })
+          .fetch({
+            pageable,
+            sku: this.pendingSearchSku + '%'
+          })
           .pipe(map((result) => result.data.simpleProductFilter.data))
           .subscribe(
             (result) => {
-              this.searchResults = result as SimpleProductEntity[];
+              this.searchBySkuResults = result as SimpleProductEntity[];
               this.changeDetectorRef.detectChanges();
-              if (this.pendingSearchTerm !== this.searchTerm) {
-                this.pendingSearchTerm = null;
-                this.search();
+              if (this.pendingSearchSku !== this.searchSku) {
+                this.pendingSearchSku = null;
+                this.searchBySku();
               } else {
-                this.pendingSearchTerm = null;
+                this.pendingSearchSku = null;
               }
             },
             (error) => {
               console.error(error);
               this.dialogService.showErrorMessageBox(error);
               this.changeDetectorRef.detectChanges();
-              if (this.pendingSearchTerm !== this.searchTerm) {
-                this.pendingSearchTerm = null;
-                this.search();
+              if (this.pendingSearchSku !== this.searchSku) {
+                this.pendingSearchSku = null;
+                this.searchBySku();
               } else {
-                this.pendingSearchTerm = null;
+                this.pendingSearchSku = null;
+              }
+            }
+          );
+      }
+    }
+  }
+
+  searchByTitle() {
+    this.searchSku = '';
+    this.searchBySkuResults = [];
+    if (this.pendingSearchTitle == null) {
+      if (this.searchTitle === '') {
+        this.searchByTitleResults = [];
+      } else {
+        this.pendingSearchTitle = this.searchTitle;
+        const pageable: GraphQlPageableInput = {
+          page: 1,
+          pageSize: 5
+        };
+
+        this.simpleProductFilterGQL
+          .fetch({
+            pageable,
+            title: '%' + this.pendingSearchTitle + '%'
+          })
+          .pipe(map((result) => result.data.simpleProductFilter.data))
+          .subscribe(
+            (result) => {
+              this.searchByTitleResults = result as SimpleProductEntity[];
+              this.changeDetectorRef.detectChanges();
+              if (this.pendingSearchTitle !== this.searchTitle) {
+                this.pendingSearchTitle = null;
+                this.searchByTitle();
+              } else {
+                this.pendingSearchTitle = null;
+              }
+            },
+            (error) => {
+              console.error(error);
+              this.dialogService.showErrorMessageBox(error);
+              this.changeDetectorRef.detectChanges();
+              if (this.pendingSearchTitle !== this.searchTitle) {
+                this.pendingSearchTitle = null;
+                this.searchByTitle();
+              } else {
+                this.pendingSearchTitle = null;
               }
             }
           );

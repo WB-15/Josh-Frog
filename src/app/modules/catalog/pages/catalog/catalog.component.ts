@@ -9,6 +9,8 @@ import {
   SimpleProductFilterGQL
 } from '../../../../../generated/graphql';
 import { DialogService } from '../../../shared/services/dialog.service';
+import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
+import { ProductInfoComponent } from '../../dialogs/product-info/product-info.component';
 
 @Component({
   selector: 'app-catalog',
@@ -75,5 +77,13 @@ export class CatalogComponent implements OnInit {
           this.changeDetectorRef.detectChanges();
         }
       );
+  }
+
+  showInfoDialog(simpleProduct: SimpleProductEntity) {
+    const options = new DialogBoxOptions();
+    options.component = ProductInfoComponent;
+    options.inputs = { simpleProduct };
+    options.title = simpleProduct.title;
+    this.dialogService.showDialog(options);
   }
 }

@@ -19,8 +19,6 @@ import {
   styles: []
 })
 export class DialogComponent<T> implements OnInit, AfterViewInit {
-  isBrowser = false;
-
   @Input() options = new DialogBoxOptions();
   @Output() okPressed = new EventEmitter<void>();
 
@@ -46,6 +44,8 @@ export class DialogComponent<T> implements OnInit, AfterViewInit {
         this.componentRef.instance[key] = this.options.inputs[key];
       }
     }
+    // provide the view a reference to it's parent
+    this.componentRef.instance.parentRef = this;
     this.changeDetectorRef.detectChanges();
   }
 

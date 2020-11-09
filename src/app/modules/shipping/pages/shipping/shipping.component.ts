@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ScaleService } from '../../../shared/services/scale.service';
 
 @Component({
   selector: 'app-shipping',
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styles: []
 })
 export class ShippingComponent implements OnInit {
-  constructor() {}
+  constructor(private scaleService: ScaleService) {}
 
   ngOnInit() {}
 }

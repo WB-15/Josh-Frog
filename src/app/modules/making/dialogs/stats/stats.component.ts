@@ -1,5 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { InventoryDetails } from '../../../../../generated/graphql';
+import {
+  InventoryDetails,
+  SimpleProductEntity
+} from '../../../../../generated/graphql';
+import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stats',
@@ -7,10 +12,12 @@ import { InventoryDetails } from '../../../../../generated/graphql';
   styles: []
 })
 export class StatsComponent implements OnInit {
+  @Input() simpleProduct: SimpleProductEntity;
   @Input() inventoryDetails: InventoryDetails;
+  @Input() parentRef: DialogComponent<StatsComponent>;
   confidence: number;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
     if (this.inventoryDetails.warehouseQuantityAvailable > 0) {
@@ -19,5 +26,11 @@ export class StatsComponent implements OnInit {
           this.inventoryDetails.warehouseWeeklyConsumptionRate) /
         Math.sqrt(this.inventoryDetails.warehouseWeeklyConsumptionVariance);
     }
+  }
+
+  routeReceiving() {
+    const queryParams = { id: this.simpleProduct.id };
+    this.router.navigate(['/receiving'], { queryParams });
+    this.parentRef.pressOK();
   }
 }

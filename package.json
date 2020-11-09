@@ -72,6 +72,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "capacitor-brother-printer": "file:../capacitor-brother-printer",
+    "capacitor-mettler-toledo": "file:../capacitor-mettler-toledo",
     "capacitor-socket-mobile": "file:../capacitor-socket-mobile",
     "codelyzer": "^6.0.0",
     "electron-packager": "^15.1.0",

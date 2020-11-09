@@ -3754,6 +3754,9 @@ canonical-path@1.0.0:
 "capacitor-brother-printer@file:../capacitor-brother-printer":
   version "0.0.1"
 
+"capacitor-mettler-toledo@file:../capacitor-mettler-toledo":
+  version "0.0.1"
+
 "capacitor-socket-mobile@file:../capacitor-socket-mobile":
   version "0.0.1"
 

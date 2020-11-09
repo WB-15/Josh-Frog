@@ -32,7 +32,7 @@
   </div>
 
   <div *ngIf="(loading == 0) && searchResults" class="p-4 rounded-lg">
-    <div *ngFor="let result of searchResults" class="flex bg-white hover:bg-gray-200 border-gray-200 border-r border-b items-center">
+    <div *ngFor="let result of searchResults" class="flex bg-white hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="showInfoDialog(result)">
       <div class="flex-none h-10 w-10 m-1 mr-3 rounded-lg bg-white">
         <app-thumbnail-sm [src]="result.medias[0]?.url" [alt]="result.title"></app-thumbnail-sm>
       </div>

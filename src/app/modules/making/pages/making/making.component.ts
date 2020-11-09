@@ -82,7 +82,7 @@ export class MakingComponent implements OnInit, OnDestroy {
           inventoryDetail
         );
       } else if (inventoryDetail.warehouseRunOutDays85 <= 7) {
-        this.inventoryDetailsMoreThanOneWeek = this.inventoryDetailsMoreThanOneWeek.concat(
+        this.inventoryDetailsLessThanOneWeek = this.inventoryDetailsLessThanOneWeek.concat(
           inventoryDetail
         );
       } else {
@@ -109,7 +109,10 @@ export class MakingComponent implements OnInit, OnDestroy {
   showStatsDialog(inventoryDetails: InventoryDetails) {
     const options = new DialogBoxOptions();
     options.component = StatsComponent;
-    options.inputs = { inventoryDetails };
+    options.inputs = {
+      simpleProduct: inventoryDetails.product,
+      inventoryDetails
+    };
     options.title = inventoryDetails.product.title;
     this.dialogService.showDialog(options);
   }

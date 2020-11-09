@@ -17,6 +17,7 @@ import {
   SimpleProductInfoGQL
 } from '../../../../../generated/graphql';
 import { DialogService } from '../../../shared/services/dialog.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-inventory',
@@ -43,6 +44,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   searchResults: SimpleProductEntity[];
 
   constructor(
+    private route: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
     private dialogService: DialogService,
     private barcodeService: BarcodeService,
@@ -54,6 +56,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      if (params.id) {
+        this.load(params.id);
+      }
+    });
+
     this.upcScannedSubscription = this.barcodeService.upcScanned$.subscribe(
       (upc) => {
         this.upc = upc;

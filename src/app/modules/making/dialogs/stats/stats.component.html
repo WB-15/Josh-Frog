@@ -4,12 +4,18 @@
   <p class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">CURRENT INVENTORY</p>
   <p class="font-narrow">Available: {{inventoryDetails.warehouseQuantityAvailable | number: '0.0-0'}} units</p>
   <p class="font-narrow">Confidence: {{(inventoryDetails?.warehouseQuantityAvailable > 0 ? ((inventoryDetails.warehouseQuantityAvailable - inventoryDetails.warehouseWeeklyConsumptionRate) / (this.inventoryDetails.warehouseWeeklyConsumptionVariance | sqrt) | confidence) : 0) | number: '0.2-2'}} %</p>
-  <p class="font-narrow text-gray-400 italic">Inventory will last one week</p>
+  <p class="font-narrow text-gray-400 italic">of inventory will lasting week</p>
 </div>
 
 <div class="p-2">
   <p class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WEEKLY CONSUMPTION</p>
   <p class="font-narrow">Rate: {{inventoryDetails?.warehouseWeeklyConsumptionRate | number: '0.2-2'}} units</p>
-  <p class="font-narrow text-gray-500">Variance: ±{{inventoryDetails?.warehouseWeeklyConsumptionVariance | sqrt | number: '0.2-2'}} units</p>
+  <p class="font-narrow text-gray-500">Std. Dev.: ±{{inventoryDetails?.warehouseWeeklyConsumptionVariance | sqrt | number: '0.2-2'}} units</p>
   <p class="font-narrow text-gray-400 italic">Computed over last 13 weeks</p>
+</div>
+
+<div class="mt-6">
+  <button class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition duration-150 ease-in-out" (click)="routeReceiving()">
+    Receive this Product
+  </button>
 </div>
