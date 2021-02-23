@@ -58,6 +58,20 @@ const routes: Routes = [
       )
   },
   {
+    path: 'time_clock',
+    canActivate: [],
+    loadChildren: () =>
+      import('./modules/timeclock/timeclock.module').then(
+        (m) => m.TimeclockModule
+      )
+  },
+  {
+    path: 'settings',
+    canActivate: [AuthGuardService],
+    loadChildren: () =>
+      import('./modules/settings/settings.module').then((m) => m.SettingsModule)
+  },
+  {
     path: '**',
     redirectTo: 'home'
   }

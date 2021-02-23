@@ -1,0 +1,21 @@
+mutation inventorySetDetails ($warehouse: String!, $id: UUID!, $quantity: Long!) {
+    inventorySetDetails(
+        warehouse: $warehouse,
+        id: $id,
+        quantity: $quantity
+    ) {
+        product {
+            id,
+            sku,
+            slug,
+            title,
+        }
+        warehouseQuantityOnShelf,
+        warehouseQuantityUnshipped,
+        warehouseQuantityAvailable,
+        warehouseWeeklyConsumptionRate,
+        warehouseWeeklyConsumptionVariance,
+        warehouseRunOutDays85,
+        warehouseRunOutDays97
+    }
+}

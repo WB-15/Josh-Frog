@@ -65,7 +65,7 @@ query simpleProductFindByUpc ($upc: String!) {
         }
       }
     },
-    weatherShippingRuleSet {
+    shippingRuleSet {
       id,
       slug,
       name

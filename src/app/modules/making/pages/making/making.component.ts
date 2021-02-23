@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import {
   faSpinnerThird,
   faArrowCircleUp,
@@ -6,12 +8,14 @@ import {
 } from '@fortawesome/pro-duotone-svg-icons';
 import {
   InventoryDetails,
-  MakingStockStatusGQL
+  MakingStockStatusGQL,
+  WarehouseEntity
 } from '../../../../../generated/graphql';
-import { map } from 'rxjs/operators';
+
 import { DialogService } from '../../../shared/services/dialog.service';
 import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
 import { StatsComponent } from '../../dialogs/stats/stats.component';
+import { WarehouseService } from '../../../shared/services/warehouse.service';
 
 @Component({
   selector: 'app-making',
@@ -24,6 +28,9 @@ export class MakingComponent implements OnInit, OnDestroy {
   faArrowCircleUp = faArrowCircleUp;
 
   hideFullyStocked = true;
+
+  warehouse: WarehouseEntity = null;
+  warehouseChangedSubscription: Subscription;
 
   loading = 0;
 
@@ -39,17 +46,26 @@ export class MakingComponent implements OnInit, OnDestroy {
 
   constructor(
     private dialogService: DialogService,
+    private warehouseService: WarehouseService,
     private makingStockStatusGQL: MakingStockStatusGQL
   ) {}
 
   ngOnInit() {
-    this.reload();
+    this.warehouseChangedSubscription = this.warehouseService.warehouseChanged$.subscribe(
+      (warehouse) => {
+        this.warehouse = warehouse;
+        this.reload();
+      },
+      (error) => {
+        this.warehouse = null;
+      }
+    );
   }
 
   reload() {
     this.loading++;
     this.makingStockStatusGQL
-      .mutate({ warehouse: 'OWOSSO' })
+      .mutate({ warehouse: this.warehouse.name })
       .pipe(map((result) => result.data.makingStockStatus))
       .subscribe(
         (result) => {
@@ -117,5 +133,7 @@ export class MakingComponent implements OnInit, OnDestroy {
     this.dialogService.showDialog(options);
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.warehouseChangedSubscription.unsubscribe();
+  }
 }

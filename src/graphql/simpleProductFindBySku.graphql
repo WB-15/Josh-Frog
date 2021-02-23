@@ -65,7 +65,7 @@ query simpleProductFindBySku ($sku: String!) {
                 }
             }
         },
-        weatherShippingRuleSet {
+        shippingRuleSet {
             id,
             slug,
             name

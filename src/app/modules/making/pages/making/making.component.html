@@ -27,7 +27,7 @@
           </div>
 
           <div class="absolute opacity-100 bg-red-100 h-6 w-32 border" style="bottom: 2px; right: 0.75rem">
-            <p class="font-narrow text-center">Make {{(inventoryDetail?.warehouseWeeklyConsumptionRate + (inventoryDetail.warehouseWeeklyConsumptionVariance | sqrt)) | number: '0.0-0'}}</p>
+            <p class="font-narrow text-center">Make {{(inventoryDetail.warehouseWeeklyConsumptionRate + (inventoryDetail.warehouseWeeklyConsumptionVariance | sqrt) - inventoryDetail.warehouseQuantityAvailable) | number: '0.0-0'}}</p>
           </div>
         </div>
       </div>

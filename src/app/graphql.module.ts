@@ -30,10 +30,10 @@ export function createApollo(httpLink: HttpLink) {
   // But if this is on a development computer, fall back on
   // the Angular proxy settings
   if (
-    window.location.host === 'app.joshsfrogstest.com' ||
+    window.location.host === 'app.joshsfrogs.com' ||
     window.location.protocol === 'capacitor-electron:'
   ) {
-    uri = 'http://joshsfrogstest.com' + uri;
+    uri = 'https://new.joshsfrogs.com' + uri;
   }
 
   return {

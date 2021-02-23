@@ -29,7 +29,7 @@ export class UserService {
   ) {
     console.log(platform.platforms());
     if (platform.is('capacitor') || platform.is('electron')) {
-      this.BASE_URL = 'http://joshsfrogstest.com';
+      this.BASE_URL = 'https://new.joshsfrogs.com';
     }
 
     const expirationTimestamp = Number(

@@ -9,6 +9,7 @@ import { ThumbnailSmComponent } from './components/thumbnail-sm/thumbnail-sm.com
 import { ThumbnailMdComponent } from './components/thumbnail-md/thumbnail-md.component';
 import { ThumbnailLgComponent } from './components/thumbnail-lg/thumbnail-lg.component';
 import { HostnamePipe } from './pipes/hostname.pipe';
+import { ShippingNeedsPipe } from './pipes/shipping-needs.pipe';
 import { SqrtPipe } from './pipes/sqrt.pipe';
 import { ConfidencePipe } from './pipes/confidence.pipe';
 
@@ -21,6 +22,7 @@ import { ConfidencePipe } from './pipes/confidence.pipe';
     ThumbnailMdComponent,
     ThumbnailLgComponent,
     HostnamePipe,
+    ShippingNeedsPipe,
     SqrtPipe,
     ConfidencePipe
   ],
@@ -32,6 +34,8 @@ import { ConfidencePipe } from './pipes/confidence.pipe';
     ThumbnailSmComponent,
     ThumbnailMdComponent,
     ThumbnailLgComponent,
+    HostnamePipe,
+    ShippingNeedsPipe,
     SqrtPipe,
     ConfidencePipe
   ],

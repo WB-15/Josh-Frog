@@ -55,6 +55,25 @@
                         </p>
                     </div>
                 </div>
+                <div *ngIf="warehouse" class="flex-shrink-0 flex border-t border-gray-200 p-4">
+                    <a (click)="hideMenu(); showWarehouseDialog()" class="flex-shrink-0 group block focus:outline-none">
+                        <div class="flex items-center">
+                            <div>
+                                <!--
+                                <img class="inline-block h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                -->
+                            </div>
+                            <div *ngIf="user" class="ml-3">
+                                <p class="text-base leading-6 font-medium text-gray-700 group-hover:text-gray-900">
+                                    {{warehouse.name}}
+                                </p>
+                                <p class="text-sm leading-5 font-medium text-gray-500 group-hover:text-gray-700 group-focus:underline transition ease-in-out duration-150">
+                                    {{warehouse.line1}} {{warehouse.city}}, {{warehouse.state}}
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
                 <div class="flex-shrink-0 flex border-t border-gray-200 p-4">
                     <a [routerLink]="'account'" (click)="hideMenu()" class="flex-shrink-0 group block focus:outline-none">
                         <div class="flex items-center">
@@ -105,6 +124,25 @@
                             {{barcodeScanners.length == 0 ? 'No' : barcodeScanners.length}} scanner{{barcodeScanners.length == 1 ? '' : 's'}} connected.
                         </p>
                     </div>
+                </div>
+                <div *ngIf="warehouse" class="flex-shrink-0 flex border-t border-gray-200 p-4">
+                    <a (click)="showWarehouseDialog()" class="flex-shrink-0 w-full group block">
+                        <div class="flex items-center">
+                            <div>
+                                <!--
+                                <img class="inline-block h-9 w-9 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                -->
+                            </div>
+                            <div *ngIf="user" class="ml-3">
+                                <p class="text-sm leading-5 font-medium text-gray-700 group-hover:text-gray-900">
+                                    {{warehouse.name}}
+                                </p>
+                                <p class="text-xs leading-4 font-medium text-gray-500 group-hover:text-gray-700 transition ease-in-out duration-150">
+                                    {{warehouse.line1}} {{warehouse.city}}, {{warehouse.state}}
+                                </p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
                 <div class="flex-shrink-0 flex border-t border-gray-200 p-4">
                     <a [routerLink]="'account'" class="flex-shrink-0 w-full group block">

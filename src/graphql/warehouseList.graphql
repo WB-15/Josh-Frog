@@ -1,0 +1,14 @@
+query warehouseList {
+    warehouseList {
+        id,
+        name,
+        line1,
+        line2,
+        city,
+        state,
+        postalCode,
+        country,
+        latitude,
+        longitude
+    }
+}

@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { ActivatedRoute } from '@angular/router';
+
 import {
   faSpinnerThird,
   faSearch,
@@ -9,19 +11,20 @@ import {
   faChevronCircleRight
 } from '@fortawesome/pro-duotone-svg-icons';
 
+import { DialogService } from '../../../shared/services/dialog.service';
+import { WarehouseService } from '../../../shared/services/warehouse.service';
 import { BarcodeService } from '../../../shared/services/barcode.service';
+
 import {
   GraphQlPageableInput,
-  InventoryAddGQL,
+  InventoryAddDetailsGQL,
   SimpleProductEntity,
   SimpleProductFilterGQL,
   SimpleProductFindBySkuGQL,
   SimpleProductFindByUpcGQL,
-  SimpleProductInfoGQL
+  SimpleProductInfoGQL,
+  WarehouseEntity
 } from '../../../../../generated/graphql';
-import { MessageBoxOptions } from '../../../shared/components/message-box/message-box.component';
-import { DialogService } from '../../../shared/services/dialog.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-receiving',
@@ -44,6 +47,10 @@ export class ReceivingComponent implements OnInit, OnDestroy {
 
   upc = '';
   sku = '';
+  bin = '';
+
+  warehouse: WarehouseEntity = null;
+  warehouseChangedSubscription: Subscription;
 
   loading = 0;
   upcScannedSubscription: Subscription;
@@ -57,20 +64,31 @@ export class ReceivingComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
     private dialogService: DialogService,
+    private warehouseService: WarehouseService,
     private barcodeService: BarcodeService,
     private simpleProductInfo: SimpleProductInfoGQL,
     private simpleProductFindByUpcGQL: SimpleProductFindByUpcGQL,
     private simpleProductFindBySkuGQL: SimpleProductFindBySkuGQL,
     private simpleProductFilterGQL: SimpleProductFilterGQL,
-    private inventoryAddGQL: InventoryAddGQL
+    private inventoryAddDetailsGQL: InventoryAddDetailsGQL
   ) {}
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
-      if (params.id) {
-        this.load(params.id);
+    this.warehouseChangedSubscription = this.warehouseService.warehouseChanged$.subscribe(
+      (warehouse) => {
+        this.warehouse = warehouse;
+        this.route.queryParams.subscribe(
+          (params) => {
+            if (params.id) {
+              this.load(params.id);
+            }
+          },
+          (error) => {
+            this.warehouse = null;
+          }
+        );
       }
-    });
+    );
 
     this.upcScannedSubscription = this.barcodeService.upcScanned$.subscribe(
       (upc) => {
@@ -91,8 +109,8 @@ export class ReceivingComponent implements OnInit, OnDestroy {
               },
               (error) => {
                 console.error(error);
-                this.dialogService.showErrorMessageBox(error);
                 this.loading--;
+                this.dialogService.showErrorMessageBox(error);
                 this.changeDetectorRef.detectChanges();
               }
             );
@@ -119,8 +137,8 @@ export class ReceivingComponent implements OnInit, OnDestroy {
               },
               (error) => {
                 console.error(error);
-                this.dialogService.showErrorMessageBox(error);
                 this.loading--;
+                this.dialogService.showErrorMessageBox(error);
                 this.changeDetectorRef.detectChanges();
               }
             );
@@ -150,8 +168,8 @@ export class ReceivingComponent implements OnInit, OnDestroy {
         },
         (error) => {
           console.error(error);
-          this.dialogService.showErrorMessageBox(error);
           this.loading--;
+          this.dialogService.showErrorMessageBox(error);
           this.changeDetectorRef.detectChanges();
         }
       );
@@ -159,9 +177,13 @@ export class ReceivingComponent implements OnInit, OnDestroy {
 
   receive() {
     this.quantityReceived = this.quantityEntry;
-    this.inventoryAddGQL
-      .mutate({ id: this.simpleProduct.id, quantity: this.quantityReceived })
-      .pipe(map((result) => result.data.inventoryAdd))
+    this.inventoryAddDetailsGQL
+      .mutate({
+        warehouse: this.warehouse.name,
+        id: this.simpleProduct.id,
+        quantity: this.quantityReceived
+      })
+      .pipe(map((result) => result.data.inventoryAddDetails))
       .subscribe(
         (result) => {
           console.log(result);
@@ -268,6 +290,7 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.warehouseChangedSubscription.unsubscribe();
     this.upcScannedSubscription.unsubscribe();
     this.skuScannedSubscription.unsubscribe();
   }

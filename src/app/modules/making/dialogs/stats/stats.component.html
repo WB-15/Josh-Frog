@@ -4,7 +4,7 @@
   <p class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">CURRENT INVENTORY</p>
   <p class="font-narrow">Available: {{inventoryDetails.warehouseQuantityAvailable | number: '0.0-0'}} units</p>
   <p class="font-narrow">Confidence: {{(inventoryDetails?.warehouseQuantityAvailable > 0 ? ((inventoryDetails.warehouseQuantityAvailable - inventoryDetails.warehouseWeeklyConsumptionRate) / (this.inventoryDetails.warehouseWeeklyConsumptionVariance | sqrt) | confidence) : 0) | number: '0.2-2'}} %</p>
-  <p class="font-narrow text-gray-400 italic">of inventory will lasting week</p>
+  <p class="font-narrow text-gray-400 italic">that inventory will last a week</p>
 </div>
 
 <div class="p-2">

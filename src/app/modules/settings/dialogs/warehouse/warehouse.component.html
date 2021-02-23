@@ -1,0 +1,22 @@
+<fieldset>
+  <legend class="sr-only">
+    Warehouse
+  </legend>
+
+  <div *ngFor="let w of warehouses" class="relative border rounded-tl-md rounded-tr-md p-4">
+    <div class="flex">
+      <div class="flex items-center h-5">
+        <input [id]="'warehouse-option-' + w.name" name="warehouse_setting" type="radio" class="focus:ring-jfgreen-900 h-4 w-4 text-jfgreen-600 cursor-pointer border-gray-300" [checked]="warehouse.name === w.name" (click)="setWarehouse(w)">
+      </div>
+      <label [for]="'warehouse-option-' + w.name" class="ml-3 flex flex-col cursor-pointer">
+        <div class="block text-sm font-medium">
+          <p>{{w.name}}</p>
+          <p>{{w.line1}}</p>
+          <p *ngIf="w.line2">{{warehouse.line2}}</p>
+          <p>{{w.city}}, {{w.state}} {{w.postalCode}}</p>
+        </div>
+      </label>
+    </div>
+  </div>
+
+</fieldset>

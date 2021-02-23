@@ -2,22 +2,31 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { faSearch, faSpinnerThird } from '@fortawesome/pro-duotone-svg-icons';
+import { ActivatedRoute } from '@angular/router';
 
+import {
+  faSpinnerThird,
+  faSearch,
+  faInventory,
+  faChevronCircleRight
+} from '@fortawesome/pro-duotone-svg-icons';
+
+import { DialogService } from '../../../shared/services/dialog.service';
+import { WarehouseService } from '../../../shared/services/warehouse.service';
 import { BarcodeService } from '../../../shared/services/barcode.service';
 
 import {
   GraphQlPageableInput,
-  InventoryGetGQL,
-  InventoryResult,
+  InventoryDetails,
+  InventoryGetDetailsGQL,
+  InventorySetDetailsGQL,
   SimpleProductEntity,
   SimpleProductFilterGQL,
   SimpleProductFindBySkuGQL,
   SimpleProductFindByUpcGQL,
-  SimpleProductInfoGQL
+  SimpleProductInfoGQL,
+  WarehouseEntity
 } from '../../../../../generated/graphql';
-import { DialogService } from '../../../shared/services/dialog.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-inventory',
@@ -27,40 +36,63 @@ import { ActivatedRoute } from '@angular/router';
 export class InventoryComponent implements OnInit, OnDestroy {
   faSpinnerThird = faSpinnerThird;
   faSearch = faSearch;
+  faInventory = faInventory;
+  faChevronCircleRight = faChevronCircleRight;
 
-  searchTerm = '';
-  pendingSearchTerm: string = null;
+  searchSku = '';
+  pendingSearchSku: string = null;
+  searchTitle = '';
+  pendingSearchTitle: string = null;
+
+  quantityEntry: number;
+  quantityUpdated: number;
 
   upc = '';
   sku = '';
   bin = '';
 
+  warehouse: WarehouseEntity = null;
+  warehouseChangedSubscription: Subscription;
+
   loading = 0;
   upcScannedSubscription: Subscription;
   skuScannedSubscription: Subscription;
 
-  inventoryResult: InventoryResult;
+  inventoryDetails: InventoryDetails;
   simpleProduct: SimpleProductEntity;
-  searchResults: SimpleProductEntity[];
+  searchBySkuResults: SimpleProductEntity[];
+  searchByTitleResults: SimpleProductEntity[];
 
   constructor(
     private route: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
     private dialogService: DialogService,
+    private warehouseService: WarehouseService,
     private barcodeService: BarcodeService,
     private simpleProductInfo: SimpleProductInfoGQL,
     private simpleProductFindByUpcGQL: SimpleProductFindByUpcGQL,
     private simpleProductFindBySkuGQL: SimpleProductFindBySkuGQL,
     private simpleProductFilterGQL: SimpleProductFilterGQL,
-    private inventoryGetGQL: InventoryGetGQL
+    private inventoryGetDetailsGQL: InventoryGetDetailsGQL,
+    private inventorySetDetailsGQL: InventorySetDetailsGQL
   ) {}
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
-      if (params.id) {
-        this.load(params.id);
+    this.warehouseChangedSubscription = this.warehouseService.warehouseChanged$.subscribe(
+      (warehouse) => {
+        this.warehouse = warehouse;
+        this.route.queryParams.subscribe(
+          (params) => {
+            if (params.id) {
+              this.load(params.id);
+            }
+          },
+          (error) => {
+            this.warehouse = null;
+          }
+        );
       }
-    });
+    );
 
     this.upcScannedSubscription = this.barcodeService.upcScanned$.subscribe(
       (upc) => {
@@ -75,13 +107,15 @@ export class InventoryComponent implements OnInit, OnDestroy {
               (result) => {
                 this.simpleProduct = result as SimpleProductEntity;
                 this.loading--;
+                this.quantityUpdated = null;
+                this.quantityEntry = null;
                 this.changeDetectorRef.detectChanges();
                 this.getInventory();
               },
               (error) => {
                 console.error(error);
                 this.loading--;
-                this.inventoryResult = null;
+                this.inventoryDetails = null;
                 this.dialogService.showErrorMessageBox(error);
                 this.changeDetectorRef.detectChanges();
               }
@@ -103,13 +137,15 @@ export class InventoryComponent implements OnInit, OnDestroy {
               (result) => {
                 this.simpleProduct = result as SimpleProductEntity;
                 this.loading--;
+                this.quantityUpdated = null;
+                this.quantityEntry = null;
                 this.changeDetectorRef.detectChanges();
                 this.getInventory();
               },
               (error) => {
                 console.error(error);
                 this.loading--;
-                this.inventoryResult = null;
+                this.inventoryDetails = null;
                 this.dialogService.showErrorMessageBox(error);
                 this.changeDetectorRef.detectChanges();
               }
@@ -120,8 +156,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   load(id: string) {
-    this.searchTerm = '';
-    this.searchResults = [];
+    this.searchSku = '';
+    this.searchTitle = '';
+    this.searchBySkuResults = [];
+    this.searchByTitleResults = [];
     this.loading++;
     this.changeDetectorRef.detectChanges();
     this.simpleProductInfo
@@ -131,13 +169,16 @@ export class InventoryComponent implements OnInit, OnDestroy {
         (result) => {
           this.simpleProduct = result as SimpleProductEntity;
           this.loading--;
+          this.quantityUpdated = null;
+          this.quantityEntry = null;
+
           this.changeDetectorRef.detectChanges();
           this.getInventory();
         },
         (error) => {
           console.error(error);
           this.loading--;
-          this.inventoryResult = null;
+          this.inventoryDetails = null;
           this.dialogService.showErrorMessageBox(error);
           this.changeDetectorRef.detectChanges();
         }
@@ -145,56 +186,138 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   getInventory() {
-    this.inventoryGetGQL
-      .mutate({ id: this.simpleProduct.id })
-      .pipe(map((result) => result.data.inventoryGet))
+    this.inventoryGetDetailsGQL
+      .mutate({ warehouse: this.warehouse.name, id: this.simpleProduct.id })
+      .pipe(map((result) => result.data.inventoryGetDetails))
       .subscribe(
         (result) => {
-          this.inventoryResult = result as InventoryResult;
+          console.log(result);
+          this.inventoryDetails = result as InventoryDetails;
           this.changeDetectorRef.detectChanges();
         },
         (error) => {
-          this.inventoryResult = null;
+          this.inventoryDetails = null;
           this.dialogService.showErrorMessageBox(error);
           this.changeDetectorRef.detectChanges();
         }
       );
   }
 
-  search() {
-    if (this.pendingSearchTerm == null) {
-      if (this.searchTerm === '') {
-        this.searchResults = [];
+  setInventory() {
+    this.quantityUpdated = this.quantityEntry;
+    // TODO: when this is returned from server, don't calculate here
+    this.inventoryDetails.warehouseQuantityOnShelf = this.quantityUpdated;
+    this.inventoryDetails.warehouseQuantityAvailable =
+      this.inventoryDetails.warehouseQuantityOnShelf -
+      this.inventoryDetails.warehouseQuantityUnshipped;
+    // and remove the TODO below
+    this.inventorySetDetailsGQL
+      .mutate({
+        warehouse: this.warehouse.name,
+        id: this.simpleProduct.id,
+        quantity: this.quantityEntry
+      })
+      .pipe(map((result) => result.data.inventorySetDetails))
+      .subscribe(
+        (result) => {
+          // TODO: get this from the server
+          // this.inventoryDetails = result as InventoryDetails;
+          // and remove the TODO above.
+          this.changeDetectorRef.detectChanges();
+        },
+        (error) => {
+          this.inventoryDetails = null;
+          this.dialogService.showErrorMessageBox(error);
+          this.changeDetectorRef.detectChanges();
+        }
+      );
+  }
+
+  searchBySku() {
+    this.searchTitle = '';
+    this.searchByTitleResults = [];
+    if (this.pendingSearchSku == null) {
+      if (this.searchSku === '') {
+        this.searchBySkuResults = [];
       } else {
-        this.pendingSearchTerm = this.searchTerm;
+        this.pendingSearchSku = this.searchSku;
         const pageable: GraphQlPageableInput = {
           page: 1,
           pageSize: 5
         };
 
         this.simpleProductFilterGQL
-          .fetch({ pageable, sku: this.pendingSearchTerm + '%' })
+          .fetch({
+            pageable,
+            sku: this.pendingSearchSku + '%'
+          })
           .pipe(map((result) => result.data.simpleProductFilter.data))
           .subscribe(
             (result) => {
-              this.searchResults = result as SimpleProductEntity[];
+              this.searchBySkuResults = result as SimpleProductEntity[];
               this.changeDetectorRef.detectChanges();
-              if (this.pendingSearchTerm !== this.searchTerm) {
-                this.pendingSearchTerm = null;
-                this.search();
+              if (this.pendingSearchSku !== this.searchSku) {
+                this.pendingSearchSku = null;
+                this.searchBySku();
               } else {
-                this.pendingSearchTerm = null;
+                this.pendingSearchSku = null;
               }
             },
             (error) => {
               console.error(error);
               this.dialogService.showErrorMessageBox(error);
               this.changeDetectorRef.detectChanges();
-              if (this.pendingSearchTerm !== this.searchTerm) {
-                this.pendingSearchTerm = null;
-                this.search();
+              if (this.pendingSearchSku !== this.searchSku) {
+                this.pendingSearchSku = null;
+                this.searchBySku();
               } else {
-                this.pendingSearchTerm = null;
+                this.pendingSearchSku = null;
+              }
+            }
+          );
+      }
+    }
+  }
+
+  searchByTitle() {
+    this.searchSku = '';
+    this.searchBySkuResults = [];
+    if (this.pendingSearchTitle == null) {
+      if (this.searchTitle === '') {
+        this.searchByTitleResults = [];
+      } else {
+        this.pendingSearchTitle = this.searchTitle;
+        const pageable: GraphQlPageableInput = {
+          page: 1,
+          pageSize: 5
+        };
+
+        this.simpleProductFilterGQL
+          .fetch({
+            pageable,
+            title: '%' + this.pendingSearchTitle + '%'
+          })
+          .pipe(map((result) => result.data.simpleProductFilter.data))
+          .subscribe(
+            (result) => {
+              this.searchByTitleResults = result as SimpleProductEntity[];
+              this.changeDetectorRef.detectChanges();
+              if (this.pendingSearchTitle !== this.searchTitle) {
+                this.pendingSearchTitle = null;
+                this.searchByTitle();
+              } else {
+                this.pendingSearchTitle = null;
+              }
+            },
+            (error) => {
+              console.error(error);
+              this.dialogService.showErrorMessageBox(error);
+              this.changeDetectorRef.detectChanges();
+              if (this.pendingSearchTitle !== this.searchTitle) {
+                this.pendingSearchTitle = null;
+                this.searchByTitle();
+              } else {
+                this.pendingSearchTitle = null;
               }
             }
           );
@@ -203,6 +326,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.warehouseChangedSubscription.unsubscribe();
     this.upcScannedSubscription.unsubscribe();
     this.skuScannedSubscription.unsubscribe();
   }

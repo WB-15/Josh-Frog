@@ -10,14 +10,14 @@ const myCapacitorApp = createCapacitorElectronApp();
 app.on('ready', () => {
   // Modify the origin for all requests to the following urls.
   const filter = {
-    urls: ['http://joshsfrogstest.com/*', 'https://joshsfrogstest.com/*']
+    urls: ['http://new.joshsfrogs.com/*', 'https://new.joshsfrogs.com/*']
   };
 
   session.defaultSession.webRequest.onBeforeSendHeaders(
     filter,
     (details, callback) => {
       console.log(details);
-      details.requestHeaders.Origin = 'http://app.joshsfrogstest.com';
+      details.requestHeaders.Origin = 'https://app.joshsfrogs.com';
       callback({ requestHeaders: details.requestHeaders });
     }
   );
@@ -26,9 +26,17 @@ app.on('ready', () => {
     filter,
     (details, callback) => {
       console.log(details);
-      details.responseHeaders['Access-Control-Allow-Origin'] = [
-        'capacitor-electron://-'
-      ];
+      if (
+        details.responseHeaders.hasOwnProperty('access-control-allow-origin')
+      ) {
+        details.responseHeaders['access-control-allow-origin'] = [
+          'capacitor-electron://-'
+        ];
+      } else {
+        details.responseHeaders['Access-Control-Allow-Origin'] = [
+          'capacitor-electron://-'
+        ];
+      }
       callback({ responseHeaders: details.responseHeaders });
     }
   );

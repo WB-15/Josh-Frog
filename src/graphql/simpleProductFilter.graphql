@@ -67,7 +67,7 @@ query simpleProductFilter (
           }
         }
       },
-      weatherShippingRuleSet {
+      shippingRuleSet {
         id,
         slug,
         name

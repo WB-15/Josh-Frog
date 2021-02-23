@@ -5,6 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class HostnamePipe implements PipeTransform {
   transform(value: string): string {
-    return value.replace('http://HOSTNAME', 'http://joshsfrogstest.com');
+    return value.replace('http://HOSTNAME', 'https://new.joshsfrogs.com');
   }
 }

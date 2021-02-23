@@ -14,11 +14,17 @@ import {
   faHandReceiving,
   faTags,
   faPlusCircle,
+  faClock,
+  faWarehouse,
   faRulerVertical
 } from '@fortawesome/pro-duotone-svg-icons';
 
+import { DialogBoxOptions } from './modules/shared/components/dialog/dialog.component';
+import { DialogService } from './modules/shared/services/dialog.service';
 import { UserService } from './modules/shared/services/user.service';
-import { UserEntity } from '../generated/graphql';
+import { WarehouseService } from './modules/shared/services/warehouse.service';
+import { WarehouseComponent } from './modules/settings/dialogs/warehouse/warehouse.component';
+import { UserEntity, WarehouseEntity } from '../generated/graphql';
 import {
   BarcodeService,
   BarcodeScannerEvent
@@ -37,12 +43,17 @@ export class AppComponent implements OnInit, OnDestroy {
   faInventory = faInventory;
   faTruckLoading = faTruckLoading;
   faTags = faTags;
+  faClock = faClock;
+  faWarehouse = faWarehouse;
   faPlusCircle = faPlusCircle;
 
   public menuShown = false;
 
   user: UserEntity;
   userChangedSubscription: Subscription;
+
+  warehouse: WarehouseEntity;
+  warehouseChangedSubscription: Subscription;
 
   barcodeScanners: BarcodeScannerEvent[] = [];
   barcodeScannersChangedSubscription: Subscription;
@@ -82,6 +93,11 @@ export class AppComponent implements OnInit, OnDestroy {
       icon: faTags,
       name: 'Plant Labels',
       route: 'plant_labels'
+    },
+    {
+      icon: faClock,
+      name: 'Time Clock',
+      route: 'time_clock'
     }
     /*
     {
@@ -94,7 +110,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private platform: Platform,
+    private dialogService: DialogService,
     private userService: UserService,
+    private warehouseService: WarehouseService,
     private barcodeService: BarcodeService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
@@ -114,6 +132,13 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     );
 
+    this.warehouseChangedSubscription = this.warehouseService.warehouseChanged$.subscribe(
+      (warehouse) => {
+        this.warehouse = warehouse;
+        this.changeDetectorRef.detectChanges();
+      }
+    );
+
     this.barcodeScannersChangedSubscription = this.barcodeService.barcodeScannersChanged$.subscribe(
       (barcodeScanners) => {
         this.barcodeScanners = barcodeScanners;
@@ -122,8 +147,17 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
 
+  showWarehouseDialog() {
+    const options = new DialogBoxOptions();
+    options.component = WarehouseComponent;
+    options.inputs = {};
+    options.title = 'Select Warehouse';
+    this.dialogService.showDialog(options);
+  }
+
   ngOnDestroy() {
     this.userChangedSubscription.unsubscribe();
+    this.warehouseChangedSubscription.unsubscribe();
     this.barcodeScannersChangedSubscription.unsubscribe();
   }
 

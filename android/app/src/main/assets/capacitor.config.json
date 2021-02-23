@@ -12,7 +12,7 @@
   "cordova": {},
   "server": {
     "androidScheme": "http",
-    "hostname": "app.joshsfrogstest.com"
+    "hostname": "app.joshsfrogs.com"
   },
   "android": {
     "webContentsDebuggingEnabled": true

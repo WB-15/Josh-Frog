@@ -1,23 +1,19 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
   <h1 class="text-2xl font-semibold text-gray-900">Inventory</h1>
 
-  <div class="py-3 bg-yellow-300 text-black rounded-lg text-center">
-    Coming soon.  Please use <strong>MandyMae</strong> for inventory.
-  </div>
-
   <div class="flex">
     <div class="block mx-auto">
-      <label for="search" class="hidden">Search</label>
+      <label for="searchBySku" class="hidden">Search</label>
       <div class="relative pt-3 pb-4">
         <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
           <span class="icon is-medium is-left">
             <fa-icon [icon]="faSearch"></fa-icon>
           </span>
         </div>
-        <input id="search" class="form-input block w-full pl-10 pr-2 rounded-lg" [ngClass]="searchResults?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search SKUs" autocomplete="off" autocapitalize="words"
-           [(ngModel)]="searchTerm" (keyup)='search()' />
-        <div *ngIf="searchResults" class="block absolute bg-gray-100 z-30 w-full">
-          <div *ngFor="let result of searchResults" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
+        <input id="searchBySku" class="form-input block w-full pl-10 pr-2 rounded-lg" [ngClass]="searchBySkuResults?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search SKUs" autocomplete="off" autocapitalize="words"
+               [(ngModel)]="searchSku" (keyup)='searchBySku()' />
+        <div *ngIf="searchBySkuResults" class="block absolute bg-gray-100 z-30 w-full">
+          <div *ngFor="let result of searchBySkuResults" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
             <div class="flex-none h-10 w-10 m-1 mr-3 rounded-lg bg-white">
               <app-thumbnail-sm [src]="result.medias[0]?.url" [alt]="result.title"></app-thumbnail-sm>
             </div>
@@ -32,6 +28,32 @@
     </div>
   </div>
 
+  <div class="flex">
+    <div class="block mx-auto">
+      <label for="searchByTitle" class="hidden">Search</label>
+      <div class="relative pt-3 pb-4">
+        <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+          <span class="icon is-medium is-left">
+            <fa-icon [icon]="faSearch"></fa-icon>
+          </span>
+        </div>
+        <input id="searchByTitle" class="form-input block w-full pl-10 pr-2 rounded-lg" [ngClass]="searchByTitleResults?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search Title" autocomplete="off" autocapitalize="words"
+               [(ngModel)]="searchTitle" (keyup)='searchByTitle()' />
+        <div *ngIf="searchByTitleResults" class="block absolute bg-gray-100 z-30 w-full">
+          <div *ngFor="let result of searchByTitleResults" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
+            <div class="flex-none h-10 w-10 m-1 mr-3 rounded-lg bg-white">
+              <app-thumbnail-sm [src]="result.medias[0]?.url" [alt]="result.title"></app-thumbnail-sm>
+            </div>
+
+            <div class="m-1 mr-3">
+              <p class="font-semibold">{{result.sku}}</p>
+              <p class="font-narrow">{{result.title}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div *ngIf="loading > 0" class="p-20 text-center">
     <span class="icon is-medium is-left">
@@ -45,13 +67,16 @@
       <div class="flex-none h-40 w-40 m-1 mr-3 rounded-lg bg-white">
         <app-thumbnail-md [src]="simpleProduct.medias[0]?.url" [alt]="simpleProduct.title"></app-thumbnail-md>
       </div>
-      <div class="self-center">
-        <p *ngIf="inventoryResult?.globalQuantityTotal == 0" class="font-semibold text-xl text-center">Out of Stock</p>
-        <p *ngIf="inventoryResult?.globalQuantityTotal > 0" class="font-semibold text-xl text-center">{{inventoryResult.globalQuantityTotal}} in Stock</p>
+      <div class="self-center" *ngIf="inventoryDetails">
+        <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf <= 0" class="font-semibold text-xl text-center">Out of Stock</p>
+        <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf > 0" class="font-semibold text-xl text-center">{{inventoryDetails.warehouseQuantityOnShelf}} in Stock</p>
+        <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf < 0" class="font-semibold text-xl text-center">Over Sold by {{0 - inventoryDetails.warehouseQuantityOnShelf}}</p>
         <!-- TODO: when full inventory support exists, replace above with this
         <p *ngIf="simpleProduct.inventoryCaches?.length == 0" class="font-semibold text-xl text-center">Not Stocked</p>
         <p *ngFor="let inventory of simpleProduct.inventoryCaches" class="font-semibold text-3xl text-center">{{inventory.quantityAvailableForSale}}</p>
         -->
+        <p *ngIf="inventoryDetails?.warehouseQuantityUnshipped != 0" class="font-medium text-lg text-center">{{inventoryDetails.warehouseQuantityUnshipped}} to Ship</p>
+        <p *ngIf="inventoryDetails?.warehouseQuantityUnshipped != 0" class="font-medium text-lg text-center">{{inventoryDetails.warehouseQuantityAvailable}} for Sale</p>
       </div>
     </div>
 
@@ -65,7 +90,40 @@
           {{simpleProduct.title}}
         </p>
       </div>
+    </div>
 
+    <div *ngIf="quantityUpdated" class="p-4 bg-gray-200 rounded-lg">
+      <div class="py-10 pl-2">
+        Updated inventory to be <strong>{{quantityUpdated}}</strong> on the shelf.
+      </div>
+    </div>
+
+    <div *ngIf="!quantityUpdated" class="p-4 bg-gray-200 rounded-lg">
+      <div class="p-2">
+        <label for="qty" class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">INVENTORY</label>
+        <div class="max-w-xs">
+          <div class="mt-1 flex rounded-md shadow-sm">
+            <div class="relative flex-grow focus-within:z-10">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faInventory"></fa-icon>
+                </span>
+              </div>
+              <input id="qty" class="form-input block w-full pl-10 rounded-none rounded-l-lg" type="number" placeholder="Quantity" autocomplete="off" [(ngModel)]="quantityEntry" />
+            </div>
+            <button class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 rounded-r-md text-gray-700 bg-blue-100 transition ease-in-out duration-150"
+              [disabled]="!(quantityEntry && quantityEntry != 0)" [ngClass]="{'opacity-50': !(quantityEntry && quantityEntry > 0), 'hover:text-gray-800': (quantityEntry && quantityEntry != 0), 'hover:bg-blue-200': (quantityEntry && quantityEntry != 0)}" (click)="setInventory()">
+              <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faChevronCircleRight"></fa-icon>
+                </span>
+              <span class="ml-2 leading-5 font-medium">Update</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-4">
 
       <div class="p-2">
         <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">DEPARTMENT</p>
@@ -103,14 +161,12 @@
 
       <div class="p-2">
         <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">SHIPPING NEEDS</p>
-        <p class="font-narrow">{{simpleProduct.shippingNeeds ? simpleProduct.shippingNeeds : 'Method Not Set'}}</p>
-        <p class="font-narrow">{{simpleProduct.weatherShippingRuleSet?.name}}</p>
+        <p class="font-narrow">{{simpleProduct.shippingNeeds | shippingNeeds}}</p>
+        <p class="font-narrow">{{simpleProduct.shippingRuleSet?.name}}</p>
         <p class="font-narrow">{{simpleProduct.weight ? simpleProduct.weight + "lbs" : 'Weight Not Set'}}</p>
       </div>
 
     </div>
   </div>
-
-
 </div>
 

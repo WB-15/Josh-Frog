@@ -144,8 +144,8 @@
 
       <div class="p-2">
         <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">SHIPPING NEEDS</p>
-        <p class="font-narrow">{{simpleProduct.shippingNeeds ? simpleProduct.shippingNeeds : 'Method Not Set'}}</p>
-        <p class="font-narrow">{{simpleProduct.weatherShippingRuleSet?.name}}</p>
+        <p class="font-narrow">{{simpleProduct.shippingNeeds | shippingNeeds}}</p>
+        <p class="font-narrow">{{simpleProduct.shippingRuleSet?.name}}</p>
         <p class="font-narrow">{{simpleProduct.weight ? simpleProduct.weight + "lbs" : 'Weight Not Set'}}</p>
       </div>
 

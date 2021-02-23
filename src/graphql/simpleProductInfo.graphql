@@ -65,7 +65,7 @@ query simpleProductInfo ($id: UUID!) {
         }
       }
     },
-    weatherShippingRuleSet {
+    shippingRuleSet {
       id,
       slug,
       name

@@ -5,7 +5,7 @@
       "extensions": {
         "endpoints": {
           "dev": {
-            "url": "http://joshsfrogstest.com/api/graphql",
+            "url": "https://new.joshsfrogs.com/api/graphql",
             "headers": {
               "Content-Type": "application/json"
             }

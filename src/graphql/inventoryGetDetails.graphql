@@ -1,0 +1,20 @@
+mutation inventoryGetDetails ($id: UUID!, $warehouse: String!) {
+    inventoryGetDetails(
+        warehouse: $warehouse,
+        id: $id
+    ) {
+        product {
+            id,
+            sku,
+            slug,
+            title,
+        }
+        warehouseQuantityOnShelf,
+        warehouseQuantityUnshipped,
+        warehouseQuantityAvailable,
+        warehouseWeeklyConsumptionRate,
+        warehouseWeeklyConsumptionVariance,
+        warehouseRunOutDays85,
+        warehouseRunOutDays97
+    }
+}
