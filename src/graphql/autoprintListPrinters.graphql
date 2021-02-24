@@ -1,0 +1,8 @@
+mutation autoprintListPrinters ($machineKey: String!) {
+    autoprintListPrinters (
+        machineKey: $machineKey
+    ) {
+        id,
+        name
+    }
+}

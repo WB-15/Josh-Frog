@@ -1,0 +1,10 @@
+mutation autoprintEnrollWorkstation ($warehouse: String!, $name: String!, $machineKey: String!) {
+    autoprintEnrollWorkstation(
+        warehouse: $warehouse,
+        name: $name,
+        machineKey: $machineKey
+    ) {
+        name,
+        machineKey
+    }
+}

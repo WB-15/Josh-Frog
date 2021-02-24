@@ -1,0 +1,8 @@
+mutation autoprintAddPrinter ($machineKey: String!, $printerName: String!) {
+    autoprintAddPrinter (
+        machineKey: $machineKey,
+        printerName: $printerName
+    ) {
+        id,
+    }
+}
