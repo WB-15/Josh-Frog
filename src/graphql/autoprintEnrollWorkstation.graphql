@@ -5,6 +5,9 @@ mutation autoprintEnrollWorkstation ($warehouse: String!, $name: String!, $machi
         machineKey: $machineKey
     ) {
         name,
-        machineKey
+        machineKey,
+        warehouse {
+            name
+        }
     }
 }

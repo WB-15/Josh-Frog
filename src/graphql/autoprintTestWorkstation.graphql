@@ -1,0 +1,11 @@
+mutation autoprintTestWorkstation ($machineKey: String!) {
+    autoprintTestWorkstation(
+        machineKey: $machineKey
+    ) {
+        name,
+        machineKey,
+        warehouse {
+            name
+        }
+    }
+}

@@ -4,5 +4,6 @@ mutation autoprintAddPrinter ($machineKey: String!, $printerName: String!) {
         printerName: $printerName
     ) {
         id,
+        name
     }
 }
