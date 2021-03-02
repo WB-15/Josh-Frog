@@ -2,8 +2,15 @@ import { Injectable } from '@angular/core';
 import { Plugins } from '@capacitor/core';
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { first, map } from 'rxjs/operators';
+
+import {
+  AutoprintEnrollWorkstationGQL, AutoprintListPrintersGQL,
+  AutoprintTestWorkstationGQL,
+  InventoryDetails, PrinterEntity, WorkstationEntity
+} from '../../../../generated/graphql';
+import { UserService } from './user.service';
 
 const { CapacitorMachineId } = Plugins;
 
@@ -11,19 +18,89 @@ const { CapacitorMachineId } = Plugins;
   providedIn: 'root'
 })
 export class AutoprintService {
+  private machineId: string = null;
+  private machineName: string = null;
+
+  private workstation: WorkstationEntity;
+
+  private userChangedSubscription: Subscription;
+
   constructor(
-    // private autoprintEnrollWorkstationGQL: AutoprintEnrollWorkstationGql,
+    private autoprintTestWorkstationGQL: AutoprintTestWorkstationGQL,
+    private autoprintEnrollWorkstationGQL: AutoprintEnrollWorkstationGQL,
+    private autoprintListPrintersGQL: AutoprintListPrintersGQL,
     private httpClient: HttpClient,
-    private platform: Platform
+    private platform: Platform,
+    private userService: UserService
   ) {
     if (platform.is('electron')) {
       CapacitorMachineId.getId(false).then((id) => {
-        console.log(id);
+        this.machineId = id;
+        CapacitorMachineId.getName().then((name) => {
+          this.machineName = name;
+
+          this.userChangedSubscription = this.userService.userChanged$.subscribe(
+            (user) => {
+              if (user) {
+                this.testWorkstation();
+              }
+            }, (error => {
+              console.log(error);
+            }));
+          }
+        );
       });
     }
-    if (platform.is('desktop')) {
-      console.log('desktop');
-    }
+  }
+
+  testWorkstation() {
+    this.autoprintTestWorkstationGQL
+      .mutate({ machineKey: this.machineId})
+      .pipe(map((result) => result.data.autoprintTestWorkstation))
+      .subscribe(
+        (result) => {
+          this.workstation = result;
+        },
+        (error) => {
+          console.log(error);
+          this.workstation = null;
+        }
+      );
+  }
+
+  enrollWorkstation(warehouse: string) {
+    this.autoprintEnrollWorkstationGQL
+      .mutate({ machineKey: this.machineId, name: this.machineName, warehouse })
+      .pipe(map((result) => result.data.autoprintEnrollWorkstation))
+      .subscribe(
+        (result) => {
+          this.workstation = result;
+        },
+        (error) => {
+          console.log(error);
+          this.workstation = null;
+        }
+      );
+  }
+
+  listEnabledPrinters(): Observable<PrinterEntity[]> {
+    return this.autoprintListPrintersGQL
+      .mutate({machineKey: this.machineId})
+      .pipe(map((result) => {
+        result.data.autoprintListPrinters
+      }));
+  }
+
+  getMachineName(): string {
+    return this.machineName;
+  }
+
+  getMachineKey(): string {
+    return this.machineId;
+  }
+
+  getWorkstation(): WorkstationEntity {
+    return this.workstation;
   }
 
   version(): Observable<Version> {
@@ -32,7 +109,7 @@ export class AutoprintService {
       .pipe(first());
   }
 
-  listPrinters(): Observable<Printer[]> {
+  listAvailablePrinters(): Observable<Printer[]> {
     return this.httpClient
       .get<Printer[]>('http://localhost:9900/listPrinters')
       .pipe(first());

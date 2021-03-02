@@ -1,14 +1,21 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
   <h1 class="text-2xl font-semibold text-gray-900">AutoPrint</h1>
 
-  <div *ngIf="!loading && !version" class="py-3 bg-yellow-300 text-black rounded-lg text-center">
-      The <strong>AutoPrint</strong> daemon does not appear to be running.<br>
-      If this computer normally manages printing, please reboot this computer.
+  <div *ngIf="loading" class="py-3 bg-gray-300 text-black rounded-lg text-center">
+    Loading. Please wait...
   </div>
 
-  <div *ngIf="!loading && version">
+  <div *ngIf="!loading && (workstation == null)" class="py-3 bg-yellow-300 text-black rounded-lg text-center">
+    <p>This computer is not enrolled for <strong>AutoPrint</strong>.</p>
+    <p><a (click)="showEnrollmentDialog()" class="underline">Enroll</a></p>
+  </div>
 
+  <div *ngIf="!loading && (workstation != null) && !version" class="py-3 bg-yellow-300 text-black rounded-lg text-center">
+    The <strong>AutoPrint</strong> daemon does not appear to be running.<br>
+    If this computer normally manages printing, please reboot this computer.
+  </div>
 
+  <div *ngIf="!loading && (workstation != null) && version">
     <div *ngIf="printers">
       <ul class="divide-y divide-gray-200">
         <li *ngFor="let printer of printers" class="py-4 flex">
