@@ -11,7 +11,11 @@ const { CapacitorMachineId } = Plugins;
   providedIn: 'root'
 })
 export class AutoprintService {
-  constructor(private httpClient: HttpClient, private platform: Platform) {
+  constructor(
+    // private autoprintEnrollWorkstationGQL: AutoprintEnrollWorkstationGql,
+    private httpClient: HttpClient,
+    private platform: Platform
+  ) {
     if (platform.is('electron')) {
       CapacitorMachineId.getId(false).then((id) => {
         console.log(id);
@@ -20,6 +24,12 @@ export class AutoprintService {
     if (platform.is('desktop')) {
       console.log('desktop');
     }
+  }
+
+  version(): Observable<Version> {
+    return this.httpClient
+      .get<Version>('http://localhost:9900/version')
+      .pipe(first());
   }
 
   listPrinters(): Observable<Printer[]> {
@@ -44,10 +54,17 @@ export class AutoprintService {
   }
 }
 
+export class Version {
+  version: string;
+}
+
 export class Printer {
   name: string;
   status: string;
   trays: [string];
+  pendingCount: number;
+  processingCount: number;
+  completedCount: number;
 }
 
 export class Job {

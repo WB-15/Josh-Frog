@@ -1,4 +1,39 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
   <h1 class="text-2xl font-semibold text-gray-900">AutoPrint</h1>
 
+  <div *ngIf="!loading && !version" class="py-3 bg-yellow-300 text-black rounded-lg text-center">
+      The <strong>AutoPrint</strong> daemon does not appear to be running.<br>
+      If this computer normally manages printing, please reboot this computer.
+  </div>
+
+  <div *ngIf="!loading && version">
+
+
+    <div *ngIf="printers">
+      <ul class="divide-y divide-gray-200">
+        <li *ngFor="let printer of printers" class="py-4 flex">
+          <span class="h-10 w-10 text-2xl">
+              <fa-icon [icon]="faPrint"></fa-icon>
+          </span>
+          <div class="ml-3">
+            <p class="text-sm font-medium text-gray-900">{{printer.name}}</p>
+            <p class="text-sm text-gray-500">{{printer.status}}</p>
+          </div>
+          <div class="flex-1"></div>
+          <div class="ml-3 mr-3 text-right">
+            <p class="text-sm font-medium text-gray-900">{{printer.name}}</p>
+            <p class="text-sm text-gray-500">
+              <span *ngIf="printer.pendingCount > 0">{{printer.pendingCount}} pending</span>
+              <span *ngIf="printer.processingCount > 0"> {{printer.processingCount}} processing</span>
+              <span *ngIf="printer.completedCount > 0"> {{printer.completedCount}} complete</span>
+              <span *ngIf="(printer.pendingCount == 0) && (printer.processingCount == 0) && (printer.completedCount == 0)"> no print jobs</span>
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+
 </div>
