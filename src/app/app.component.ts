@@ -9,14 +9,15 @@ const { SplashScreen, StatusBar } = Plugins;
 import {
   faHome,
   faImagePolaroid,
-  faTruckLoading,
-  faInventory,
+  faRulerVertical,
   faHandReceiving,
+  faInventory,
+  faTruckLoading,
+  faPrint,
   faTags,
   faPlusCircle,
   faClock,
-  faWarehouse,
-  faRulerVertical
+  faWarehouse
 } from '@fortawesome/pro-duotone-svg-icons';
 
 import { DialogBoxOptions } from './modules/shared/components/dialog/dialog.component';
@@ -29,6 +30,8 @@ import {
   BarcodeService,
   BarcodeScannerEvent
 } from './modules/shared/services/barcode.service';
+import { AutoprintService } from './modules/shared/services/autoprint.service';
+import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 
 @Component({
   selector: 'app-root',
@@ -42,6 +45,7 @@ export class AppComponent implements OnInit, OnDestroy {
   faHandReceiving = faHandReceiving;
   faInventory = faInventory;
   faTruckLoading = faTruckLoading;
+  faPrint = faPrint;
   faTags = faTags;
   faClock = faClock;
   faWarehouse = faWarehouse;
@@ -58,46 +62,62 @@ export class AppComponent implements OnInit, OnDestroy {
   barcodeScanners: BarcodeScannerEvent[] = [];
   barcodeScannersChangedSubscription: Subscription;
 
-  public menuItems = [
+  public availableMenuItems: MenuItem[] = [];
+
+  public allMenuItems: MenuItem[] = [
     {
       icon: faHome,
       name: 'Home',
-      route: 'home'
+      route: 'home',
+      platform: null
     },
     {
       icon: faImagePolaroid,
       name: 'Catalog',
-      route: 'catalog'
+      route: 'catalog',
+      platform: null
     },
     {
       icon: faRulerVertical,
       name: 'Making',
-      route: 'making'
+      route: 'making',
+      platform: null
     },
     {
       icon: faHandReceiving,
       name: 'Receiving',
-      route: 'receiving'
+      route: 'receiving',
+      platform: null
     },
     {
       icon: faInventory,
       name: 'Inventory',
-      route: 'inventory'
+      route: 'inventory',
+      platform: null
     },
     {
       icon: faTruckLoading,
       name: 'Shipping',
-      route: 'shipping'
+      route: 'shipping',
+      platform: 'electron'
+    },
+    {
+      icon: faPrint,
+      name: 'AutoPrint',
+      route: 'auto_print',
+      platform: 'electron'
     },
     {
       icon: faTags,
       name: 'Plant Labels',
-      route: 'plant_labels'
+      route: 'plant_labels',
+      platform: 'capacitor'
     },
     {
       icon: faClock,
       name: 'Time Clock',
-      route: 'time_clock'
+      route: 'time_clock',
+      platform: null
     }
     /*
     {
@@ -114,6 +134,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private warehouseService: WarehouseService,
     private barcodeService: BarcodeService,
+    private autoprintService: AutoprintService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
     if (platform.is('capacitor')) {
@@ -121,6 +142,17 @@ export class AppComponent implements OnInit, OnDestroy {
         StatusBar.setStyle({ style: StatusBarStyle.Light });
         SplashScreen.hide();
       });
+    }
+    this.availableMenuItems = [];
+
+    if (platform.is('electron') || platform.is('capacitor')) {
+      for (const item of this.allMenuItems) {
+        if (item.platform == null || platform.is(item.platform)) {
+          this.availableMenuItems = this.availableMenuItems.concat(item);
+        }
+      }
+    } else {
+      this.availableMenuItems = this.allMenuItems;
     }
   }
 
@@ -168,4 +200,26 @@ export class AppComponent implements OnInit, OnDestroy {
   hideMenu() {
     this.menuShown = false;
   }
+}
+
+export class MenuItem {
+  icon: IconDefinition;
+  name: string;
+  route: string;
+  platform:
+    | null
+    | 'electron'
+    | 'capacitor'
+    | 'ipad'
+    | 'iphone'
+    | 'ios'
+    | 'android'
+    | 'phablet'
+    | 'tablet'
+    | 'cordova'
+    | 'pwa'
+    | 'mobile'
+    | 'mobileweb'
+    | 'desktop'
+    | 'hybrid';
 }

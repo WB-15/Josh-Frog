@@ -50,6 +50,14 @@ const routes: Routes = [
       import('./modules/shipping/shipping.module').then((m) => m.ShippingModule)
   },
   {
+    path: 'auto_print',
+    canActivate: [AuthGuardService],
+    loadChildren: () =>
+      import('./modules/autoprint/autoprint.module').then(
+        (m) => m.AutoprintModule
+      )
+  },
+  {
     path: 'plant_labels',
     canActivate: [AuthGuardService],
     loadChildren: () =>

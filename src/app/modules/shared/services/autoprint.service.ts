@@ -1,32 +1,46 @@
 import { Injectable } from '@angular/core';
+import { Plugins } from '@capacitor/core';
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 
+const { CapacitorMachineId } = Plugins;
+
 @Injectable({
   providedIn: 'root'
 })
 export class AutoprintService {
-
   constructor(private httpClient: HttpClient, private platform: Platform) {
+    if (platform.is('electron')) {
+      CapacitorMachineId.getId(false).then((id) => {
+        console.log(id);
+      });
+    }
     if (platform.is('desktop')) {
-
+      console.log('desktop');
     }
   }
 
-
-
   listPrinters(): Observable<Printer[]> {
-    return this.httpClient.get<Printer[]>('http://localhost:9900/listPrinters').pipe(first());
+    return this.httpClient
+      .get<Printer[]>('http://localhost:9900/listPrinters')
+      .pipe(first());
   }
 
   listJobsForPrinter(printerName: string): Observable<Job[]> {
-    return this.httpClient.post<Job[]>('http://localhost:9900/listJobsForPrinter', { printerName }).pipe(first());
+    return this.httpClient
+      .post<Job[]>('http://localhost:9900/listJobsForPrinter', { printerName })
+      .pipe(first());
   }
 
   acknowledgeJob(printerName: string, jobName: string): Observable<Job> {
-    return this.httpClient.post<Job>('http://localhost:9900/acknowledgeJob', { printerName, jobName }).pipe(first());
+    return this.httpClient
+      .post<Job>('http://localhost:9900/acknowledgeJob', {
+        printerName,
+        jobName
+      })
+      .pipe(first());
   }
 }
 
