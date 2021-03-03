@@ -6,6 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 
 import {
+  AutoprintAddPrinterGQL,
   AutoprintEnrollWorkstationGQL,
   AutoprintListPrintersGQL,
   AutoprintTestWorkstationGQL,
@@ -32,6 +33,7 @@ export class AutoprintService {
     private autoprintTestWorkstationGQL: AutoprintTestWorkstationGQL,
     private autoprintEnrollWorkstationGQL: AutoprintEnrollWorkstationGQL,
     private autoprintListPrintersGQL: AutoprintListPrintersGQL,
+    private autoprintAddPrinterGQL: AutoprintAddPrinterGQL,
     private httpClient: HttpClient,
     private platform: Platform,
     private userService: UserService
@@ -92,6 +94,14 @@ export class AutoprintService {
       .mutate({ machineKey: this.machineId })
       .pipe(
         map((result) => result.data.autoprintListPrinters as PrinterEntity[])
+      );
+  }
+
+  enablePrinter(printerName: string): Observable<PrinterEntity> {
+    return this.autoprintAddPrinterGQL
+      .mutate( {machineKey: this.machineId, printerName})
+      .pipe(
+        map((result) => result.data.autoprintAddPrinter as PrinterEntity )
       );
   }
 

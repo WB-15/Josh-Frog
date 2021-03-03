@@ -16,9 +16,9 @@
   </div>
 
   <div *ngIf="!loading && (workstation != null) && version">
-    <div *ngIf="printers">
+    <div *ngIf="enabledPrinters">
       <ul class="divide-y divide-gray-200">
-        <li *ngFor="let printer of printers" class="py-4 flex">
+        <li *ngFor="let printer of enabledPrinters" class="py-4 flex">
           <span class="h-10 w-10 text-2xl">
               <fa-icon [icon]="faPrint"></fa-icon>
           </span>
@@ -28,7 +28,9 @@
           </div>
           <div class="flex-1"></div>
           <div class="ml-3 mr-3 text-right">
-            <p class="text-sm font-medium text-gray-900">{{printer.name}}</p>
+            <p class="text-sm text-gray-500">
+              <a (click)="removePrinter(printer)" class="underline">Remove Printer</a>
+            </p>
             <p class="text-sm text-gray-500">
               <span *ngIf="printer.pendingCount > 0">{{printer.pendingCount}} pending</span>
               <span *ngIf="printer.processingCount > 0"> {{printer.processingCount}} processing</span>
@@ -40,6 +42,25 @@
       </ul>
     </div>
 
+    <div *ngIf="disabledPrinters">
+      <ul class="divide-y divide-gray-200">
+        <li *ngFor="let printer of disabledPrinters" class="py-4 flex">
+          <span class="h-10 w-10 text-2xl">
+              <fa-icon [icon]="faPrint"></fa-icon>
+          </span>
+          <div class="ml-3">
+            <p class="text-sm font-medium text-gray-900">{{printer.name}}</p>
+            <p class="text-sm text-gray-500">{{printer.status}}</p>
+          </div>
+          <div class="flex-1"></div>
+          <div class="ml-3 mr-3 text-right">
+            <p class="text-sm text-gray-500">
+              <a (click)="addPrinter(printer)" class="underline">Add Printer</a>
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 
 

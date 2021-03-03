@@ -5,7 +5,7 @@ import {
   Version
 } from '../../../shared/services/autoprint.service';
 import { faPrint } from '@fortawesome/pro-duotone-svg-icons';
-import { WorkstationEntity } from '../../../../../generated/graphql';
+import { PrinterEntity, WorkstationEntity } from '../../../../../generated/graphql';
 import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
 import { DialogService } from '../../../shared/services/dialog.service';
 import { EnrollmentComponent } from '../../dialogs/enrollment/enrollment.component';
@@ -23,7 +23,10 @@ export class AutoprintComponent implements OnInit {
 
   public workstation: WorkstationEntity;
 
-  public printers: Printer[];
+  public enabledPrinters: Printer[];
+  public disabledPrinters: Printer[];
+
+  public addedPrinters: PrinterEntity[];
 
   constructor(
     private dialogService: DialogService,
@@ -51,10 +54,45 @@ export class AutoprintComponent implements OnInit {
   }
 
   loadPrinters() {
-    this.autoprintService.listAvailablePrinters().subscribe((printers) => {
-      this.printers = printers;
+    this.autoprintService.listEnabledPrinters().subscribe((addedPrinters) => {
+      this.addedPrinters = addedPrinters;
+      this.autoprintService.listAvailablePrinters().subscribe((printers) => {
+        this.enabledPrinters = [];
+        this.disabledPrinters = [];
+        for (const printer of printers) {
+          let found = false;
+          for (const addedPrinter of addedPrinters) {
+            if (printer.name === addedPrinter.name) {
+              found = true;
+            }
+          }
+          if (found) {
+            this.enabledPrinters = this.enabledPrinters.concat(printer);
+          }
+          else {
+            this.disabledPrinters = this.disabledPrinters.concat(printer);
+          }
+        }
+      });
     });
   }
+
+  addPrinter(printer: Printer) {
+    this.autoprintService.enablePrinter(printer.name).subscribe((addedPrinter) => {
+      this.enabledPrinters = this.enabledPrinters.concat(printer);
+      this.disabledPrinters = this.disabledPrinters.filter((disabledPrinter) => (disabledPrinter.name !== printer.name));
+    });
+  }
+
+  removePrinter(printer: Printer) {
+    /* TODO: enable this code, once the GQL exists
+`   this.autoprintService.disablePrinter(printer.name).subscribe((removedPrinter) => {
+      this.enabledPrinters = this.enabledPrinters.filter((disabledPrinter) => (disabledPrinter.name !== printer.name));
+      this.disabledPrinters = this.disabledPrinters.concat(printer);
+    });`
+  */
+  }
+
 
   showEnrollmentDialog() {
     const options = new DialogBoxOptions();
