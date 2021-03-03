@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AutoprintService, Printer, Version } from '../../../shared/services/autoprint.service';
+import {
+  AutoprintService,
+  Printer,
+  Version
+} from '../../../shared/services/autoprint.service';
 import { faPrint } from '@fortawesome/pro-duotone-svg-icons';
 import { WorkstationEntity } from '../../../../../generated/graphql';
 import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
@@ -21,28 +25,33 @@ export class AutoprintComponent implements OnInit {
 
   public printers: Printer[];
 
-  constructor(private dialogService: DialogService, private autoprintService: AutoprintService) {}
+  constructor(
+    private dialogService: DialogService,
+    private autoprintService: AutoprintService
+  ) {}
 
   ngOnInit() {
     this.workstation = this.autoprintService.getWorkstation();
 
     if (this.workstation) {
-      this.autoprintService.version().subscribe((version) => {
-        this.version = version;
-        this.loading = false;
-        this.loadPrinters();
-      }, (error) => {
-        this.version = null;
-        this.loading = false;
-      });
-    }
-    else {
+      this.autoprintService.version().subscribe(
+        (version) => {
+          this.version = version;
+          this.loading = false;
+          this.loadPrinters();
+        },
+        (error) => {
+          this.version = null;
+          this.loading = false;
+        }
+      );
+    } else {
       this.loading = false;
     }
   }
 
   loadPrinters() {
-    this.autoprintService.listPrinters().subscribe((printers) => {
+    this.autoprintService.listAvailablePrinters().subscribe((printers) => {
       this.printers = printers;
     });
   }

@@ -6,9 +6,12 @@ import { Observable, Subscription } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 
 import {
-  AutoprintEnrollWorkstationGQL, AutoprintListPrintersGQL,
+  AutoprintEnrollWorkstationGQL,
+  AutoprintListPrintersGQL,
   AutoprintTestWorkstationGQL,
-  InventoryDetails, PrinterEntity, WorkstationEntity
+  InventoryDetails,
+  PrinterEntity,
+  WorkstationEntity
 } from '../../../../generated/graphql';
 import { UserService } from './user.service';
 
@@ -44,18 +47,19 @@ export class AutoprintService {
               if (user) {
                 this.testWorkstation();
               }
-            }, (error => {
+            },
+            (error) => {
               console.log(error);
-            }));
-          }
-        );
+            }
+          );
+        });
       });
     }
   }
 
   testWorkstation() {
     this.autoprintTestWorkstationGQL
-      .mutate({ machineKey: this.machineId})
+      .mutate({ machineKey: this.machineId })
       .pipe(map((result) => result.data.autoprintTestWorkstation))
       .subscribe(
         (result) => {
@@ -85,10 +89,10 @@ export class AutoprintService {
 
   listEnabledPrinters(): Observable<PrinterEntity[]> {
     return this.autoprintListPrintersGQL
-      .mutate({machineKey: this.machineId})
-      .pipe(map((result) => {
-        result.data.autoprintListPrinters
-      }));
+      .mutate({ machineKey: this.machineId })
+      .pipe(
+        map((result) => result.data.autoprintListPrinters as PrinterEntity[])
+      );
   }
 
   getMachineName(): string {
