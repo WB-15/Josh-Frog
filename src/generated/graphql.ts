@@ -2518,7 +2518,10 @@ export type AutoprintEnrollWorkstationMutation = (
   )> }
 );
 
-export type AutoprintGetNextForPrinterMutationVariables = Exact<{ [key: string]: never; }>;
+export type AutoprintGetNextForPrinterMutationVariables = Exact<{
+  machineKey: Scalars['String'];
+  printerName: Scalars['String'];
+}>;
 
 
 export type AutoprintGetNextForPrinterMutation = (
@@ -2908,8 +2911,8 @@ export const AutoprintEnrollWorkstationDocument = gql`
     
   }
 export const AutoprintGetNextForPrinterDocument = gql`
-    mutation autoprintGetNextForPrinter {
-  autoprintGetNextForPrinter(machineKey: "b64f28fa5d722790d7de78e87067847f5c8fda24a8ad2f61b9bd3ff0ee0503b0", printerName: "Brother MFC-L8900CDW series") {
+    mutation autoprintGetNextForPrinter($machineKey: String!, $printerName: String!) {
+  autoprintGetNextForPrinter(machineKey: $machineKey, printerName: $printerName) {
     name
     printer
     tray
