@@ -112,7 +112,7 @@ export class AutoprintService {
           if (!pending) {
             this.getNextForPrinter(printerName).subscribe((printJobs) => {
               for (const printJob of printJobs) {
-                this.printData(printerName, printJob.name, printJob.dataBase64);
+                this.printData(printerName, printJob.name, printJob.dataBase64).subscribe((job) => { });
               }
               this.timerCallback(10000);
             });
