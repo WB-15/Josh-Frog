@@ -8,10 +8,10 @@ import { first, map } from 'rxjs/operators';
 import {
   AutoprintAddPrinterGQL,
   AutoprintEnrollWorkstationGQL,
+  AutoprintGetNextForPrinterGQL,
   AutoprintListPrintersGQL,
   AutoprintTestWorkstationGQL,
-  InventoryDetails,
-  PrinterEntity,
+  PrinterEntity, PrintJob,
   WorkstationEntity
 } from '../../../../generated/graphql';
 import { UserService } from './user.service';
@@ -31,13 +31,14 @@ export class AutoprintService {
   private userChangedSubscription: Subscription;
 
   private printers: PrinterEntity[] = null;
-  private printerIndex: number = 0;
+  private printerIndex = 0;
 
   constructor(
     private autoprintTestWorkstationGQL: AutoprintTestWorkstationGQL,
     private autoprintEnrollWorkstationGQL: AutoprintEnrollWorkstationGQL,
     private autoprintListPrintersGQL: AutoprintListPrintersGQL,
     private autoprintAddPrinterGQL: AutoprintAddPrinterGQL,
+    private autoprintGetNextForPrinterGQL: AutoprintGetNextForPrinterGQL,
     private httpClient: HttpClient,
     private platform: Platform,
     private userService: UserService
@@ -51,7 +52,11 @@ export class AutoprintService {
           this.userChangedSubscription = this.userService.userChanged$.subscribe(
             (user) => {
               if (user) {
-                this.testWorkstation();
+                console.log("U");
+                this.version().subscribe((version) => {
+                  console.log("V", version);
+                  this.testWorkstation();
+                });
               }
             },
             (error) => {
@@ -64,13 +69,14 @@ export class AutoprintService {
   }
 
   testWorkstation() {
+    console.log("T");
     this.autoprintTestWorkstationGQL
       .mutate({ machineKey: this.machineId })
       .pipe(map((result) => result.data.autoprintTestWorkstation))
       .subscribe(
         (result) => {
           this.workstation = result;
-          this.timerCallback();
+          this.timerCallback(1000);
         },
         (error) => {
           console.log(error);
@@ -80,27 +86,43 @@ export class AutoprintService {
       );
   }
 
-  timerCallback() {
+  timerCallback(duration: number) {
     clearTimeout(this.timer);
     setTimeout(() => {
-      console.log('ERIC');
-      this.timerCallback();
-
       if (!this.printers) {
         this.listEnabledPrinters().subscribe((printers) => {
           this.printers = printers;
+          this.timerCallback(1000);
         });
       }
       else if (this.printers) {
         this.printerIndex++;
         if (this.printerIndex >= this.printers.length) {
           this.printerIndex = 0;
-
-
-
         }
+
+        const printerName = this.printers[this.printerIndex].name;
+        this.listJobsForPrinter(printerName).subscribe((jobs) => {
+          let pending = false;
+          for (const job of jobs) {
+            if (job.status === 'pending' || job.status === 'processing') {
+              pending = true;
+            }
+          }
+          if (!pending) {
+            this.getNextForPrinter(printerName).subscribe((printJobs) => {
+              for (const printJob of printJobs) {
+                this.printData(printerName, printJob.name, printJob.dataBase64);
+              }
+              this.timerCallback(10000);
+            });
+          }
+          else {
+            this.timerCallback(10000);
+          }
+        });
       }
-    }, 30000);
+    }, duration);
   }
 
   enrollWorkstation(warehouse: string) {
@@ -130,7 +152,15 @@ export class AutoprintService {
     return this.autoprintAddPrinterGQL
       .mutate( {machineKey: this.machineId, printerName})
       .pipe(
-        map((result) => result.data.autoprintAddPrinter as PrinterEntity )
+        map((result) => result.data.autoprintAddPrinter as PrinterEntity)
+      );
+  }
+
+  getNextForPrinter(printerName: string): Observable<PrintJob[]> {
+    return this.autoprintGetNextForPrinterGQL
+      .mutate({machineKey: this.machineId, printerName})
+      .pipe(
+        map((result) => result.data.autoprintGetNextForPrinter as PrintJob[])
       );
   }
 
@@ -161,6 +191,19 @@ export class AutoprintService {
   listJobsForPrinter(printerName: string): Observable<Job[]> {
     return this.httpClient
       .post<Job[]>('http://localhost:9900/listJobsForPrinter', { printerName })
+      .pipe(first());
+  }
+
+  printData(printerName: string, jobName: string, dataBase64: string): Observable<Job> {
+    return this.httpClient
+      .post<Job>('http://localhost:9900/printData', {
+        printerName,
+        jobName,
+        acknowledge: true,
+        dataBase64,
+        tray: '',
+        paperSize: 'Letter'
+      })
       .pipe(first());
   }
 
@@ -195,4 +238,9 @@ export class Job {
   tray: string;
   paperSize: string;
   acknowledge: boolean;
+}
+
+class PrintDataRequest
+{
+
 }
