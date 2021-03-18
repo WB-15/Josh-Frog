@@ -1,0 +1,11 @@
+mutation autoprintGetNextForPrinter {
+    autoprintGetNextForPrinter(
+        machineKey: "b64f28fa5d722790d7de78e87067847f5c8fda24a8ad2f61b9bd3ff0ee0503b0",
+        printerName: "Brother MFC-L8900CDW series"
+    ) {
+        name,
+        printer,
+        tray,
+        dataBase64
+    }
+}

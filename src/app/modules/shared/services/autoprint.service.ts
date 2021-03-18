@@ -25,9 +25,13 @@ export class AutoprintService {
   private machineId: string = null;
   private machineName: string = null;
 
-  private workstation: WorkstationEntity;
+  private timer: number = null;
 
+  private workstation: WorkstationEntity;
   private userChangedSubscription: Subscription;
+
+  private printers: PrinterEntity[] = null;
+  private printerIndex: number = 0;
 
   constructor(
     private autoprintTestWorkstationGQL: AutoprintTestWorkstationGQL,
@@ -66,12 +70,37 @@ export class AutoprintService {
       .subscribe(
         (result) => {
           this.workstation = result;
+          this.timerCallback();
         },
         (error) => {
           console.log(error);
           this.workstation = null;
+          clearTimeout(this.timer);
         }
       );
+  }
+
+  timerCallback() {
+    clearTimeout(this.timer);
+    setTimeout(() => {
+      console.log('ERIC');
+      this.timerCallback();
+
+      if (!this.printers) {
+        this.listEnabledPrinters().subscribe((printers) => {
+          this.printers = printers;
+        });
+      }
+      else if (this.printers) {
+        this.printerIndex++;
+        if (this.printerIndex >= this.printers.length) {
+          this.printerIndex = 0;
+
+
+
+        }
+      }
+    }, 30000);
   }
 
   enrollWorkstation(warehouse: string) {
