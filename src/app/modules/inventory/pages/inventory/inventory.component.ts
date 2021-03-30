@@ -191,7 +191,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
       .pipe(map((result) => result.data.inventoryGetDetails))
       .subscribe(
         (result) => {
-          console.log(result);
           this.inventoryDetails = result as InventoryDetails;
           this.changeDetectorRef.detectChanges();
         },

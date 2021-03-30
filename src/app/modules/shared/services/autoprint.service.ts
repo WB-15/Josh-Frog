@@ -55,9 +55,7 @@ export class AutoprintService {
           this.userChangedSubscription = this.userService.userChanged$.subscribe(
             (user) => {
               if (user) {
-                console.log('U');
                 this.version().subscribe((version) => {
-                  console.log('V', version);
                   this.testWorkstation();
                 });
               }
@@ -72,7 +70,6 @@ export class AutoprintService {
   }
 
   testWorkstation() {
-    console.log('T');
     this.autoprintTestWorkstationGQL
       .mutate({ machineKey: this.machineId })
       .pipe(map((result) => result.data.autoprintTestWorkstation))
@@ -93,10 +90,16 @@ export class AutoprintService {
     clearTimeout(this.timer);
     setTimeout(() => {
       if (!this.printers) {
-        this.listEnabledPrinters().subscribe((printers) => {
-          this.printers = printers;
-          this.timerCallback(1000);
-        });
+        this.listEnabledPrinters().subscribe(
+          (printers) => {
+            this.printers = printers;
+            this.timerCallback(1000);
+          },
+          (error) => {
+            // Probably the daemon is not running
+            this.timerCallback(30000);
+          }
+        );
       } else if (this.printers) {
         this.printerIndex++;
         if (this.printerIndex >= this.printers.length) {
@@ -116,16 +119,25 @@ export class AutoprintService {
             }
           }
           if (!pending) {
-            this.getNextForPrinter(printerName).subscribe((printJobs) => {
-              for (const printJob of printJobs) {
-                this.printData(
-                  printerName,
-                  printJob.name,
-                  printJob.dataBase64
-                ).subscribe((job) => {});
+            this.getNextForPrinter(printerName).subscribe(
+              (printJobs) => {
+                for (const printJob of printJobs) {
+                  this.printData(
+                    printerName,
+                    printJob.name,
+                    printJob.dataBase64
+                  ).subscribe((job) => {});
+                }
+                if (printJobs.length > 0) {
+                  this.timerCallback(1000);
+                } else {
+                  this.timerCallback(10000);
+                }
+              },
+              (error) => {
+                this.timerCallback(60000);
               }
-              this.timerCallback(10000);
-            });
+            );
           } else {
             this.timerCallback(10000);
           }

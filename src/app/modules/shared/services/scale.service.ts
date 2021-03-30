@@ -9,7 +9,7 @@ const { CapacitorMettlerToledo } = Plugins;
 })
 export class ScaleService {
   constructor(private platform: Platform) {
-    console.log('constructor');
+    // console.log('constructor');
     if (platform.is('electron')) {
       CapacitorMettlerToledo.echo({
         value: 'Hello from web!'

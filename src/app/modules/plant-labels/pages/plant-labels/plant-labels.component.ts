@@ -144,7 +144,7 @@ export class PlantLabelsComponent implements OnInit, OnDestroy {
           this.changeDetectorRef.detectChanges();
         },
         (error) => {
-          console.error(error);
+          // console.error(error);
           this.loading--;
           this.changeDetectorRef.detectChanges();
         }
@@ -163,7 +163,7 @@ export class PlantLabelsComponent implements OnInit, OnDestroy {
       .subscribe(
         (result) => {
           this.searchResults = result as SimpleProductEntity[];
-          console.log(this.searchResults);
+          // console.log(this.searchResults);
           this.changeDetectorRef.detectChanges();
         },
         (error) => {

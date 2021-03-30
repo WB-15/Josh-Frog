@@ -16,7 +16,7 @@ app.on('ready', () => {
   session.defaultSession.webRequest.onBeforeSendHeaders(
     filter,
     (details, callback) => {
-      console.log(details);
+      // console.log(details);
       details.requestHeaders.Origin = 'https://app.joshsfrogs.com';
       callback({ requestHeaders: details.requestHeaders });
     }
@@ -25,7 +25,7 @@ app.on('ready', () => {
   session.defaultSession.webRequest.onHeadersReceived(
     filter,
     (details, callback) => {
-      console.log(details);
+      // console.log(details);
       if (
         details.responseHeaders.hasOwnProperty('access-control-allow-origin')
       ) {
