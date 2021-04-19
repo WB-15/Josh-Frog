@@ -34,8 +34,10 @@ export class BarcodeService {
   public binScanned$ = this.binDataSubject$.asObservable();
 
   private lastOrderEvent: string;
-  private orderDataSubject$ = new BehaviorSubject<string>(this.lastOrderEvent);
-  public orderScanned$ = this.orderDataSubject$.asObservable();
+  private shipmentDataSubject$ = new BehaviorSubject<string>(
+    this.lastOrderEvent
+  );
+  public shipmentScanned$ = this.shipmentDataSubject$.asObservable();
 
   constructor(private platform: Platform) {
     if (platform.is('capacitor')) {
@@ -45,18 +47,18 @@ export class BarcodeService {
           this.barcodeDataSubject$.next(barcodeDataEvent);
 
           if (barcodeDataEvent.type === 'UPC A') {
-            this.orderDataSubject$.next(null);
+            this.shipmentDataSubject$.next(null);
             this.binDataSubject$.next(null);
             this.skuDataSubject$.next(null);
             this.upcDataSubject$.next(barcodeDataEvent.data);
           } else if (barcodeDataEvent.type === 'Code 128') {
             if (barcodeDataEvent.data.charAt(0) === '#') {
-              this.orderDataSubject$.next(null);
+              this.shipmentDataSubject$.next(null);
               this.skuDataSubject$.next(null);
               this.upcDataSubject$.next(null);
               this.binDataSubject$.next(barcodeDataEvent.data.substr(1));
             } else if (barcodeDataEvent.data.charAt(0) === '*') {
-              this.orderDataSubject$.next(null);
+              this.shipmentDataSubject$.next(null);
               this.binDataSubject$.next(null);
               this.upcDataSubject$.next(null);
               this.skuDataSubject$.next(barcodeDataEvent.data.substr(1));
@@ -64,7 +66,7 @@ export class BarcodeService {
               this.binDataSubject$.next(null);
               this.skuDataSubject$.next(null);
               this.upcDataSubject$.next(null);
-              this.orderDataSubject$.next(barcodeDataEvent.data);
+              this.shipmentDataSubject$.next(barcodeDataEvent.data);
             }
           }
         }

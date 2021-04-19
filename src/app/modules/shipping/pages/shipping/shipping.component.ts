@@ -1,7 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ScaleService } from '../../../shared/services/scale.service';
 import { PrinterService } from '../../../shared/services/printer.service';
-import { ShipmentEntity, SimpleProductEntity, WarehouseEntity } from '../../../../../generated/graphql';
+import {
+  ShipmentEntity,
+  ShipmentInfoGQL,
+  WarehouseEntity
+} from '../../../../../generated/graphql';
 import { Subscription } from 'rxjs';
 import { WarehouseService } from '../../../shared/services/warehouse.service';
 import { BarcodeService } from '../../../shared/services/barcode.service';
@@ -14,8 +18,7 @@ import { DialogService } from '../../../shared/services/dialog.service';
   templateUrl: './shipping.component.html',
   styles: []
 })
-export class ShippingComponent implements OnInit {
-
+export class ShippingComponent implements OnInit, OnDestroy {
   shipmentNumber = '';
 
   warehouse: WarehouseEntity = null;
@@ -33,7 +36,8 @@ export class ShippingComponent implements OnInit {
     private warehouseService: WarehouseService,
     private barcodeService: BarcodeService,
     private scaleService: ScaleService,
-    private printerService: PrinterService
+    private printerService: PrinterService,
+    private shipmentInfoGQL: ShipmentInfoGQL
   ) {}
 
   ngOnInit() {
@@ -43,21 +47,19 @@ export class ShippingComponent implements OnInit {
       }
     );
 
-    this.shipmentScannedSubscription = this.barcodeService.orderScanned$.subscribe(
+    this.shipmentScannedSubscription = this.barcodeService.shipmentScanned$.subscribe(
       (shipmentNumber) => {
         this.shipmentNumber = shipmentNumber;
         if (this.shipmentNumber) {
           this.loading++;
           this.changeDetectorRef.detectChanges();
-          this.simpleProductFindByUpcGQL
-            .fetch({ upc: this.upc })
-            .pipe(map((result) => result.data.simpleProductFindByUpc))
+          this.shipmentInfoGQL
+            .fetch({ shipmentNumber: this.shipmentNumber })
+            .pipe(map((result) => result.data.shipmentInfo))
             .subscribe(
               (result) => {
-                this.simpleProduct = result as SimpleProductEntity;
+                this.shipment = result as ShipmentEntity;
                 this.loading--;
-                this.quantityReceived = null;
-                this.quantityEntry = null;
                 this.changeDetectorRef.detectChanges();
               },
               (error) => {
@@ -70,5 +72,10 @@ export class ShippingComponent implements OnInit {
         }
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.warehouseChangedSubscription.unsubscribe();
+    this.shipmentScannedSubscription.unsubscribe();
   }
 }

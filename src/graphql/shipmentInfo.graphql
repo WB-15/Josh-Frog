@@ -1,0 +1,37 @@
+query shipmentInfo ($shipmentNumber: String!) {
+    shipmentInfo(
+        shipmentNumber: $shipmentNumber
+    ) {
+        id,
+        cls,
+        shipmentNumber,
+        shipmentStatus,
+        shippingNeeds,
+        carrier,
+        service,
+        estimatedWeight,
+        actualWeight,
+        estimatedLength,
+        estimatedWidth,
+        estimatedHeight,
+        actualLength,
+        actualWidth,
+        actualHeight,
+        estimatedShipDate,
+        estimatedDeliveryDate,
+        shippedAt,
+        trackingNo,
+
+        shipmentItems {
+            id,
+            cls,
+            quantity,
+            salesOrderItem {
+                id,
+                cls,
+                sku,
+                name
+            }
+        }
+    }
+}
