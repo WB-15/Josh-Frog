@@ -121,7 +121,7 @@ export class PlantLabelsComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.printerService.printLabel(
+    this.printerService.printProductLabel(
       this.simpleProduct.sku,
       this.simpleProduct.title,
       price,
