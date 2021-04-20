@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
 import {
+  faSearch,
   faBalanceScale,
   faRuler,
   faRulerVertical,
@@ -28,7 +29,9 @@ import {
   ShipmentFindGQL,
   ShipmentInfoGQL,
   ShipmentShipGQL,
-  WarehouseEntity
+  WarehouseEntity,
+  ShipmentFilterGQL,
+  GraphQlPageableInput
 } from '../../../../../generated/graphql';
 
 @Component({
@@ -37,16 +40,19 @@ import {
   styles: []
 })
 export class ShippingComponent implements OnInit, OnDestroy {
+  faSearch = faSearch;
   faBalanceScale = faBalanceScale;
   faRuler = faRuler;
   faRulerVertical = faRulerVertical;
   faRulerHorizontal = faRulerHorizontal;
 
-  shipmentNumber = '';
+  searchShipmentNumber = '';
+  pendingSearchShipmentNumber: string = null;
 
   carrier: Carrier;
   service: Service;
 
+  shipmentNumber = '';
   weight: number;
   length: number;
   width: number;
@@ -59,6 +65,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
   shipmentScannedSubscription: Subscription;
 
   shipment: ShipmentEntity;
+  searchResults: ShipmentEntity[];
 
   constructor(
     private route: ActivatedRoute,
@@ -70,6 +77,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
     private printerService: PrinterService,
     private shipmentInfoGQL: ShipmentInfoGQL,
     private shipmentFindGQL: ShipmentFindGQL,
+    private shipmentFilterGQL: ShipmentFilterGQL,
     private shipmentShipGQL: ShipmentShipGQL
   ) {}
 
@@ -79,24 +87,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
         this.warehouse = warehouse;
         this.route.queryParams.subscribe((params) => {
           if (params.id) {
-            this.loading++;
-            this.changeDetectorRef.detectChanges();
-            this.shipmentInfoGQL
-              .fetch({ id: params.id })
-              .pipe(map((result) => result.data.shipmentInfo))
-              .subscribe(
-                (result) => {
-                  this.shipment = result as ShipmentEntity;
-                  this.loading--;
-                  this.changeDetectorRef.detectChanges();
-                },
-                (error) => {
-                  console.error(error);
-                  this.loading--;
-                  this.dialogService.showErrorMessageBox(error);
-                  this.changeDetectorRef.detectChanges();
-                }
-              );
+            this.load(params.id);
           }
         });
       },
@@ -130,6 +121,77 @@ export class ShippingComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  search() {
+    if (this.pendingSearchShipmentNumber == null) {
+      if (this.searchShipmentNumber === '') {
+        this.searchResults = [];
+      } else {
+        this.pendingSearchShipmentNumber = this.searchShipmentNumber;
+
+        const pageable: GraphQlPageableInput = {
+          page: 1,
+          pageSize: 5
+        };
+        this.shipmentFilterGQL
+          .fetch({
+            shipmentNumber: '%' + this.searchShipmentNumber + '%',
+            pageable
+          })
+          .pipe(map((result) => result.data.shipmentFilter.data))
+          .subscribe(
+            (result) => {
+              this.searchResults = result as ShipmentEntity[];
+              this.changeDetectorRef.detectChanges();
+              if (
+                this.pendingSearchShipmentNumber !== this.searchShipmentNumber
+              ) {
+                this.pendingSearchShipmentNumber = null;
+                this.search();
+              } else {
+                this.pendingSearchShipmentNumber = null;
+              }
+            },
+            (error) => {
+              console.error(error);
+              this.dialogService.showErrorMessageBox(error);
+              this.changeDetectorRef.detectChanges();
+              if (
+                this.pendingSearchShipmentNumber !== this.searchShipmentNumber
+              ) {
+                this.pendingSearchShipmentNumber = null;
+                this.search();
+              } else {
+                this.pendingSearchShipmentNumber = null;
+              }
+            }
+          );
+      }
+    }
+  }
+
+  load(id: string) {
+    this.loading++;
+    this.searchShipmentNumber = '';
+    this.searchResults = [];
+    this.changeDetectorRef.detectChanges();
+    this.shipmentInfoGQL
+      .fetch({ id })
+      .pipe(map((result) => result.data.shipmentInfo))
+      .subscribe(
+        (result) => {
+          this.shipment = result as ShipmentEntity;
+          this.loading--;
+          this.changeDetectorRef.detectChanges();
+        },
+        (error) => {
+          console.error(error);
+          this.loading--;
+          this.dialogService.showErrorMessageBox(error);
+          this.changeDetectorRef.detectChanges();
+        }
+      );
   }
 
   showLengthDialog() {
@@ -194,7 +256,11 @@ export class ShippingComponent implements OnInit, OnDestroy {
         id: this.shipment.id,
         carrier: this.carrier,
         service: this.service,
-        warehouse: this.warehouse.name
+        warehouse: this.warehouse.name,
+        weight: this.weight ? this.weight : this.shipment.estimatedWeight,
+        length: this.length ? this.length : this.shipment.estimatedLength,
+        width: this.width ? this.width : this.shipment.estimatedWidth,
+        height: this.height ? this.height : this.shipment.estimatedHeight
       })
       .pipe(map((result) => result.data.shipmentShip))
       .subscribe(
