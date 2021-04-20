@@ -1,17 +1,35 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ScaleService } from '../../../shared/services/scale.service';
-import { PrinterService } from '../../../shared/services/printer.service';
-import {
-  ShipmentEntity,
-  ShipmentInfoGQL,
-  WarehouseEntity
-} from '../../../../../generated/graphql';
 import { Subscription } from 'rxjs';
-import { WarehouseService } from '../../../shared/services/warehouse.service';
-import { BarcodeService } from '../../../shared/services/barcode.service';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+
+import {
+  faBalanceScale,
+  faRuler,
+  faRulerVertical,
+  faRulerHorizontal
+} from '@fortawesome/pro-duotone-svg-icons';
+
 import { DialogService } from '../../../shared/services/dialog.service';
+import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
+import { WeightComponent } from '../../dialogs/weight/weight.component';
+import { LengthComponent } from '../../dialogs/length/length.component';
+
+import { BarcodeService } from '../../../shared/services/barcode.service';
+import { ScaleService } from '../../../shared/services/scale.service';
+import { PrinterService } from '../../../shared/services/printer.service';
+
+import { WarehouseService } from '../../../shared/services/warehouse.service';
+
+import {
+  Carrier,
+  Service,
+  ShipmentEntity,
+  ShipmentFindGQL,
+  ShipmentInfoGQL,
+  ShipmentShipGQL,
+  WarehouseEntity
+} from '../../../../../generated/graphql';
 
 @Component({
   selector: 'app-shipping',
@@ -19,7 +37,20 @@ import { DialogService } from '../../../shared/services/dialog.service';
   styles: []
 })
 export class ShippingComponent implements OnInit, OnDestroy {
+  faBalanceScale = faBalanceScale;
+  faRuler = faRuler;
+  faRulerVertical = faRulerVertical;
+  faRulerHorizontal = faRulerHorizontal;
+
   shipmentNumber = '';
+
+  carrier: Carrier;
+  service: Service;
+
+  weight: number;
+  length: number;
+  width: number;
+  height: number;
 
   warehouse: WarehouseEntity = null;
   warehouseChangedSubscription: Subscription;
@@ -37,13 +68,40 @@ export class ShippingComponent implements OnInit, OnDestroy {
     private barcodeService: BarcodeService,
     private scaleService: ScaleService,
     private printerService: PrinterService,
-    private shipmentInfoGQL: ShipmentInfoGQL
+    private shipmentInfoGQL: ShipmentInfoGQL,
+    private shipmentFindGQL: ShipmentFindGQL,
+    private shipmentShipGQL: ShipmentShipGQL
   ) {}
 
   ngOnInit() {
     this.warehouseChangedSubscription = this.warehouseService.warehouseChanged$.subscribe(
       (warehouse) => {
         this.warehouse = warehouse;
+        this.route.queryParams.subscribe((params) => {
+          if (params.id) {
+            this.loading++;
+            this.changeDetectorRef.detectChanges();
+            this.shipmentInfoGQL
+              .fetch({ id: params.id })
+              .pipe(map((result) => result.data.shipmentInfo))
+              .subscribe(
+                (result) => {
+                  this.shipment = result as ShipmentEntity;
+                  this.loading--;
+                  this.changeDetectorRef.detectChanges();
+                },
+                (error) => {
+                  console.error(error);
+                  this.loading--;
+                  this.dialogService.showErrorMessageBox(error);
+                  this.changeDetectorRef.detectChanges();
+                }
+              );
+          }
+        });
+      },
+      (error) => {
+        this.warehouse = null;
       }
     );
 
@@ -53,9 +111,9 @@ export class ShippingComponent implements OnInit, OnDestroy {
         if (this.shipmentNumber) {
           this.loading++;
           this.changeDetectorRef.detectChanges();
-          this.shipmentInfoGQL
+          this.shipmentFindGQL
             .fetch({ shipmentNumber: this.shipmentNumber })
-            .pipe(map((result) => result.data.shipmentInfo))
+            .pipe(map((result) => result.data.shipmentFind))
             .subscribe(
               (result) => {
                 this.shipment = result as ShipmentEntity;
@@ -72,6 +130,85 @@ export class ShippingComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  showLengthDialog() {
+    const options = new DialogBoxOptions();
+    options.component = LengthComponent;
+    options.inputs = {
+      callback: (length: number) => {
+        this.dialogService.hideDialog();
+        this.length = length;
+      }
+    };
+    options.title = 'Package Length';
+    options.okText = 'Close';
+    this.dialogService.showDialog(options);
+  }
+
+  showWidthDialog() {
+    const options = new DialogBoxOptions();
+    options.component = LengthComponent;
+    options.inputs = {
+      callback: (width: number) => {
+        this.dialogService.hideDialog();
+        this.width = width;
+      }
+    };
+    options.title = 'Package Width';
+    options.okText = 'Close';
+    this.dialogService.showDialog(options);
+  }
+
+  showHeightDialog() {
+    const options = new DialogBoxOptions();
+    options.component = LengthComponent;
+    options.inputs = {
+      callback: (height: number) => {
+        this.dialogService.hideDialog();
+        this.height = height;
+      }
+    };
+    options.title = 'Package Height';
+    options.okText = 'Close';
+    this.dialogService.showDialog(options);
+  }
+
+  showWeightDialog() {
+    const options = new DialogBoxOptions();
+    options.component = WeightComponent;
+    options.inputs = {
+      callback: (weight: number) => {
+        this.dialogService.hideDialog();
+        this.weight = weight;
+      }
+    };
+    options.title = 'Package Weight';
+    options.okText = 'Close';
+    this.dialogService.showDialog(options);
+  }
+
+  ship(): void {
+    this.shipmentShipGQL
+      .mutate({
+        id: this.shipment.id,
+        carrier: this.carrier,
+        service: this.service,
+        warehouse: this.warehouse.name
+      })
+      .pipe(map((result) => result.data.shipmentShip))
+      .subscribe(
+        (result) => {
+          this.shipment = result as ShipmentEntity;
+          this.printerService.printShippingLabel(
+            this.shipment.shipmentNumber,
+            this.shipment.zplContent
+          );
+        },
+        (error) => {
+          this.dialogService.showErrorMessageBox(error);
+        }
+      );
   }
 
   ngOnDestroy(): void {

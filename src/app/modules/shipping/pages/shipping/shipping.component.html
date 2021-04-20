@@ -1,11 +1,176 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
   <h1 class="text-2xl font-semibold text-gray-900">Shipping</h1>
 
-  <div class="py-3 bg-yellow-300 text-black rounded-lg text-center">
-    Coming soon.  Please use <strong>ShipWorks</strong> for shipping.
+  <div class="p-4">
+    <div class="p-2">
+      <div class="block lg:flex lg:flex-row">
+        <div>
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">DETAILS</p>
+          <div class="flex items-center">
+            <app-marketplace-icon [cls]="shipment?.salesOrder.cls"></app-marketplace-icon>
+            <div *ngIf="shipment?.shipmentNumber" class="ml-4">
+              <div *ngIf="shipment?.shipmentNumber" class="leading-5 font-medium text-gray-900"><span class="font-light">{{shipment.shipmentNumber.substr(0, 11)}}</span><span class="font-semibold">{{shipment.shipmentNumber.substr(11)}}</span></div>
+              <div *ngIf="shipment?.salesOrder.alternateOrderNumber" class="text-sm leading-5 font-light text-gray-500">{{shipment?.salesOrder.alternateOrderNumber}}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="h-6 lg:flex-1"></div>
+
+        <div class="w-64">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">STATUS</p>
+          <app-shipment-status [shipmentStatus]="shipment?.shipmentStatus"></app-shipment-status>
+        </div>
+
+        <div class="h-6 lg:flex-1"></div>
+
+      </div>
+    </div>
   </div>
 
-  <p>
+  <div class="p-4">
+    <div class="p-2">
+      <div class="block lg:flex lg:flex-row">
+        <div>
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">DESTINATION</p>
+          <p class="font-light">{{shipment?.salesOrder.shippingFirstName}} {{shipment?.salesOrder.shippingLastName}}</p>
+          <p class="font-light" *ngIf="shipment?.salesOrder.shippingCompany">{{shipment.salesOrder.shippingCompany}}</p>
+          <p class="font-light">{{shipment?.salesOrder.shippingLine1}}</p>
+          <p class="font-light" *ngIf="shipment?.salesOrder.shippingLine2">{{shipment.salesOrder.shippingLine2}}</p>
+          <p class="font-light">{{shipment?.salesOrder.shippingCity}}<span *ngIf="shipment?.salesOrder.shippingCity">, </span>{{shipment?.salesOrder.shippingState}}  {{shipment?.salesOrder.shippingPostalCode}}</p>
+        </div>
 
-  </p>
+        <div class="h-6 lg:flex-1"></div>
+
+        <div>
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">SCHEDULE</p>
+          <p class="font-light" *ngIf="shipment?.placedAt">Placed At: {{shipment?.placedAt}}</p>
+          <p class="font-light" *ngIf="shipment?.estimatedShipDate">Ship By: {{shipment.estimatedShipDate}}</p>
+          <p class="font-light" *ngIf="shipment?.estimatedDeliveryDate">Deliver By: {{shipment.estimatedDeliveryDate}}</p>
+        </div>
+
+        <div class="h-6 lg:flex-1"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4">
+    <div class="p-2">
+      <div class="block lg:flex lg:flex-row">
+        <div class="w-full">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">SERVICE</p>
+          <div class="relative w-full max-w-lg">
+            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <app-carrier-icon [carrier]="shipment?.carrier"></app-carrier-icon>
+                </span>
+            </div>
+            <div class="form-input block w-full pl-15 pr-3 text-4xl rounded-lg">
+              <span class="font-light text-gray-600">{{shipment?.carrier | carrier}}</span> {{shipment?.service | service}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4 lg:flex lg:flex-row">
+    <div class="p-2 w-64">
+      <div class="flex">
+        <div class="block mx-auto">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">LENGTH</p>
+          <label for="length" class="hidden">Length</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faRulerHorizontal"></fa-icon>
+                </span>
+            </div>
+            <input id="length" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedLength ? (shipment.estimatedLength | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (click)="showLengthDialog()" [(ngModel)]="length" />
+            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  IN
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-2 w-64">
+      <div class="flex">
+        <div class="block mx-auto">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WIDTH</p>
+          <label for="width" class="hidden">Width</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faRuler"></fa-icon>
+                </span>
+            </div>
+            <input id="width" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedWidth ? (shipment.estimatedWidth | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (click)="showWidthDialog()" [(ngModel)]="width" />
+            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  IN
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-2 w-64">
+      <div class="flex">
+        <div class="block mx-auto">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">HEIGHT</p>
+          <label for="height" class="hidden">Height</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faRulerVertical"></fa-icon>
+                </span>
+            </div>
+            <input id="height" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedHeight ? (shipment.estimatedHeight | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (click)="showHeightDialog()" [(ngModel)]="height" />
+            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  IN
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4 lg:flex lg:flex-row">
+    <div class="p-2 w-64">
+      <div class="flex">
+        <div class="block mx-auto">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WEIGHT</p>
+          <label for="weight" class="hidden">Weight</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faBalanceScale"></fa-icon>
+                </span>
+            </div>
+            <input id="weight" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedWeight ? (shipment.estimatedWeight | number: '0.1-1') : ''" autocomplete="off" autocapitalize="words" (click)="showWeightDialog()" [(ngModel)]="weight" />
+            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  LB
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-2 w-64 lg:ml-64">
+      <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded"
+              [disabled]="(!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0))"
+              [ngClass]="{'hover:bg-blue-700': !((!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0)))}"
+            (click)="ship()">
+        Ship
+      </button>
+    </div>
+  </div>
+
 </div>

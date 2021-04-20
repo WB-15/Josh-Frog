@@ -1,6 +1,9 @@
-query shipmentInfo ($id: UUID!) {
-    shipmentInfo(
-        id: $id
+mutation shipmentShip ($id: UUID!, $warehouse: String!, $carrier: Carrier!, $service: Service!) {
+    shipmentShip (
+        id: $id,
+        warehouse: $warehouse,
+        carrier: $carrier,
+        service: $service
     ) {
         id,
         cls,

@@ -1,0 +1,9 @@
+<div *ngIf="carrier == 'FEDEX'" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg" style="background-color: lightgray">
+  <span style="font-size: 28px; color: #4D148C" *ngIf="carrier == 'FEDEX'"><fa-icon [icon]="faFedex"></fa-icon></span>
+</div>
+<div *ngIf="carrier == 'UPS'" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg" style="background-color: #FFB500">
+  <span style="font-size: 28px; color: #351C15" *ngIf="carrier == 'UPS'"><fa-icon [icon]="faUps"></fa-icon></span>
+</div>
+<div *ngIf="carrier == 'USPS'" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg" style="background-color: lightgray">
+  <span style="font-size: 28px; color: #004B87" *ngIf="carrier == 'USPS'"><fa-icon [icon]="faUsps"></fa-icon></span>
+</div>

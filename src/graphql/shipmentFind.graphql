@@ -1,6 +1,6 @@
-query shipmentInfo ($id: UUID!) {
-    shipmentInfo(
-        id: $id
+query shipmentFind ($shipmentNumber: String!) {
+    shipmentFind(
+        shipmentNumber: $shipmentNumber
     ) {
         id,
         cls,
