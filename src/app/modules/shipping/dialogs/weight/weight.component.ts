@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
 
 @Component({
   selector: 'app-weight',
@@ -60,7 +61,8 @@ export class WeightComponent implements OnInit {
     50
   ];
 
-  callback: (weight: number) => void;
+  @Input() parentRef: DialogComponent<WeightComponent>;
+  @Input() callback: (weight: number) => void;
 
   constructor() {}
 
@@ -70,5 +72,6 @@ export class WeightComponent implements OnInit {
     if (this.callback) {
       this.callback(weight);
     }
+    this.parentRef.pressOK();
   }
 }

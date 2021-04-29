@@ -1050,8 +1050,8 @@
           "description": "",
           "fields": [
             {
-              "name": "firstName",
-              "description": "User's first name",
+              "name": "lastName",
+              "description": "User's last name",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -1062,8 +1062,8 @@
               "deprecationReason": null
             },
             {
-              "name": "lastName",
-              "description": "User's last name",
+              "name": "firstName",
+              "description": "User's first name",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -1120,6 +1120,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "userType",
+              "description": "User's type",
+              "args": [],
+              "type": {
+                "kind": "ENUM",
+                "name": "UserType",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1453,6 +1465,35 @@
           "inputFields": null,
           "interfaces": null,
           "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "UserType",
+          "description": "",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "General",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "Employee",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "Wholesale",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
           "possibleTypes": null
         },
         {
@@ -1813,6 +1854,18 @@
               "deprecationReason": null
             },
             {
+              "name": "salesOrderType",
+              "description": "Order's type",
+              "args": [],
+              "type": {
+                "kind": "ENUM",
+                "name": "SalesOrderType",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "billingLastName",
               "description": "Billing address' last name",
               "args": [],
@@ -2016,18 +2069,6 @@
               "deprecationReason": null
             },
             {
-              "name": "transactionId",
-              "description": "Payment's transaction id",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "paymentStatus",
               "description": "Payment's status",
               "args": [],
@@ -2046,6 +2087,18 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "SalesOrderEntity",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "transactionId",
+              "description": "Payment's transaction id",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -2525,8 +2578,8 @@
               "deprecationReason": null
             },
             {
-              "name": "popularity",
-              "description": "Product's popularity",
+              "name": "averageRating",
+              "description": "Product's average rating",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -2537,8 +2590,8 @@
               "deprecationReason": null
             },
             {
-              "name": "averageRating",
-              "description": "Product's average rating",
+              "name": "popularity",
+              "description": "Product's popularity",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -3373,8 +3426,8 @@
               "deprecationReason": null
             },
             {
-              "name": "popularity",
-              "description": "Product's popularity",
+              "name": "averageRating",
+              "description": "Product's average rating",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -3385,8 +3438,8 @@
               "deprecationReason": null
             },
             {
-              "name": "averageRating",
-              "description": "Product's average rating",
+              "name": "popularity",
+              "description": "Product's popularity",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -5249,24 +5302,24 @@
               "deprecationReason": null
             },
             {
-              "name": "sellerSku",
-              "description": "Amazon profile's Seller SKU",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "id",
               "description": "Entity's UUID",
               "args": [],
               "type": {
                 "kind": "SCALAR",
                 "name": "UUID",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "sellerSku",
+              "description": "Amazon profile's Seller SKU",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -5318,6 +5371,18 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "zone",
+              "description": "Bin's zone membership",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ZoneEntity",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -5327,28 +5392,16 @@
         },
         {
           "kind": "OBJECT",
-          "name": "InventoryQuantityCacheEntity",
+          "name": "ZoneEntity",
           "description": "",
           "fields": [
             {
-              "name": "quantityAvailableForSale",
-              "description": "Cache's quantity available for sale",
+              "name": "name",
+              "description": "Zone's name",
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Long",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "quantityOnShelf",
-              "description": "Cache's quantity on shelf",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Long",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -5380,7 +5433,7 @@
             },
             {
               "name": "warehouse",
-              "description": "Cache's warehouse",
+              "description": "Zone's warehouse",
               "args": [],
               "type": {
                 "kind": "OBJECT",
@@ -5391,12 +5444,12 @@
               "deprecationReason": null
             },
             {
-              "name": "timestamp",
-              "description": "Cache's timestamp",
+              "name": "slug",
+              "description": "Zone's slug",
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Instant",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -5553,6 +5606,89 @@
         },
         {
           "kind": "OBJECT",
+          "name": "InventoryQuantityCacheEntity",
+          "description": "",
+          "fields": [
+            {
+              "name": "quantityAvailableForSale",
+              "description": "Cache's quantity available for sale",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Long",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "quantityOnShelf",
+              "description": "Cache's quantity on shelf",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Long",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "cls",
+              "description": "Entity's class",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "id",
+              "description": "Entity's UUID",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "warehouse",
+              "description": "Cache's warehouse",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "WarehouseEntity",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "timestamp",
+              "description": "Cache's timestamp",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Instant",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "InventoryStatsCacheEntity",
           "description": "",
           "fields": [
@@ -5623,65 +5759,6 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Instant",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
-          "name": "ZoneEntity",
-          "description": "",
-          "fields": [
-            {
-              "name": "name",
-              "description": "Zone's name",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "cls",
-              "description": "Entity's class",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "id",
-              "description": "Entity's UUID",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "UUID",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "slug",
-              "description": "Zone's slug",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -6076,6 +6153,18 @@
               "deprecationReason": null
             },
             {
+              "name": "downloadStart",
+              "description": "Shipment's download start",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Instant",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "actualHeight",
               "description": "Shipment's actual heigh",
               "args": [],
@@ -6419,24 +6508,24 @@
               "deprecationReason": null
             },
             {
-              "name": "shipment",
-              "description": "Shipment item's shipment",
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "ShipmentEntity",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "quantity",
               "description": "Shipment item's quantity",
               "args": [],
               "type": {
                 "kind": "SCALAR",
                 "name": "Long",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "shipment",
+              "description": "Shipment item's shipment",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ShipmentEntity",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -6502,24 +6591,24 @@
           "description": "",
           "fields": [
             {
-              "name": "quantity",
-              "description": "Shipment addon's quantity",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Long",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "shipment",
               "description": "Shipment addon's shipment",
               "args": [],
               "type": {
                 "kind": "OBJECT",
                 "name": "ShipmentEntity",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "quantity",
+              "description": "Shipment addon's quantity",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Long",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -6812,6 +6901,35 @@
         },
         {
           "kind": "ENUM",
+          "name": "SalesOrderType",
+          "description": "",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "General",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "Employee",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "Wholesale",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
           "name": "SalesOrderStatus",
           "description": "",
           "fields": null,
@@ -6911,16 +7029,12 @@
           "fields": null,
           "inputFields": [
             {
-              "name": "sort",
-              "description": "Sort conditions for the current view.",
+              "name": "page",
+              "description": "The number of the page to display.",
               "type": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "GraphQLSortInput",
-                  "ofType": null
-                }
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
               },
               "defaultValue": null
             },
@@ -6935,12 +7049,16 @@
               "defaultValue": null
             },
             {
-              "name": "page",
-              "description": "The number of the page to display.",
+              "name": "sort",
+              "description": "Sort conditions for the current view.",
               "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "GraphQLSortInput",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             }
@@ -6956,26 +7074,6 @@
           "fields": null,
           "inputFields": [
             {
-              "name": "f",
-              "description": "Abbreviation for 'field'.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "field",
-              "description": "Name of the field to sort by.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
               "name": "direction",
               "description": "Direction of sorting (default: asc).",
               "type": {
@@ -6986,11 +7084,31 @@
               "defaultValue": null
             },
             {
+              "name": "f",
+              "description": "Abbreviation for 'field'.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "d",
               "description": "Abbreviation for 'direction'.",
               "type": {
                 "kind": "ENUM",
                 "name": "SortDirection",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "field",
+              "description": "Name of the field to sort by.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -7799,16 +7917,6 @@
               "defaultValue": null
             },
             {
-              "name": "v",
-              "description": "Abbreviation for 'value'.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
               "name": "value",
               "description": "Field value.",
               "type": {
@@ -7824,6 +7932,16 @@
               "type": {
                 "kind": "ENUM",
                 "name": "QueryCondition",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "v",
+              "description": "Abbreviation for 'value'.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "defaultValue": null
@@ -7899,8 +8017,8 @@
           "fields": null,
           "inputFields": [
             {
-              "name": "pattern",
-              "description": "Field pattern.",
+              "name": "p",
+              "description": "Abbreviation for 'pattern'.",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -7909,8 +8027,8 @@
               "defaultValue": null
             },
             {
-              "name": "p",
-              "description": "Abbreviation for 'pattern'.",
+              "name": "pattern",
+              "description": "Field pattern.",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -9048,8 +9166,8 @@
           "fields": null,
           "inputFields": [
             {
-              "name": "c",
-              "description": "Abbreviation for 'condition'.",
+              "name": "condition",
+              "description": "Filter condition (default: eq).",
               "type": {
                 "kind": "ENUM",
                 "name": "QueryCondition",
@@ -9078,8 +9196,8 @@
               "defaultValue": null
             },
             {
-              "name": "condition",
-              "description": "Filter condition (default: eq).",
+              "name": "c",
+              "description": "Abbreviation for 'condition'.",
               "type": {
                 "kind": "ENUM",
                 "name": "QueryCondition",
@@ -9097,47 +9215,6 @@
           "name": "Mutation",
           "description": "Mutation root",
           "fields": [
-            {
-              "name": "autoprintAddPrinter",
-              "description": "Adds a printer to an existing workstation",
-              "args": [
-                {
-                  "name": "machineKey",
-                  "description": "",
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "String",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "printerName",
-                  "description": "",
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "String",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "OBJECT",
-                "name": "PrinterEntity",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
             {
               "name": "cartCheckout",
               "description": "Completes checkout and processes payment.",
@@ -9202,6 +9279,74 @@
               "deprecationReason": null
             },
             {
+              "name": "shipmentReroute",
+              "description": "Reroute a shipment",
+              "args": [
+                {
+                  "name": "id",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "UUID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ShipmentEntity",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "autoprintAddPrinter",
+              "description": "Adds a printer to an existing workstation",
+              "args": [
+                {
+                  "name": "machineKey",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "printerName",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "PrinterEntity",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "amazonSalesOrderRefresh",
               "description": "Refreshes a sales order (with Amazon) by entity id",
               "args": [
@@ -9229,18 +9374,18 @@
               "deprecationReason": null
             },
             {
-              "name": "magentoSalesOrderRefresh",
-              "description": "Refreshes a sales order (with Magento) by entity id",
+              "name": "autoprintDownloadAcknowledgeForPrinter",
+              "description": "Acknowledges a shipment has downloaded",
               "args": [
                 {
-                  "name": "magentoId",
+                  "name": "shipment",
                   "description": "",
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,
                     "ofType": {
                       "kind": "SCALAR",
-                      "name": "String",
+                      "name": "UUID",
                       "ofType": null
                     }
                   },
@@ -9248,9 +9393,13 @@
                 }
               ],
               "type": {
-                "kind": "OBJECT",
-                "name": "MagentoSalesOrderEntity",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -9291,6 +9440,49 @@
               "deprecationReason": null
             },
             {
+              "name": "magentoSalesOrderRefresh",
+              "description": "Refreshes a sales order (with Magento) by entity id",
+              "args": [
+                {
+                  "name": "magentoId",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "MagentoSalesOrderEntity",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "marketingStatus",
+              "description": "Gets status if customer is already signed up",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "magentoSalesOrderRefreshAsync",
               "description": "Refreshes a sales order (with Magento) by entity id",
               "args": [
@@ -9322,9 +9514,24 @@
               "deprecationReason": null
             },
             {
-              "name": "marketingStatus",
-              "description": "Gets status if customer is already signed up",
-              "args": [],
+              "name": "autoprintPrintAcknowledgeForPrinter",
+              "description": "Acknowledges a shipment has printed",
+              "args": [
+                {
+                  "name": "shipment",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "UUID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -9391,6 +9598,20 @@
                     "ofType": {
                       "kind": "SCALAR",
                       "name": "UUID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "warehouse",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
                       "ofType": null
                     }
                   },
@@ -9631,6 +9852,98 @@
               "deprecationReason": null
             },
             {
+              "name": "cartChangeQuantityKitProduct",
+              "description": "Changes quantity of selected kit product in user's cart",
+              "args": [
+                {
+                  "name": "quantity",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Long",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "productId",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "UUID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "cartId",
+                  "description": "",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "UUID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "CartEntity",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "inventoryGetDetails",
+              "description": "Gets inventory details for a simple product",
+              "args": [
+                {
+                  "name": "id",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "UUID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "warehouse",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "InventoryDetails",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "simpleProductRefreshBySku",
               "description": "Refreshes a simple product (with Magento) by entity id",
               "args": [
@@ -9699,98 +10012,6 @@
               "deprecationReason": null
             },
             {
-              "name": "inventoryGetDetails",
-              "description": "Gets inventory details for a simple product",
-              "args": [
-                {
-                  "name": "id",
-                  "description": "",
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "UUID",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "warehouse",
-                  "description": "",
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "String",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "OBJECT",
-                "name": "InventoryDetails",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "cartChangeQuantityKitProduct",
-              "description": "Changes quantity of selected kit product in user's cart",
-              "args": [
-                {
-                  "name": "quantity",
-                  "description": "",
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Long",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "productId",
-                  "description": "",
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "UUID",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "cartId",
-                  "description": "",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "UUID",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "OBJECT",
-                "name": "CartEntity",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "maintenanceCacheFlushAll",
               "description": "Triggers a re-index of hibernate cache",
               "args": [],
@@ -9798,37 +10019,6 @@
                 "kind": "SCALAR",
                 "name": "Boolean",
                 "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "autoprintAcknowledgeForPrinter",
-              "description": "Acknowledges a shipment has printed",
-              "args": [
-                {
-                  "name": "shipment",
-                  "description": "",
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "UUID",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Boolean",
-                  "ofType": null
-                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -10051,6 +10241,22 @@
               "deprecationReason": null
             },
             {
+              "name": "autoprintReroute",
+              "description": "Reroutes shipments from a queue",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "cartAddSimpleProduct",
               "description": "Adds quantity of selected simple product to user's cart",
               "args": [
@@ -10169,6 +10375,43 @@
               "deprecationReason": null
             },
             {
+              "name": "cartSetShippingAddressById",
+              "description": "Sets the shipping address to one of the user's addresses",
+              "args": [
+                {
+                  "name": "cartId",
+                  "description": "",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "UUID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "addressId",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "UUID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "CartEntity",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "userUpdatePassword",
               "description": "Updates a user's password",
               "args": [
@@ -10210,55 +10453,6 @@
               "deprecationReason": null
             },
             {
-              "name": "cartSetShippingAddressById",
-              "description": "Sets the shipping address to one of the user's addresses",
-              "args": [
-                {
-                  "name": "cartId",
-                  "description": "",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "UUID",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "addressId",
-                  "description": "",
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "UUID",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "OBJECT",
-                "name": "CartEntity",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "maintenanceWalmartSyncUpdatedOrders",
-              "description": "Triggers a re-sync of updated orders with Walmart",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "departmentSetParent",
               "description": "Sets a department's parent",
               "args": [
@@ -10294,6 +10488,18 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "DepartmentEntity",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "maintenanceWalmartSyncUpdatedOrders",
+              "description": "Triggers a re-sync of updated orders with Walmart",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -10387,6 +10593,37 @@
                 "kind": "OBJECT",
                 "name": "SimpleProductEntity",
                 "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "addressDelete",
+              "description": "Deletes an existing address",
+              "args": [
+                {
+                  "name": "id",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "UUID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -10501,32 +10738,24 @@
               "deprecationReason": null
             },
             {
-              "name": "addressDelete",
-              "description": "Deletes an existing address",
+              "name": "cartClearBillingAddress",
+              "description": "Clears the billing address",
               "args": [
                 {
-                  "name": "id",
+                  "name": "cartId",
                   "description": "",
                   "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "UUID",
-                      "ofType": null
-                    }
+                    "kind": "SCALAR",
+                    "name": "UUID",
+                    "ofType": null
                   },
                   "defaultValue": null
                 }
               ],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Boolean",
-                  "ofType": null
-                }
+                "kind": "OBJECT",
+                "name": "CartEntity",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -10595,29 +10824,6 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "UserEntity",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "cartClearBillingAddress",
-              "description": "Clears the billing address",
-              "args": [
-                {
-                  "name": "cartId",
-                  "description": "",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "UUID",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "OBJECT",
-                "name": "CartEntity",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -11516,6 +11722,20 @@
                     }
                   },
                   "defaultValue": null
+                },
+                {
+                  "name": "warehouse",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
                 }
               ],
               "type": {
@@ -12182,6 +12402,18 @@
               "deprecationReason": null
             },
             {
+              "name": "salesOrderType",
+              "description": "Order's type",
+              "args": [],
+              "type": {
+                "kind": "ENUM",
+                "name": "SalesOrderType",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "billingLastName",
               "description": "Billing address' last name",
               "args": [],
@@ -12755,6 +12987,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "BigDecimal",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "salesOrderType",
+              "description": "Order's type",
+              "args": [],
+              "type": {
+                "kind": "ENUM",
+                "name": "SalesOrderType",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -13515,6 +13759,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "BigDecimal",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "salesOrderType",
+              "description": "Order's type",
+              "args": [],
+              "type": {
+                "kind": "ENUM",
+                "name": "SalesOrderType",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -14616,7 +14872,7 @@
   "extensions": {
     "graphql-config": {
       "source": "https://new.joshsfrogs.com/api/graphql",
-      "timestamp": "Tue Apr 20 2021 14:17:16 GMT-0400 (Eastern Daylight Time)"
+      "timestamp": "Wed Apr 28 2021 23:23:57 GMT-0400 (Eastern Daylight Time)"
     }
   }
 }

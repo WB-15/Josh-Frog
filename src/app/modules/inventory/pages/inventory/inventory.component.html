@@ -111,8 +111,8 @@
               </div>
               <input id="qty" class="form-input block w-full pl-10 rounded-none rounded-l-lg" type="number" placeholder="Quantity" autocomplete="off" [(ngModel)]="quantityEntry" />
             </div>
-            <button class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 rounded-r-md text-gray-700 bg-blue-100 transition ease-in-out duration-150"
-              [disabled]="!(quantityEntry && quantityEntry != 0)" [ngClass]="{'opacity-50': !(quantityEntry && quantityEntry > 0), 'hover:text-gray-800': (quantityEntry && quantityEntry != 0), 'hover:bg-blue-200': (quantityEntry && quantityEntry != 0)}" (click)="setInventory()">
+            <button class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 rounded-r-md text-white bg-blue-600 transition ease-in-out duration-150"
+              [disabled]="!(quantityEntry && quantityEntry >= 0)" [ngClass]="{'opacity-50': !(quantityEntry && quantityEntry >= 0), 'hover:bg-blue-700': (quantityEntry && quantityEntry >= 0)}" (click)="setInventory()">
               <span class="icon is-medium is-left">
                   <fa-icon [icon]="faChevronCircleRight"></fa-icon>
                 </span>
@@ -139,7 +139,14 @@
       <div class="p-2">
         <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">BIN(S)</p>
         <p *ngIf="simpleProduct.bins?.length == 0" class="font-narrow">None</p>
-        <p *ngFor="let bin of simpleProduct.bins" class="font-narrow">{{bin.binId}}</p>
+        <p *ngFor="let bin of simpleProduct.bins" class="font-narrow">{{bin.binId}} <span *ngIf="bin?.zone?.warehouse" class="font-light">- {{bin.zone.warehouse.name}}</span></p>
+
+        <div class="mt-2">
+          <button class="group relative w-40 flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition duration-150 ease-in-out" (click)="showChangeBinDialog('')">
+            Change Bin
+          </button>
+        </div>
+
       </div>
 
       <div class="p-2">

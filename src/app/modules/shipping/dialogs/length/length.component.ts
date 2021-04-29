@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
 
 @Component({
   selector: 'app-length',
@@ -57,7 +58,8 @@ export class LengthComponent implements OnInit {
     48
   ];
 
-  callback: (length: number) => void;
+  @Input() parentRef: DialogComponent<LengthComponent>;
+  @Input() callback: (length: number) => void;
 
   constructor() {}
 
@@ -67,5 +69,6 @@ export class LengthComponent implements OnInit {
     if (this.callback) {
       this.callback(length);
     }
+    this.parentRef.pressOK();
   }
 }

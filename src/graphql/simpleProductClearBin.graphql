@@ -1,6 +1,7 @@
-query simpleProductFindByUpc ($upc: String!) {
- simpleProductFindByUpc(
-    upc: $upc
+mutation simpleProductClearBin ($id: UUID!, $warehouse: String!) {
+  simpleProductClearBin (
+    id: $id,
+    warehouse: $warehouse
   ) {
     id,
     slug,
@@ -78,4 +79,5 @@ query simpleProductFindByUpc ($upc: String!) {
       name
     }
   }
+
 }

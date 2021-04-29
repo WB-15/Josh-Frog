@@ -199,7 +199,6 @@ export class ShippingComponent implements OnInit, OnDestroy {
     options.component = LengthComponent;
     options.inputs = {
       callback: (length: number) => {
-        this.dialogService.hideDialog();
         this.length = length;
       }
     };
@@ -213,7 +212,6 @@ export class ShippingComponent implements OnInit, OnDestroy {
     options.component = LengthComponent;
     options.inputs = {
       callback: (width: number) => {
-        this.dialogService.hideDialog();
         this.width = width;
       }
     };
@@ -227,7 +225,6 @@ export class ShippingComponent implements OnInit, OnDestroy {
     options.component = LengthComponent;
     options.inputs = {
       callback: (height: number) => {
-        this.dialogService.hideDialog();
         this.height = height;
       }
     };
@@ -241,7 +238,6 @@ export class ShippingComponent implements OnInit, OnDestroy {
     options.component = WeightComponent;
     options.inputs = {
       callback: (weight: number) => {
-        this.dialogService.hideDialog();
         this.weight = weight;
       }
     };

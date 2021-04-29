@@ -19,7 +19,14 @@ query simpleProductFindBySku ($sku: String!) {
         },
         bins {
             id,
-            binId
+            binId,
+            zone {
+                id,
+                warehouse {
+                    id,
+                    name
+                }
+            }
         },
         inventoryQuantityCaches {
             id,
