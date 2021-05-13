@@ -159,9 +159,9 @@ export class ReceivingComponent implements OnInit, OnDestroy {
     this.binScannedSubscription = this.barcodeService.binScanned$.subscribe(
       (bin) => {
         if (bin != null && this.simpleProduct) {
-          this.ngZone.run(() => {
-            this.showChangeBinDialog(bin);
-          });
+          //this.ngZone.run(() => {
+          this.showChangeBinDialog(bin);
+          //});
         }
       }
     );
@@ -219,21 +219,24 @@ export class ReceivingComponent implements OnInit, OnDestroy {
 
   // TODO: this is using a component from inventory, should be moved to shared
   showChangeBinDialog(binEntry: string) {
-    const options = new DialogBoxOptions();
-    options.component = ChangeBinComponent;
-    options.inputs = {
-      binEntry,
-      simpleProduct: this.simpleProduct,
-      callback: (bin: string) => {
-        this.changeBin(bin);
-      }
-    };
-    options.title = this.simpleProduct.title;
-    options.okText = 'Cancel';
-    this.dialogService.showDialog(options);
+    this.ngZone.run(() => {
+      const options = new DialogBoxOptions();
+      options.component = ChangeBinComponent;
+      options.inputs = {
+        binEntry,
+        simpleProduct: this.simpleProduct,
+        callback: (bin: string) => {
+          this.changeBin(bin);
+        }
+      };
+      options.title = this.simpleProduct.title;
+      options.okText = 'Cancel';
+      this.dialogService.showDialog(options);
+    });
   }
 
   changeBin(bin: string) {
+    console.log('changeBin: ' + bin);
     this.simpleProductSetBinGQL
       .mutate({
         warehouse: this.warehouse.name,
@@ -349,5 +352,6 @@ export class ReceivingComponent implements OnInit, OnDestroy {
     this.warehouseChangedSubscription.unsubscribe();
     this.upcScannedSubscription.unsubscribe();
     this.skuScannedSubscription.unsubscribe();
+    this.binScannedSubscription.unsubscribe();
   }
 }

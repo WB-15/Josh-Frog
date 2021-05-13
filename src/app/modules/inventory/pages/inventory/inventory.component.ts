@@ -168,11 +168,11 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
     this.binScannedSubscription = this.barcodeService.binScanned$.subscribe(
       (bin) => {
-        if (bin != null && this.simpleProduct) {
-          this.ngZone.run(() => {
-            this.showChangeBinDialog(bin);
-          });
-        }
+        // if (bin != null && this.simpleProduct) {
+        //  this.ngZone.run(() => {
+        //    this.showChangeBinDialog(bin);
+        // }
+        // }
       }
     );
   }
@@ -255,18 +255,20 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   showChangeBinDialog(binEntry: string) {
-    const options = new DialogBoxOptions();
-    options.component = ChangeBinComponent;
-    options.inputs = {
-      binEntry,
-      simpleProduct: this.simpleProduct,
-      callback: (bin: string) => {
-        this.changeBin(bin);
-      }
-    };
-    options.title = this.simpleProduct.title;
-    options.okText = 'Cancel';
-    this.dialogService.showDialog(options);
+    this.ngZone.run(() => {
+      const options = new DialogBoxOptions();
+      options.component = ChangeBinComponent;
+      options.inputs = {
+        binEntry,
+        simpleProduct: this.simpleProduct,
+        callback: (bin: string) => {
+          this.changeBin(bin);
+        }
+      };
+      options.title = this.simpleProduct.title;
+      options.okText = 'Cancel';
+      this.dialogService.showDialog(options);
+    });
   }
 
   changeBin(bin: string) {
