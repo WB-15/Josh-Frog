@@ -273,11 +273,14 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   changeBin(bin: string) {
     this.simpleProductSetBinGQL
-      .mutate({
-        warehouse: this.warehouse.name,
-        id: this.simpleProduct.id,
-        bin
-      })
+      .mutate(
+        {
+          warehouse: this.warehouse.name,
+          id: this.simpleProduct.id,
+          bin
+        },
+        { update: (cache) => cache.evict(this.simpleProduct.id) }
+      )
       .pipe(map((result) => result.data.simpleProductSetBin))
       .subscribe(
         (result) => {

@@ -5,10 +5,9 @@ import {
   OnDestroy,
   OnInit
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { ActivatedRoute } from '@angular/router';
 
 import {
   faSpinnerThird,
@@ -238,11 +237,14 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   changeBin(bin: string) {
     console.log('changeBin: ' + bin);
     this.simpleProductSetBinGQL
-      .mutate({
-        warehouse: this.warehouse.name,
-        id: this.simpleProduct.id,
-        bin
-      })
+      .mutate(
+        {
+          warehouse: this.warehouse.name,
+          id: this.simpleProduct.id,
+          bin
+        },
+        { update: (cache) => cache.evict(this.simpleProduct.id) }
+      )
       .pipe(map((result) => result.data.simpleProductSetBin))
       .subscribe(
         (result) => {

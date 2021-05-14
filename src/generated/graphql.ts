@@ -1,8 +1,10 @@
-import gql from 'graphql-tag';
+import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -10,18 +12,18 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** Long type */
-  Long: any;
-  /** UUID String */
-  UUID: any;
   /** Built-in java.math.BigDecimal */
   BigDecimal: any;
   /** Built-in scalar representing an instant in time */
   Instant: any;
   /** Built-in scalar representing a local date */
   LocalDate: any;
+  /** Long type */
+  Long: any;
   /** Unrepresentable type */
   UNREPRESENTABLE: any;
+  /** UUID String */
+  UUID: any;
 };
 
 
@@ -1546,16 +1548,6 @@ export type PdfContents = {
   htmlContent?: Maybe<Scalars['String']>;
 };
 
-export type PrinterEntity = {
-  __typename?: 'PrinterEntity';
-  /** Printer's name */
-  name?: Maybe<Scalars['String']>;
-  /** Entity's class */
-  cls?: Maybe<Scalars['String']>;
-  /** Entity's UUID */
-  id?: Maybe<Scalars['UUID']>;
-};
-
 export type PrintJob = {
   __typename?: 'PrintJob';
   /** Print job's tray */
@@ -1566,6 +1558,16 @@ export type PrintJob = {
   dataBase64?: Maybe<Scalars['String']>;
   /** Print job's printer */
   printer?: Maybe<Scalars['String']>;
+};
+
+export type PrinterEntity = {
+  __typename?: 'PrinterEntity';
+  /** Printer's name */
+  name?: Maybe<Scalars['String']>;
+  /** Entity's class */
+  cls?: Maybe<Scalars['String']>;
+  /** Entity's UUID */
+  id?: Maybe<Scalars['UUID']>;
 };
 
 export type ProductEntity = {
@@ -2421,6 +2423,7 @@ export enum TransitTimeType {
 }
 
 
+
 export type UserEntity = {
   __typename?: 'UserEntity';
   /** User's last name */
@@ -2450,7 +2453,6 @@ export enum UserType {
   Employee = 'Employee',
   Wholesale = 'Wholesale'
 }
-
 
 export type VariationSetEntity = {
   __typename?: 'VariationSetEntity';
@@ -3297,6 +3299,9 @@ export const AutoprintAddPrinterDocument = gql`
   export class AutoprintAddPrinterGQL extends Apollo.Mutation<AutoprintAddPrinterMutation, AutoprintAddPrinterMutationVariables> {
     document = AutoprintAddPrinterDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const AutoprintDownloadAcknowledgeForPrinterDocument = gql`
     mutation autoprintDownloadAcknowledgeForPrinter($shipment: UUID!) {
@@ -3310,10 +3315,17 @@ export const AutoprintDownloadAcknowledgeForPrinterDocument = gql`
   export class AutoprintDownloadAcknowledgeForPrinterGQL extends Apollo.Mutation<AutoprintDownloadAcknowledgeForPrinterMutation, AutoprintDownloadAcknowledgeForPrinterMutationVariables> {
     document = AutoprintDownloadAcknowledgeForPrinterDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const AutoprintEnrollWorkstationDocument = gql`
     mutation autoprintEnrollWorkstation($warehouse: String!, $name: String!, $machineKey: String!) {
-  autoprintEnrollWorkstation(warehouse: $warehouse, name: $name, machineKey: $machineKey) {
+  autoprintEnrollWorkstation(
+    warehouse: $warehouse
+    name: $name
+    machineKey: $machineKey
+  ) {
     name
     machineKey
     warehouse {
@@ -3329,6 +3341,9 @@ export const AutoprintEnrollWorkstationDocument = gql`
   export class AutoprintEnrollWorkstationGQL extends Apollo.Mutation<AutoprintEnrollWorkstationMutation, AutoprintEnrollWorkstationMutationVariables> {
     document = AutoprintEnrollWorkstationDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const AutoprintGetNextForPrinterDocument = gql`
     mutation autoprintGetNextForPrinter($machineKey: String!, $printerName: String!) {
@@ -3347,6 +3362,9 @@ export const AutoprintGetNextForPrinterDocument = gql`
   export class AutoprintGetNextForPrinterGQL extends Apollo.Mutation<AutoprintGetNextForPrinterMutation, AutoprintGetNextForPrinterMutationVariables> {
     document = AutoprintGetNextForPrinterDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const AutoprintListPrintersDocument = gql`
     mutation autoprintListPrinters($machineKey: String!) {
@@ -3363,6 +3381,9 @@ export const AutoprintListPrintersDocument = gql`
   export class AutoprintListPrintersGQL extends Apollo.Mutation<AutoprintListPrintersMutation, AutoprintListPrintersMutationVariables> {
     document = AutoprintListPrintersDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const AutoprintPrintAcknowledgeForPrinterDocument = gql`
     mutation autoprintPrintAcknowledgeForPrinter($shipment: UUID!) {
@@ -3376,6 +3397,9 @@ export const AutoprintPrintAcknowledgeForPrinterDocument = gql`
   export class AutoprintPrintAcknowledgeForPrinterGQL extends Apollo.Mutation<AutoprintPrintAcknowledgeForPrinterMutation, AutoprintPrintAcknowledgeForPrinterMutationVariables> {
     document = AutoprintPrintAcknowledgeForPrinterDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const AutoprintTestWorkstationDocument = gql`
     mutation autoprintTestWorkstation($machineKey: String!) {
@@ -3395,6 +3419,9 @@ export const AutoprintTestWorkstationDocument = gql`
   export class AutoprintTestWorkstationGQL extends Apollo.Mutation<AutoprintTestWorkstationMutation, AutoprintTestWorkstationMutationVariables> {
     document = AutoprintTestWorkstationDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const InventoryAddDetailsDocument = gql`
     mutation inventoryAddDetails($warehouse: String!, $id: UUID!, $quantity: Long!) {
@@ -3422,6 +3449,9 @@ export const InventoryAddDetailsDocument = gql`
   export class InventoryAddDetailsGQL extends Apollo.Mutation<InventoryAddDetailsMutation, InventoryAddDetailsMutationVariables> {
     document = InventoryAddDetailsDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const InventoryGetDetailsDocument = gql`
     mutation inventoryGetDetails($id: UUID!, $warehouse: String!) {
@@ -3449,6 +3479,9 @@ export const InventoryGetDetailsDocument = gql`
   export class InventoryGetDetailsGQL extends Apollo.Mutation<InventoryGetDetailsMutation, InventoryGetDetailsMutationVariables> {
     document = InventoryGetDetailsDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const InventorySetDetailsDocument = gql`
     mutation inventorySetDetails($warehouse: String!, $id: UUID!, $quantity: Long!) {
@@ -3476,6 +3509,9 @@ export const InventorySetDetailsDocument = gql`
   export class InventorySetDetailsGQL extends Apollo.Mutation<InventorySetDetailsMutation, InventorySetDetailsMutationVariables> {
     document = InventorySetDetailsDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const MakingStockStatusDocument = gql`
     mutation makingStockStatus($warehouse: String!) {
@@ -3505,6 +3541,9 @@ export const MakingStockStatusDocument = gql`
   export class MakingStockStatusGQL extends Apollo.Mutation<MakingStockStatusMutation, MakingStockStatusMutationVariables> {
     document = MakingStockStatusDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const ShipmentFilterDocument = gql`
     query shipmentFilter($shipmentNumber: String!, $pageable: GraphQLPageableInput!) {
@@ -3576,6 +3615,9 @@ export const ShipmentFilterDocument = gql`
   export class ShipmentFilterGQL extends Apollo.Query<ShipmentFilterQuery, ShipmentFilterQueryVariables> {
     document = ShipmentFilterDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const ShipmentFindDocument = gql`
     query shipmentFind($shipmentNumber: String!) {
@@ -3645,6 +3687,9 @@ export const ShipmentFindDocument = gql`
   export class ShipmentFindGQL extends Apollo.Query<ShipmentFindQuery, ShipmentFindQueryVariables> {
     document = ShipmentFindDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const ShipmentInfoDocument = gql`
     query shipmentInfo($id: UUID!) {
@@ -3714,10 +3759,22 @@ export const ShipmentInfoDocument = gql`
   export class ShipmentInfoGQL extends Apollo.Query<ShipmentInfoQuery, ShipmentInfoQueryVariables> {
     document = ShipmentInfoDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const ShipmentShipDocument = gql`
     mutation shipmentShip($id: UUID!, $warehouse: String!, $carrier: Carrier!, $service: Service!, $weight: BigDecimal!, $length: BigDecimal, $width: BigDecimal, $height: BigDecimal) {
-  shipmentShip(id: $id, warehouse: $warehouse, carrier: $carrier, service: $service, weight: $weight, length: $length, width: $width, height: $height) {
+  shipmentShip(
+    id: $id
+    warehouse: $warehouse
+    carrier: $carrier
+    service: $service
+    weight: $weight
+    length: $length
+    width: $width
+    height: $height
+  ) {
     id
     cls
     shipmentNumber
@@ -3783,6 +3840,9 @@ export const ShipmentShipDocument = gql`
   export class ShipmentShipGQL extends Apollo.Mutation<ShipmentShipMutation, ShipmentShipMutationVariables> {
     document = ShipmentShipDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const SimpleProductClearBinDocument = gql`
     mutation simpleProductClearBin($id: UUID!, $warehouse: String!) {
@@ -3872,10 +3932,23 @@ export const SimpleProductClearBinDocument = gql`
   export class SimpleProductClearBinGQL extends Apollo.Mutation<SimpleProductClearBinMutation, SimpleProductClearBinMutationVariables> {
     document = SimpleProductClearBinDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const SimpleProductFilterDocument = gql`
     query simpleProductFilter($pageable: GraphQLPageableInput!, $title: String, $sku: String, $active: Boolean, $brand: String, $supplier: String, $department: String, $category: String) {
-  simpleProductFilter(title: {pattern: $title}, sku: {pattern: $sku}, active: {value: $active}, brand: $brand, supplier: $supplier, department: $department, category: $category, page: $pageable, sort: {field: "sku", direction: ASC}) {
+  simpleProductFilter(
+    title: {pattern: $title}
+    sku: {pattern: $sku}
+    active: {value: $active}
+    brand: $brand
+    supplier: $supplier
+    department: $department
+    category: $category
+    page: $pageable
+    sort: {field: "sku", direction: ASC}
+  ) {
     data {
       id
       slug
@@ -3943,6 +4016,9 @@ export const SimpleProductFilterDocument = gql`
   export class SimpleProductFilterGQL extends Apollo.Query<SimpleProductFilterQuery, SimpleProductFilterQueryVariables> {
     document = SimpleProductFilterDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const SimpleProductFindBySkuDocument = gql`
     query simpleProductFindBySku($sku: String!) {
@@ -4032,6 +4108,9 @@ export const SimpleProductFindBySkuDocument = gql`
   export class SimpleProductFindBySkuGQL extends Apollo.Query<SimpleProductFindBySkuQuery, SimpleProductFindBySkuQueryVariables> {
     document = SimpleProductFindBySkuDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const SimpleProductFindByUpcDocument = gql`
     query simpleProductFindByUpc($upc: String!) {
@@ -4121,6 +4200,9 @@ export const SimpleProductFindByUpcDocument = gql`
   export class SimpleProductFindByUpcGQL extends Apollo.Query<SimpleProductFindByUpcQuery, SimpleProductFindByUpcQueryVariables> {
     document = SimpleProductFindByUpcDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const SimpleProductInfoDocument = gql`
     query simpleProductInfo($id: UUID!) {
@@ -4210,6 +4292,9 @@ export const SimpleProductInfoDocument = gql`
   export class SimpleProductInfoGQL extends Apollo.Query<SimpleProductInfoQuery, SimpleProductInfoQueryVariables> {
     document = SimpleProductInfoDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const SimpleProductSetBinDocument = gql`
     mutation simpleProductSetBin($id: UUID!, $bin: String!, $warehouse: String!) {
@@ -4299,6 +4384,9 @@ export const SimpleProductSetBinDocument = gql`
   export class SimpleProductSetBinGQL extends Apollo.Mutation<SimpleProductSetBinMutation, SimpleProductSetBinMutationVariables> {
     document = SimpleProductSetBinDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const UserInfoDocument = gql`
     query userInfo {
@@ -4318,6 +4406,9 @@ export const UserInfoDocument = gql`
   export class UserInfoGQL extends Apollo.Query<UserInfoQuery, UserInfoQueryVariables> {
     document = UserInfoDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const WarehouseListDocument = gql`
     query warehouseList {
@@ -4342,4 +4433,7 @@ export const WarehouseListDocument = gql`
   export class WarehouseListGQL extends Apollo.Query<WarehouseListQuery, WarehouseListQueryVariables> {
     document = WarehouseListDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
