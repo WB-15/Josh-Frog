@@ -134,18 +134,16 @@ export class AutoprintService {
                     }
                   );
                 }
-                if (printJobs.length > 0) {
-                  this.timerCallback(1000);
-                } else {
-                  this.timerCallback(10000);
-                }
               },
               (error) => {
                 this.timerCallback(60000);
               }
             );
+          }
+          if (this.printerIndex === this.printers.length - 1) {
+            this.timerCallback(120 * 1000);
           } else {
-            this.timerCallback(10000);
+            this.timerCallback(1000);
           }
         });
       }
