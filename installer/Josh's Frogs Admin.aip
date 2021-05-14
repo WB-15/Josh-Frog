@@ -5,10 +5,10 @@
     <ROW Property="ALLUSERS" Value="1"/>
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="Manufacturer" Value="Josh&apos;s Frogs"/>
-    <ROW Property="ProductCode" Value="1033:{47E20F4F-38CA-4745-A36A-12346E2FD583} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{9FE7E21E-2A56-44E8-9786-81E6BADE12B7} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Josh&apos;s Frogs Admin"/>
-    <ROW Property="ProductVersion" Value="1.12.1" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.13.1" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{81944FD7-BED5-4065-B48F-F33A1D338084}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>

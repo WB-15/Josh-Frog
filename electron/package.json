@@ -5,8 +5,8 @@
   "main": "./build/index.js",
   "scripts": {
     "build": "tsc",
-    "electron:rebuild-deps-windows": "./node_modules/.bin/electron-rebuild.cmd -m ./node_modules/capacitor-mettler-toledo && ./node_modules/.bin/electron-rebuild.cmd -m ./node_modules/capacitor-zebra-printer",
-    "electron:rebuild-deps-linux": "$(npm bin)/electron-rebuild -m ./node_modules/capacitor-mettler-toledo && $(npm bin)/electron-rebuild -m ./node_modules/capacitor-zebra-printer",
+    "electron:rebuild-deps-windows": "./node_modules/.bin/electron-rebuild.cmd -m ./node_modules/capacitor-mettler-toledo && ./node_modules/.bin/electron-rebuild.cmd -m ./node_modules/capacitor-zebra-printer && ./node_modules/.bin/electron-rebuild.cmd -m ./node_modules/capacitor-zebra-scanner",
+    "electron:rebuild-deps-linux": "$(npm bin)/electron-rebuild -m ./node_modules/capacitor-mettler-toledo && $(npm bin)/electron-rebuild -m ./node_modules/capacitor-zebra-printer  && $(npm bin)/electron-rebuild -m ./node_modules/capacitor-zebra-scanner",
     "electron:start": "npm run build && electron ./",
     "electron:pack": "npm run build && electron-builder build --dir",
     "electron:build-windows": "npm run build && electron-builder build --windows",
@@ -18,7 +18,9 @@
     "@capacitor-community/electron": "1.3.0-1",
     "@capacitor/core": "^2.4.2",
     "capacitor-machine-id": "file:../capacitor-machine-id",
-    "capacitor-mettler-toledo": "file:../capacitor-mettler-toledo"
+    "capacitor-mettler-toledo": "file:../capacitor-mettler-toledo",
+    "capacitor-zebra-printer": "file:../capacitor-zebra-printer",
+    "capacitor-zebra-scanner": "file:../capacitor-zebra-scanner"
   },
   "devDependencies": {
     "electron": "^10.1.4",

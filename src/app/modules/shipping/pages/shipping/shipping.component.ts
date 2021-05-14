@@ -64,6 +64,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
   loading = 0;
   shipmentScannedSubscription: Subscription;
 
+  scaleDataSubscription: Subscription;
+
   shipment: ShipmentEntity;
   searchResults: ShipmentEntity[];
 
@@ -108,6 +110,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
             .subscribe(
               (result) => {
                 this.shipment = result as ShipmentEntity;
+                this.carrier = this.shipment.carrier;
+                this.service = this.shipment.service;
                 this.loading--;
                 this.changeDetectorRef.detectChanges();
               },
@@ -118,6 +122,14 @@ export class ShippingComponent implements OnInit, OnDestroy {
                 this.changeDetectorRef.detectChanges();
               }
             );
+        }
+      }
+    );
+
+    this.scaleDataSubscription = this.scaleService.scaleData$.subscribe(
+      (scaleData) => {
+        if (scaleData) {
+          this.weight = scaleData.weight;
         }
       }
     );
@@ -182,6 +194,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
       .subscribe(
         (result) => {
           this.shipment = result as ShipmentEntity;
+          this.carrier = this.shipment.carrier;
+          this.service = this.shipment.service;
           this.loading--;
           this.changeDetectorRef.detectChanges();
         },
@@ -276,5 +290,6 @@ export class ShippingComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.warehouseChangedSubscription.unsubscribe();
     this.shipmentScannedSubscription.unsubscribe();
+    this.scaleDataSubscription.unsubscribe();
   }
 }
