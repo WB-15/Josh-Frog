@@ -1,10 +1,9 @@
+import { APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
+import { setContext } from '@apollo/client/link/context';
+import { RetryLink } from '@apollo/client/link/retry';
+import { InMemoryCache, ApolloLink } from '@apollo/client/core';
 import { NgModule } from '@angular/core';
-import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
-import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
-import { RetryLink } from 'apollo-link-retry';
-import { setContext } from 'apollo-link-context';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloLink } from 'apollo-link';
 
 let uri = '/api/graphql'; // <-- add the URL of the GraphQL server here
 export function createApollo(httpLink: HttpLink) {
@@ -43,7 +42,6 @@ export function createApollo(httpLink: HttpLink) {
 }
 
 @NgModule({
-  exports: [ApolloModule, HttpLinkModule],
   providers: [
     {
       provide: APOLLO_OPTIONS,
