@@ -111,21 +111,25 @@ export class ShippingComponent implements OnInit, OnDestroy {
             .pipe(map((result) => result.data.shipmentFind))
             .subscribe(
               (result) => {
-                this.shipment = result as ShipmentEntity;
-                this.carrier = this.shipment.carrier;
-                this.service = this.shipment.service;
-                this.loading--;
-                this.changeDetectorRef.detectChanges();
+                if (result) {
+                  this.shipment = result as ShipmentEntity;
+                  this.carrier = this.shipment.carrier;
+                  this.service = this.shipment.service;
+                  this.loading--;
+                  this.changeDetectorRef.detectChanges();
+                }
+                else {
+                  // Couldn't find it by shipment number, fall back to search.
+                  this.searchShipmentNumber = this.shipmentNumber;
+                  this.search();
+                  this.changeDetectorRef.detectChanges();
+                }
               },
               (error) => {
-                // console.error(error);
+                console.error(error);
                 this.loading--;
-                // this.dialogService.showErrorMessageBox(error);
+                this.dialogService.showErrorMessageBox(error);
                 this.changeDetectorRef.detectChanges();
-
-                // Couldn't find it by shipment number, fall back to search.
-                this.searchShipmentNumber = this.shipmentNumber;
-                this.search();
               }
             );
         }
