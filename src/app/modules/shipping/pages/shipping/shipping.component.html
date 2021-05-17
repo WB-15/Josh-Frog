@@ -84,7 +84,7 @@
     </div>
   </div>
 
-  <div class="p-4" *ngIf="shipment">
+  <div class="p-4" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped'))">
     <div class="p-2">
       <div class="block lg:flex lg:flex-row">
         <div class="w-full">
@@ -104,7 +104,35 @@
     </div>
   </div>
 
-  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment">
+  <div class="p-4" *ngIf="shipment && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
+    <div class="p-2">
+      <div class="block lg:flex lg:flex-row">
+        <div class="w-full">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">SERVICE</p>
+          <div class="relative w-full max-w-lg">
+            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <app-carrier-icon [carrier]="carrier"></app-carrier-icon>
+                </span>
+            </div>
+            <div class="form-input block w-full pl-15 pr-3 text-4xl rounded-lg">
+              <span class="font-light text-gray-600">{{shipment.carrier | carrier}}</span> {{shipment.service | service}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-2">
+      <div class="block lg:flex lg:flex-row">
+        <div class="w-full">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">TRACKING</p>
+          <span>{{shipment.trackingNo}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped'))">
     <div class="p-2 w-64">
       <div class="flex">
         <div class="block mx-auto">
@@ -116,7 +144,7 @@
                   <fa-icon [icon]="faRulerHorizontal"></fa-icon>
                 </span>
             </div>
-            <input id="length" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedLength ? (shipment.estimatedLength | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (click)="showLengthDialog()" [(ngModel)]="length" />
+            <input id="length" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedLength ? (shipment.estimatedLength | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (tap)="showLengthDialog()" [(ngModel)]="length" />
             <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
                 <span class="icon is-medium is-left">
                   IN
@@ -137,7 +165,7 @@
                   <fa-icon [icon]="faRuler"></fa-icon>
                 </span>
             </div>
-            <input id="width" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedWidth ? (shipment.estimatedWidth | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (click)="showWidthDialog()" [(ngModel)]="width" />
+            <input id="width" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedWidth ? (shipment.estimatedWidth | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (tap)="showWidthDialog()" [(ngModel)]="width" />
             <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
                 <span class="icon is-medium is-left">
                   IN
@@ -158,7 +186,7 @@
                   <fa-icon [icon]="faRulerVertical"></fa-icon>
                 </span>
             </div>
-            <input id="height" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedHeight ? (shipment.estimatedHeight | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (click)="showHeightDialog()" [(ngModel)]="height" />
+            <input id="height" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedHeight ? (shipment.estimatedHeight | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (tap)="showHeightDialog()" [(ngModel)]="height" />
             <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
                 <span class="icon is-medium is-left">
                   IN
@@ -170,7 +198,18 @@
     </div>
   </div>
 
-  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment">
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
+    <div class="p-2">
+      <div class="block lg:flex lg:flex-row">
+        <div class="w-full">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">DIMENSIONS</p>
+          <span>{{shipment.actualLength}} x {{shipment.actualWidth}} x {{shipment.actualHeight}} IN</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped'))">
     <div class="p-2 w-64">
       <div class="flex">
         <div class="block mx-auto">
@@ -182,7 +221,7 @@
                   <fa-icon [icon]="faBalanceScale"></fa-icon>
                 </span>
             </div>
-            <input id="weight" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedWeight ? (shipment.estimatedWeight | number: '0.1-1') : ''" autocomplete="off" autocapitalize="words" (click)="showWeightDialog()" [(ngModel)]="weight" />
+            <input id="weight" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedWeight ? (shipment.estimatedWeight | number: '0.1-1') : ''" autocomplete="off" autocapitalize="words" (tap)="showWeightDialog()" [(ngModel)]="weight" />
             <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
                 <span class="icon is-medium is-left">
                   LB
@@ -198,6 +237,25 @@
               [ngClass]="{'hover:bg-blue-700': !((!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0)))}"
             (click)="ship()">
         Ship
+      </button>
+    </div>
+  </div>
+
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
+    <div class="p-2">
+      <div class="block lg:flex lg:flex-row">
+        <div class="w-full">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WEIGHT</p>
+          <span>{{shipment.actualWeight}} LB</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
+    <div class="p-2 w-64 lg:ml-64">
+      <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded hover:bg-blue-700" (click)="reprint()">
+        Reprint Label
       </button>
     </div>
   </div>

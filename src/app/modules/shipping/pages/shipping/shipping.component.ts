@@ -296,6 +296,13 @@ export class ShippingComponent implements OnInit, OnDestroy {
       );
   }
 
+  reprint(): void {
+    this.printerService.printShippingLabel(
+      this.shipment.shipmentNumber,
+      this.shipment.zplContent
+    );
+  }
+
   ngOnDestroy(): void {
     this.warehouseChangedSubscription.unsubscribe();
     this.shipmentScannedSubscription.unsubscribe();

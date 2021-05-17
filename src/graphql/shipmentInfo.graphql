@@ -21,6 +21,7 @@ query shipmentInfo ($id: UUID!) {
         estimatedDeliveryDate,
         shippedAt,
         trackingNo,
+        zplContent,
 
         salesOrder {
             id,

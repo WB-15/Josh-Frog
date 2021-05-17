@@ -18,7 +18,7 @@ export class PrinterService {
 
   printShippingLabel(jobName: string, zplContent: string) {
     if (this.platform.is('electron')) {
-      CapacitorZebraPrinter.printLabel({ jobName, zplContent });
+      CapacitorZebraPrinter.printBase64Label({ jobName, zplContent });
     }
   }
 }
