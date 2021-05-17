@@ -31,7 +31,8 @@ import {
   ShipmentShipGQL,
   WarehouseEntity,
   ShipmentFilterGQL,
-  GraphQlPageableInput
+  GraphQlPageableInput,
+  ShipmentSearchGQL
 } from '../../../../../generated/graphql';
 
 @Component({
@@ -80,6 +81,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
     private shipmentInfoGQL: ShipmentInfoGQL,
     private shipmentFindGQL: ShipmentFindGQL,
     private shipmentFilterGQL: ShipmentFilterGQL,
+    private shipmentSearchGQL: ShipmentSearchGQL,
     private shipmentShipGQL: ShipmentShipGQL
   ) {}
 
@@ -116,10 +118,14 @@ export class ShippingComponent implements OnInit, OnDestroy {
                 this.changeDetectorRef.detectChanges();
               },
               (error) => {
-                console.error(error);
+                // console.error(error);
                 this.loading--;
-                this.dialogService.showErrorMessageBox(error);
+                // this.dialogService.showErrorMessageBox(error);
                 this.changeDetectorRef.detectChanges();
+
+                // Couldn't find it by shipment number, fall back to search.
+                this.searchShipmentNumber = this.shipmentNumber;
+                this.search();
               }
             );
         }
@@ -146,12 +152,11 @@ export class ShippingComponent implements OnInit, OnDestroy {
           page: 1,
           pageSize: 5
         };
-        this.shipmentFilterGQL
+        this.shipmentSearchGQL
           .fetch({
-            shipmentNumber: '%' + this.searchShipmentNumber + '%',
-            pageable
+            query: this.searchShipmentNumber
           })
-          .pipe(map((result) => result.data.shipmentFilter.data))
+          .pipe(map((result) => result.data.shipmentSearch))
           .subscribe(
             (result) => {
               this.searchResults = result as ShipmentEntity[];

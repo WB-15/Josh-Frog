@@ -463,6 +463,32 @@ export enum Comparison {
   GreaterThan = 'GREATER_THAN'
 }
 
+export type DashboardDto = {
+  __typename?: 'DashboardDto';
+  /** Dashboard's on-hold count */
+  onHoldCount?: Maybe<Scalars['Int']>;
+  /** Dashboard's pending count */
+  pendingCount?: Maybe<Scalars['Int']>;
+  /** Dashboard's next open date */
+  nextOpenDate?: Maybe<Scalars['String']>;
+  /** Dashboard's timezone */
+  timezone?: Maybe<Scalars['String']>;
+  /** Dashboard's today */
+  today?: Maybe<Scalars['String']>;
+  /** Dashboard's stats, this week */
+  thisWeek?: Maybe<StatsDto>;
+  /** Dashboard's late count */
+  lateCount?: Maybe<Scalars['Int']>;
+  /** Dashboard's warehouse */
+  warehouse?: Maybe<Scalars['String']>;
+  /** Dashboard's stats, last week */
+  lastWeek?: Maybe<StatsDto>;
+  /** Dashboard's summaries */
+  summaries?: Maybe<Array<Maybe<SummaryDto>>>;
+  /** Dashboard's needs scheduling count */
+  needsSchedulingCount?: Maybe<Scalars['Int']>;
+};
+
 export type DepartmentEntity = {
   __typename?: 'DepartmentEntity';
   /** Department's parent */
@@ -648,43 +674,54 @@ export type GraphQlPage_SupplierEntity = {
 };
 
 export type GraphQlPageableInput = {
-  /** The number of the page to display. */
-  page?: Maybe<Scalars['Int']>;
   /** Size of each page. */
   pageSize?: Maybe<Scalars['Int']>;
   /** Sort conditions for the current view. */
   sort?: Maybe<Array<Maybe<GraphQlSortInput>>>;
+  /** The number of the page to display. */
+  page?: Maybe<Scalars['Int']>;
 };
 
 export type GraphQlSingleValueFilter_BooleanInput = {
-  /** Filter condition (default: eq). */
-  condition?: Maybe<QueryCondition>;
-  /** Field value. */
-  value?: Maybe<Scalars['Boolean']>;
   /** Abbreviation for 'condition'. */
   c?: Maybe<QueryCondition>;
+  /** Field value. */
+  value?: Maybe<Scalars['Boolean']>;
+  /** Filter condition (default: eq). */
+  condition?: Maybe<QueryCondition>;
   /** Abbreviation for 'value'. */
   v?: Maybe<Scalars['Boolean']>;
+};
+
+export type GraphQlSingleValueFilter_ShipmentStatusInput = {
+  /** Field value. */
+  value?: Maybe<ShipmentStatus>;
+  /** Abbreviation for 'condition'. */
+  c?: Maybe<QueryCondition>;
+  /** Filter condition (default: eq). */
+  condition?: Maybe<QueryCondition>;
+  /** Abbreviation for 'value'. */
+  v?: Maybe<ShipmentStatus>;
 };
 
 export type GraphQlSingleValueFilter_StringInput = {
   /** Filter condition (default: eq). */
   condition?: Maybe<QueryCondition>;
-  /** Abbreviation for 'value'. */
-  v?: Maybe<Scalars['String']>;
   /** Field value. */
   value?: Maybe<Scalars['String']>;
   /** Abbreviation for 'condition'. */
   c?: Maybe<QueryCondition>;
+  /** Abbreviation for 'value'. */
+  v?: Maybe<Scalars['String']>;
 };
 
 export type GraphQlSortInput = {
-  /** Direction of sorting (default: asc). */
-  direction?: Maybe<SortDirection>;
   /** Abbreviation for 'field'. */
   f?: Maybe<Scalars['String']>;
   /** Abbreviation for 'direction'. */
   d?: Maybe<SortDirection>;
+  /** Direction of sorting (default: asc). */
+  direction?: Maybe<SortDirection>;
   /** Name of the field to sort by. */
   field?: Maybe<Scalars['String']>;
 };
@@ -967,34 +1004,36 @@ export enum MediaType {
 /** Mutation root */
 export type Mutation = {
   __typename?: 'Mutation';
-  /** Completes checkout and processes payment. */
-  cartCheckout?: Maybe<SalesOrderEntity>;
-  /** Reroute a shipment */
-  shipmentReroute?: Maybe<ShipmentEntity>;
   /** Adds a printer to an existing workstation */
   autoprintAddPrinter?: Maybe<PrinterEntity>;
+  /** Reroute a shipment */
+  shipmentReroute?: Maybe<ShipmentEntity>;
+  /** Completes checkout and processes payment. */
+  cartCheckout?: Maybe<SalesOrderEntity>;
   /** Refreshes a sales order (with Amazon) by entity id */
   amazonSalesOrderRefresh?: Maybe<AmazonSalesOrderEntity>;
   /** Acknowledges a shipment has downloaded */
   autoprintDownloadAcknowledgeForPrinter: Scalars['Boolean'];
   /** Triggers an update to all inventory caches */
   maintenanceUpdateInventoryCaches?: Maybe<Scalars['Boolean']>;
-  /** Clears the shipping address */
-  cartClearShippingAddress?: Maybe<CartEntity>;
   /** Refreshes a sales order (with Magento) by entity id */
   magentoSalesOrderRefresh?: Maybe<MagentoSalesOrderEntity>;
+  /** Clears the shipping address */
+  cartClearShippingAddress?: Maybe<CartEntity>;
   /** Gets status if customer is already signed up */
   marketingStatus: Scalars['Boolean'];
-  /** Refreshes a sales order (with Magento) by entity id */
-  magentoSalesOrderRefreshAsync: Scalars['Boolean'];
   /** Acknowledges a shipment has printed */
   autoprintPrintAcknowledgeForPrinter: Scalars['Boolean'];
+  /** Refreshes a sales order (with Magento) by entity id */
+  magentoSalesOrderRefreshAsync: Scalars['Boolean'];
   /** Adds user to marketing list */
   marketingSubscribe: Scalars['Boolean'];
   /** Updates bin on a simple product */
   simpleProductSetBin?: Maybe<SimpleProductEntity>;
   /** Registers a new user, with raw password */
   userRegister?: Maybe<UserEntity>;
+  /** Generates a shipment dashboard */
+  shipmentDashboard?: Maybe<DashboardDto>;
   /** Triggers a re-sync of all orders with Magento */
   maintenanceMagentoReSyncOrders?: Maybe<Scalars['Boolean']>;
   /** Removes all quantity of selected simple product from user's cart */
@@ -1007,14 +1046,14 @@ export type Mutation = {
   simpleProductRefresh?: Maybe<SimpleProductEntity>;
   /** Refreshes a new user with Magento */
   userRefresh?: Maybe<UserEntity>;
-  /** Changes quantity of selected kit product in user's cart */
-  cartChangeQuantityKitProduct?: Maybe<CartEntity>;
+  /** Creates a new category */
+  categoryCreate?: Maybe<CategoryEntity>;
   /** Gets inventory details for a simple product */
   inventoryGetDetails?: Maybe<InventoryDetails>;
   /** Refreshes a simple product (with Magento) by entity id */
   simpleProductRefreshBySku?: Maybe<SimpleProductEntity>;
-  /** Creates a new category */
-  categoryCreate?: Maybe<CategoryEntity>;
+  /** Changes quantity of selected kit product in user's cart */
+  cartChangeQuantityKitProduct?: Maybe<CartEntity>;
   /** Triggers a re-index of hibernate cache */
   maintenanceCacheFlushAll?: Maybe<Scalars['Boolean']>;
   /** Enrolls a workstation for use with AutoPrint */
@@ -1041,24 +1080,24 @@ export type Mutation = {
   cartSetShippingAddressById?: Maybe<CartEntity>;
   /** Updates a user's password */
   userUpdatePassword?: Maybe<UserEntity>;
-  /** Sets a department's parent */
-  departmentSetParent?: Maybe<DepartmentEntity>;
   /** Triggers a re-sync of updated orders with Walmart */
   maintenanceWalmartSyncUpdatedOrders?: Maybe<Scalars['Boolean']>;
+  /** Sets a department's parent */
+  departmentSetParent?: Maybe<DepartmentEntity>;
   /** Summarizes the cart's totals */
   cartSummarize?: Maybe<SalesOrderEntity>;
+  /** Ships a shipment */
+  shipmentShip?: Maybe<ShipmentEntity>;
   /** Creates a new simple product */
   simpleProductCreate?: Maybe<SimpleProductEntity>;
   /** Deletes an existing address */
   addressDelete: Scalars['Boolean'];
-  /** Ships a shipment */
-  shipmentShip?: Maybe<ShipmentEntity>;
+  /** Updates an existing address */
+  addressUpdate?: Maybe<AddressEntity>;
   /** Clears the billing address */
   cartClearBillingAddress?: Maybe<CartEntity>;
   /** Creates a new user, with password hash */
   userCreate?: Maybe<UserEntity>;
-  /** Updates an existing address */
-  addressUpdate?: Maybe<AddressEntity>;
   /** Triggers a re-sync of updated orders with Amazon */
   maintenanceAmazonSyncUpdatedOrders?: Maybe<Scalars['Boolean']>;
   /** Sets a category's parent */
@@ -1103,12 +1142,9 @@ export type Mutation = {
 
 
 /** Mutation root */
-export type MutationCartCheckoutArgs = {
-  method?: Maybe<Scalars['String']>;
-  cartId?: Maybe<Scalars['UUID']>;
-  deviceData?: Maybe<Scalars['String']>;
-  comment?: Maybe<Scalars['String']>;
-  nonce?: Maybe<Scalars['String']>;
+export type MutationAutoprintAddPrinterArgs = {
+  machineKey: Scalars['String'];
+  printerName: Scalars['String'];
 };
 
 
@@ -1119,9 +1155,12 @@ export type MutationShipmentRerouteArgs = {
 
 
 /** Mutation root */
-export type MutationAutoprintAddPrinterArgs = {
-  machineKey: Scalars['String'];
-  printerName: Scalars['String'];
+export type MutationCartCheckoutArgs = {
+  method?: Maybe<Scalars['String']>;
+  cartId?: Maybe<Scalars['UUID']>;
+  deviceData?: Maybe<Scalars['String']>;
+  comment?: Maybe<Scalars['String']>;
+  nonce?: Maybe<Scalars['String']>;
 };
 
 
@@ -1138,26 +1177,26 @@ export type MutationAutoprintDownloadAcknowledgeForPrinterArgs = {
 
 
 /** Mutation root */
-export type MutationCartClearShippingAddressArgs = {
-  cartId?: Maybe<Scalars['UUID']>;
-};
-
-
-/** Mutation root */
 export type MutationMagentoSalesOrderRefreshArgs = {
   magentoId: Scalars['String'];
 };
 
 
 /** Mutation root */
-export type MutationMagentoSalesOrderRefreshAsyncArgs = {
-  magentoId: Scalars['String'];
+export type MutationCartClearShippingAddressArgs = {
+  cartId?: Maybe<Scalars['UUID']>;
 };
 
 
 /** Mutation root */
 export type MutationAutoprintPrintAcknowledgeForPrinterArgs = {
   shipment: Scalars['UUID'];
+};
+
+
+/** Mutation root */
+export type MutationMagentoSalesOrderRefreshAsyncArgs = {
+  magentoId: Scalars['String'];
 };
 
 
@@ -1181,6 +1220,12 @@ export type MutationUserRegisterArgs = {
   firstName: Scalars['String'];
   password: Scalars['String'];
   email: Scalars['String'];
+};
+
+
+/** Mutation root */
+export type MutationShipmentDashboardArgs = {
+  warehouse: Scalars['String'];
 };
 
 
@@ -1211,10 +1256,9 @@ export type MutationUserRefreshArgs = {
 
 
 /** Mutation root */
-export type MutationCartChangeQuantityKitProductArgs = {
-  quantity: Scalars['Long'];
-  productId: Scalars['UUID'];
-  cartId?: Maybe<Scalars['UUID']>;
+export type MutationCategoryCreateArgs = {
+  name: Scalars['String'];
+  slug: Scalars['String'];
 };
 
 
@@ -1232,9 +1276,10 @@ export type MutationSimpleProductRefreshBySkuArgs = {
 
 
 /** Mutation root */
-export type MutationCategoryCreateArgs = {
-  name: Scalars['String'];
-  slug: Scalars['String'];
+export type MutationCartChangeQuantityKitProductArgs = {
+  quantity: Scalars['Long'];
+  productId: Scalars['UUID'];
+  cartId?: Maybe<Scalars['UUID']>;
 };
 
 
@@ -1317,21 +1362,6 @@ export type MutationCartSummarizeArgs = {
 
 
 /** Mutation root */
-export type MutationSimpleProductCreateArgs = {
-  price: Scalars['BigDecimal'];
-  title: Scalars['String'];
-  sku: Scalars['String'];
-  slug: Scalars['String'];
-};
-
-
-/** Mutation root */
-export type MutationAddressDeleteArgs = {
-  id: Scalars['UUID'];
-};
-
-
-/** Mutation root */
 export type MutationShipmentShipArgs = {
   carrier: Carrier;
   service: Service;
@@ -1345,17 +1375,17 @@ export type MutationShipmentShipArgs = {
 
 
 /** Mutation root */
-export type MutationCartClearBillingAddressArgs = {
-  cartId?: Maybe<Scalars['UUID']>;
+export type MutationSimpleProductCreateArgs = {
+  price: Scalars['BigDecimal'];
+  title: Scalars['String'];
+  sku: Scalars['String'];
+  slug: Scalars['String'];
 };
 
 
 /** Mutation root */
-export type MutationUserCreateArgs = {
-  lastName: Scalars['String'];
-  firstName: Scalars['String'];
-  passwordHash: Scalars['String'];
-  email: Scalars['String'];
+export type MutationAddressDeleteArgs = {
+  id: Scalars['UUID'];
 };
 
 
@@ -1372,6 +1402,21 @@ export type MutationAddressUpdateArgs = {
   id: Scalars['UUID'];
   line2?: Maybe<Scalars['String']>;
   line1: Scalars['String'];
+};
+
+
+/** Mutation root */
+export type MutationCartClearBillingAddressArgs = {
+  cartId?: Maybe<Scalars['UUID']>;
+};
+
+
+/** Mutation root */
+export type MutationUserCreateArgs = {
+  lastName: Scalars['String'];
+  firstName: Scalars['String'];
+  passwordHash: Scalars['String'];
+  email: Scalars['String'];
 };
 
 
@@ -1515,12 +1560,12 @@ export type PaymentEntity = {
   id?: Maybe<Scalars['UUID']>;
   /** Payment's placed timestamp */
   placedAt?: Maybe<Scalars['Instant']>;
-  /** Payment's status */
-  paymentStatus?: Maybe<PaymentStatus>;
   /** Payment's sales order */
   salesOrder?: Maybe<SalesOrderEntity>;
   /** Payment's transaction id */
   transactionId?: Maybe<Scalars['String']>;
+  /** Payment's status */
+  paymentStatus?: Maybe<PaymentStatus>;
 };
 
 export enum PaymentStatus {
@@ -1663,6 +1708,8 @@ export type Query = {
   simpleProductInfo?: Maybe<SimpleProductEntity>;
   /** Lists suppliers */
   supplierList?: Maybe<GraphQlPage_SupplierEntity>;
+  /** Searches for a shipment */
+  shipmentSearch?: Maybe<Array<Maybe<ShipmentEntity>>>;
   /** Retrieves a shipment */
   shipmentInfo?: Maybe<ShipmentEntity>;
   /** Search products */
@@ -1768,6 +1815,12 @@ export type QuerySupplierListArgs = {
 
 
 /** Query root */
+export type QueryShipmentSearchArgs = {
+  query: Scalars['String'];
+};
+
+
+/** Query root */
 export type QueryShipmentInfoArgs = {
   id: Scalars['UUID'];
 };
@@ -1857,9 +1910,12 @@ export type QuerySalesOrderInfoArgs = {
 
 /** Query root */
 export type QueryShipmentFilterArgs = {
+  late?: Maybe<GraphQlSingleValueFilter_BooleanInput>;
   sort?: Maybe<GraphQlSortInput>;
   page: GraphQlPageableInput;
-  shipmentNumber: GraphQlLikeQueryFilterInput;
+  warehouse?: Maybe<GraphQlSingleValueFilter_StringInput>;
+  shipmentNumber?: Maybe<GraphQlLikeQueryFilterInput>;
+  shipmentStatus?: Maybe<GraphQlSingleValueFilter_ShipmentStatusInput>;
 };
 
 
@@ -2102,10 +2158,10 @@ export enum Service {
 
 export type ShipmentAddonEntity = {
   __typename?: 'ShipmentAddonEntity';
-  /** Shipment addon's shipment */
-  shipment?: Maybe<ShipmentEntity>;
   /** Shipment addon's quantity */
   quantity?: Maybe<Scalars['Long']>;
+  /** Shipment addon's shipment */
+  shipment?: Maybe<ShipmentEntity>;
   /** Entity's class */
   cls?: Maybe<Scalars['String']>;
   /** Entity's UUID */
@@ -2120,12 +2176,14 @@ export type ShipmentEntity = {
   estimatedHeight?: Maybe<Scalars['BigDecimal']>;
   /** Shipment's download start */
   downloadStart?: Maybe<Scalars['Instant']>;
-  /** Shipment's actual heigh */
+  /** Shipment's actual height */
   actualHeight?: Maybe<Scalars['BigDecimal']>;
   /** Shipment's items */
   shipmentItems?: Maybe<Array<Maybe<ShipmentItemEntity>>>;
   /** Shipment's actual weight */
   actualWeight?: Maybe<Scalars['BigDecimal']>;
+  /** Shipment's departing warehouse */
+  departingWarehouse?: Maybe<WarehouseEntity>;
   /** Shipment's addons */
   shipmentAddons?: Maybe<Array<Maybe<ShipmentAddonEntity>>>;
   /** Shipment's printed start */
@@ -2144,10 +2202,10 @@ export type ShipmentEntity = {
   shippingNeeds?: Maybe<ShippingNeedsType>;
   /** Shipment's actual width */
   actualWidth?: Maybe<Scalars['BigDecimal']>;
+  /** Shipment's origin warehouse */
+  originWarehouse?: Maybe<WarehouseEntity>;
   /** Entity's class */
   cls?: Maybe<Scalars['String']>;
-  /** Shipment's warehouse */
-  warehouse?: Maybe<WarehouseEntity>;
   /** Shipment's estimated delivery date */
   estimatedDeliveryDate?: Maybe<Scalars['LocalDate']>;
   /** Shipment's sales order */
@@ -2188,6 +2246,8 @@ export type ShipmentItemEntity = {
   cls?: Maybe<Scalars['String']>;
   /** Entity's UUID */
   id?: Maybe<Scalars['UUID']>;
+  /** Shipment item's warehouse */
+  warehouse?: Maybe<WarehouseEntity>;
   /** Shipment item's live arrival guarantee */
   liveArrivalGuaranteeState?: Maybe<LiveArrivalGuaranteeState>;
 };
@@ -2298,10 +2358,10 @@ export type SimpleProductEntity = {
   warehouses?: Maybe<Array<Maybe<WarehouseEntity>>>;
   /** Simple product's weight */
   weight?: Maybe<Scalars['BigDecimal']>;
-  /** Product's UPC */
-  upc?: Maybe<Scalars['String']>;
   /** Product's active flag */
   active?: Maybe<Scalars['Boolean']>;
+  /** Product's UPC */
+  upc?: Maybe<Scalars['String']>;
   /** Product's published revision */
   publishedRevision?: Maybe<ProductRevisionEntity>;
   /** Entity's class */
@@ -2390,6 +2450,34 @@ export enum State {
   Ap = 'AP'
 }
 
+export type StatsDto = {
+  __typename?: 'StatsDto';
+  /** Stat's unshipped count */
+  unshipped?: Maybe<Scalars['Int']>;
+  /** Stat's on-hold count */
+  onHold?: Maybe<Scalars['Int']>;
+  /** Stat's end date */
+  endDate?: Maybe<Scalars['String']>;
+  /** Stat's shipped late */
+  shippedLate?: Maybe<Scalars['Int']>;
+  /** Stat's start date */
+  startDate?: Maybe<Scalars['String']>;
+  /** Stat's shipped on-time */
+  shippedOnTime?: Maybe<Scalars['Int']>;
+};
+
+export type SummaryDto = {
+  __typename?: 'SummaryDto';
+  /** Summary's date */
+  date?: Maybe<Scalars['String']>;
+  /** Summary's unshipped count */
+  unshipped?: Maybe<Scalars['Int']>;
+  /** Summary's shipped count */
+  shipped?: Maybe<Scalars['Int']>;
+  /** Summary's on-hold count */
+  onHold?: Maybe<Scalars['Int']>;
+};
+
 export type SupplierEntity = {
   __typename?: 'SupplierEntity';
   /** Supplier's name */
@@ -2426,10 +2514,10 @@ export enum TransitTimeType {
 
 export type UserEntity = {
   __typename?: 'UserEntity';
-  /** User's last name */
-  lastName?: Maybe<Scalars['String']>;
   /** User's first name */
   firstName?: Maybe<Scalars['String']>;
+  /** User's last name */
+  lastName?: Maybe<Scalars['String']>;
   /** User's addresses */
   addresses?: Maybe<Array<Maybe<AddressEntity>>>;
   /** User's email is confirmed */
@@ -2866,6 +2954,36 @@ export type ShipmentInfoQuery = (
       )> }
     )>>> }
   )> }
+);
+
+export type ShipmentSearchQueryVariables = Exact<{
+  query: Scalars['String'];
+}>;
+
+
+export type ShipmentSearchQuery = (
+  { __typename?: 'Query' }
+  & { shipmentSearch?: Maybe<Array<Maybe<(
+    { __typename?: 'ShipmentEntity' }
+    & Pick<ShipmentEntity, 'id' | 'cls' | 'shipmentNumber' | 'shipmentStatus' | 'shippingNeeds' | 'carrier' | 'service' | 'estimatedWeight' | 'actualWeight' | 'estimatedLength' | 'estimatedWidth' | 'estimatedHeight' | 'actualLength' | 'actualWidth' | 'actualHeight' | 'estimatedShipDate' | 'estimatedDeliveryDate' | 'printedStart' | 'printedEnd' | 'shippedAt' | 'trackingNo'>
+    & { salesOrder?: Maybe<(
+      { __typename?: 'SalesOrderEntity' }
+      & Pick<SalesOrderEntity, 'id' | 'cls' | 'shippingFirstName' | 'shippingLastName' | 'orderNumber' | 'alternateOrderNumber'>
+    )>, originWarehouse?: Maybe<(
+      { __typename?: 'WarehouseEntity' }
+      & Pick<WarehouseEntity, 'id' | 'name'>
+    )>, departingWarehouse?: Maybe<(
+      { __typename?: 'WarehouseEntity' }
+      & Pick<WarehouseEntity, 'id' | 'name'>
+    )>, shipmentItems?: Maybe<Array<Maybe<(
+      { __typename?: 'ShipmentItemEntity' }
+      & Pick<ShipmentItemEntity, 'id' | 'cls' | 'quantity'>
+      & { salesOrderItem?: Maybe<(
+        { __typename?: 'SalesOrderItemEntity' }
+        & Pick<SalesOrderItemEntity, 'id' | 'cls' | 'sku' | 'name'>
+      )> }
+    )>>> }
+  )>>> }
 );
 
 export type ShipmentShipMutationVariables = Exact<{
@@ -3758,6 +3876,71 @@ export const ShipmentInfoDocument = gql`
   })
   export class ShipmentInfoGQL extends Apollo.Query<ShipmentInfoQuery, ShipmentInfoQueryVariables> {
     document = ShipmentInfoDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const ShipmentSearchDocument = gql`
+    query shipmentSearch($query: String!) {
+  shipmentSearch(query: $query) {
+    id
+    cls
+    shipmentNumber
+    shipmentStatus
+    shippingNeeds
+    carrier
+    service
+    estimatedWeight
+    actualWeight
+    estimatedLength
+    estimatedWidth
+    estimatedHeight
+    actualLength
+    actualWidth
+    actualHeight
+    estimatedShipDate
+    estimatedDeliveryDate
+    printedStart
+    printedEnd
+    shippedAt
+    trackingNo
+    salesOrder {
+      id
+      cls
+      shippingFirstName
+      shippingLastName
+      orderNumber
+      alternateOrderNumber
+    }
+    originWarehouse {
+      id
+      name
+    }
+    departingWarehouse {
+      id
+      name
+    }
+    shipmentItems {
+      id
+      cls
+      quantity
+      salesOrderItem {
+        id
+        cls
+        sku
+        name
+      }
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ShipmentSearchGQL extends Apollo.Query<ShipmentSearchQuery, ShipmentSearchQueryVariables> {
+    document = ShipmentSearchDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
