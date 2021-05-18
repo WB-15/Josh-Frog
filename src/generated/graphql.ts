@@ -3002,7 +3002,7 @@ export type ShipmentShipMutation = (
   { __typename?: 'Mutation' }
   & { shipmentShip?: Maybe<(
     { __typename?: 'ShipmentEntity' }
-    & Pick<ShipmentEntity, 'id' | 'cls' | 'shipmentNumber' | 'shipmentStatus' | 'shippingNeeds' | 'carrier' | 'service' | 'estimatedWeight' | 'actualWeight' | 'estimatedLength' | 'estimatedWidth' | 'estimatedHeight' | 'actualLength' | 'actualWidth' | 'actualHeight' | 'estimatedShipDate' | 'estimatedDeliveryDate' | 'shippedAt' | 'trackingNo'>
+    & Pick<ShipmentEntity, 'id' | 'cls' | 'shipmentNumber' | 'shipmentStatus' | 'shippingNeeds' | 'carrier' | 'service' | 'estimatedWeight' | 'actualWeight' | 'estimatedLength' | 'estimatedWidth' | 'estimatedHeight' | 'actualLength' | 'actualWidth' | 'actualHeight' | 'estimatedShipDate' | 'estimatedDeliveryDate' | 'shippedAt' | 'trackingNo' | 'zplContent'>
     & { salesOrder?: Maybe<(
       { __typename?: 'SalesOrderEntity' }
       & Pick<SalesOrderEntity, 'id' | 'cls' | 'orderNumber' | 'alternateOrderNumber' | 'placedTime' | 'email' | 'status' | 'billingFirstName' | 'billingLastName' | 'billingLine1' | 'billingLine2' | 'billingCity' | 'billingState' | 'billingPostalCode' | 'billingCountry' | 'shippingFirstName' | 'shippingLastName' | 'shippingLine1' | 'shippingLine2' | 'shippingCity' | 'shippingState' | 'shippingPostalCode' | 'shippingCountry'>
@@ -3978,6 +3978,7 @@ export const ShipmentShipDocument = gql`
     estimatedDeliveryDate
     shippedAt
     trackingNo
+    zplContent
     salesOrder {
       id
       cls

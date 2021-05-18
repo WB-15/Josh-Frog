@@ -28,6 +28,7 @@ mutation shipmentShip ($id: UUID!, $warehouse: String!, $carrier: Carrier!, $ser
         estimatedDeliveryDate,
         shippedAt,
         trackingNo,
+        zplContent,
 
         salesOrder {
             id,
