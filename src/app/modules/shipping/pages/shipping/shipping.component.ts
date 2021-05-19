@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import {
   faSearch,
+  faPencil,
   faBalanceScale,
   faRuler,
   faRulerVertical,
@@ -34,6 +35,7 @@ import {
   GraphQlPageableInput,
   ShipmentSearchGQL
 } from '../../../../../generated/graphql';
+import { MethodComponent } from '../../dialogs/method/method.component';
 
 @Component({
   selector: 'app-shipping',
@@ -42,6 +44,7 @@ import {
 })
 export class ShippingComponent implements OnInit, OnDestroy {
   faSearch = faSearch;
+  faPencil = faPencil;
   faBalanceScale = faBalanceScale;
   faRuler = faRuler;
   faRulerVertical = faRulerVertical;
@@ -117,8 +120,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
                   this.service = this.shipment.service;
                   this.loading--;
                   this.changeDetectorRef.detectChanges();
-                }
-                else {
+                } else {
                   // Couldn't find it by shipment number, fall back to search.
                   this.searchShipmentNumber = this.shipmentNumber;
                   this.search();
@@ -265,6 +267,26 @@ export class ShippingComponent implements OnInit, OnDestroy {
       }
     };
     options.title = 'Package Weight';
+    options.okText = 'Close';
+    this.dialogService.showDialog(options);
+  }
+
+  showMethodDialog() {
+    const options = new DialogBoxOptions();
+    options.component = MethodComponent;
+    options.inputs = {
+      shipment: this.shipment,
+      warehouse: this.warehouse,
+      length: this.length,
+      width: this.width,
+      height: this.height,
+      weight: this.weight,
+      callback: (carrier: Carrier, service: Service) => {
+        this.carrier = carrier;
+        this.service = service;
+      }
+    };
+    options.title = 'Shipping Method';
     options.okText = 'Close';
     this.dialogService.showDialog(options);
   }

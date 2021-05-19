@@ -1,0 +1,17 @@
+mutation shipmentRate ($id: UUID!, $warehouse: String!, $weight: BigDecimal, $length: BigDecimal, $width: BigDecimal, $height: BigDecimal) {
+    shipmentRate (
+        id: $id,
+        warehouse: $warehouse,
+        weight: $weight,
+        length: $length,
+        width: $width,
+        height: $height
+    ) {
+        domesticServiceType,
+        carrier,
+        service,
+        cost,
+        shipDate,
+        deliveryDate
+    }
+}

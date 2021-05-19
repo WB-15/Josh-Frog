@@ -29,7 +29,8 @@ export class ServicePipe implements PipeTransform {
 
       case 'UPS_GROUND':
         return 'Ground';
-
+      case 'UPS_THREE_DAY_SELECT':
+        return 'Three Day Select';
       case 'UPS_SECOND_DAY_AIR':
         return 'Second Day Air';
       case 'UPS_NEXT_DAY_AIR':
