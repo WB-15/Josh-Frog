@@ -141,7 +141,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
     this.scaleDataSubscription = this.scaleService.scaleData$.subscribe(
       (scaleData) => {
         if (scaleData) {
-          this.weight = scaleData.weight;
+          this.weight = Math.round((scaleData.weight + Number.EPSILON) * 100) / 100;
         }
       }
     );
@@ -311,6 +311,10 @@ export class ShippingComponent implements OnInit, OnDestroy {
             this.shipment.shipmentNumber,
             this.shipment.zplContent
           );
+          this.weight = null;
+          this.length = null;
+          this.width = null;
+          this.height = null;
         },
         (error) => {
           this.dialogService.showErrorMessageBox(error);

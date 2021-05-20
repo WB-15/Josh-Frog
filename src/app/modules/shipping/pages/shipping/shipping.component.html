@@ -84,7 +84,7 @@
     </div>
   </div>
 
-  <div class="p-4" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped'))">
+  <div class="p-4" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
     <div class="p-2">
       <div class="block lg:flex lg:flex-row">
         <div class="w-full">
@@ -137,7 +137,7 @@
     </div>
   </div>
 
-  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped'))">
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
     <div class="p-2 w-64">
       <div class="flex">
         <div class="block mx-auto">
@@ -214,7 +214,7 @@
     </div>
   </div>
 
-  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped'))">
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
     <div class="p-2 w-64">
       <div class="flex">
         <div class="block mx-auto">
