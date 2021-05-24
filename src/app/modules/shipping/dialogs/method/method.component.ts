@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
 import {
   Carrier,
+  Packaging,
   RateQuote,
   Service,
   ShipmentEntity,
@@ -27,7 +28,12 @@ export class MethodComponent implements OnInit {
   @Input() width: number;
   @Input() height: number;
   @Input() weight: number;
-  @Input() callback: (carrier: Carrier, service: Service) => void;
+  @Input() callback: (
+    carrier: Carrier,
+    service: Service,
+    packaging: Packaging,
+    options: string[]
+  ) => void;
 
   loading = true;
   rateQuotes: RateQuote[];
@@ -88,9 +94,14 @@ export class MethodComponent implements OnInit {
       );
   }
 
-  pickMethod(carrier: Carrier, service: Service) {
+  pickMethod(
+    carrier: Carrier,
+    service: Service,
+    packaging: Packaging,
+    options: string[]
+  ) {
     if (this.callback) {
-      this.callback(carrier, service);
+      this.callback(carrier, service, packaging, options);
     }
     this.parentRef.pressOK();
   }

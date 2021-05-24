@@ -1,9 +1,11 @@
-mutation shipmentShip ($id: UUID!, $warehouse: String!, $carrier: Carrier!, $service: Service!, $weight: BigDecimal!, $length: BigDecimal, $width: BigDecimal, $height: BigDecimal) {
+mutation shipmentShip ($id: UUID!, $warehouse: String!, $carrier: Carrier!, $service: Service!, $packaging: Packaging!, $options: [String]!, $weight: BigDecimal!, $length: BigDecimal, $width: BigDecimal, $height: BigDecimal) {
     shipmentShip (
         id: $id,
         warehouse: $warehouse,
         carrier: $carrier,
         service: $service,
+        packaging: $packaging,
+        options: $options,
         weight: $weight,
         length: $length,
         width: $width,
@@ -16,6 +18,8 @@ mutation shipmentShip ($id: UUID!, $warehouse: String!, $carrier: Carrier!, $ser
         shippingNeeds,
         carrier,
         service,
+        packaging,
+        options,
         estimatedWeight,
         actualWeight,
         estimatedLength,

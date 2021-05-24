@@ -33,7 +33,8 @@ import {
   WarehouseEntity,
   ShipmentFilterGQL,
   GraphQlPageableInput,
-  ShipmentSearchGQL
+  ShipmentSearchGQL,
+  Packaging
 } from '../../../../../generated/graphql';
 import { MethodComponent } from '../../dialogs/method/method.component';
 
@@ -55,6 +56,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
 
   carrier: Carrier;
   service: Service;
+  packaging: Packaging;
+  options: string[];
 
   shipmentNumber = '';
   weight: number;
@@ -118,6 +121,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
                   this.shipment = result as ShipmentEntity;
                   this.carrier = this.shipment.carrier;
                   this.service = this.shipment.service;
+                  this.packaging = this.shipment.packaging;
+                  this.options = this.shipment.options;
                   this.loading--;
                   this.changeDetectorRef.detectChanges();
                 } else {
@@ -141,7 +146,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
     this.scaleDataSubscription = this.scaleService.scaleData$.subscribe(
       (scaleData) => {
         if (scaleData) {
-          this.weight = Math.round((scaleData.weight + Number.EPSILON) * 100) / 100;
+          this.weight =
+            Math.round((scaleData.weight + Number.EPSILON) * 100) / 100;
         }
       }
     );
@@ -207,6 +213,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
           this.shipment = result as ShipmentEntity;
           this.carrier = this.shipment.carrier;
           this.service = this.shipment.service;
+          this.packaging = this.shipment.packaging;
+          this.options = this.shipment.options;
           this.loading--;
           this.changeDetectorRef.detectChanges();
         },
@@ -272,23 +280,30 @@ export class ShippingComponent implements OnInit, OnDestroy {
   }
 
   showMethodDialog() {
-    const options = new DialogBoxOptions();
-    options.component = MethodComponent;
-    options.inputs = {
+    const opts = new DialogBoxOptions();
+    opts.component = MethodComponent;
+    opts.inputs = {
       shipment: this.shipment,
       warehouse: this.warehouse,
       length: this.length,
       width: this.width,
       height: this.height,
       weight: this.weight,
-      callback: (carrier: Carrier, service: Service) => {
+      callback: (
+        carrier: Carrier,
+        service: Service,
+        packaging: Packaging,
+        options: string[]
+      ) => {
         this.carrier = carrier;
         this.service = service;
+        this.packaging = packaging;
+        this.options = options;
       }
     };
-    options.title = 'Shipping Method';
-    options.okText = 'Close';
-    this.dialogService.showDialog(options);
+    opts.title = 'Shipping Method';
+    opts.okText = 'Close';
+    this.dialogService.showDialog(opts);
   }
 
   ship(): void {
@@ -297,6 +312,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
         id: this.shipment.id,
         carrier: this.carrier,
         service: this.service,
+        packaging: this.packaging,
+        options: this.options,
         warehouse: this.warehouse.name,
         weight: this.weight ? this.weight : this.shipment.estimatedWeight,
         length: this.length ? this.length : this.shipment.estimatedLength,

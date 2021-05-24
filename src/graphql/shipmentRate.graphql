@@ -10,6 +10,8 @@ mutation shipmentRate ($id: UUID!, $warehouse: String!, $weight: BigDecimal, $le
         domesticServiceType,
         carrier,
         service,
+        packaging,
+        options,
         cost,
         shipDate,
         deliveryDate

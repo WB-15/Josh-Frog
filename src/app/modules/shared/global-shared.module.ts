@@ -18,6 +18,8 @@ import { ConfidencePipe } from './pipes/confidence.pipe';
 import { ServicePipe } from './pipes/service.pipe';
 import { CarrierPipe } from './pipes/carrier.pipe';
 import { CarrierIconComponent } from './components/carrier-icon/carrier-icon.component';
+import { OptionPipe } from './pipes/option.pipe';
+import { PackagingPipe } from './pipes/packaging.pipe';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { CarrierIconComponent } from './components/carrier-icon/carrier-icon.com
     ConfidencePipe,
     ServicePipe,
     CarrierPipe,
+    OptionPipe,
+    PackagingPipe,
     CarrierIconComponent
   ],
   exports: [
@@ -54,8 +58,10 @@ import { CarrierIconComponent } from './components/carrier-icon/carrier-icon.com
     SqrtPipe,
     ConfidencePipe,
     ServicePipe,
-    CarrierIconComponent,
-    CarrierPipe
+    CarrierPipe,
+    OptionPipe,
+    PackagingPipe,
+    CarrierIconComponent
   ],
   imports: [CommonModule, FontAwesomeModule]
 })
