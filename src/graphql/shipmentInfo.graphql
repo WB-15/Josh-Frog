@@ -9,6 +9,8 @@ query shipmentInfo ($id: UUID!) {
         shippingNeeds,
         carrier,
         service,
+        packaging,
+        options,
         estimatedWeight,
         actualWeight,
         estimatedLength,

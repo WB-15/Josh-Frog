@@ -37,6 +37,7 @@ import {
   Packaging
 } from '../../../../../generated/graphql';
 import { MethodComponent } from '../../dialogs/method/method.component';
+import { PackagingComponent } from '../../dialogs/packaging/packaging.component';
 
 @Component({
   selector: 'app-shipping',
@@ -121,7 +122,12 @@ export class ShippingComponent implements OnInit, OnDestroy {
                   this.shipment = result as ShipmentEntity;
                   this.carrier = this.shipment.carrier;
                   this.service = this.shipment.service;
-                  this.packaging = this.shipment.packaging;
+                  if (this.shipment.packaging) {
+                    this.packaging = this.shipment.packaging;
+                  }
+                  else {
+                    this.packaging = Packaging.CardboardBox;
+                  }
                   this.options = this.shipment.options;
                   this.loading--;
                   this.changeDetectorRef.detectChanges();
@@ -159,7 +165,6 @@ export class ShippingComponent implements OnInit, OnDestroy {
         this.searchResults = [];
       } else {
         this.pendingSearchShipmentNumber = this.searchShipmentNumber;
-
         const pageable: GraphQlPageableInput = {
           page: 1,
           pageSize: 5
@@ -171,6 +176,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
           .pipe(map((result) => result.data.shipmentSearch))
           .subscribe(
             (result) => {
+              this.shipment = null;
               this.searchResults = result as ShipmentEntity[];
               this.changeDetectorRef.detectChanges();
               if (
@@ -213,7 +219,12 @@ export class ShippingComponent implements OnInit, OnDestroy {
           this.shipment = result as ShipmentEntity;
           this.carrier = this.shipment.carrier;
           this.service = this.shipment.service;
-          this.packaging = this.shipment.packaging;
+          if (this.shipment.packaging) {
+            this.packaging = this.shipment.packaging;
+          }
+          else {
+            this.packaging = Packaging.CardboardBox;
+          }
           this.options = this.shipment.options;
           this.loading--;
           this.changeDetectorRef.detectChanges();
@@ -306,7 +317,23 @@ export class ShippingComponent implements OnInit, OnDestroy {
     this.dialogService.showDialog(opts);
   }
 
+  showPackagingDialog() {
+    const options = new DialogBoxOptions();
+    options.component = PackagingComponent;
+    options.inputs = {
+      callback: (packaging: Packaging) => {
+        this.packaging = packaging;
+      }
+    };
+    options.title = 'Packaging Type';
+    options.okText = 'Close';
+    this.dialogService.showDialog(options);
+  }
+
   ship(): void {
+    if (this.options == null) {
+      this.options = [];
+    }
     this.shipmentShipGQL
       .mutate({
         id: this.shipment.id,

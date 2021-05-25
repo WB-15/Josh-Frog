@@ -9,6 +9,8 @@ query shipmentSearch ($query: String!) {
         shippingNeeds,
         carrier,
         service,
+        packaging,
+        options,
         estimatedWeight,
         actualWeight,
         estimatedLength,

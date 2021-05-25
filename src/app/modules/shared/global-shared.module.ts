@@ -20,6 +20,7 @@ import { CarrierPipe } from './pipes/carrier.pipe';
 import { CarrierIconComponent } from './components/carrier-icon/carrier-icon.component';
 import { OptionPipe } from './pipes/option.pipe';
 import { PackagingPipe } from './pipes/packaging.pipe';
+import { PackagingIconComponent} from './components/packaging-icon/packaging-icon.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { PackagingPipe } from './pipes/packaging.pipe';
     CarrierPipe,
     OptionPipe,
     PackagingPipe,
-    CarrierIconComponent
+    CarrierIconComponent,
+    PackagingIconComponent
   ],
   exports: [
     DialogComponent,
@@ -61,7 +63,8 @@ import { PackagingPipe } from './pipes/packaging.pipe';
     CarrierPipe,
     OptionPipe,
     PackagingPipe,
-    CarrierIconComponent
+    CarrierIconComponent,
+    PackagingIconComponent
   ],
   imports: [CommonModule, FontAwesomeModule]
 })

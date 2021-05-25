@@ -13,6 +13,8 @@ query shipmentFilter ($shipmentNumber: String!, $pageable: GraphQLPageableInput!
             shippingNeeds,
             carrier,
             service,
+            packaging,
+            options,
             estimatedWeight,
             actualWeight,
             estimatedLength,

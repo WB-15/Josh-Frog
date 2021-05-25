@@ -9,6 +9,8 @@ query shipmentFind ($shipmentNumber: String!) {
         shippingNeeds,
         carrier,
         service,
+        packaging,
+        options,
         estimatedWeight,
         actualWeight,
         estimatedLength,
