@@ -35,6 +35,8 @@ export class ServicePipe implements PipeTransform {
         return 'Second Day Air';
       case 'UPS_NEXT_DAY_AIR':
         return 'Next Day Air';
+      case 'UPS_NEXT_DAY_AIR_SAVER':
+        return 'Next Day Air Saver';
       case 'UPS_SURE_POST':
         return 'Sure Post';
       case 'UPS_WORLDWIDE_EXPRESS':
