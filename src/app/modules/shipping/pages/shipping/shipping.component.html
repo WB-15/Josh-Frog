@@ -96,9 +96,16 @@
               <app-carrier-icon [carrier]="carrier"></app-carrier-icon>
             </span>
           </div>
-          <div class="form-input block w-full pl-15 pr-3 text-4xl rounded-lg">
-            <span *ngIf='(carrier && service)' class="font-light text-gray-600">{{carrier | carrier}}</span> {{service | service}}
-            <span *ngIf='!(carrier && service)' class="font-light text-gray-600">Not Specified</span>
+          <div class="form-input block h-20 w-full pl-15 pr-3 rounded-lg">
+            <p class="text-2xl" [ngClass]="{'pt-3': !options}">
+              <span *ngIf='(carrier && service)' class="font-light text-gray-600">{{carrier | carrier}}</span> {{service | service}}
+              <span *ngIf='!(carrier && service)' class="font-light text-gray-600">Not Specified</span>
+            </p>
+            <p class="font-light">
+              <span *ngFor="let option of options">
+                {{ option | option }}&nbsp;
+              </span>
+            </p>
           </div>
           <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
             <span class="icon is-medium is-left">
@@ -117,11 +124,18 @@
         <div class="relative w-full max-w-lg">
           <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
               <span class="icon is-medium is-left">
-                <app-carrier-icon [carrier]="carrier"></app-carrier-icon>
+                <app-carrier-icon [carrier]="shipment.carrier"></app-carrier-icon>
               </span>
           </div>
-          <div class="form-input block w-full pl-15 pr-3 text-4xl rounded-lg">
-            <span class="font-light text-gray-600">{{shipment.carrier | carrier}}</span> {{shipment.service | service}}
+          <div class="form-input block h-20 w-full pl-15 pr-3 rounded-lg">
+            <p class="text-2xl" [ngClass]="{'pt-3': !shipment.options}">
+              <span class="font-light text-gray-600">{{shipment.carrier | carrier}}</span> {{shipment.service | service}}
+            </p>
+            <p class="font-light">
+              <span *ngFor="let option of shipment.options">
+                {{ option | option }}&nbsp;
+              </span>
+            </p>
           </div>
         </div>
       </div>
@@ -154,7 +168,7 @@
         <div class="relative w-full max-w-lg">
           <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
               <span class="icon is-medium is-left">
-                <app-packaging-icon [packaging]="packaging"></app-packaging-icon>
+                <app-packaging-icon [packaging]="shipment.packaging"></app-packaging-icon>
               </span>
           </div>
           <div class="form-input block w-full pl-15 pr-3 text-4xl rounded-lg">
@@ -231,7 +245,7 @@
     </div>
   </div>
 
-  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && shipment.actualLength && shipment.actualWidth && shipment.actualHeight && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
       <div class="block lg:flex lg:flex-row">
         <div class="w-full">
           <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">DIMENSIONS</p>
@@ -264,8 +278,8 @@
     </div>
     <div class="w-64 lg:ml-64">
       <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded"
-              [disabled]="!carrier || !service || !packaging || (!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0))"
-              [ngClass]="{'hover:bg-blue-700': !(!carrier || !service || !packaging || (!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0)))}"
+              [disabled]="!carrier || !service || !packaging || (packaging == 'CARDBOARD_BOX' && ((!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0))))"
+              [ngClass]="{'hover:bg-blue-700': !(!carrier || !service || !packaging || (packaging == 'CARDBOARD_BOX' && (!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0))))}"
             (click)="ship()">
         Ship
       </button>

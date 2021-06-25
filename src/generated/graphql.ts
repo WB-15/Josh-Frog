@@ -3011,6 +3011,7 @@ export type ShipmentInfoQuery = (
 export type ShipmentRateMutationVariables = Exact<{
   id: Scalars['UUID'];
   warehouse: Scalars['String'];
+  packaging?: Maybe<Packaging>;
   weight?: Maybe<Scalars['BigDecimal']>;
   length?: Maybe<Scalars['BigDecimal']>;
   width?: Maybe<Scalars['BigDecimal']>;
@@ -3961,10 +3962,11 @@ export const ShipmentInfoDocument = gql`
     }
   }
 export const ShipmentRateDocument = gql`
-    mutation shipmentRate($id: UUID!, $warehouse: String!, $weight: BigDecimal, $length: BigDecimal, $width: BigDecimal, $height: BigDecimal) {
+    mutation shipmentRate($id: UUID!, $warehouse: String!, $packaging: Packaging, $weight: BigDecimal, $length: BigDecimal, $width: BigDecimal, $height: BigDecimal) {
   shipmentRate(
     id: $id
     warehouse: $warehouse
+    packaging: $packaging
     weight: $weight
     length: $length
     width: $width

@@ -119,6 +119,12 @@ export class ShippingComponent implements OnInit, OnDestroy {
             .subscribe(
               (result) => {
                 if (result) {
+                  this.weight = null;
+                  this.length = null;
+                  this.width = null;
+                  this.height = null;
+                  this.packaging = null;
+                  this.options = null;
                   this.shipment = result as ShipmentEntity;
                   this.carrier = this.shipment.carrier;
                   this.service = this.shipment.service;
@@ -177,6 +183,12 @@ export class ShippingComponent implements OnInit, OnDestroy {
           .subscribe(
             (result) => {
               this.shipment = null;
+              this.weight = null;
+              this.length = null;
+              this.width = null;
+              this.height = null;
+              this.packaging = null;
+              this.options = null;
               this.searchResults = result as ShipmentEntity[];
               this.changeDetectorRef.detectChanges();
               if (
@@ -296,6 +308,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
     opts.inputs = {
       shipment: this.shipment,
       warehouse: this.warehouse,
+      packaging: this.packaging,
       length: this.length,
       width: this.width,
       height: this.height,

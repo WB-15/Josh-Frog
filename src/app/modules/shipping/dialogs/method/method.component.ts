@@ -24,6 +24,7 @@ export class MethodComponent implements OnInit {
   @Input() parentRef: DialogComponent<MethodComponent>;
   @Input() shipment: ShipmentEntity;
   @Input() warehouse: WarehouseEntity;
+  @Input() packaging: Packaging;
   @Input() length: number;
   @Input() width: number;
   @Input() height: number;
@@ -56,6 +57,7 @@ export class MethodComponent implements OnInit {
       .mutate({
         id: this.shipment.id,
         warehouse: this.warehouse.name,
+        packaging: this.packaging,
         weight: this.weight ? this.weight : this.shipment.estimatedWeight,
         length: this.length ? this.length : this.shipment.estimatedLength,
         width: this.width ? this.width : this.shipment.estimatedWidth,
