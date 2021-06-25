@@ -1,7 +1,8 @@
-mutation shipmentRate ($id: UUID!, $warehouse: String!, $weight: BigDecimal, $length: BigDecimal, $width: BigDecimal, $height: BigDecimal) {
+mutation shipmentRate ($id: UUID!, $warehouse: String!, $packaging: Packaging, $weight: BigDecimal, $length: BigDecimal, $width: BigDecimal, $height: BigDecimal) {
     shipmentRate (
         id: $id,
         warehouse: $warehouse,
+        packaging: $packaging,
         weight: $weight,
         length: $length,
         width: $width,

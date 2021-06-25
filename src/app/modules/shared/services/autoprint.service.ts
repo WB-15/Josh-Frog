@@ -90,7 +90,7 @@ export class AutoprintService {
 
   timerCallback(duration: number) {
     clearTimeout(this.timer);
-    setTimeout(() => {
+    this.timer = setTimeout(() => {
       if (!this.printers) {
         this.listEnabledPrinters().subscribe(
           (printers) => {
@@ -118,6 +118,8 @@ export class AutoprintService {
               this.printAcknowledgeForPrinter(job.name).subscribe((result) => {
                 this.acknowledgeJob(printerName, job.name).subscribe((j) => {});
               });
+            } else if (job.status === 'deleted') {
+              this.acknowledgeJob(printerName, job.name).subscribe((j) => {});
             }
           }
           if (!pending) {
