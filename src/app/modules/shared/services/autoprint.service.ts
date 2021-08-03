@@ -78,7 +78,7 @@ export class AutoprintService {
       .subscribe(
         (result) => {
           this.workstation = result;
-          this.timerCallback(1000);
+          this.timerCallback(1);
         },
         (error) => {
           console.log(error);
@@ -109,45 +109,70 @@ export class AutoprintService {
         }
 
         const printerName = this.printers[this.printerIndex].name;
-        this.listJobsForPrinter(printerName).subscribe((jobs) => {
-          let pending = false;
-          for (const job of jobs) {
-            if (job.status === 'pending' || job.status === 'processing') {
-              pending = true;
-            } else if (job.status === 'completed') {
-              this.printAcknowledgeForPrinter(job.name).subscribe((result) => {
+        this.listJobsForPrinter(printerName).subscribe(
+          (jobs) => {
+            let pending = false;
+            for (const job of jobs) {
+              if (job.status === 'pending' || job.status === 'processing') {
+                pending = true;
+              } else if (job.status === 'completed') {
+                this.printAcknowledgeForPrinter(job.name).subscribe(
+                  (result) => {
+                    this.acknowledgeJob(
+                      printerName,
+                      job.name
+                    ).subscribe((j) => {});
+                  },
+                  (error) => {
+                    console.log(error);
+                  }
+                );
+              } else if (job.status === 'deleted') {
                 this.acknowledgeJob(printerName, job.name).subscribe((j) => {});
-              });
-            } else if (job.status === 'deleted') {
-              this.acknowledgeJob(printerName, job.name).subscribe((j) => {});
-            }
-          }
-          if (!pending) {
-            this.getNextForPrinter(printerName).subscribe(
-              (printJobs) => {
-                for (const printJob of printJobs) {
-                  this.downloadAcknowledgeForPrinter(printJob.name).subscribe(
-                    (result) => {
-                      this.printData(
-                        printerName,
-                        printJob.name,
-                        printJob.dataBase64
-                      ).subscribe((job) => {});
-                    }
-                  );
-                }
-              },
-              (error) => {
-                this.timerCallback(60000);
               }
-            );
+            }
+            if (!pending) {
+              this.getNextForPrinter(printerName).subscribe(
+                (printJobs) => {
+                  for (const printJob of printJobs) {
+                    this.downloadAcknowledgeForPrinter(printJob.name).subscribe(
+                      (result) => {
+                        this.printData(
+                          printerName,
+                          printJob.name,
+                          printJob.dataBase64
+                        ).subscribe(
+                          (job) => {
+                            // Print successful!  Do nothing.
+                          },
+                          (error) => {
+                            // TODO: need to report unsuccessful print!
+                            console.log(error);
+                          }
+                        );
+                      },
+                      (error) => {
+                        console.log(error);
+                      }
+                    );
+                  }
+                },
+                (error) => {
+                  console.log(error);
+                }
+              );
+            }
+            if (this.printerIndex === this.printers.length - 1) {
+              this.timerCallback(120 * 1000);
+            } else {
+              this.timerCallback(1000);
+            }
+          },
+          (error) => {
+            console.log(error);
+            this.timerCallback(30000);
           }
-          if (this.printerIndex === this.printers.length - 1) {
-            this.timerCallback(120 * 1000);
-          } else {
-            this.timerCallback(1000);
-          }
-        });
+        );
       }
     }, duration);
   }
