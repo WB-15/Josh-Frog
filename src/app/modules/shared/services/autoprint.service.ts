@@ -7,6 +7,7 @@ import { first, map } from 'rxjs/operators';
 
 import {
   AutoprintAddPrinterGQL,
+  AutoprintCancelAcknowledgeForPrinterGQL,
   AutoprintDownloadAcknowledgeForPrinterGQL,
   AutoprintEnrollWorkstationGQL,
   AutoprintGetNextForPrinterGQL,
@@ -42,6 +43,7 @@ export class AutoprintService {
     private autoprintListPrintersGQL: AutoprintListPrintersGQL,
     private autoprintAddPrinterGQL: AutoprintAddPrinterGQL,
     private autoprintGetNextForPrinterGQL: AutoprintGetNextForPrinterGQL,
+    private autoprintCancelAcknowledgeForPrinterGQL: AutoprintCancelAcknowledgeForPrinterGQL,
     private autoprintDownloadAcknowledgeForPrinterGQL: AutoprintDownloadAcknowledgeForPrinterGQL,
     private autoprintPrintAcknowledgeForPrinterGQL: AutoprintPrintAcknowledgeForPrinterGQL,
     private httpClient: HttpClient,
@@ -128,7 +130,17 @@ export class AutoprintService {
                   }
                 );
               } else if (job.status === 'deleted') {
-                this.acknowledgeJob(printerName, job.name).subscribe((j) => {});
+                this.cancelAcknowledgeForPrinter(job.name).subscribe(
+                  (result) => {
+                    this.acknowledgeJob(
+                      printerName,
+                      job.name
+                    ).subscribe((j) => {});
+                  },
+                  (error) => {
+                    console.log(error);
+                  }
+                );
               }
             }
             if (!pending) {
@@ -140,7 +152,8 @@ export class AutoprintService {
                         this.printData(
                           printerName,
                           printJob.name,
-                          printJob.dataBase64
+                          printJob.dataBase64,
+                          printJob.rotate
                         ).subscribe(
                           (job) => {
                             // Print successful!  Do nothing.
@@ -159,8 +172,7 @@ export class AutoprintService {
                 },
                 (error) => {
                   console.log(error);
-                }
-              );
+              });
             }
             if (this.printerIndex === this.printers.length - 1) {
               this.timerCallback(120 * 1000);
@@ -211,6 +223,17 @@ export class AutoprintService {
       .mutate({ machineKey: this.machineId, printerName })
       .pipe(
         map((result) => result.data.autoprintGetNextForPrinter as PrintJob[])
+      );
+  }
+
+  cancelAcknowledgeForPrinter(shipment: string): Observable<boolean> {
+    return this.autoprintCancelAcknowledgeForPrinterGQL
+      .mutate({ shipment })
+      .pipe(
+        map(
+          (result) =>
+            result.data.autoprintCancelAcknowledgeForPrinter as boolean
+        )
       );
   }
 
@@ -268,7 +291,8 @@ export class AutoprintService {
   printData(
     printerName: string,
     jobName: string,
-    dataBase64: string
+    dataBase64: string,
+    rotate: boolean
   ): Observable<Job> {
     return this.httpClient
       .post<Job>('http://localhost:9900/printData', {
@@ -277,7 +301,8 @@ export class AutoprintService {
         acknowledge: true,
         dataBase64,
         tray: '',
-        paperSize: 'Letter'
+        paperSize: 'Letter',
+        rotate: rotate || false // null coalesce
       })
       .pipe(first());
   }

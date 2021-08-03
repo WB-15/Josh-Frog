@@ -2859,6 +2859,16 @@ export type AutoprintCancelAcknowledgeForPrinterMutation = (
   & Pick<Mutation, 'autoprintCancelAcknowledgeForPrinter'>
 );
 
+export type AutoprintDownloadAcknowledgeForPrinterMutationVariables = Exact<{
+  shipment: Scalars['UUID'];
+}>;
+
+
+export type AutoprintDownloadAcknowledgeForPrinterMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'autoprintDownloadAcknowledgeForPrinter'>
+);
+
 export type AutoprintEnrollWorkstationMutationVariables = Exact<{
   warehouse: Scalars['String'];
   name: Scalars['String'];
@@ -3582,6 +3592,22 @@ export const AutoprintCancelAcknowledgeForPrinterDocument = gql`
   })
   export class AutoprintCancelAcknowledgeForPrinterGQL extends Apollo.Mutation<AutoprintCancelAcknowledgeForPrinterMutation, AutoprintCancelAcknowledgeForPrinterMutationVariables> {
     document = AutoprintCancelAcknowledgeForPrinterDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const AutoprintDownloadAcknowledgeForPrinterDocument = gql`
+    mutation autoprintDownloadAcknowledgeForPrinter($shipment: UUID!) {
+  autoprintDownloadAcknowledgeForPrinter(shipment: $shipment)
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class AutoprintDownloadAcknowledgeForPrinterGQL extends Apollo.Mutation<AutoprintDownloadAcknowledgeForPrinterMutation, AutoprintDownloadAcknowledgeForPrinterMutationVariables> {
+    document = AutoprintDownloadAcknowledgeForPrinterDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
