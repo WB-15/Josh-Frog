@@ -97,7 +97,7 @@
             </span>
           </div>
           <div class="form-input block h-20 w-full pl-15 pr-3 rounded-lg">
-            <p class="text-2xl" [ngClass]="{'pt-3': !options}">
+            <p class="text-2xl" [ngClass]="{'pt-3': !(options && options.length > 0)}">
               <span *ngIf='(carrier && service)' class="font-light text-gray-600">{{carrier | carrier}}</span> {{service | service}}
               <span *ngIf='!(carrier && service)' class="font-light text-gray-600">Not Specified</span>
             </p>

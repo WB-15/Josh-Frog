@@ -118,7 +118,9 @@
     </div>
   </div>
 </div>
+</div>
 
+<div class="w-1/2">
 <div class="p-4" *ngIf="twoDayRates && (twoDayRates.length > 0)">
   <div class="p-2">
     <div class="block lg:flex lg:flex-row">
@@ -126,9 +128,9 @@
         <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">TWO DAY</p>
         <div *ngFor="let rate of twoDayRates" class="relative w-full max-w-lg" (click)="pickMethod(rate.carrier, rate.service, rate.packaging, rate.options)">
           <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
-              <span class="icon is-medium is-left">
-                <app-carrier-icon [carrier]="rate.carrier"></app-carrier-icon>
-              </span>
+            <span class="icon is-medium is-left">
+              <app-carrier-icon [carrier]="rate.carrier"></app-carrier-icon>
+            </span>
           </div>
           <div class="form-input block h-20 w-full pl-15 pr-3 rounded-lg">
             <p class="text-2xl" [ngClass]="{'pt-3': !rate.options}">
@@ -155,9 +157,7 @@
     </div>
   </div>
 </div>
-</div>
 
-<div class="w-1/2">
 <div class="p-4" *ngIf="threeDayRates && (threeDayRates.length > 0)">
   <div class="p-2">
     <div class="block lg:flex lg:flex-row">
