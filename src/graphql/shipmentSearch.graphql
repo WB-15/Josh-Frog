@@ -25,11 +25,13 @@ query shipmentSearch ($query: String!) {
         printedEnd,
         shippedAt,
         trackingNo,
+
+        firstName,
+        lastName,
+
         salesOrder {
             id,
             cls,
-            shippingFirstName,
-            shippingLastName,
             orderNumber,
             alternateOrderNumber
         }

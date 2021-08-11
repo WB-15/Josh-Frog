@@ -34,10 +34,13 @@ import {
   ShipmentFilterGQL,
   GraphQlPageableInput,
   ShipmentSearchGQL,
-  Packaging
+  Packaging,
+  ShipmentValidateAddressGQL,
+  ShipmentVoidGQL
 } from '../../../../../generated/graphql';
 import { MethodComponent } from '../../dialogs/method/method.component';
 import { PackagingComponent } from '../../dialogs/packaging/packaging.component';
+import { MessageBoxOptions } from '../../../shared/components/message-box/message-box.component';
 
 @Component({
   selector: 'app-shipping',
@@ -89,7 +92,9 @@ export class ShippingComponent implements OnInit, OnDestroy {
     private shipmentFindGQL: ShipmentFindGQL,
     private shipmentFilterGQL: ShipmentFilterGQL,
     private shipmentSearchGQL: ShipmentSearchGQL,
-    private shipmentShipGQL: ShipmentShipGQL
+    private shipmentValidateAddressGQL: ShipmentValidateAddressGQL,
+    private shipmentShipGQL: ShipmentShipGQL,
+    private shipmentVoidGQL: ShipmentVoidGQL
   ) {}
 
   ngOnInit() {
@@ -130,8 +135,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
                   this.service = this.shipment.service;
                   if (this.shipment.packaging) {
                     this.packaging = this.shipment.packaging;
-                  }
-                  else {
+                  } else {
                     this.packaging = Packaging.CardboardBox;
                   }
                   this.options = this.shipment.options;
@@ -233,8 +237,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
           this.service = this.shipment.service;
           if (this.shipment.packaging) {
             this.packaging = this.shipment.packaging;
-          }
-          else {
+          } else {
             this.packaging = Packaging.CardboardBox;
           }
           this.options = this.shipment.options;
@@ -246,6 +249,20 @@ export class ShippingComponent implements OnInit, OnDestroy {
           this.loading--;
           this.dialogService.showErrorMessageBox(error);
           this.changeDetectorRef.detectChanges();
+        }
+      );
+  }
+
+  verifyAddress() {
+    this.shipmentValidateAddressGQL
+      .mutate({ id: this.shipment.id })
+      .pipe(map((result) => result.data.shipmentValidateAddress))
+      .subscribe(
+        (result) => {
+          this.shipment = result as ShipmentEntity;
+        },
+        (error) => {
+          this.dialogService.showErrorMessageBox(error);
         }
       );
   }
@@ -343,7 +360,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
     this.dialogService.showDialog(options);
   }
 
-  ship(): void {
+  shipShipment(): void {
     if (this.options == null) {
       this.options = [];
     }
@@ -379,11 +396,33 @@ export class ShippingComponent implements OnInit, OnDestroy {
       );
   }
 
-  reprint(): void {
+  reprintLabel(): void {
     this.printerService.printShippingLabel(
       this.shipment.shipmentNumber,
       this.shipment.zplContent
     );
+  }
+
+  voidShipment(): void {
+    const messageBoxOptions = new MessageBoxOptions();
+    messageBoxOptions.title = 'Void Shipment';
+    messageBoxOptions.message = 'Are you sure you want to void this shipment?';
+    messageBoxOptions.okText = 'Void';
+    this.dialogService.showMessageBox(messageBoxOptions, () => {
+      this.shipmentVoidGQL
+        .mutate({
+          id: this.shipment.id
+        })
+        .pipe(map((result) => result.data.shipmentVoid))
+        .subscribe(
+          (result) => {
+            this.shipment = result as ShipmentEntity;
+          },
+          (error) => {
+            this.dialogService.showErrorMessageBox(error);
+          }
+        );
+    });
   }
 
   ngOnDestroy(): void {

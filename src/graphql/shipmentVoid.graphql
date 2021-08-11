@@ -1,6 +1,6 @@
-query shipmentFind ($shipmentNumber: String!) {
-    shipmentFind(
-        shipmentNumber: $shipmentNumber
+mutation shipmentVoid ($id: UUID!) {
+    shipmentVoid (
+        id: $id
     ) {
         id,
         cls,
@@ -23,6 +23,19 @@ query shipmentFind ($shipmentNumber: String!) {
         estimatedDeliveryDate,
         shippedAt,
         trackingNo,
+        zplContent,
+
+        firstName,
+        lastName,
+        company,
+        line1,
+        line2,
+        city,
+        state,
+        postalCode,
+        country,
+        residential,
+        addressValidationSource,
 
         salesOrder {
             id,

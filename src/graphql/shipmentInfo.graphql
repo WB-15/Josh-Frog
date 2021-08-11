@@ -25,35 +25,26 @@ query shipmentInfo ($id: UUID!) {
         trackingNo,
         zplContent,
 
+        firstName,
+        lastName,
+        company,
+        line1,
+        line2,
+        city,
+        state,
+        postalCode,
+        country,
+        residential,
+        addressValidationSource,
+
         salesOrder {
             id,
             cls,
             orderNumber,
             alternateOrderNumber,
-
             placedTime,
-
             email,
-
-            status,
-
-            billingFirstName,
-            billingLastName,
-            billingLine1,
-            billingLine2,
-            billingCity,
-            billingState,
-            billingPostalCode,
-            billingCountry,
-
-            shippingFirstName,
-            shippingLastName,
-            shippingLine1,
-            shippingLine2,
-            shippingCity,
-            shippingState,
-            shippingPostalCode,
-            shippingCountry,
+            status
         },
 
         shipmentItems {

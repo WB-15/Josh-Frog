@@ -65,11 +65,13 @@
     <div class="block lg:flex lg:flex-row">
       <div>
         <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">DESTINATION</p>
-        <p class="font-light">{{shipment?.salesOrder.shippingFirstName}} {{shipment?.salesOrder.shippingLastName}}</p>
-        <p class="font-light" *ngIf="shipment?.salesOrder.shippingCompany">{{shipment.salesOrder.shippingCompany}}</p>
-        <p class="font-light">{{shipment?.salesOrder.shippingLine1}}</p>
-        <p class="font-light" *ngIf="shipment?.salesOrder.shippingLine2">{{shipment.salesOrder.shippingLine2}}</p>
-        <p class="font-light">{{shipment?.salesOrder.shippingCity}}<span *ngIf="shipment?.salesOrder.shippingCity">, </span>{{shipment?.salesOrder.shippingState}}  {{shipment?.salesOrder.shippingPostalCode}}</p>
+        <p class="font-light">{{shipment?.firstName}} {{shipment?.lastName}}</p>
+        <p class="font-light" *ngIf="shipment?.company">{{shipment.company}}</p>
+        <p class="font-light">{{shipment?.line1}}</p>
+        <p class="font-light" *ngIf="shipment?.line2">{{shipment.line2}}</p>
+        <p class="font-light">{{shipment?.city}}<span *ngIf="shipment?.city">, </span>{{shipment?.state}}  {{shipment?.postalCode}}</p>
+        <p *ngIf="!shipment.addressValidationSource || shipment.addressValidationSource === 'Unverified'"><span class="text-gray-500">Address is unverified.</span> <button class="text-jfgreen-600 hover:text-jfgreen-900" (click)="verifyAddress()">Verify</button></p>
+        <p *ngIf="shipment.addressValidationSource && shipment.addressValidationSource !== 'Unverified'"><span class="text-gray-500">Address verified by {{shipment.addressValidationSource}}.</span></p>
       </div>
 
       <div class="h-6 lg:flex-1"></div>
@@ -128,7 +130,7 @@
               </span>
           </div>
           <div class="form-input block h-20 w-full pl-15 pr-3 rounded-lg">
-            <p class="text-2xl" [ngClass]="{'pt-3': !shipment.options}">
+            <p class="text-2xl" [ngClass]="{'pt-3':!(options && options.length > 0)}">
               <span class="font-light text-gray-600">{{shipment.carrier | carrier}}</span> {{shipment.service | service}}
             </p>
             <p class="font-light">
@@ -280,7 +282,7 @@
       <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded"
               [disabled]="!carrier || !service || !packaging || (packaging == 'CARDBOARD_BOX' && ((!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0))))"
               [ngClass]="{'hover:bg-blue-700': !(!carrier || !service || !packaging || (packaging == 'CARDBOARD_BOX' && (!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0))))}"
-            (click)="ship()">
+            (click)="shipShipment()">
         Ship
       </button>
     </div>
@@ -295,10 +297,18 @@
       </div>
   </div>
 
-  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && shipment.shipmentStatus === 'Shipped'">
     <div class="w-64 lg:ml-64">
-      <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded hover:bg-blue-700" (click)="reprint()">
+      <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded hover:bg-blue-700" (click)="reprintLabel()">
         Reprint Label
+      </button>
+    </div>
+  </div>
+
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && shipment.shipmentStatus === 'Shipped'">
+    <div class="w-64 lg:ml-64">
+      <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded hover:bg-blue-700" (click)="voidShipment()">
+        Void Shipment
       </button>
     </div>
   </div>
