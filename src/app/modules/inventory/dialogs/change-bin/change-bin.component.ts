@@ -4,7 +4,8 @@ import { DialogComponent } from '../../../shared/components/dialog/dialog.compon
 
 import {
   faInventory,
-  faChevronCircleRight
+  faChevronCircleRight,
+  faTimesCircle
 } from '@fortawesome/pro-duotone-svg-icons';
 
 @Component({
@@ -15,19 +16,28 @@ import {
 export class ChangeBinComponent implements OnInit {
   faInventory = faInventory;
   faChevronCircleRight = faChevronCircleRight;
+  faTimesCircle = faTimesCircle;
 
   @Input() binEntry = '';
   @Input() simpleProduct: SimpleProductEntity;
   @Input() parentRef: DialogComponent<ChangeBinComponent>;
-  @Input() callback: (bin: string) => void;
+  @Input() setCallback: (bin: string) => void;
+  @Input() clearCallback: () => void;
 
   constructor() {}
 
   ngOnInit() {}
 
   setBin() {
-    if (this.callback) {
-      this.callback(this.binEntry);
+    if (this.setCallback) {
+      this.setCallback(this.binEntry);
+    }
+    this.parentRef.pressOK();
+  }
+
+  clearBin() {
+    if (this.clearCallback) {
+      this.clearCallback();
     }
     this.parentRef.pressOK();
   }

@@ -54,6 +54,8 @@ export class ServicePipe implements PipeTransform {
         return 'Priority Mail Express';
       case 'USPS_PRIORITY_MAIL_INTERNATIONAL':
         return 'Priority Mail International';
+      case 'USPS_PARCEL_SELECT':
+        return 'Parcel Select';
 
       default:
         return value;

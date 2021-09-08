@@ -1,0 +1,48 @@
+<div style="min-height: 20em">
+  <table *ngIf="shipment" class="table-fixed w-full max-w-full">
+    <thead>
+    <tr>
+      <td class="w-1/2"></td>
+      <td class="w-1/4"></td>
+      <td class="w-1/4"></td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of shipment.shipmentItems; index as i">
+      <td class="px-6 py-4 whitespace-normal border-b border-gray-200">
+        <div>
+          <p class="leading-5">
+            <span class="font-semibold text-gray-900">{{item.quantity}}</span><span class="font-thin">x</span>&nbsp;<span class="font-medium text-gray-900">{{item.salesOrderItem.sku}}</span>:&nbsp;<span class="font-thin text-gray-900">{{item.salesOrderItem.name}}</span>
+          </p>
+        </div>
+      </td>
+
+      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <div class="leading-5 flex flex-row"></div>
+      </td>
+
+      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <div class="leading-5 flex flex-row"></div>
+      </td>
+    </tr>
+
+    <tr *ngFor="let item of shipment.shipmentAddons; index as i">
+      <td class="px-6 py-4 whitespace-normal border-b border-gray-200">
+        <div>
+          <p class="leading-5">
+            <span class="font-semibold text-gray-900">{{item.quantity}}</span><span class="font-thin">x</span>&nbsp;<span class="font-medium text-gray-900">{{item.sku}}</span>:&nbsp;<span class="font-thin text-gray-900">{{item.name}}</span>
+          </p>
+        </div>
+      </td>
+
+      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <div class="leading-5 flex flex-row"></div>
+      </td>
+
+      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <div class="leading-5 flex flex-row"></div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

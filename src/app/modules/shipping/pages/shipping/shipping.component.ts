@@ -41,6 +41,7 @@ import {
 import { MethodComponent } from '../../dialogs/method/method.component';
 import { PackagingComponent } from '../../dialogs/packaging/packaging.component';
 import { MessageBoxOptions } from '../../../shared/components/message-box/message-box.component';
+import { ShipmentContentsComponent } from '../../dialogs/shipment-contents/shipment-contents.component';
 
 @Component({
   selector: 'app-shipping',
@@ -251,6 +252,14 @@ export class ShippingComponent implements OnInit, OnDestroy {
           this.changeDetectorRef.detectChanges();
         }
       );
+  }
+
+  showShipmentDialog() {
+    const options = new DialogBoxOptions();
+    options.component = ShipmentContentsComponent;
+    options.inputs = { shipment: this.shipment };
+    options.title = 'Shipment Items';
+    this.dialogService.showDialog(options);
   }
 
   verifyAddress() {

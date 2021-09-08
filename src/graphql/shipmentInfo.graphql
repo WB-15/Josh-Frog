@@ -19,9 +19,11 @@ query shipmentInfo ($id: UUID!) {
         actualLength,
         actualWidth,
         actualHeight,
+        placedAt,
         estimatedShipDate,
         estimatedDeliveryDate,
         shippedAt,
+        shippedBy,
         trackingNo,
         zplContent,
 
@@ -57,6 +59,14 @@ query shipmentInfo ($id: UUID!) {
                 sku,
                 name
             }
+        }
+
+        shipmentAddons {
+            id,
+            cls,
+            quantity,
+            sku,
+            name
         }
     }
 }

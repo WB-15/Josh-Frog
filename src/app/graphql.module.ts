@@ -36,7 +36,32 @@ export function createApollo(httpLink: HttpLink) {
   }
 
   return {
-    link: ApolloLink.from([new RetryLink(), auth, httpLink.create({ uri })]),
+    link: ApolloLink.from([
+      new RetryLink({
+        delay: {
+          initial: 300,
+          max: Infinity,
+          jitter: true
+        },
+        attempts: {
+          max: 5,
+          retryIf: (error, operation) => {
+            if (!!error) {
+              return !(
+                error.status &&
+                (error.status === 504 ||
+                  error.status === 524 ||
+                  error.status === 401)
+              );
+            } else {
+              return false;
+            }
+          }
+        }
+      }),
+      auth,
+      httpLink.create({ uri })
+    ]),
     cache: new InMemoryCache()
   };
 }

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
 import {
   Carrier,
+  DomesticServiceType,
   Packaging,
   RateQuote,
   Service,
@@ -66,6 +67,47 @@ export class MethodComponent implements OnInit {
       .pipe(map((result) => result.data.shipmentRate))
       .subscribe(
         (result) => {
+          /*
+          this.rateQuotes = [
+            {
+              domesticServiceType: DomesticServiceType.Ground,
+              carrier: Carrier.Usps,
+              service: Service.UspsPriorityMail,
+              packaging: Packaging.CardboardBox,
+              cost: 7.67,
+              shipDate: 'Tue Sep 07 00:00:00 EDT 2021',
+              deliveryDate: 'Thu Sep 09 00:00:00 EDT 2021'
+            },
+            {
+              domesticServiceType: DomesticServiceType.Ground,
+              carrier: Carrier.Usps,
+              service: Service.UspsPriorityMail,
+              packaging: Packaging.RegionalBoxA,
+              cost: 8.34,
+              shipDate: 'Tue Sep 07 00:00:00 EDT 2021',
+              deliveryDate: 'Thu Sep 09 00:00:00 EDT 2021'
+            },
+            {
+              domesticServiceType: DomesticServiceType.Ground,
+              carrier: Carrier.Usps,
+              service: Service.UspsPriorityMail,
+              packaging: Packaging.RegionalBoxB,
+              cost: 9.56,
+              shipDate: 'Tue Sep 07 00:00:00 EDT 2021',
+              deliveryDate: 'Thu Sep 09 00:00:00 EDT 2021'
+            },
+            {
+              domesticServiceType: DomesticServiceType.Ground,
+              carrier: Carrier.Usps,
+              service: Service.UspsParcelSelect,
+              packaging: Packaging.CardboardBox,
+              cost: 7.52,
+              shipDate: 'Tue Sep 07 00:00:00 EDT 2021',
+              deliveryDate: 'Mon Sep 13 00:00:00 EDT 2021'
+            }
+          ];
+          */
+
           this.rateQuotes = result as RateQuote[];
           this.overnightEarlyRates = [];
           this.overnightMorningRates = [];

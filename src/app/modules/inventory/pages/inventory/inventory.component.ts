@@ -26,6 +26,7 @@ import {
   InventoryDetails,
   InventoryGetDetailsGQL,
   InventorySetDetailsGQL,
+  SimpleProductClearBinGQL,
   SimpleProductEntity,
   SimpleProductFilterGQL,
   SimpleProductFindBySkuGQL,
@@ -86,7 +87,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
     private simpleProductFilterGQL: SimpleProductFilterGQL,
     private inventoryGetDetailsGQL: InventoryGetDetailsGQL,
     private inventorySetDetailsGQL: InventorySetDetailsGQL,
-    private simpleProductSetBinGQL: SimpleProductSetBinGQL
+    private simpleProductSetBinGQL: SimpleProductSetBinGQL,
+    private simpleProductClearBinGQL: SimpleProductClearBinGQL
   ) {}
 
   ngOnInit() {
@@ -261,8 +263,11 @@ export class InventoryComponent implements OnInit, OnDestroy {
       options.inputs = {
         binEntry,
         simpleProduct: this.simpleProduct,
-        callback: (bin: string) => {
-          this.changeBin(bin);
+        setCallback: (bin: string) => {
+          this.setBin(bin);
+        },
+        clearCallback: () => {
+          this.clearBin();
         }
       };
       options.title = this.simpleProduct.title;
@@ -271,7 +276,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     });
   }
 
-  changeBin(bin: string) {
+  setBin(bin: string) {
     this.simpleProductSetBinGQL
       .mutate(
         {
@@ -282,6 +287,28 @@ export class InventoryComponent implements OnInit, OnDestroy {
         { update: (cache) => cache.evict(this.simpleProduct.id) }
       )
       .pipe(map((result) => result.data.simpleProductSetBin))
+      .subscribe(
+        (result) => {
+          this.simpleProduct = result as SimpleProductEntity;
+          this.changeDetectorRef.detectChanges();
+        },
+        (error) => {
+          this.dialogService.showErrorMessageBox(error);
+          this.changeDetectorRef.detectChanges();
+        }
+      );
+  }
+
+  clearBin() {
+    this.simpleProductClearBinGQL
+      .mutate(
+        {
+          warehouse: this.warehouse.name,
+          id: this.simpleProduct.id
+        },
+        { update: (cache) => cache.evict(this.simpleProduct.id) }
+      )
+      .pipe(map((result) => result.data.simpleProductClearBin))
       .subscribe(
         (result) => {
           this.simpleProduct = result as SimpleProductEntity;
