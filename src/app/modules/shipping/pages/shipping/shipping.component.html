@@ -100,6 +100,115 @@
     </div>
   </div>
 
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
+    <div class="w-64">
+      <div class="flex">
+        <div class="block mx-auto">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">LENGTH</p>
+          <label for="length" class="hidden">Length</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faRulerHorizontal"></fa-icon>
+                </span>
+            </div>
+            <input id="length" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedLength ? (shipment.estimatedLength | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (tap)="showLengthDialog()" [(ngModel)]="length" />
+            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  IN
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-64">
+      <div class="flex">
+        <div class="block mx-auto">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WIDTH</p>
+          <label for="width" class="hidden">Width</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faRuler"></fa-icon>
+                </span>
+            </div>
+            <input id="width" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedWidth ? (shipment.estimatedWidth | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (tap)="showWidthDialog()" [(ngModel)]="width" />
+            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  IN
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-64">
+      <div class="flex">
+        <div class="block mx-auto">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">HEIGHT</p>
+          <label for="height" class="hidden">Height</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faRulerVertical"></fa-icon>
+                </span>
+            </div>
+            <input id="height" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedHeight ? (shipment.estimatedHeight | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (tap)="showHeightDialog()" [(ngModel)]="height" />
+            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  IN
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && shipment.actualLength && shipment.actualWidth && shipment.actualHeight && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
+      <div class="block lg:flex lg:flex-row">
+        <div class="w-full">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">DIMENSIONS</p>
+          <span>{{shipment.actualLength}} x {{shipment.actualWidth}} x {{shipment.actualHeight}} IN</span>
+        </div>
+      </div>
+  </div>
+
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
+    <div class="w-64">
+      <div class="flex">
+        <div class="block mx-auto">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WEIGHT</p>
+          <label for="weight" class="hidden">Weight</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faBalanceScale"></fa-icon>
+                </span>
+            </div>
+            <input id="weight" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedWeight ? (shipment.estimatedWeight | number: '0.1-1') : ''" autocomplete="off" autocapitalize="words" (tap)="showWeightDialog()" [(ngModel)]="weight" />
+            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  LB
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
+    <div class="block lg:flex lg:flex-row">
+      <div class="w-full">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WEIGHT</p>
+        <span>{{shipment.actualWeight}} LB</span>
+      </div>
+    </div>
+  </div>
+
+
   <div class="p-4" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
     <div class="block lg:flex lg:flex-row">
       <div class="w-full">
@@ -198,123 +307,24 @@
     </div>
   </div>
 
-  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
-    <div class="w-64">
-      <div class="flex">
-        <div class="block mx-auto">
-          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">LENGTH</p>
-          <label for="length" class="hidden">Length</label>
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
-                <span class="icon is-medium is-left">
-                  <fa-icon [icon]="faRulerHorizontal"></fa-icon>
-                </span>
-            </div>
-            <input id="length" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedLength ? (shipment.estimatedLength | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (tap)="showLengthDialog()" [(ngModel)]="length" />
-            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
-                <span class="icon is-medium is-left">
-                  IN
-                </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="w-64">
-      <div class="flex">
-        <div class="block mx-auto">
-          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WIDTH</p>
-          <label for="width" class="hidden">Width</label>
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
-                <span class="icon is-medium is-left">
-                  <fa-icon [icon]="faRuler"></fa-icon>
-                </span>
-            </div>
-            <input id="width" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedWidth ? (shipment.estimatedWidth | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (tap)="showWidthDialog()" [(ngModel)]="width" />
-            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
-                <span class="icon is-medium is-left">
-                  IN
-                </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="w-64">
-      <div class="flex">
-        <div class="block mx-auto">
-          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">HEIGHT</p>
-          <label for="height" class="hidden">Height</label>
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
-                <span class="icon is-medium is-left">
-                  <fa-icon [icon]="faRulerVertical"></fa-icon>
-                </span>
-            </div>
-            <input id="height" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedHeight ? (shipment.estimatedHeight | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (tap)="showHeightDialog()" [(ngModel)]="height" />
-            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
-                <span class="icon is-medium is-left">
-                  IN
-                </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && shipment.actualLength && shipment.actualWidth && shipment.actualHeight && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
-      <div class="block lg:flex lg:flex-row">
-        <div class="w-full">
-          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">DIMENSIONS</p>
-          <span>{{shipment.actualLength}} x {{shipment.actualWidth}} x {{shipment.actualHeight}} IN</span>
-        </div>
-      </div>
-  </div>
-
-  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
-    <div class="w-64">
-      <div class="flex">
-        <div class="block mx-auto">
-          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WEIGHT</p>
-          <label for="weight" class="hidden">Weight</label>
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
-                <span class="icon is-medium is-left">
-                  <fa-icon [icon]="faBalanceScale"></fa-icon>
-                </span>
-            </div>
-            <input id="weight" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedWeight ? (shipment.estimatedWeight | number: '0.1-1') : ''" autocomplete="off" autocapitalize="words" (tap)="showWeightDialog()" [(ngModel)]="weight" />
-            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
-                <span class="icon is-medium is-left">
-                  LB
-                </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="p-4" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
     <div class="w-64 lg:ml-64">
       <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded"
               [disabled]="!carrier || !service || !packaging || (packaging == 'CARDBOARD_BOX' && ((!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0))))"
               [ngClass]="{'hover:bg-blue-700': !(!carrier || !service || !packaging || (packaging == 'CARDBOARD_BOX' && (!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0))))}"
-            (click)="shipShipment()">
+              (click)="shipShipment()">
         Ship
       </button>
     </div>
   </div>
 
-  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
-      <div class="block lg:flex lg:flex-row">
-        <div class="w-full">
-          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WEIGHT</p>
-          <span>{{shipment.actualWeight}} LB</span>
-        </div>
-      </div>
-  </div>
-
   <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && shipment.shipmentStatus === 'Shipped'">
+    <div class="w-64">
+      <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded hover:bg-blue-700" (click)="voidShipment()">
+        Void Shipment
+      </button>
+    </div>
+
     <div class="w-64 lg:ml-64">
       <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded hover:bg-blue-700" (click)="reprintLabel()">
         Reprint Label
@@ -322,12 +332,6 @@
     </div>
   </div>
 
-  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && shipment.shipmentStatus === 'Shipped'">
-    <div class="w-64 lg:ml-64">
-      <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded hover:bg-blue-700" (click)="voidShipment()">
-        Void Shipment
-      </button>
-    </div>
-  </div>
+
 
 </div>
