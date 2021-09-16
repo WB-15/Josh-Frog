@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "electron:rebuild-deps-windows": "./node_modules/.bin/electron-rebuild.cmd -m ./node_modules/capacitor-mettler-toledo && ./node_modules/.bin/electron-rebuild.cmd -m ./node_modules/capacitor-zebra-printer && ./node_modules/.bin/electron-rebuild.cmd -m ./node_modules/capacitor-zebra-scanner",
-    "electron:rebuild-deps-linux": "$(npm bin)/electron-rebuild -m ./node_modules/capacitor-mettler-toledo && $(npm bin)/electron-rebuild -m ./node_modules/capacitor-zebra-printer  && $(npm bin)/electron-rebuild -m ./node_modules/capacitor-zebra-scanner",
+    "electron:rebuild-deps-linux": "$(npm bin)/electron-rebuild -m ./node_modules/capacitor-mettler-toledo && $(npm bin)/electron-rebuild -m ./node_modules/capacitor-zebra-printer && $(npm bin)/electron-rebuild -m ./node_modules/capacitor-zebra-scanner",
     "electron:start": "npm run build && electron ./",
     "electron:pack": "npm run build && electron-builder build --dir",
     "electron:build-windows": "npm run build && electron-builder build --windows",

@@ -41,8 +41,10 @@
             <div *ngIf="shipment?.salesOrder.alternateOrderNumber" class="text-sm leading-5 font-light text-gray-500">{{shipment?.salesOrder.alternateOrderNumber}}</div>
           </div>
         </div>
+      </div>
 
-        <p class="pt-4 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">CONTENTS</p>
+      <div class="w-64">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">CONTENTS</p>
         <div *ngFor="let item of shipment.shipmentItems; index as i" (click)="showShipmentDialog()">
           <p *ngIf="i < 3" class="text-xs leading-5">
             <span class="font-semibold text-gray-900">{{item.quantity}}</span><span class="font-thin">x</span>&nbsp;<span class="font-medium text-gray-900">{{item.salesOrderItem.sku}}</span>:&nbsp;<span class="font-thin text-gray-900">{{item.salesOrderItem.name}}</span>
@@ -52,8 +54,6 @@
           <span class="text-sm leading-5 font-medium text-gray-900">and more...</span>
         </div>
       </div>
-
-      <div class="h-6 lg:flex-1"></div>
 
       <div class="w-64">
         <div>
@@ -122,7 +122,7 @@
         </div>
       </div>
     </div>
-    <div class="w-64">
+    <div class="w-64 pl-2">
       <div class="flex">
         <div class="block mx-auto">
           <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WIDTH</p>
@@ -143,7 +143,7 @@
         </div>
       </div>
     </div>
-    <div class="w-64">
+    <div class="w-64 pl-2">
       <div class="flex">
         <div class="block mx-auto">
           <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">HEIGHT</p>
@@ -267,7 +267,7 @@
 
   <div class="p-4" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
     <div class="block lg:flex lg:flex-row">
-      <div class="w-full">
+      <div class="w-full max-w-lg">
         <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">PACKAGING</p>
         <div class="relative w-full max-w-lg" (click)="showPackagingDialog()">
           <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
@@ -285,6 +285,15 @@
             </span>
           </div>
         </div>
+      </div>
+
+      <div class="w-64 pl-2">
+        <button class="w-full h-16 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-5 py-4 px-4 border border-blue-700 rounded"
+                [disabled]="!carrier || !service || !packaging || (packaging == 'CARDBOARD_BOX' && ((!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0))))"
+                [ngClass]="{'hover:bg-blue-700': !(!carrier || !service || !packaging || (packaging == 'CARDBOARD_BOX' && (!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0))))}"
+                (click)="shipShipment()">
+          Ship
+        </button>
       </div>
     </div>
   </div>
@@ -308,25 +317,18 @@
   </div>
 
   <div class="p-4" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
-    <div class="w-64 lg:ml-64">
-      <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded"
-              [disabled]="!carrier || !service || !packaging || (packaging == 'CARDBOARD_BOX' && ((!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0))))"
-              [ngClass]="{'hover:bg-blue-700': !(!carrier || !service || !packaging || (packaging == 'CARDBOARD_BOX' && (!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0))))}"
-              (click)="shipShipment()">
-        Ship
-      </button>
-    </div>
+
   </div>
 
   <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && shipment.shipmentStatus === 'Shipped'">
     <div class="w-64">
-      <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded hover:bg-blue-700" (click)="voidShipment()">
+      <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold py-2 px-4 border border-blue-700 rounded hover:bg-blue-700" (click)="voidShipment()">
         Void Shipment
       </button>
     </div>
 
     <div class="w-64 lg:ml-64">
-      <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded hover:bg-blue-700" (click)="reprintLabel()">
+      <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold py-2 px-4 border border-blue-700 rounded hover:bg-blue-700" (click)="reprintLabel()">
         Reprint Label
       </button>
     </div>
