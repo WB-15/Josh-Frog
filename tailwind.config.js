@@ -13,7 +13,8 @@ module.exports = {
     }
   },
   variants: {
-    borderRadius: ['first', 'last']
+    borderRadius: ['first', 'last'],
+    backgroundColor: ['disabled', 'hover', 'active']
   },
   plugins: [require('@tailwindcss/ui')]
 };

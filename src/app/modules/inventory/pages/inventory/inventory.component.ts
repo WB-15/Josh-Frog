@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -20,13 +26,18 @@ import {
   InventoryDetails,
   InventoryGetDetailsGQL,
   InventorySetDetailsGQL,
+  SimpleProductClearBinGQL,
   SimpleProductEntity,
   SimpleProductFilterGQL,
+  SimpleProductFindByBinGQL,
   SimpleProductFindBySkuGQL,
   SimpleProductFindByUpcGQL,
   SimpleProductInfoGQL,
+  SimpleProductSetBinGQL,
   WarehouseEntity
 } from '../../../../../generated/graphql';
+import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
+import { ChangeBinComponent } from '../../dialogs/change-bin/change-bin.component';
 
 @Component({
   selector: 'app-inventory',
@@ -57,6 +68,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   loading = 0;
   upcScannedSubscription: Subscription;
   skuScannedSubscription: Subscription;
+  binScannedSubscription: Subscription;
 
   inventoryDetails: InventoryDetails;
   simpleProduct: SimpleProductEntity;
@@ -66,15 +78,19 @@ export class InventoryComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
+    private ngZone: NgZone,
     private dialogService: DialogService,
     private warehouseService: WarehouseService,
     private barcodeService: BarcodeService,
     private simpleProductInfo: SimpleProductInfoGQL,
     private simpleProductFindByUpcGQL: SimpleProductFindByUpcGQL,
     private simpleProductFindBySkuGQL: SimpleProductFindBySkuGQL,
+    private simpleProductFindByBinGQL: SimpleProductFindByBinGQL,
     private simpleProductFilterGQL: SimpleProductFilterGQL,
     private inventoryGetDetailsGQL: InventoryGetDetailsGQL,
-    private inventorySetDetailsGQL: InventorySetDetailsGQL
+    private inventorySetDetailsGQL: InventorySetDetailsGQL,
+    private simpleProductSetBinGQL: SimpleProductSetBinGQL,
+    private simpleProductClearBinGQL: SimpleProductClearBinGQL
   ) {}
 
   ngOnInit() {
@@ -133,6 +149,35 @@ export class InventoryComponent implements OnInit, OnDestroy {
           this.simpleProductFindBySkuGQL
             .fetch({ sku: this.sku })
             .pipe(map((result) => result.data.simpleProductFindBySku))
+            .subscribe(
+              (result) => {
+                this.simpleProduct = result as SimpleProductEntity;
+                this.loading--;
+                this.quantityUpdated = null;
+                this.quantityEntry = null;
+                this.changeDetectorRef.detectChanges();
+                this.getInventory();
+              },
+              (error) => {
+                console.error(error);
+                this.loading--;
+                this.inventoryDetails = null;
+                this.dialogService.showErrorMessageBox(error);
+                this.changeDetectorRef.detectChanges();
+              }
+            );
+        }
+      }
+    );
+
+    this.binScannedSubscription = this.barcodeService.binScanned$.subscribe(
+      (bin) => {
+        if (bin) {
+          this.loading++;
+          this.changeDetectorRef.detectChanges();
+          this.simpleProductFindByBinGQL
+            .fetch({ warehouse: this.warehouse.name, binId: bin })
+            .pipe(map((result) => result.data.simpleProductFindByBin))
             .subscribe(
               (result) => {
                 this.simpleProduct = result as SimpleProductEntity;
@@ -226,6 +271,71 @@ export class InventoryComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.inventoryDetails = null;
+          this.dialogService.showErrorMessageBox(error);
+          this.changeDetectorRef.detectChanges();
+        }
+      );
+  }
+
+  showChangeBinDialog(binEntry: string) {
+    this.ngZone.run(() => {
+      const options = new DialogBoxOptions();
+      options.component = ChangeBinComponent;
+      options.inputs = {
+        binEntry,
+        simpleProduct: this.simpleProduct,
+        setCallback: (bin: string) => {
+          this.setBin(bin);
+        },
+        clearCallback: () => {
+          this.clearBin();
+        }
+      };
+      options.title = this.simpleProduct.title;
+      options.okText = 'Cancel';
+      this.dialogService.showDialog(options);
+    });
+  }
+
+  setBin(bin: string) {
+    this.simpleProductSetBinGQL
+      .mutate(
+        {
+          warehouse: this.warehouse.name,
+          id: this.simpleProduct.id,
+          bin
+        },
+        { update: (cache) => cache.evict(this.simpleProduct.id) }
+      )
+      .pipe(map((result) => result.data.simpleProductSetBin))
+      .subscribe(
+        (result) => {
+          this.simpleProduct = result as SimpleProductEntity;
+          this.changeDetectorRef.detectChanges();
+        },
+        (error) => {
+          this.dialogService.showErrorMessageBox(error);
+          this.changeDetectorRef.detectChanges();
+        }
+      );
+  }
+
+  clearBin() {
+    this.simpleProductClearBinGQL
+      .mutate(
+        {
+          warehouse: this.warehouse.name,
+          id: this.simpleProduct.id
+        },
+        { update: (cache) => cache.evict(this.simpleProduct.id) }
+      )
+      .pipe(map((result) => result.data.simpleProductClearBin))
+      .subscribe(
+        (result) => {
+          this.simpleProduct = result as SimpleProductEntity;
+          this.changeDetectorRef.detectChanges();
+        },
+        (error) => {
           this.dialogService.showErrorMessageBox(error);
           this.changeDetectorRef.detectChanges();
         }
@@ -328,5 +438,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.warehouseChangedSubscription.unsubscribe();
     this.upcScannedSubscription.unsubscribe();
     this.skuScannedSubscription.unsubscribe();
+    this.binScannedSubscription.unsubscribe();
   }
 }

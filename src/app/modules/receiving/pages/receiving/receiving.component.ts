@@ -1,8 +1,13 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { ActivatedRoute } from '@angular/router';
 
 import {
   faSpinnerThird,
@@ -18,13 +23,17 @@ import { BarcodeService } from '../../../shared/services/barcode.service';
 import {
   GraphQlPageableInput,
   InventoryAddDetailsGQL,
+  SimpleProductClearBinGQL,
   SimpleProductEntity,
   SimpleProductFilterGQL,
   SimpleProductFindBySkuGQL,
   SimpleProductFindByUpcGQL,
   SimpleProductInfoGQL,
+  SimpleProductSetBinGQL,
   WarehouseEntity
 } from '../../../../../generated/graphql';
+import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
+import { ChangeBinComponent } from '../../../inventory/dialogs/change-bin/change-bin.component';
 
 @Component({
   selector: 'app-receiving',
@@ -55,6 +64,7 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   loading = 0;
   upcScannedSubscription: Subscription;
   skuScannedSubscription: Subscription;
+  binScannedSubscription: Subscription;
 
   simpleProduct: SimpleProductEntity;
   searchBySkuResults: SimpleProductEntity[];
@@ -63,6 +73,7 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
+    private ngZone: NgZone,
     private dialogService: DialogService,
     private warehouseService: WarehouseService,
     private barcodeService: BarcodeService,
@@ -70,6 +81,8 @@ export class ReceivingComponent implements OnInit, OnDestroy {
     private simpleProductFindByUpcGQL: SimpleProductFindByUpcGQL,
     private simpleProductFindBySkuGQL: SimpleProductFindBySkuGQL,
     private simpleProductFilterGQL: SimpleProductFilterGQL,
+    private simpleProductSetBinGQL: SimpleProductSetBinGQL,
+    private simpleProductClearBinGQL: SimpleProductClearBinGQL,
     private inventoryAddDetailsGQL: InventoryAddDetailsGQL
   ) {}
 
@@ -77,16 +90,14 @@ export class ReceivingComponent implements OnInit, OnDestroy {
     this.warehouseChangedSubscription = this.warehouseService.warehouseChanged$.subscribe(
       (warehouse) => {
         this.warehouse = warehouse;
-        this.route.queryParams.subscribe(
-          (params) => {
-            if (params.id) {
-              this.load(params.id);
-            }
-          },
-          (error) => {
-            this.warehouse = null;
+        this.route.queryParams.subscribe((params) => {
+          if (params.id) {
+            this.load(params.id);
           }
-        );
+        });
+      },
+      (error) => {
+        this.warehouse = null;
       }
     );
 
@@ -145,6 +156,16 @@ export class ReceivingComponent implements OnInit, OnDestroy {
         }
       }
     );
+
+    this.binScannedSubscription = this.barcodeService.binScanned$.subscribe(
+      (bin) => {
+        if (bin != null && this.simpleProduct) {
+          //this.ngZone.run(() => {
+          this.showChangeBinDialog(bin);
+          //});
+        }
+      }
+    );
   }
 
   load(id: string) {
@@ -191,6 +212,72 @@ export class ReceivingComponent implements OnInit, OnDestroy {
         },
         (error) => {
           console.error(error);
+          this.dialogService.showErrorMessageBox(error);
+          this.changeDetectorRef.detectChanges();
+        }
+      );
+  }
+
+  // TODO: this is using a component from inventory, should be moved to shared
+  showChangeBinDialog(binEntry: string) {
+    this.ngZone.run(() => {
+      const options = new DialogBoxOptions();
+      options.component = ChangeBinComponent;
+      options.inputs = {
+        binEntry,
+        simpleProduct: this.simpleProduct,
+        setCallback: (bin: string) => {
+          this.setBin(bin);
+        },
+        clearCallback: () => {
+          this.clearBin();
+        }
+      };
+      options.title = this.simpleProduct.title;
+      options.okText = 'Cancel';
+      this.dialogService.showDialog(options);
+    });
+  }
+
+  setBin(bin: string) {
+    this.simpleProductSetBinGQL
+      .mutate(
+        {
+          warehouse: this.warehouse.name,
+          id: this.simpleProduct.id,
+          bin
+        },
+        { update: (cache) => cache.evict(this.simpleProduct.id) }
+      )
+      .pipe(map((result) => result.data.simpleProductSetBin))
+      .subscribe(
+        (result) => {
+          this.simpleProduct = result as SimpleProductEntity;
+          this.changeDetectorRef.detectChanges();
+        },
+        (error) => {
+          this.dialogService.showErrorMessageBox(error);
+          this.changeDetectorRef.detectChanges();
+        }
+      );
+  }
+
+  clearBin() {
+    this.simpleProductClearBinGQL
+      .mutate(
+        {
+          warehouse: this.warehouse.name,
+          id: this.simpleProduct.id
+        },
+        { update: (cache) => cache.evict(this.simpleProduct.id) }
+      )
+      .pipe(map((result) => result.data.simpleProductClearBin))
+      .subscribe(
+        (result) => {
+          this.simpleProduct = result as SimpleProductEntity;
+          this.changeDetectorRef.detectChanges();
+        },
+        (error) => {
           this.dialogService.showErrorMessageBox(error);
           this.changeDetectorRef.detectChanges();
         }
@@ -293,5 +380,6 @@ export class ReceivingComponent implements OnInit, OnDestroy {
     this.warehouseChangedSubscription.unsubscribe();
     this.upcScannedSubscription.unsubscribe();
     this.skuScannedSubscription.unsubscribe();
+    this.binScannedSubscription.unsubscribe();
   }
 }

@@ -1,0 +1,5 @@
+mutation autoprintDownloadAcknowledgeForPrinter ($shipment: UUID!) {
+    autoprintDownloadAcknowledgeForPrinter(
+        shipment: $shipment
+    )
+}

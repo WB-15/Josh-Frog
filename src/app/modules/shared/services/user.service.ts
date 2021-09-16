@@ -1,8 +1,9 @@
+import { Apollo } from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { Apollo } from 'apollo-angular';
+
 import { Platform } from '@ionic/angular';
 
 import { UserEntity, UserInfoGQL } from '../../../../generated/graphql';
@@ -129,6 +130,7 @@ export class UserService {
   }
 
   public logout(): void {
+    this.apollo.getClient().resetStore();
     localStorage.removeItem(this.ACCESS_TOKEN_KEY);
     localStorage.removeItem(this.EXPIRATION_KEY);
     localStorage.removeItem(this.USER_DETAILS_KEY);

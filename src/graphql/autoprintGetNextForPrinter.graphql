@@ -6,6 +6,7 @@ mutation autoprintGetNextForPrinter ($machineKey: String!, $printerName: String!
         name,
         printer,
         tray,
+        rotate,
         dataBase64
     }
 }

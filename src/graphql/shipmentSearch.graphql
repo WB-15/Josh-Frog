@@ -1,0 +1,58 @@
+query shipmentSearch ($query: String!) {
+    shipmentSearch(
+        query: $query
+    ) {
+        id,
+        cls,
+        shipmentNumber,
+        shipmentStatus,
+        shippingNeeds,
+        carrier,
+        service,
+        packaging,
+        options,
+        estimatedWeight,
+        actualWeight,
+        estimatedLength,
+        estimatedWidth,
+        estimatedHeight,
+        actualLength,
+        actualWidth,
+        actualHeight,
+        estimatedShipDate,
+        estimatedDeliveryDate,
+        printedStart,
+        printedEnd,
+        shippedAt,
+        trackingNo,
+
+        firstName,
+        lastName,
+
+        salesOrder {
+            id,
+            cls,
+            orderNumber,
+            alternateOrderNumber
+        }
+        originWarehouse {
+            id,
+            name
+        },
+        departingWarehouse {
+            id,
+            name
+        },
+        shipmentItems {
+            id,
+            cls,
+            quantity,
+            salesOrderItem {
+                id,
+                cls,
+                sku,
+                name
+            }
+        }
+    }
+}

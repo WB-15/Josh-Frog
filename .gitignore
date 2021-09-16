@@ -29,3 +29,9 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+
+installer/Josh's Frogs Admin-SetupFiles/Josh's Frogs Admin.msi
+
+installer/Josh's Frogs Admin-cache/
+
+electron/JoshsFrogsAdmin-win32-x64/

@@ -1,0 +1,55 @@
+query shipmentFilter ($shipmentNumber: String!, $pageable: GraphQLPageableInput!) {
+    shipmentFilter(
+        shipmentNumber: {
+            pattern: $shipmentNumber
+        },
+        page: $pageable
+    ) {
+        data {
+            id,
+            cls,
+            shipmentNumber,
+            shipmentStatus,
+            shippingNeeds,
+            carrier,
+            service,
+            packaging,
+            options,
+            estimatedWeight,
+            actualWeight,
+            estimatedLength,
+            estimatedWidth,
+            estimatedHeight,
+            actualLength,
+            actualWidth,
+            actualHeight,
+            estimatedShipDate,
+            estimatedDeliveryDate,
+            shippedAt,
+            trackingNo,
+
+            salesOrder {
+                id,
+                cls,
+                orderNumber,
+                alternateOrderNumber,
+                placedTime,
+                email,
+                status
+            },
+
+            shipmentItems {
+                id,
+                cls,
+                quantity,
+                salesOrderItem {
+                    id,
+                    cls,
+                    sku,
+                    name
+                }
+            }
+
+        }
+    }
+}

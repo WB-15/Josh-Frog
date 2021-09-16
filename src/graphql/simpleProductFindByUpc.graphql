@@ -18,8 +18,15 @@ query simpleProductFindByUpc ($upc: String!) {
       name
     },
     bins {
+      id,
+      binId,
+      zone {
         id,
-        binId
+        warehouse {
+          id,
+          name
+        }
+      }
     },
     inventoryQuantityCaches {
       id,

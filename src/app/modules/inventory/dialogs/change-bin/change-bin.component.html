@@ -1,0 +1,32 @@
+<div class="p-4 bg-gray-200 rounded-lg">
+  <div class="p-2">
+    <label for="bin" class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">BIN</label>
+    <div class="max-w-xs">
+      <div class="mt-1 flex rounded-md shadow-sm">
+        <div class="relative flex-grow focus-within:z-10">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faInventory"></fa-icon>
+                </span>
+          </div>
+          <input id="bin" class="form-input block w-full pl-10 rounded-none rounded-l-lg" type="text" placeholder="Bin" autocomplete="off" [(ngModel)]="binEntry" />
+        </div>
+        <button class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 rounded-r-md text-white bg-blue-600 transition ease-in-out duration-150"
+                [disabled]="!(binEntry && binEntry.length > 0)" [ngClass]="{'opacity-50': !(binEntry && binEntry.length > 0), 'hover:bg-blue-700': (binEntry && binEntry.length > 0)}" (click)="setBin()">
+              <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faChevronCircleRight"></fa-icon>
+                </span>
+          <span class="ml-2 leading-5 font-medium">Update</span>
+        </button>
+      </div>
+      <div class="pt-4">
+        <button class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-white bg-red-600 hover:bg-red-700 transition ease-in-out duration-150" (click)="clearBin()">
+              <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faTimesCircle"></fa-icon>
+                </span>
+          <span class="ml-2 leading-5 font-medium">Clear Bin</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

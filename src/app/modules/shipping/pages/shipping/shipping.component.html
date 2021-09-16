@@ -1,11 +1,337 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
   <h1 class="text-2xl font-semibold text-gray-900">Shipping</h1>
 
-  <div class="py-3 bg-yellow-300 text-black rounded-lg text-center">
-    Coming soon.  Please use <strong>ShipWorks</strong> for shipping.
+  <div class="flex">
+    <div class="block mx-auto">
+      <label for="searchByShipmentNumber" class="hidden">Search</label>
+      <div class="relative pt-3 pb-4">
+        <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+          <span class="icon is-medium is-left">
+            <fa-icon [icon]="faSearch"></fa-icon>
+          </span>
+        </div>
+        <input id="searchByShipmentNumber" class="form-input block w-full pl-10 pr-2 rounded-lg" [ngClass]="searchShipmentNumber?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search Shipments" autocomplete="off" autocapitalize="words"
+               [(ngModel)]="searchShipmentNumber" (keyup)='search()' />
+        <div *ngIf="searchResults" class="block absolute bg-gray-100 z-30 w-full">
+          <div *ngFor="let result of searchResults" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
+            <div class="flex-none m-1 mr-3">
+              <app-marketplace-icon [cls]="result?.salesOrder.cls"></app-marketplace-icon>
+            </div>
+
+            <div class="m-1 mr-3">
+              <p class="font-semibold">{{result.shipmentNumber}}</p>
+              <p class="font-light">{{result?.salesOrder.alternateOrderNumber}}</p>
+              <p class="font-light">{{result?.departingWarehouse.name}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <p>
 
-  </p>
+  <div class="p-4" *ngIf="shipment">
+    <div class="block lg:flex lg:flex-row">
+      <div class="w-64">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">DETAILS</p>
+        <div class="flex items-center">
+          <app-marketplace-icon [cls]="shipment?.salesOrder.cls"></app-marketplace-icon>
+          <div *ngIf="shipment?.shipmentNumber" class="ml-4">
+            <div *ngIf="shipment?.shipmentNumber" class="leading-5 font-medium text-gray-900"><span class="font-light">{{shipment.shipmentNumber.substr(0, 11)}}</span><span class="font-semibold">{{shipment.shipmentNumber.substr(11)}}</span></div>
+            <div *ngIf="shipment?.salesOrder.alternateOrderNumber" class="text-sm leading-5 font-light text-gray-500">{{shipment?.salesOrder.alternateOrderNumber}}</div>
+          </div>
+        </div>
+
+        <p class="pt-4 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">CONTENTS</p>
+        <div *ngFor="let item of shipment.shipmentItems; index as i" (click)="showShipmentDialog()">
+          <p *ngIf="i < 3" class="text-xs leading-5">
+            <span class="font-semibold text-gray-900">{{item.quantity}}</span><span class="font-thin">x</span>&nbsp;<span class="font-medium text-gray-900">{{item.salesOrderItem.sku}}</span>:&nbsp;<span class="font-thin text-gray-900">{{item.salesOrderItem.name}}</span>
+          </p>
+        </div>
+        <div *ngIf="shipment.shipmentItems.length > 3">
+          <span class="text-sm leading-5 font-medium text-gray-900">and more...</span>
+        </div>
+      </div>
+
+      <div class="h-6 lg:flex-1"></div>
+
+      <div class="w-64">
+        <div>
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">STATUS</p>
+          <app-shipment-status [shipmentStatus]="shipment?.shipmentStatus"></app-shipment-status>
+        </div>
+        <div *ngIf="shipment && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">TRACKING</p>
+          <span>{{shipment.trackingNo}}</span>
+        </div>
+      </div>
+
+      <div class="h-6 lg:flex-1"></div>
+
+    </div>
+  </div>
+
+  <div class="p-4" *ngIf="shipment">
+    <div class="block lg:flex lg:flex-row">
+      <div class="w-64">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">DESTINATION</p>
+        <p class="font-light">{{shipment?.firstName}} {{shipment?.lastName}}</p>
+        <p class="font-light" *ngIf="shipment?.company">{{shipment.company}}</p>
+        <p class="font-light">{{shipment?.line1}}</p>
+        <p class="font-light" *ngIf="shipment?.line2">{{shipment.line2}}</p>
+        <p class="font-light">{{shipment?.city}}<span *ngIf="shipment?.city">, </span>{{shipment?.state}}  {{shipment?.postalCode}}</p>
+        <p *ngIf="!shipment.addressValidationSource || shipment.addressValidationSource === 'Unverified'"><span class="text-gray-500">Address is unverified.</span> <button *ngIf="(shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External')" class="text-jfgreen-600 hover:text-jfgreen-900" (click)="verifyAddress()">Verify</button></p>
+        <p *ngIf="shipment.addressValidationSource && shipment.addressValidationSource !== 'Unverified'"><span class="text-gray-500">Address verified by {{shipment.addressValidationSource}}.</span></p>
+      </div>
+
+      <div class="h-6 lg:flex-1"></div>
+
+      <div class="w-64">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">SCHEDULE</p>
+        <p class="font-light" *ngIf="shipment?.placedAt">Placed On: {{shipment.placedAt | date: 'EE, MMM d'}}</p>
+        <p class="font-light" *ngIf="shipment?.estimatedShipDate">Ship By: {{shipment.estimatedShipDate | date: 'EE, MMM d'}}</p>
+        <p class="font-light" *ngIf="shipment?.estimatedDeliveryDate">Deliver By: {{shipment.estimatedDeliveryDate | date: 'EE, MMM d'}}</p>
+        <p class="font-light" *ngIf="shipment?.shippedAt">Shipped On: {{shipment.shippedAt | date: 'EE, MMM d'}}</p>
+        <p class="font-light" *ngIf="shipment?.shippedBy">Shipped By: {{shipment.shippedBy}}</p>
+      </div>
+
+      <div class="h-6 lg:flex-1"></div>
+
+    </div>
+  </div>
+
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
+    <div class="w-64">
+      <div class="flex">
+        <div class="block mx-auto">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">LENGTH</p>
+          <label for="length" class="hidden">Length</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faRulerHorizontal"></fa-icon>
+                </span>
+            </div>
+            <input id="length" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedLength ? (shipment.estimatedLength | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (tap)="showLengthDialog()" [(ngModel)]="length" />
+            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  IN
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-64">
+      <div class="flex">
+        <div class="block mx-auto">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WIDTH</p>
+          <label for="width" class="hidden">Width</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faRuler"></fa-icon>
+                </span>
+            </div>
+            <input id="width" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedWidth ? (shipment.estimatedWidth | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (tap)="showWidthDialog()" [(ngModel)]="width" />
+            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  IN
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-64">
+      <div class="flex">
+        <div class="block mx-auto">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">HEIGHT</p>
+          <label for="height" class="hidden">Height</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faRulerVertical"></fa-icon>
+                </span>
+            </div>
+            <input id="height" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedHeight ? (shipment.estimatedHeight | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (tap)="showHeightDialog()" [(ngModel)]="height" />
+            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  IN
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && shipment.actualLength && shipment.actualWidth && shipment.actualHeight && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
+      <div class="block lg:flex lg:flex-row">
+        <div class="w-full">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">DIMENSIONS</p>
+          <span>{{shipment.actualLength}} x {{shipment.actualWidth}} x {{shipment.actualHeight}} IN</span>
+        </div>
+      </div>
+  </div>
+
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
+    <div class="w-64">
+      <div class="flex">
+        <div class="block mx-auto">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WEIGHT</p>
+          <label for="weight" class="hidden">Weight</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faBalanceScale"></fa-icon>
+                </span>
+            </div>
+            <input id="weight" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedWeight ? (shipment.estimatedWeight | number: '0.1-1') : ''" autocomplete="off" autocapitalize="words" (tap)="showWeightDialog()" [(ngModel)]="weight" />
+            <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
+                <span class="icon is-medium is-left">
+                  LB
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
+    <div class="block lg:flex lg:flex-row">
+      <div class="w-full">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">WEIGHT</p>
+        <span>{{shipment.actualWeight}} LB</span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="p-4" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
+    <div class="block lg:flex lg:flex-row">
+      <div class="w-full">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">SERVICE</p>
+        <div class="relative w-full max-w-lg" (click)="showMethodDialog()">
+          <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+            <span class="icon is-medium is-left">
+              <app-carrier-icon [carrier]="carrier"></app-carrier-icon>
+            </span>
+          </div>
+          <div class="form-input block h-20 w-full pl-15 pr-3 rounded-lg">
+            <p class="text-2xl" [ngClass]="{'pt-3': !(options && options.length > 0)}">
+              <span *ngIf='(carrier && service)' class="font-light text-gray-600">{{carrier | carrier}}</span> {{service | service}}
+              <span *ngIf='!(carrier && service)' class="font-light text-gray-600">Not Specified</span>
+            </p>
+            <p class="font-light">
+              <span *ngFor="let option of options">
+                {{ option | option }}&nbsp;
+              </span>
+            </p>
+          </div>
+          <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
+            <span class="icon is-medium is-left">
+              <span class="icon is-medium is-left"><fa-icon [icon]="faPencil"></fa-icon></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4" *ngIf="shipment && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
+    <div class="block lg:flex lg:flex-row">
+      <div class="w-full">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">SERVICE</p>
+        <div class="relative w-full max-w-lg">
+          <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+              <span class="icon is-medium is-left">
+                <app-carrier-icon [carrier]="shipment.carrier"></app-carrier-icon>
+              </span>
+          </div>
+          <div class="form-input block h-20 w-full pl-15 pr-3 rounded-lg">
+            <p class="text-2xl" [ngClass]="{'pt-3':!(options && options.length > 0)}">
+              <span class="font-light text-gray-600">{{shipment.carrier | carrier}}</span> {{shipment.service | service}}
+            </p>
+            <p class="font-light">
+              <span *ngFor="let option of shipment.options">
+                {{ option | option }}&nbsp;
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
+    <div class="block lg:flex lg:flex-row">
+      <div class="w-full">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">PACKAGING</p>
+        <div class="relative w-full max-w-lg" (click)="showPackagingDialog()">
+          <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+            <span class="icon is-medium is-left">
+              <app-packaging-icon [packaging]="packaging"></app-packaging-icon>
+            </span>
+          </div>
+          <div class="form-input block w-full pl-15 pr-3 text-4xl rounded-lg">
+            <span *ngIf='packaging' class="font-light text-gray-600">{{packaging | packaging}}</span>
+            <span *ngIf='!packaging' class="font-light text-gray-600">Not Specified</span>
+          </div>
+          <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
+            <span class="icon is-medium is-left">
+              <span class="icon is-medium is-left"><fa-icon [icon]="faPencil"></fa-icon></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4" *ngIf="shipment && ((shipment.shipmentStatus === 'Shipped') || (shipment.shipmentStatus === 'Delivered'))">
+    <div class="block lg:flex lg:flex-row">
+      <div class="w-full">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">PACKAGING</p>
+        <div class="relative w-full max-w-lg">
+          <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+              <span class="icon is-medium is-left">
+                <app-packaging-icon [packaging]="shipment.packaging"></app-packaging-icon>
+              </span>
+          </div>
+          <div class="form-input block w-full pl-15 pr-3 text-4xl rounded-lg">
+            <span class="font-light text-gray-600">{{shipment.packaging | packaging}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
+    <div class="w-64 lg:ml-64">
+      <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded"
+              [disabled]="!carrier || !service || !packaging || (packaging == 'CARDBOARD_BOX' && ((!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0))))"
+              [ngClass]="{'hover:bg-blue-700': !(!carrier || !service || !packaging || (packaging == 'CARDBOARD_BOX' && (!(shipment?.estimatedLength && shipment.estimatedLength > 0) && !(length && length > 0)) || (!(shipment?.estimatedWidth && shipment.estimatedWidth > 0) && !(width && width > 0)) || (!(shipment?.estimatedHeight && shipment.estimatedHeight > 0) && !(height && height > 0)) || (!(shipment?.estimatedWeight && shipment.estimatedWeight > 0) && !(weight && weight > 0))))}"
+              (click)="shipShipment()">
+        Ship
+      </button>
+    </div>
+  </div>
+
+  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && shipment.shipmentStatus === 'Shipped'">
+    <div class="w-64">
+      <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded hover:bg-blue-700" (click)="voidShipment()">
+        Void Shipment
+      </button>
+    </div>
+
+    <div class="w-64 lg:ml-64">
+      <button class="w-full h-2/3 bg-blue-500 disabled:bg-gray-700 text-white font-bold mt-10 py-2 px-4 border border-blue-700 rounded hover:bg-blue-700" (click)="reprintLabel()">
+        Reprint Label
+      </button>
+    </div>
+  </div>
+
+
+
 </div>

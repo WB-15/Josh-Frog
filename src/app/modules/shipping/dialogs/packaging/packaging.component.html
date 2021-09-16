@@ -1,0 +1,21 @@
+<div class="p-4">
+  <div class="p-2">
+    <div class="block lg:flex lg:flex-row">
+      <div class="w-full">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">PACKAGING</p>
+        <div *ngFor="let packaging of packagings" class="relative w-full max-w-lg" (click)="pickPackaging(packaging)">
+          <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+              <span class="icon is-medium is-left">
+                <app-packaging-icon [packaging]="packaging"></app-packaging-icon>
+              </span>
+          </div>
+          <div class="form-input block w-full pl-15 pr-3 rounded-lg">
+            <p class="text-2xl">
+              <span class="font-light text-gray-600">{{packaging | packaging}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

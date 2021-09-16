@@ -1,0 +1,62 @@
+mutation shipmentValidateAddress ($id: UUID!) {
+    shipmentValidateAddress (
+        id: $id
+    ) {
+        id,
+        cls,
+        shipmentNumber,
+        shipmentStatus,
+        shippingNeeds,
+        carrier,
+        service,
+        packaging,
+        options,
+        estimatedWeight,
+        actualWeight,
+        estimatedLength,
+        estimatedWidth,
+        estimatedHeight,
+        actualLength,
+        actualWidth,
+        actualHeight,
+        estimatedShipDate,
+        estimatedDeliveryDate,
+        shippedAt,
+        trackingNo,
+        zplContent,
+
+        firstName,
+        lastName,
+        company,
+        line1,
+        line2,
+        city,
+        state,
+        postalCode,
+        country,
+        residential,
+        addressValidationSource,
+
+        salesOrder {
+            id,
+            cls,
+            orderNumber,
+            alternateOrderNumber,
+            placedTime,
+            email,
+            status
+        },
+
+        shipmentItems {
+            id,
+            cls,
+            quantity,
+            salesOrderItem {
+                id,
+                cls,
+                sku,
+                name
+            }
+        }
+    }
+}

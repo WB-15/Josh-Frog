@@ -1,0 +1,83 @@
+mutation simpleProductClearBin ($id: UUID!, $warehouse: String!) {
+  simpleProductClearBin (
+    id: $id,
+    warehouse: $warehouse
+  ) {
+    id,
+    slug,
+    sku,
+    upc,
+    title,
+    active,
+    price,
+    cost,
+    weight,
+    shippingNeeds,
+    shippingRestrictions,
+    warehouses {
+      id,
+      name
+    },
+    bins {
+      id,
+      binId,
+      zone {
+        id,
+        warehouse {
+          id,
+          name
+        }
+      }
+    },
+    inventoryQuantityCaches {
+      id,
+      quantityAvailableForSale
+    },
+    explicitDepartment {
+      id,
+      slug,
+      name,
+      parent {
+        id,
+        slug,
+        name
+      }
+    }
+    brand {
+      id,
+      slug,
+      name
+    },
+    supplier {
+      id,
+      slug,
+      name
+    }
+    medias {
+      id,
+      mediaType,
+      url
+    },
+    explicitCategories {
+      id,
+      slug,
+      name,
+      parent {
+        id,
+        slug,
+        name,
+        parent {
+          id,
+          slug,
+          name
+        }
+      }
+    },
+    shippingRuleSet {
+      id,
+      slug,
+      name
+    }
+  }
+
+}

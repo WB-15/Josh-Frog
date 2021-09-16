@@ -1,0 +1,44 @@
+<div class="flex-none h-12 w-30 text-center">
+  <span>
+    <svg viewBox="0 0 300 30" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <g id="bg">
+          <circle cx="60" cy="15" r="15" style="fill:#ffffff; stroke-width:0"/>
+          <line x1="10" y1="15" x2="60" y2="15" style="stroke:#d0d0d0; stroke-width:8; stroke-linecap:round" />
+          <circle cx="60" cy="15" r="10" style="fill:#b0b0b0; stroke-width:0"/>
+        </g>
+        <g id="fg">
+          <line x1="10" y1="15" x2="60" y2="15" style="stroke-width:10; stroke-linecap:round" />
+          <circle cx="60" cy="15" r="10" style="stroke-width:0"/>
+        </g>
+
+      </defs>
+      <use transform="translate(200 0)" xlink:href="#bg"/>
+      <use transform="translate(150 0)" xlink:href="#bg"/>
+      <use transform="translate(100 0)" xlink:href="#bg"/>
+      <use transform="translate(50 0)" xlink:href="#bg"/>
+      <use transform="translate(0 0)" xlink:href="#bg"/>
+
+      <use *ngIf="salesOrderStatus == 'Shipped'" transform="translate(200 0)" style="stroke:#56a646; fill:#7ac144" xlink:href="#fg"/>
+      <use *ngIf="salesOrderStatus == 'Shipped'" transform="translate(150 0)" style="stroke:#56a646; fill:#7ac144" xlink:href="#fg"/>
+      <use *ngIf="salesOrderStatus == 'Shipped'" transform="translate(100 0)" style="stroke:#56a646; fill:#7ac144" xlink:href="#fg"/>
+      <use *ngIf="salesOrderStatus == 'Shipped'" transform="translate(50 0)" style="stroke:#56a646; fill:#7ac144" xlink:href="#fg"/>
+      <use *ngIf="salesOrderStatus == 'Shipped'" transform="translate(0 0)" style="stroke:#56a646; fill:#7ac144" xlink:href="#fg"/>
+
+      <use *ngIf="salesOrderStatus == 'PartiallyShipped'" transform="translate(150 0)" style="stroke:#56a646; fill:#7ac144" xlink:href="#fg"/>
+      <use *ngIf="salesOrderStatus == 'PartiallyShipped'" transform="translate(100 0)" style="stroke:#56a646; fill:#7ac144" xlink:href="#fg"/>
+      <use *ngIf="salesOrderStatus == 'PartiallyShipped'" transform="translate(50 0)" style="stroke:#56a646; fill:#7ac144" xlink:href="#fg"/>
+      <use *ngIf="salesOrderStatus == 'PartiallyShipped'" transform="translate(0 0)" style="stroke:#56a646; fill:#7ac144" xlink:href="#fg"/>
+
+      <use *ngIf="salesOrderStatus == 'Unshipped'" transform="translate(100 0)" style="stroke:#d9cd48; fill:#f2e768" xlink:href="#fg"/>
+      <use *ngIf="salesOrderStatus == 'Unshipped'" transform="translate(50 0)" style="stroke:#d9cd48; fill:#f2e768" xlink:href="#fg"/>
+      <use *ngIf="salesOrderStatus == 'Unshipped'" transform="translate(0 0)" style="stroke:#d9cd48; fill:#f2e768" xlink:href="#fg"/>
+
+      <use *ngIf="salesOrderStatus == 'PendingReleaseOfHold'" transform="translate(50 0)" style="stroke:#c18544; fill:#e6a865" xlink:href="#fg"/>
+      <use *ngIf="salesOrderStatus == 'PendingReleaseOfHold'" transform="translate(0 0)" style="stroke:#c18544; fill:#e6a865" xlink:href="#fg"/>
+
+      <use *ngIf="salesOrderStatus == 'PendingPayment'" transform="translate(0 0)" style="stroke:#c14844; fill:#eb706c" xlink:href="#fg"/>
+    </svg>
+  </span>
+  <span>{{salesOrderStatus}}</span>
+</div>

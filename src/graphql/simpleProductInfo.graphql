@@ -19,7 +19,14 @@ query simpleProductInfo ($id: UUID!) {
     },
     bins {
       id,
-      binId
+      binId,
+      zone {
+        id,
+        warehouse {
+          id,
+          name
+        }
+      }
     },
     inventoryQuantityCaches {
       id,

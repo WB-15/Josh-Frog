@@ -6,11 +6,13 @@ import { Observable, Subscription } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 
 import {
-  AutoprintAcknowledgeForPrinterGQL,
   AutoprintAddPrinterGQL,
+  AutoprintCancelAcknowledgeForPrinterGQL,
+  AutoprintDownloadAcknowledgeForPrinterGQL,
   AutoprintEnrollWorkstationGQL,
   AutoprintGetNextForPrinterGQL,
   AutoprintListPrintersGQL,
+  AutoprintPrintAcknowledgeForPrinterGQL,
   AutoprintTestWorkstationGQL,
   PrinterEntity,
   PrintJob,
@@ -41,7 +43,9 @@ export class AutoprintService {
     private autoprintListPrintersGQL: AutoprintListPrintersGQL,
     private autoprintAddPrinterGQL: AutoprintAddPrinterGQL,
     private autoprintGetNextForPrinterGQL: AutoprintGetNextForPrinterGQL,
-    private autoprintAcknowledgeForPrinterGQL: AutoprintAcknowledgeForPrinterGQL,
+    private autoprintCancelAcknowledgeForPrinterGQL: AutoprintCancelAcknowledgeForPrinterGQL,
+    private autoprintDownloadAcknowledgeForPrinterGQL: AutoprintDownloadAcknowledgeForPrinterGQL,
+    private autoprintPrintAcknowledgeForPrinterGQL: AutoprintPrintAcknowledgeForPrinterGQL,
     private httpClient: HttpClient,
     private platform: Platform,
     private userService: UserService
@@ -76,7 +80,7 @@ export class AutoprintService {
       .subscribe(
         (result) => {
           this.workstation = result;
-          this.timerCallback(1000);
+          this.timerCallback(1);
         },
         (error) => {
           console.log(error);
@@ -88,7 +92,7 @@ export class AutoprintService {
 
   timerCallback(duration: number) {
     clearTimeout(this.timer);
-    setTimeout(() => {
+    this.timer = setTimeout(() => {
       if (!this.printers) {
         this.listEnabledPrinters().subscribe(
           (printers) => {
@@ -107,41 +111,80 @@ export class AutoprintService {
         }
 
         const printerName = this.printers[this.printerIndex].name;
-        this.listJobsForPrinter(printerName).subscribe((jobs) => {
-          let pending = false;
-          for (const job of jobs) {
-            if (job.status === 'pending' || job.status === 'processing') {
-              pending = true;
-            } else if (job.status === 'completed') {
-              this.acknowledgeForPrinter(job.name).subscribe((result) => {
-                this.acknowledgeJob(printerName, job.name).subscribe((j) => {});
+        this.listJobsForPrinter(printerName).subscribe(
+          (jobs) => {
+            let pending = false;
+            for (const job of jobs) {
+              if (job.status === 'pending' || job.status === 'processing') {
+                pending = true;
+              } else if (job.status === 'completed') {
+                this.printAcknowledgeForPrinter(job.name).subscribe(
+                  (result) => {
+                    this.acknowledgeJob(
+                      printerName,
+                      job.name
+                    ).subscribe((j) => {});
+                  },
+                  (error) => {
+                    console.log(error);
+                  }
+                );
+              } else if (job.status === 'deleted') {
+                this.cancelAcknowledgeForPrinter(job.name).subscribe(
+                  (result) => {
+                    this.acknowledgeJob(
+                      printerName,
+                      job.name
+                    ).subscribe((j) => {});
+                  },
+                  (error) => {
+                    console.log(error);
+                  }
+                );
+              }
+            }
+            if (!pending) {
+              this.getNextForPrinter(printerName).subscribe(
+                (printJobs) => {
+                  for (const printJob of printJobs) {
+                    this.downloadAcknowledgeForPrinter(printJob.name).subscribe(
+                      (result) => {
+                        this.printData(
+                          printerName,
+                          printJob.name,
+                          printJob.dataBase64,
+                          printJob.rotate
+                        ).subscribe(
+                          (job) => {
+                            // Print successful!  Do nothing.
+                          },
+                          (error) => {
+                            // TODO: need to report unsuccessful print!
+                            console.log(error);
+                          }
+                        );
+                      },
+                      (error) => {
+                        console.log(error);
+                      }
+                    );
+                  }
+                },
+                (error) => {
+                  console.log(error);
               });
             }
+            if (this.printerIndex === this.printers.length - 1) {
+              this.timerCallback(120 * 1000);
+            } else {
+              this.timerCallback(1000);
+            }
+          },
+          (error) => {
+            console.log(error);
+            this.timerCallback(30000);
           }
-          if (!pending) {
-            this.getNextForPrinter(printerName).subscribe(
-              (printJobs) => {
-                for (const printJob of printJobs) {
-                  this.printData(
-                    printerName,
-                    printJob.name,
-                    printJob.dataBase64
-                  ).subscribe((job) => {});
-                }
-                if (printJobs.length > 0) {
-                  this.timerCallback(1000);
-                } else {
-                  this.timerCallback(10000);
-                }
-              },
-              (error) => {
-                this.timerCallback(60000);
-              }
-            );
-          } else {
-            this.timerCallback(10000);
-          }
-        });
+        );
       }
     }, duration);
   }
@@ -183,11 +226,35 @@ export class AutoprintService {
       );
   }
 
-  acknowledgeForPrinter(shipment: string): Observable<boolean> {
-    return this.autoprintAcknowledgeForPrinterGQL
+  cancelAcknowledgeForPrinter(shipment: string): Observable<boolean> {
+    return this.autoprintCancelAcknowledgeForPrinterGQL
       .mutate({ shipment })
       .pipe(
-        map((result) => result.data.autoprintAcknowledgeForPrinter as boolean)
+        map(
+          (result) =>
+            result.data.autoprintCancelAcknowledgeForPrinter as boolean
+        )
+      );
+  }
+
+  downloadAcknowledgeForPrinter(shipment: string): Observable<boolean> {
+    return this.autoprintDownloadAcknowledgeForPrinterGQL
+      .mutate({ shipment })
+      .pipe(
+        map(
+          (result) =>
+            result.data.autoprintDownloadAcknowledgeForPrinter as boolean
+        )
+      );
+  }
+
+  printAcknowledgeForPrinter(shipment: string): Observable<boolean> {
+    return this.autoprintPrintAcknowledgeForPrinterGQL
+      .mutate({ shipment })
+      .pipe(
+        map(
+          (result) => result.data.autoprintPrintAcknowledgeForPrinter as boolean
+        )
       );
   }
 
@@ -224,7 +291,8 @@ export class AutoprintService {
   printData(
     printerName: string,
     jobName: string,
-    dataBase64: string
+    dataBase64: string,
+    rotate: boolean
   ): Observable<Job> {
     return this.httpClient
       .post<Job>('http://localhost:9900/printData', {
@@ -233,7 +301,8 @@ export class AutoprintService {
         acknowledge: true,
         dataBase64,
         tray: '',
-        paperSize: 'Letter'
+        paperSize: 'Letter',
+        rotate: rotate || false // null coalesce
       })
       .pipe(first());
   }
