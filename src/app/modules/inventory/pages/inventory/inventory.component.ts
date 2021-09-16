@@ -29,6 +29,7 @@ import {
   SimpleProductClearBinGQL,
   SimpleProductEntity,
   SimpleProductFilterGQL,
+  SimpleProductFindByBinGQL,
   SimpleProductFindBySkuGQL,
   SimpleProductFindByUpcGQL,
   SimpleProductInfoGQL,
@@ -84,6 +85,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     private simpleProductInfo: SimpleProductInfoGQL,
     private simpleProductFindByUpcGQL: SimpleProductFindByUpcGQL,
     private simpleProductFindBySkuGQL: SimpleProductFindBySkuGQL,
+    private simpleProductFindByBinGQL: SimpleProductFindByBinGQL,
     private simpleProductFilterGQL: SimpleProductFilterGQL,
     private inventoryGetDetailsGQL: InventoryGetDetailsGQL,
     private inventorySetDetailsGQL: InventorySetDetailsGQL,
@@ -170,11 +172,30 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
     this.binScannedSubscription = this.barcodeService.binScanned$.subscribe(
       (bin) => {
-        // if (bin != null && this.simpleProduct) {
-        //  this.ngZone.run(() => {
-        //    this.showChangeBinDialog(bin);
-        // }
-        // }
+        if (bin) {
+          this.loading++;
+          this.changeDetectorRef.detectChanges();
+          this.simpleProductFindByBinGQL
+            .fetch({ warehouse: this.warehouse.name, binId: bin })
+            .pipe(map((result) => result.data.simpleProductFindByBin))
+            .subscribe(
+              (result) => {
+                this.simpleProduct = result as SimpleProductEntity;
+                this.loading--;
+                this.quantityUpdated = null;
+                this.quantityEntry = null;
+                this.changeDetectorRef.detectChanges();
+                this.getInventory();
+              },
+              (error) => {
+                console.error(error);
+                this.loading--;
+                this.inventoryDetails = null;
+                this.dialogService.showErrorMessageBox(error);
+                this.changeDetectorRef.detectChanges();
+              }
+            );
+        }
       }
     );
   }
