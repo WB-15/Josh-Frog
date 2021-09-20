@@ -74,13 +74,16 @@
   <div class="p-4" *ngIf="shipment">
     <div class="block lg:flex lg:flex-row">
       <div class="w-64">
-        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">DESTINATION</p>
-        <p class="font-light">{{shipment?.firstName}} {{shipment?.lastName}}</p>
-        <p class="font-light" *ngIf="shipment?.company">{{shipment.company}}</p>
-        <p class="font-light">{{shipment?.line1}}</p>
-        <p class="font-light" *ngIf="shipment?.line2">{{shipment.line2}}</p>
-        <p class="font-light">{{shipment?.city}}<span *ngIf="shipment?.city">, </span>{{shipment?.state}}  {{shipment?.postalCode}}</p>
-        <p *ngIf="!shipment.addressValidationSource || shipment.addressValidationSource === 'Unverified'"><span class="text-gray-500">Address is unverified.</span> <button *ngIf="(shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External')" class="text-jfgreen-600 hover:text-jfgreen-900" (click)="verifyAddress()">Verify</button></p>
+        <div (click)="showEditAddressDialog()" [ngClass]="{'relative border-transparent cursor-pointer border-2 hover:border-blue-500 rounded hover:text-blue-600 p-1 -mx-1.5 -mt-1.5 hover:bg-blue-100' : editableShippingAddress}">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">DESTINATION</p>
+          <p class="font-light">{{shipment?.firstName}} {{shipment?.lastName}}</p>
+          <p class="font-light" *ngIf="shipment?.company">{{shipment.company}}</p>
+          <p class="font-light">{{shipment?.line1}}</p>
+          <p class="font-light" *ngIf="shipment?.line2">{{shipment.line2}}</p>
+          <p class="font-light">{{shipment?.city}}<span *ngIf="shipment?.city">, </span>{{shipment?.state}}  {{shipment?.postalCode}}</p>
+          <fa-icon *ngIf="editableShippingAddress" class="icon absolute is-medium top-0 right-0 px-1 py-0.5" [icon]="faPencil"></fa-icon>
+        </div>
+        <p *ngIf="!shipment.addressValidationSource || shipment.addressValidationSource === 'Unverified'"><span class="text-gray-500">Address is unverified. </span><button *ngIf="(shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External')" class="text-blue-600 hover:text-blue-800" (click)="verifyAddress()">Verify</button></p>
         <p *ngIf="shipment.addressValidationSource && shipment.addressValidationSource !== 'Unverified'"><span class="text-gray-500">Address verified by {{shipment.addressValidationSource}}.</span></p>
       </div>
 
