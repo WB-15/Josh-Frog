@@ -42,6 +42,7 @@ import { MethodComponent } from '../../dialogs/method/method.component';
 import { PackagingComponent } from '../../dialogs/packaging/packaging.component';
 import { MessageBoxOptions } from '../../../shared/components/message-box/message-box.component';
 import { ShipmentContentsComponent } from '../../dialogs/shipment-contents/shipment-contents.component';
+import { ShippingAddressComponent } from '../../dialogs/shipping-address/shipping-address.component';
 
 @Component({
   selector: 'app-shipping',
@@ -80,6 +81,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
 
   shipment: ShipmentEntity;
   searchResults: ShipmentEntity[];
+  editableShippingAddress = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -140,6 +142,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
                     this.packaging = Packaging.CardboardBox;
                   }
                   this.options = this.shipment.options;
+                  this.setEditableShippingAddress();
                   this.loading--;
                   this.changeDetectorRef.detectChanges();
                 } else {
@@ -242,6 +245,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
             this.packaging = Packaging.CardboardBox;
           }
           this.options = this.shipment.options;
+          this.setEditableShippingAddress();
           this.loading--;
           this.changeDetectorRef.detectChanges();
         },
@@ -252,6 +256,21 @@ export class ShippingComponent implements OnInit, OnDestroy {
           this.changeDetectorRef.detectChanges();
         }
       );
+  }
+
+  showEditAddressDialog() {
+    if (this.editableShippingAddress) {
+      const options = new DialogBoxOptions();
+      options.component = ShippingAddressComponent;
+      options.inputs = {
+        shipment: this.shipment,
+        callback: (shipment: ShipmentEntity) => {
+          this.shipment = shipment;
+        }};
+      options.title = 'Edit Shipping Address';
+      options.okText = 'Cancel';
+      this.dialogService.showDialog(options);
+    }
   }
 
   showShipmentDialog() {
@@ -432,6 +451,10 @@ export class ShippingComponent implements OnInit, OnDestroy {
           }
         );
     });
+  }
+
+  setEditableShippingAddress() {
+    this.editableShippingAddress = this.shipment.shipmentStatus !== 'Shipped' && this.shipment.shipmentStatus !== 'Delivered';
   }
 
   ngOnDestroy(): void {
