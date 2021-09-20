@@ -9,12 +9,14 @@ import { WeightComponent } from './dialogs/weight/weight.component';
 import { LengthComponent } from './dialogs/length/length.component';
 import { MethodComponent } from './dialogs/method/method.component';
 import { PackagingComponent } from './dialogs/packaging/packaging.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ShippingAddressComponent } from './dialogs/shipping-address/shipping-address.component';
 
 @NgModule({
   declarations: [
     ShippingComponent,
     ShipmentContentsComponent,
+    ShippingAddressComponent,
     WeightComponent,
     LengthComponent,
     MethodComponent,
@@ -24,7 +26,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     ShippingRoutingModule,
     GlobalSharedModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class ShippingModule {}
