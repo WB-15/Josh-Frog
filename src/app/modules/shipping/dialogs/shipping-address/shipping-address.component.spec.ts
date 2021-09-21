@@ -10,7 +10,7 @@ import { ApolloTestingController, ApolloTestingModule } from 'apollo-angular/tes
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
 
-fdescribe('ShippingAddressComponent', () => {
+describe('ShippingAddressComponent', () => {
   let component: ShippingAddressComponent;
   let fixture: ComponentFixture<ShippingAddressComponent>;
   let statesService: jasmine.SpyObj<StatesService>;
