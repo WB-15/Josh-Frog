@@ -65,6 +65,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   warehouse: WarehouseEntity = null;
   warehouseChangedSubscription: Subscription;
 
+  inventoryLoading = false;
   loading = 0;
   upcScannedSubscription: Subscription;
   skuScannedSubscription: Subscription;
@@ -231,6 +232,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   getInventory() {
+    this.inventoryDetails = null;
+    this.inventoryLoading = true;
     this.inventoryGetDetailsGQL
       .mutate({ warehouse: this.warehouse.name, id: this.simpleProduct.id })
       .pipe(map((result) => result.data.inventoryGetDetails))
@@ -243,6 +246,9 @@ export class InventoryComponent implements OnInit, OnDestroy {
           this.inventoryDetails = null;
           this.dialogService.showErrorMessageBox(error);
           this.changeDetectorRef.detectChanges();
+        },
+        () => {
+          this.inventoryLoading = false;
         }
       );
   }
