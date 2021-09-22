@@ -14,7 +14,9 @@ module.exports = {
   },
   variants: {
     borderRadius: ['first', 'last'],
-    backgroundColor: ['disabled', 'hover', 'active']
+    backgroundColor: ['disabled', 'hover', 'active'],
+    opacity: ['disabled'],
+    cursor: ['disabled']
   },
   plugins: [require('@tailwindcss/ui')]
 };
