@@ -240,15 +240,14 @@ export class InventoryComponent implements OnInit, OnDestroy {
       .subscribe(
         (result) => {
           this.inventoryDetails = result as InventoryDetails;
+          this.inventoryLoading = false;
           this.changeDetectorRef.detectChanges();
         },
         (error) => {
           this.inventoryDetails = null;
+          this.inventoryLoading = false;
           this.dialogService.showErrorMessageBox(error);
           this.changeDetectorRef.detectChanges();
-        },
-        () => {
-          this.inventoryLoading = false;
         }
       );
   }
