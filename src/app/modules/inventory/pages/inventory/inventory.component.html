@@ -55,6 +55,18 @@
     </div>
   </div>
 
+  <div class="flex items-center gap-2 mx-auto" style="max-width: 298px">
+    <div class='py-3'>
+      <label for='searchByBin' class='hidden'>Load</label>
+      <input id='searchByBin' class='form-input block w-full rounded-lg' placeholder='Load by Bin' autocomplete='off'
+             autocapitalize='words'
+             [(ngModel)]='searchBin' (keyup.enter)='loadByBin(searchBin)'/>
+    </div>
+    <button class="group relative flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition duration-150 ease-in-out" (click)="loadByBin(searchBin)">
+      Load
+    </button>
+  </div>
+
   <div *ngIf="loading > 0" class="p-20 text-center">
     <span class="icon is-medium is-left">
       <fa-icon [icon]="faSpinnerThird" [spin]="true"></fa-icon>

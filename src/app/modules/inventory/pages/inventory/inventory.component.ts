@@ -50,6 +50,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   faInventory = faInventory;
   faChevronCircleRight = faChevronCircleRight;
 
+  searchBin = '';
   searchSku = '';
   pendingSearchSku: string = null;
   searchTitle = '';
@@ -174,38 +175,60 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.binScannedSubscription = this.barcodeService.binScanned$.subscribe(
       (bin) => {
         if (bin) {
-          this.loading++;
-          this.changeDetectorRef.detectChanges();
-          this.simpleProductFindByBinGQL
-            .fetch({ warehouse: this.warehouse.name, binId: bin })
-            .pipe(map((result) => result.data.simpleProductFindByBin))
-            .subscribe(
-              (result) => {
-                this.simpleProduct = result as SimpleProductEntity;
-                this.loading--;
-                this.quantityUpdated = null;
-                this.quantityEntry = null;
-                this.changeDetectorRef.detectChanges();
-                this.getInventory();
-              },
-              (error) => {
-                console.error(error);
-                this.loading--;
-                this.inventoryDetails = null;
-                this.dialogService.showErrorMessageBox(error);
-                this.changeDetectorRef.detectChanges();
-              }
-            );
+          this.loadByBin(bin);
         }
       }
     );
   }
 
+  clearSearchData(except?: string) {
+    if (except !== 'bin') {
+      this.searchBin = '';
+    }
+    if (except !== 'sku') {
+      this.searchSku = '';
+      this.searchBySkuResults = [];
+    }
+    if (except !== 'title') {
+      this.searchTitle = '';
+      this.searchByTitleResults = [];
+    }
+  }
+
+  loadByBin(bin: string) {
+    this.clearSearchData('bin');
+    this.loading++;
+    this.changeDetectorRef.detectChanges();
+    return this.simpleProductFindByBinGQL
+      .fetch({ warehouse: this.warehouse.name, binId: bin })
+      .pipe(map((result) => result.data.simpleProductFindByBin))
+      .subscribe(
+        (result) => {
+          if (result) {
+            this.clearSearchData();
+            this.simpleProduct = result as SimpleProductEntity;
+            this.getInventory();
+          } else {
+            this.simpleProduct = null;
+            this.dialogService.showErrorMessageBox(new Error(`No product found for bin '${bin}' at warehouse '${this.warehouse.name}'.`));
+          }
+          this.quantityUpdated = null;
+          this.quantityEntry = null;
+          this.loading--;
+          this.changeDetectorRef.detectChanges();
+        },
+        (error) => {
+          console.error(error);
+          this.loading--;
+          this.inventoryDetails = null;
+          this.dialogService.showErrorMessageBox(error);
+          this.changeDetectorRef.detectChanges();
+        }
+      );
+  }
+
   load(id: string) {
-    this.searchSku = '';
-    this.searchTitle = '';
-    this.searchBySkuResults = [];
-    this.searchByTitleResults = [];
+    this.clearSearchData();
     this.loading++;
     this.changeDetectorRef.detectChanges();
     this.simpleProductInfo
@@ -348,8 +371,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   searchBySku() {
-    this.searchTitle = '';
-    this.searchByTitleResults = [];
+    this.clearSearchData('sku');
     if (this.pendingSearchSku == null) {
       if (this.searchSku === '') {
         this.searchBySkuResults = [];
@@ -394,8 +416,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   searchByTitle() {
-    this.searchSku = '';
-    this.searchBySkuResults = [];
+    this.clearSearchData('title');
     if (this.pendingSearchTitle == null) {
       if (this.searchTitle === '') {
         this.searchByTitleResults = [];
