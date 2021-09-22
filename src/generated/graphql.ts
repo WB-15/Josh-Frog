@@ -3535,6 +3535,40 @@ export type ShipmentShipMutation = (
   )> }
 );
 
+export type ShipmentUpdateAddressMutationVariables = Exact<{
+  id: Scalars['UUID'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  company?: Maybe<Scalars['String']>;
+  line1: Scalars['String'];
+  line2?: Maybe<Scalars['String']>;
+  city: Scalars['String'];
+  state: Scalars['String'];
+  postalCode: Scalars['String'];
+  country: Scalars['String'];
+  residential: Scalars['Boolean'];
+}>;
+
+
+export type ShipmentUpdateAddressMutation = (
+  { __typename?: 'Mutation' }
+  & { shipmentUpdateAddress?: Maybe<(
+    { __typename?: 'ShipmentEntity' }
+    & Pick<ShipmentEntity, 'id' | 'cls' | 'shipmentNumber' | 'shipmentStatus' | 'shippingNeeds' | 'carrier' | 'service' | 'packaging' | 'options' | 'estimatedWeight' | 'actualWeight' | 'estimatedLength' | 'estimatedWidth' | 'estimatedHeight' | 'actualLength' | 'actualWidth' | 'actualHeight' | 'estimatedShipDate' | 'estimatedDeliveryDate' | 'shippedAt' | 'trackingNo' | 'zplContent' | 'firstName' | 'lastName' | 'company' | 'line1' | 'line2' | 'city' | 'state' | 'postalCode' | 'country' | 'residential' | 'addressValidationSource'>
+    & { salesOrder?: Maybe<(
+      { __typename?: 'SalesOrderEntity' }
+      & Pick<SalesOrderEntity, 'id' | 'cls' | 'orderNumber' | 'alternateOrderNumber' | 'placedTime' | 'email' | 'status'>
+    )>, shipmentItems?: Maybe<Array<Maybe<(
+      { __typename?: 'ShipmentItemEntity' }
+      & Pick<ShipmentItemEntity, 'id' | 'cls' | 'quantity'>
+      & { salesOrderItem?: Maybe<(
+        { __typename?: 'SalesOrderItemEntity' }
+        & Pick<SalesOrderItemEntity, 'id' | 'cls' | 'sku' | 'name'>
+      )> }
+    )>>> }
+  )> }
+);
+
 export type ShipmentValidateAddressMutationVariables = Exact<{
   id: Scalars['UUID'];
 }>;
@@ -4681,6 +4715,88 @@ export const ShipmentShipDocument = gql`
   })
   export class ShipmentShipGQL extends Apollo.Mutation<ShipmentShipMutation, ShipmentShipMutationVariables> {
     document = ShipmentShipDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const ShipmentUpdateAddressDocument = gql`
+    mutation shipmentUpdateAddress($id: UUID!, $firstName: String!, $lastName: String!, $company: String, $line1: String!, $line2: String, $city: String!, $state: String!, $postalCode: String!, $country: String!, $residential: Boolean!) {
+  shipmentUpdateAddress(
+    id: $id
+    firstName: $firstName
+    lastName: $lastName
+    company: $company
+    line1: $line1
+    line2: $line2
+    city: $city
+    state: $state
+    postalCode: $postalCode
+    country: $country
+    residential: $residential
+  ) {
+    id
+    cls
+    shipmentNumber
+    shipmentStatus
+    shippingNeeds
+    carrier
+    service
+    packaging
+    options
+    estimatedWeight
+    actualWeight
+    estimatedLength
+    estimatedWidth
+    estimatedHeight
+    actualLength
+    actualWidth
+    actualHeight
+    estimatedShipDate
+    estimatedDeliveryDate
+    shippedAt
+    trackingNo
+    zplContent
+    firstName
+    lastName
+    company
+    line1
+    line2
+    city
+    state
+    postalCode
+    country
+    residential
+    addressValidationSource
+    salesOrder {
+      id
+      cls
+      orderNumber
+      alternateOrderNumber
+      placedTime
+      email
+      status
+    }
+    shipmentItems {
+      id
+      cls
+      quantity
+      salesOrderItem {
+        id
+        cls
+        sku
+        name
+      }
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ShipmentUpdateAddressGQL extends Apollo.Mutation<ShipmentUpdateAddressMutation, ShipmentUpdateAddressMutationVariables> {
+    document = ShipmentUpdateAddressDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

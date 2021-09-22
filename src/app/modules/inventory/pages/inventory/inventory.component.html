@@ -67,7 +67,11 @@
       <div class="flex-none h-40 w-40 m-1 mr-3 rounded-lg bg-white">
         <app-thumbnail-md [src]="simpleProduct.medias[0]?.url" [alt]="simpleProduct.title"></app-thumbnail-md>
       </div>
-      <div class="self-center" *ngIf="inventoryDetails">
+      <div *ngIf="inventoryLoading" class="self-center items-center flex">
+        <fa-icon class="icon text-2xl" [icon]="faSpinnerThird" [spin]="true"></fa-icon>
+        <span class="italic pl-1 text-xl font-semibold">Loading Stock</span>
+      </div>
+      <div class="self-center" *ngIf="inventoryDetails && !inventoryLoading">
         <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf <= 0" class="font-semibold text-xl text-center">Out of Stock</p>
         <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf > 0" class="font-semibold text-xl text-center">{{inventoryDetails.warehouseQuantityOnShelf}} in Stock</p>
         <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf < 0" class="font-semibold text-xl text-center">Over Sold by {{0 - inventoryDetails.warehouseQuantityOnShelf}}</p>

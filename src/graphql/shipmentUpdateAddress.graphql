@@ -1,0 +1,84 @@
+mutation shipmentUpdateAddress (
+    $id: UUID!
+    $firstName: String!,
+    $lastName: String!,
+    $company: String,
+    $line1: String!,
+    $line2: String,
+    $city: String!,
+    $state: String!,
+    $postalCode: String!,
+    $country: String!,
+    $residential: Boolean!,
+) {
+    shipmentUpdateAddress (
+        id: $id,
+        firstName: $firstName,
+        lastName: $lastName,
+        company: $company,
+        line1: $line1,
+        line2: $line2,
+        city: $city,
+        state: $state,
+        postalCode: $postalCode,
+        country: $country,
+        residential: $residential
+    ) {
+        id,
+        cls,
+        shipmentNumber,
+        shipmentStatus,
+        shippingNeeds,
+        carrier,
+        service,
+        packaging,
+        options,
+        estimatedWeight,
+        actualWeight,
+        estimatedLength,
+        estimatedWidth,
+        estimatedHeight,
+        actualLength,
+        actualWidth,
+        actualHeight,
+        estimatedShipDate,
+        estimatedDeliveryDate,
+        shippedAt,
+        trackingNo,
+        zplContent,
+
+        firstName,
+        lastName,
+        company,
+        line1,
+        line2,
+        city,
+        state,
+        postalCode,
+        country,
+        residential,
+        addressValidationSource,
+
+        salesOrder {
+            id,
+            cls,
+            orderNumber,
+            alternateOrderNumber,
+            placedTime,
+            email,
+            status
+        },
+
+        shipmentItems {
+            id,
+            cls,
+            quantity,
+            salesOrderItem {
+                id,
+                cls,
+                sku,
+                name
+            }
+        }
+    }
+}
