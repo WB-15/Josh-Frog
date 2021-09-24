@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 })
 export class SearchService {
   public dataUpdated = new EventEmitter();
-  searchData: { [key in SearchType]: { value: string, pending?: string, results?: SimpleProductEntity[] } } = {
+  private searchData: { [key in SearchType]: { value: string, pending?: string, results?: SimpleProductEntity[] } } = {
     sku: {
       value: '',
       pending: null,
@@ -95,7 +95,7 @@ export class SearchService {
   }
 
   searchFinished(type: SearchType) {
-    // this.dataUpdated.emit();
+    this.dataUpdated.emit();
     if (this.searchData[type].pending !== this.searchData[type].value) {
       this.searchData[type].pending = null;
       this.searchProducts(type);
