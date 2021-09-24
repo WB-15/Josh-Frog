@@ -3,22 +3,21 @@ import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import {
-  faSpinnerThird,
-  faSearch,
-  faTags,
   faChevronCircleRight,
-  faDollarSign
+  faDollarSign,
+  faSearch,
+  faSpinnerThird,
+  faTags
 } from '@fortawesome/pro-duotone-svg-icons';
 import {
-  GraphQlPageableInput,
   SimpleProductEntity,
-  SimpleProductFilterGQL,
   SimpleProductFindBySkuGQL,
   SimpleProductFindByUpcGQL,
   SimpleProductInfoGQL
 } from '../../../../../generated/graphql';
 import { BarcodeService } from '../../../shared/services/barcode.service';
 import { PrinterService } from '../../../shared/services/printer.service';
+import { SearchService, SearchType } from '../../../shared/services/search.service';
 
 @Component({
   selector: 'app-plant-labels',
@@ -32,7 +31,6 @@ export class PlantLabelsComponent implements OnInit, OnDestroy {
   faTags = faTags;
   faChevronCircleRight = faChevronCircleRight;
 
-  searchTerm = '';
   priceOption = 'no_price';
   customPrice: number;
   quantityEntry: number;
@@ -43,21 +41,25 @@ export class PlantLabelsComponent implements OnInit, OnDestroy {
   loading = 0;
   upcScannedSubscription: Subscription;
   skuScannedSubscription: Subscription;
+  searchDataSubscription: Subscription;
 
   simpleProduct: SimpleProductEntity;
-  searchResults: SimpleProductEntity[];
+  searchData = this.searchService.getSearchData();
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private barcodeService: BarcodeService,
     private printerService: PrinterService,
+    private searchService: SearchService,
     private simpleProductInfo: SimpleProductInfoGQL,
     private simpleProductFindByUpcGQL: SimpleProductFindByUpcGQL,
-    private simpleProductFindBySkuGQL: SimpleProductFindBySkuGQL,
-    private simpleProductFilterGQL: SimpleProductFilterGQL
+    private simpleProductFindBySkuGQL: SimpleProductFindBySkuGQL
   ) {}
 
   ngOnInit() {
+    this.searchService.clearSearchData();
+    this.searchDataSubscription = this.searchService.dataUpdated.subscribe(() => this.changeDetectorRef.detectChanges());
+
     this.upcScannedSubscription = this.barcodeService.upcScanned$.subscribe(
       (upc) => {
         this.upc = upc;
@@ -130,8 +132,7 @@ export class PlantLabelsComponent implements OnInit, OnDestroy {
   }
 
   load(id: string) {
-    this.searchTerm = '';
-    this.searchResults = [];
+    this.searchService.clearSearchData();
     this.loading++;
     this.changeDetectorRef.detectChanges();
     this.simpleProductInfo
@@ -152,28 +153,13 @@ export class PlantLabelsComponent implements OnInit, OnDestroy {
   }
 
   search() {
-    const pageable: GraphQlPageableInput = {
-      page: 1,
-      pageSize: 5
-    };
-
-    this.simpleProductFilterGQL // TODO: someday filter by department, not SKU
-      .fetch({ pageable, sku: 'PLANT%', title: '%' + this.searchTerm + '%' })
-      .pipe(map((result) => result.data.simpleProductFilter.data))
-      .subscribe(
-        (result) => {
-          this.searchResults = result as SimpleProductEntity[];
-          // console.log(this.searchResults);
-          this.changeDetectorRef.detectChanges();
-        },
-        (error) => {
-          this.changeDetectorRef.detectChanges();
-        }
-      );
+    const searchParam = { department: 'Plants' };
+    this.searchService.searchProducts(SearchType.TITLE, searchParam);
   }
 
   ngOnDestroy(): void {
     this.upcScannedSubscription.unsubscribe();
     this.skuScannedSubscription.unsubscribe();
+    this.searchDataSubscription.unsubscribe();
   }
 }

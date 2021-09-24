@@ -1,16 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
 
 import { faSpinnerThird, faSearch } from '@fortawesome/pro-duotone-svg-icons';
 
-import {
-  GraphQlPageableInput,
-  SimpleProductEntity,
-  SimpleProductFilterGQL
-} from '../../../../../generated/graphql';
+import { GraphQlPageableInput, SimpleProductEntity } from '../../../../../generated/graphql';
 import { DialogService } from '../../../shared/services/dialog.service';
 import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
 import { ProductInfoComponent } from '../../dialogs/product-info/product-info.component';
+import { SearchService } from '../../../shared/services/search.service';
 
 @Component({
   selector: 'app-catalog',
@@ -29,17 +25,17 @@ export class CatalogComponent implements OnInit {
 
   loading = 0;
 
-  searchSku = '';
-  searchTitle = '';
+  searchData = this.searchService.getSearchData();
   searchResults: SimpleProductEntity[];
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private dialogService: DialogService,
-    private simpleProductFilterGQL: SimpleProductFilterGQL
+    private searchService: SearchService
   ) {}
 
   ngOnInit() {
+    this.searchService.clearSearchData();
     this.filter();
   }
 
@@ -55,28 +51,21 @@ export class CatalogComponent implements OnInit {
 
   filter() {
     this.loading++;
-    this.simpleProductFilterGQL
-      .fetch({
-        pageable: this.pageable,
-        sku: this.searchSku + '%',
-        title: '%' + this.searchTitle + '%'
-      })
-      .pipe(map((result) => result.data.simpleProductFilter))
-      .subscribe(
-        (result) => {
-          this.searchResults = result.data as SimpleProductEntity[];
-          this.pageable.page = result.page;
-          this.pageable.pageSize = result.pageSize;
-          this.count = result.count;
-          this.loading--;
-          this.changeDetectorRef.detectChanges();
-        },
-        (error) => {
-          this.loading--;
-          this.dialogService.showErrorMessageBox(error);
-          this.changeDetectorRef.detectChanges();
-        }
-      );
+    this.searchService.searchProductsByMultipleTypes({ pageable: this.pageable }).subscribe(
+      (result) => {
+        this.searchResults = result.data as SimpleProductEntity[];
+        this.pageable.page = result.page;
+        this.pageable.pageSize = result.pageSize;
+        this.count = result.count;
+        this.loading--;
+        this.changeDetectorRef.detectChanges();
+      },
+      (error) => {
+        this.loading--;
+        this.dialogService.showErrorMessageBox(error);
+        this.changeDetectorRef.detectChanges();
+      }
+    );
   }
 
   showInfoDialog(simpleProduct: SimpleProductEntity) {

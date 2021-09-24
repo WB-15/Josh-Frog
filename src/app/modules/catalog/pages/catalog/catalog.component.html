@@ -10,7 +10,7 @@
             <fa-icon [icon]="faSearch"></fa-icon>
           </span>
         </div>
-        <input id="searchSku" class="form-input block w-full pl-10 pr-2 rounded-lg" placeholder="Search SKUs" autocomplete="off" autocapitalize="words" [(ngModel)]="searchSku" (keyup)='search()' />
+        <input id="searchSku" class="form-input block w-full pl-10 pr-2 rounded-lg" placeholder="Search SKUs" autocomplete="off" autocapitalize="words" [(ngModel)]="searchData.sku.value" (keyup)='search()' />
       </div>
       <label for="searchTitle" class="hidden">Search</label>
       <div class="relative pt-3 pb-4">
@@ -19,7 +19,7 @@
             <fa-icon [icon]="faSearch"></fa-icon>
           </span>
         </div>
-        <input id="searchTitle" class="form-input block w-full pl-10 pr-2 rounded-lg" placeholder="Search Name" autocomplete="off" autocapitalize="words" [(ngModel)]="searchTitle" (keyup)='search()' />
+        <input id="searchTitle" class="form-input block w-full pl-10 pr-2 rounded-lg" placeholder="Search Name" autocomplete="off" autocapitalize="words" [(ngModel)]="searchData.title.value" (keyup)='search()' />
       </div>
     </div>
   </div>
