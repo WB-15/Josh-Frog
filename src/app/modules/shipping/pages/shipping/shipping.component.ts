@@ -425,6 +425,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
           this.length = null;
           this.width = null;
           this.height = null;
+          window.document.getElementById('searchByShipmentNumber').focus();
         },
         (error) => {
           this.dialogService.showErrorMessageBox(error);
