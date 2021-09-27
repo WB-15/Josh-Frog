@@ -11,7 +11,7 @@
           </span>
         </div>
         <input id="searchByShipmentNumber" class="form-input block w-full pl-10 pr-2 rounded-lg" [ngClass]="searchShipmentNumber?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search Shipments" autocomplete="off" autocapitalize="words"
-               [(ngModel)]="searchShipmentNumber" (keyup)='search()' />
+               [(ngModel)]="searchShipmentNumber" (keyup)='search($event)' (keyup.enter)='loadFirstShipment()' appAutofocus />
         <div *ngIf="searchResults" class="block absolute bg-gray-100 z-30 w-full">
           <div *ngFor="let result of searchResults" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
             <div class="flex-none m-1 mr-3">
@@ -115,7 +115,7 @@
                   <fa-icon [icon]="faRulerHorizontal"></fa-icon>
                 </span>
             </div>
-            <input id="length" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedLength ? (shipment.estimatedLength | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (tap)="showLengthDialog()" [(ngModel)]="length" />
+            <input id="length" class="form-input block w-full pl-10 pr-10 text-4xl text-right rounded-lg" [placeholder]="shipment?.estimatedLength ? (shipment.estimatedLength | number: '0.0-0') : ''" autocomplete="off" autocapitalize="words" (tap)="showLengthDialog()" [(ngModel)]="length" appAutofocus />
             <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
                 <span class="icon is-medium is-left">
                   IN
