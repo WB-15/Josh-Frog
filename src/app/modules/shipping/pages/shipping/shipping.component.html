@@ -178,7 +178,7 @@
       </div>
   </div>
 
-  <div class="p-4 lg:flex lg:flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
+  <div class="p-4 flex flex-row" *ngIf="shipment && ((shipment.shipmentStatus === 'NeedsScheduling') || (shipment.shipmentStatus === 'Unshipped') || (shipment.shipmentStatus === 'External'))">
     <div class="w-64">
       <div class="flex">
         <div class="block mx-auto">
@@ -199,6 +199,10 @@
           </div>
         </div>
       </div>
+    </div>
+    <div (click)="setWeightLock()" class="border-transparent cursor-pointer border-2 hover:border-blue-500 rounded hover:text-blue-600 px-3.5 w-11 py-2 -my-2.5 hover:bg-blue-100 self-start">
+      <fa-icon *ngIf="!weightLocked" [icon]="faLockOpen"></fa-icon>
+      <fa-icon *ngIf="weightLocked" class="w-6" [icon]="faLock"></fa-icon>
     </div>
   </div>
 

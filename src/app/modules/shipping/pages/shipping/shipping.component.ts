@@ -9,7 +9,9 @@ import {
   faBalanceScale,
   faRuler,
   faRulerVertical,
-  faRulerHorizontal
+  faRulerHorizontal,
+  faLock,
+  faLockOpen
 } from '@fortawesome/pro-duotone-svg-icons';
 
 import { DialogService } from '../../../shared/services/dialog.service';
@@ -56,6 +58,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
   faRuler = faRuler;
   faRulerVertical = faRulerVertical;
   faRulerHorizontal = faRulerHorizontal;
+  faLock = faLock;
+  faLockOpen = faLockOpen;
 
   searchShipmentNumber = '';
   pendingSearchShipmentNumber: string = null;
@@ -82,6 +86,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
   shipment: ShipmentEntity;
   searchResults: ShipmentEntity[];
   editableShippingAddress = false;
+  weightLocked = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -163,14 +168,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.scaleDataSubscription = this.scaleService.scaleData$.subscribe(
-      (scaleData) => {
-        if (scaleData) {
-          this.weight =
-            Math.round((scaleData.weight + Number.EPSILON) * 100) / 100;
-        }
-      }
-    );
+    this.setScaleSubscription();
   }
 
   search() {
@@ -451,6 +449,26 @@ export class ShippingComponent implements OnInit, OnDestroy {
           }
         );
     });
+  }
+
+  setScaleSubscription() {
+    this.scaleDataSubscription = this.scaleService.scaleData$.subscribe(
+      (scaleData) => {
+        if (scaleData) {
+          this.weight =
+            Math.round((scaleData.weight + Number.EPSILON) * 100) / 100;
+        }
+      }
+    );
+  }
+
+  setWeightLock() {
+    this.weightLocked = !this.weightLocked;
+    if (this.weightLocked) {
+      this.scaleDataSubscription.unsubscribe();
+    } else {
+      this.setScaleSubscription();
+    }
   }
 
   setEditableShippingAddress() {
