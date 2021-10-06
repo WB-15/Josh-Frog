@@ -47,6 +47,7 @@ import { PackagingComponent } from '../../dialogs/packaging/packaging.component'
 import { MessageBoxOptions } from '../../../shared/components/message-box/message-box.component';
 import { ShipmentContentsComponent } from '../../dialogs/shipment-contents/shipment-contents.component';
 import { ShippingAddressComponent } from '../../dialogs/shipping-address/shipping-address.component';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-shipping',
@@ -105,7 +106,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
     private shipmentSearchGQL: ShipmentSearchGQL,
     private shipmentValidateAddressGQL: ShipmentValidateAddressGQL,
     private shipmentShipMultiPiece: ShipmentShipMultiPieceGQL,
-    private shipmentVoidGQL: ShipmentVoidGQL
+    private shipmentVoidGQL: ShipmentVoidGQL,
+    private platform: Platform
   ) {}
 
   ngOnInit() {
@@ -409,7 +411,9 @@ export class ShippingComponent implements OnInit, OnDestroy {
         (result) => {
           this.shipmentLoaded(result as ShipmentEntity);
           this.reprintLabel();
-          window.document.getElementById('searchByShipmentNumber').focus();
+          if (this.platform.is('desktop') || this.platform.is('electron')) {
+            window.document.getElementById('searchByShipmentNumber').focus();
+          }
         },
         (error) => {
           this.loading--;
