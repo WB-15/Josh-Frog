@@ -21,6 +21,7 @@ import { CarrierIconComponent } from './components/carrier-icon/carrier-icon.com
 import { OptionPipe } from './pipes/option.pipe';
 import { PackagingPipe } from './pipes/packaging.pipe';
 import { PackagingIconComponent} from './components/packaging-icon/packaging-icon.component';
+import { AutofocusDirective } from './directives/autofocus.directive';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { PackagingIconComponent} from './components/packaging-icon/packaging-ico
     OptionPipe,
     PackagingPipe,
     CarrierIconComponent,
-    PackagingIconComponent
+    PackagingIconComponent,
+    AutofocusDirective
   ],
   exports: [
     DialogComponent,
@@ -64,7 +66,8 @@ import { PackagingIconComponent} from './components/packaging-icon/packaging-ico
     OptionPipe,
     PackagingPipe,
     CarrierIconComponent,
-    PackagingIconComponent
+    PackagingIconComponent,
+    AutofocusDirective
   ],
   imports: [CommonModule, FontAwesomeModule]
 })

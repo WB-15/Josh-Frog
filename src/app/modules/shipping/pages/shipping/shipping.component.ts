@@ -87,7 +87,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
   scaleDataSubscription: Subscription;
 
   shipment: ShipmentEntity;
-  searchResults: ShipmentEntity[];
+  searchResults: ShipmentEntity[] = [];
   shipmentEditable = false;
   shipmentSent = false;
 
@@ -166,52 +166,54 @@ export class ShippingComponent implements OnInit, OnDestroy {
     );
   }
 
-  search() {
-    if (this.pendingSearchShipmentNumber == null) {
-      if (this.searchShipmentNumber === '') {
-        this.searchResults = [];
-      } else {
-        this.pendingSearchShipmentNumber = this.searchShipmentNumber;
-        const pageable: GraphQlPageableInput = {
-          page: 1,
-          pageSize: 5
-        };
-        this.shipmentSearchGQL
-          .fetch({
-            query: this.searchShipmentNumber
-          })
-          .pipe(map((result) => result.data.shipmentSearch))
-          .subscribe(
-            (result) => {
-              this.shipment = null;
-              this.addPackage(true);
-              this.packaging = null;
-              this.options = null;
-              this.searchResults = result as ShipmentEntity[];
-              this.changeDetectorRef.detectChanges();
-              if (
-                this.pendingSearchShipmentNumber !== this.searchShipmentNumber
-              ) {
-                this.pendingSearchShipmentNumber = null;
-                this.search();
-              } else {
-                this.pendingSearchShipmentNumber = null;
+  search($event?) {
+    if ($event && $event.key !== 'Enter') {
+      if (this.pendingSearchShipmentNumber == null) {
+        if (this.searchShipmentNumber === '') {
+          this.searchResults = [];
+        } else {
+          this.pendingSearchShipmentNumber = this.searchShipmentNumber;
+          const pageable: GraphQlPageableInput = {
+            page: 1,
+            pageSize: 5
+          };
+          this.shipmentSearchGQL
+            .fetch({
+              query: this.searchShipmentNumber
+            })
+            .pipe(map((result) => result.data.shipmentSearch))
+            .subscribe(
+              (result) => {
+                this.shipment = null;
+                this.addPackage(true);
+                this.packaging = null;
+                this.options = null;
+                this.searchResults = result as ShipmentEntity[];
+                this.changeDetectorRef.detectChanges();
+                if (
+                  this.pendingSearchShipmentNumber !== this.searchShipmentNumber
+                ) {
+                  this.pendingSearchShipmentNumber = null;
+                  this.search();
+                } else {
+                  this.pendingSearchShipmentNumber = null;
+                }
+              },
+              (error) => {
+                console.error(error);
+                this.dialogService.showErrorMessageBox(error);
+                this.changeDetectorRef.detectChanges();
+                if (
+                  this.pendingSearchShipmentNumber !== this.searchShipmentNumber
+                ) {
+                  this.pendingSearchShipmentNumber = null;
+                  this.search();
+                } else {
+                  this.pendingSearchShipmentNumber = null;
+                }
               }
-            },
-            (error) => {
-              console.error(error);
-              this.dialogService.showErrorMessageBox(error);
-              this.changeDetectorRef.detectChanges();
-              if (
-                this.pendingSearchShipmentNumber !== this.searchShipmentNumber
-              ) {
-                this.pendingSearchShipmentNumber = null;
-                this.search();
-              } else {
-                this.pendingSearchShipmentNumber = null;
-              }
-            }
-          );
+            );
+        }
       }
     }
   }
@@ -247,6 +249,12 @@ export class ShippingComponent implements OnInit, OnDestroy {
     this.setProgressBooleans();
     this.loading--;
     this.changeDetectorRef.detectChanges();
+  }
+
+  loadFirstShipment() {
+    if (this.searchResults.length > 0) {
+      this.load(this.searchResults[0].id);
+    }
   }
 
   showEditAddressDialog() {
@@ -401,6 +409,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
         (result) => {
           this.shipmentLoaded(result as ShipmentEntity);
           this.reprintLabel();
+          window.document.getElementById('searchByShipmentNumber').focus();
         },
         (error) => {
           this.loading--;
