@@ -10,6 +10,8 @@ import {
   faRuler,
   faRulerVertical,
   faRulerHorizontal,
+  faLock,
+  faLockOpen,
   faTimesCircle,
   faPlusCircle
 } from '@fortawesome/pro-duotone-svg-icons';
@@ -58,6 +60,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
   faRuler = faRuler;
   faRulerVertical = faRulerVertical;
   faRulerHorizontal = faRulerHorizontal;
+  faLock = faLock;
+  faLockOpen = faLockOpen;
   faTimesCircle = faTimesCircle;
   faPlusCircle = faPlusCircle;
 
@@ -85,6 +89,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
   searchResults: ShipmentEntity[];
   shipmentEditable = false;
   shipmentSent = false;
+  weightLocked = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -159,6 +164,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.setScaleSubscription();
   }
 
   search() {
@@ -465,6 +471,26 @@ export class ShippingComponent implements OnInit, OnDestroy {
       }
     }
     return true;
+  }
+
+  setScaleSubscription() {
+    this.scaleDataSubscription = this.scaleService.scaleData$.subscribe(
+      (scaleData) => {
+        if (scaleData) {
+          this.packages[this.activePackage].weight =
+            Math.round((scaleData.weight + Number.EPSILON) * 100) / 100;
+        }
+      }
+    );
+  }
+
+  setWeightLock() {
+    this.weightLocked = !this.weightLocked;
+    if (this.weightLocked) {
+      this.scaleDataSubscription.unsubscribe();
+    } else {
+      this.setScaleSubscription();
+    }
   }
 
   addPackage(reset: boolean = false) {

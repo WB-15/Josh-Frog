@@ -191,6 +191,10 @@
                 LB
               </span>
               </div>
+              <div (click)="setWeightLock()" class="border-transparent cursor-pointer border-2 hover:border-blue-500 rounded hover:text-blue-600 px-3.5 w-11 py-2 -my-2.5 hover:bg-blue-100 self-start">
+                <fa-icon *ngIf="!weightLocked" [icon]="faLockOpen"></fa-icon>
+                <fa-icon *ngIf="weightLocked" [icon]="faLock"></fa-icon>
+              </div>
             </div>
           </div>
         </div>
