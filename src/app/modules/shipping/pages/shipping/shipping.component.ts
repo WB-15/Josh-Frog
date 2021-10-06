@@ -75,6 +75,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
 
   shipmentNumber = '';
   packages: Package[] = [new Package()];
+  weightLocks = [false];
   activePackage = 0;
 
   warehouse: WarehouseEntity = null;
@@ -89,7 +90,6 @@ export class ShippingComponent implements OnInit, OnDestroy {
   searchResults: ShipmentEntity[];
   shipmentEditable = false;
   shipmentSent = false;
-  weightLocked = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -158,13 +158,12 @@ export class ShippingComponent implements OnInit, OnDestroy {
 
     this.scaleDataSubscription = this.scaleService.scaleData$.subscribe(
       (scaleData) => {
-        if (scaleData) {
+        if (scaleData && !this.weightLocks[this.activePackage]) {
           this.packages[this.activePackage].weight =
             Math.round((scaleData.weight + Number.EPSILON) * 100) / 100;
         }
       }
     );
-    this.setScaleSubscription();
   }
 
   search() {
@@ -473,31 +472,20 @@ export class ShippingComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  setScaleSubscription() {
-    this.scaleDataSubscription = this.scaleService.scaleData$.subscribe(
-      (scaleData) => {
-        if (scaleData) {
-          this.packages[this.activePackage].weight =
-            Math.round((scaleData.weight + Number.EPSILON) * 100) / 100;
-        }
-      }
-    );
-  }
-
-  setWeightLock() {
-    this.weightLocked = !this.weightLocked;
-    if (this.weightLocked) {
-      this.scaleDataSubscription.unsubscribe();
-    } else {
-      this.setScaleSubscription();
-    }
+  setWeightLock(i: number) {
+    this.weightLocks[i] = !this.weightLocks[i];
   }
 
   addPackage(reset: boolean = false) {
     if (reset) {
       this.packages = [];
+      this.weightLocks = [];
     }
     this.packages.push(new Package());
+    this.weightLocks.push(false);
+    if (this.packages.length > 1) {
+      this.weightLocks[this.activePackage] = true;
+    }
     this.activePackage = this.packages.length - 1;
     if (this.packages.length === 2) {
       this.packaging = Packaging.CardboardBox;
@@ -507,6 +495,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
   removePackage(i: number) {
     if (this.packages.length > 1) {
       this.packages.splice(i, 1);
+      this.weightLocks.splice(i, 1);
       if (this.activePackage > i || (this.activePackage === i && this.packages.length <= i)) {
         this.activePackage -= 1;
       }
@@ -542,8 +531,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
 }
 
 class Package {
-  weight: number;
-  length: number;
-  width: number;
-  height: number;
+  weight: number = null;
+  length: number = null;
+  width: number = null;
+  height: number = null;
 }

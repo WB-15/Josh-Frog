@@ -173,7 +173,7 @@
               </div>
             </div>
           </div>
-          <div class="w-56">
+          <div class="w-56 relative">
             <p class="data-label">WEIGHT</p>
             <label for="weight" class="hidden">Weight</label>
             <div class="relative">
@@ -191,11 +191,8 @@
                 LB
               </span>
               </div>
-              <div (click)="setWeightLock()" class="border-transparent cursor-pointer border-2 hover:border-blue-500 rounded hover:text-blue-600 px-3.5 w-11 py-2 -my-2.5 hover:bg-blue-100 self-start">
-                <fa-icon *ngIf="!weightLocked" [icon]="faLockOpen"></fa-icon>
-                <fa-icon *ngIf="weightLocked" [icon]="faLock"></fa-icon>
-              </div>
             </div>
+            <fa-icon class="absolute flex right-0 top-0 click-area -mt-1.5 w-6" style="padding: 4px 5px" (click)="setWeightLock(i)" [icon]="weightLocks[i] ? faLock : faLockOpen"></fa-icon>
           </div>
         </div>
       </div>

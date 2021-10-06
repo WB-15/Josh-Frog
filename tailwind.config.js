@@ -35,7 +35,6 @@ module.exports = {
     }
   },
   variants: {
-    borderColor: ['disabled'],
     borderRadius: ['first', 'last'],
     backgroundColor: ['disabled', 'hover', 'active'],
     opacity: ['disabled'],
