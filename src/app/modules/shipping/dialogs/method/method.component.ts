@@ -2,17 +2,18 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
 import {
   Carrier,
-  DomesticServiceType,
+  PackageSizeInput,
   Packaging,
   RateQuote,
   Service,
   ShipmentEntity,
-  ShipmentRateGQL,
+  ShipmentRateMultiPieceGQL,
   WarehouseEntity
 } from '../../../../../generated/graphql';
 import { map } from 'rxjs/operators';
 
 import { faSpinnerThird } from '@fortawesome/pro-duotone-svg-icons';
+import { DialogService } from '../../../shared/services/dialog.service';
 
 @Component({
   selector: 'app-method',
@@ -26,10 +27,7 @@ export class MethodComponent implements OnInit {
   @Input() shipment: ShipmentEntity;
   @Input() warehouse: WarehouseEntity;
   @Input() packaging: Packaging;
-  @Input() length: number;
-  @Input() width: number;
-  @Input() height: number;
-  @Input() weight: number;
+  @Input() packages: PackageSizeInput[];
   @Input() callback: (
     carrier: Carrier,
     service: Service,
@@ -47,24 +45,24 @@ export class MethodComponent implements OnInit {
   threeDayRates: RateQuote[];
   groundRates: RateQuote[];
 
-  constructor(private shipmentRateGQL: ShipmentRateGQL) {}
+  constructor(
+    private dialogService: DialogService,
+    private shipmentRateMultiPieceGQL: ShipmentRateMultiPieceGQL
+  ) {}
 
   ngOnInit() {
     this.loadMethods();
   }
 
   loadMethods() {
-    this.shipmentRateGQL
+    this.shipmentRateMultiPieceGQL
       .mutate({
         id: this.shipment.id,
         warehouse: this.warehouse.name,
         packaging: this.packaging,
-        weight: this.weight ? this.weight : this.shipment.estimatedWeight,
-        length: this.length ? this.length : this.shipment.estimatedLength,
-        width: this.width ? this.width : this.shipment.estimatedWidth,
-        height: this.height ? this.height : this.shipment.estimatedHeight
+        packages: this.packages
       })
-      .pipe(map((result) => result.data.shipmentRate))
+      .pipe(map((result) => result.data.shipmentRateMultiPiece))
       .subscribe(
         (result) => {
           /*
@@ -115,6 +113,9 @@ export class MethodComponent implements OnInit {
           this.twoDayRates = [];
           this.threeDayRates = [];
           this.groundRates = [];
+          if (this.rateQuotes.length === 0) {
+            this.dialogService.showErrorMessageBox(new Error('No shipment methods were found for the provided dimensions.'));
+          }
           for (const rate of this.rateQuotes) {
             if (rate.domesticServiceType === 'OvernightEarly') {
               this.overnightEarlyRates.push(rate);
@@ -134,6 +135,7 @@ export class MethodComponent implements OnInit {
         },
         (error) => {
           console.log(error);
+          this.dialogService.showErrorMessageBox(error);
         }
       );
   }

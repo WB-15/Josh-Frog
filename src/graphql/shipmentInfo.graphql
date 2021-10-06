@@ -24,8 +24,8 @@ query shipmentInfo ($id: UUID!) {
         estimatedDeliveryDate,
         shippedAt,
         shippedBy,
-        trackingNo,
-        zplContent,
+        trackingNos,
+        zplContents,
 
         firstName,
         lastName,
@@ -59,7 +59,7 @@ query shipmentInfo ($id: UUID!) {
                 sku,
                 name
             }
-        }
+        },
 
         shipmentAddons {
             id,
