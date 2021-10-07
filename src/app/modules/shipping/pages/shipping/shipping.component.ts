@@ -69,11 +69,6 @@ export class ShippingComponent implements OnInit, OnDestroy {
   searchShipmentNumber = '';
   pendingSearchShipmentNumber: string = null;
 
-  carrier: Carrier;
-  service: Service;
-  packaging: Packaging;
-  options: string[];
-
   shipmentNumber = '';
   packages: Package[] = [new Package()];
   weightLocks = [false];
@@ -137,8 +132,6 @@ export class ShippingComponent implements OnInit, OnDestroy {
             .subscribe(
               (result) => {
                 if (result) {
-                  this.packaging = null;
-                  this.options = null;
                   this.shipmentLoaded(result as ShipmentEntity);
                 } else {
                   // Couldn't find it by shipment number, fall back to search.
@@ -188,8 +181,6 @@ export class ShippingComponent implements OnInit, OnDestroy {
               (result) => {
                 this.shipment = null;
                 this.addPackage(true);
-                this.packaging = null;
-                this.options = null;
                 this.searchResults = result as ShipmentEntity[];
                 this.changeDetectorRef.detectChanges();
                 if (
@@ -242,12 +233,9 @@ export class ShippingComponent implements OnInit, OnDestroy {
   }
 
   shipmentLoaded(shipment: ShipmentEntity) {
-    this.shipment = shipment;
+    this.shipment = Object.assign({ }, shipment);
     this.addPackage(true);
-    this.carrier = this.shipment.carrier;
-    this.service = this.shipment.service;
-    this.packaging = this.shipment.packaging || Packaging.CardboardBox;
-    this.options = this.shipment.options;
+    this.shipment.packaging = this.shipment.packaging || Packaging.CardboardBox;
     this.setProgressBooleans();
     this.loading--;
     this.changeDetectorRef.detectChanges();
@@ -356,7 +344,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
       opts.inputs = {
         shipment: this.shipment,
         warehouse: this.warehouse,
-        packaging: this.packaging,
+        packaging: this.shipment.packaging,
         packages: this.packages.length === 1 ? [this.getEstimatedPackage()] : this.packages,
         callback: (
           carrier: Carrier,
@@ -364,10 +352,10 @@ export class ShippingComponent implements OnInit, OnDestroy {
           packaging: Packaging,
           options: string[]
         ) => {
-          this.carrier = carrier;
-          this.service = service;
-          this.packaging = packaging;
-          this.options = options;
+          this.shipment.carrier = carrier;
+          this.shipment.service = service;
+          this.shipment.packaging = packaging;
+          this.shipment.options = options;
         }
       };
       opts.title = 'Shipping Method';
@@ -382,7 +370,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
       options.component = PackagingComponent;
       options.inputs = {
         callback: (packaging: Packaging) => {
-          this.packaging = packaging;
+          this.shipment.packaging = packaging;
         }
       };
       options.title = 'Packaging Type';
@@ -392,17 +380,17 @@ export class ShippingComponent implements OnInit, OnDestroy {
   }
 
   shipShipment(): void {
-    if (this.options == null) {
-      this.options = [];
+    if (this.shipment.options == null) {
+      this.shipment.options = [];
     }
     this.loading++;
     this.shipmentShipMultiPiece
       .mutate({
         id: this.shipment.id,
-        carrier: this.carrier,
-        service: this.service,
-        packaging: this.packaging,
-        options: this.options,
+        carrier: this.shipment.carrier,
+        service: this.shipment.service,
+        packaging: this.shipment.packaging,
+        options: this.shipment.options,
         warehouse: this.warehouse.name,
         packages: this.packages.length === 1 ? [this.getEstimatedPackage()] : this.packages
       })
@@ -465,10 +453,10 @@ export class ShippingComponent implements OnInit, OnDestroy {
   }
 
   checkShippingRequirements() {
-    if (!this.carrier || !this.service || !this.packaging) {
+    if (!this.shipment.carrier || !this.shipment.service || !this.shipment.packaging) {
       return false;
     }
-    if (this.packaging === 'CARDBOARD_BOX') {
+    if (this.shipment.packaging === Packaging.CardboardBox) {
       const single = this.packages.length === 1;
       for (const pack of this.packages) {
         if
@@ -501,7 +489,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
     }
     this.activePackage = this.packages.length - 1;
     if (this.packages.length === 2) {
-      this.packaging = Packaging.CardboardBox;
+      this.shipment.packaging = Packaging.CardboardBox;
     }
   }
 

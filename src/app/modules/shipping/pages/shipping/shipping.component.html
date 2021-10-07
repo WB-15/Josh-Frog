@@ -5,11 +5,7 @@
     <div class="block mx-auto">
       <label for="searchByShipmentNumber" class="hidden">Search</label>
       <div class="relative pt-3 pb-4">
-        <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
-          <span class="icon is-medium is-left">
-            <fa-icon [icon]="faSearch"></fa-icon>
-          </span>
-        </div>
+        <fa-icon [icon]="faSearch" class="absolute inset-y-0 left-3 flex items-center pointer-events-none"></fa-icon>
         <input id="searchByShipmentNumber" class="input-base pl-10 pr-2" [ngClass]="searchShipmentNumber?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search Shipments" autocomplete="off" autocapitalize="words"
                [(ngModel)]="searchShipmentNumber" (keyup)='search($event)' (keyup.enter)='loadFirstShipment()' appAutofocus />
         <div *ngIf="searchResults" class="block absolute bg-gray-100 z-30 w-full">
@@ -29,9 +25,8 @@
     </div>
   </div>
 
-
   <div class="p-4" *ngIf="shipment">
-    <div class="block lg:flex lg:flex-row">
+    <div class="flex flex-col gap-4 lg:flex-row">
       <div class="w-64">
         <p class="data-label">DETAILS</p>
         <div class="flex items-center">
@@ -42,8 +37,7 @@
           </div>
         </div>
       </div>
-
-      <div (click)="showShipmentDialog()" class="w-64 click-area">
+      <div class="w-64 click-area" (click)="showShipmentDialog()">
         <p class="data-label">CONTENTS</p>
         <div *ngFor="let item of shipment.shipmentItems; index as i">
           <p *ngIf="i < 3" class="text-xs leading-5">
@@ -54,54 +48,46 @@
           <span class="text-sm leading-5 font-medium text-gray-900">and more...</span>
         </div>
       </div>
-
       <div class="w-64">
-        <div>
-          <p class="data-label">STATUS</p>
-          <app-shipment-status [shipmentStatus]="shipment.shipmentStatus"></app-shipment-status>
-        </div>
-        <div *ngIf="shipmentSent">
+        <p class="data-label">STATUS</p>
+        <app-shipment-status [shipmentStatus]="shipment.shipmentStatus"></app-shipment-status>
+        <ng-container *ngIf="shipmentSent">
           <p class="data-label">TRACKING</p>
           <span *ngFor="let trackingNo of shipment.trackingNos; index as i">
             {{trackingNo}}<ng-container *ngIf="i + 1 !== shipment.trackingNos.length">, </ng-container>
           </span>
-        </div>
+        </ng-container>
       </div>
-
-      <div class="h-6 lg:flex-1"></div>
-
     </div>
   </div>
 
   <div class="p-4" *ngIf="shipment">
-    <div class="block lg:flex lg:flex-row">
-      <div class="w-64">
-        <div (click)="showEditAddressDialog()" [ngClass]="{'relative click-area' : shipmentEditable}">
-          <p class="data-label">DESTINATION</p>
-          <p class="font-light">{{shipment.firstName}} {{shipment.lastName}}</p>
-          <p class="font-light" *ngIf="shipment.company">{{shipment.company}}</p>
-          <p class="font-light">{{shipment.line1}}</p>
-          <p class="font-light" *ngIf="shipment.line2">{{shipment.line2}}</p>
-          <p class="font-light">{{shipment.city}}<span *ngIf="shipment.city">, </span>{{shipment.state}}  {{shipment.postalCode}}</p>
-          <fa-icon *ngIf="shipmentEditable" class="absolute top-1 right-1 flex" [icon]="faPencil"></fa-icon>
+    <div class="flex flex-col gap-4 lg:flex-row">
+      <div class="flex-1">
+        <div class="w-64">
+          <div (click)="showEditAddressDialog()" [ngClass]="{'relative click-area' : shipmentEditable}">
+            <p class="data-label">DESTINATION</p>
+            <p class="font-light">{{shipment.firstName}} {{shipment.lastName}}</p>
+            <p class="font-light" *ngIf="shipment.company">{{shipment.company}}</p>
+            <p class="font-light">{{shipment.line1}}</p>
+            <p class="font-light" *ngIf="shipment.line2">{{shipment.line2}}</p>
+            <p class="font-light">{{shipment.city}}<span *ngIf="shipment.city">, </span>{{shipment.state}}  {{shipment.postalCode}}</p>
+            <fa-icon *ngIf="shipmentEditable" class="absolute top-1 right-1 flex" [icon]="faPencil"></fa-icon>
+          </div>
+          <p *ngIf="!shipment.addressValidationSource || shipment.addressValidationSource === 'Unverified'"><span class="text-gray-500">Address is unverified. </span><button *ngIf="shipmentEditable" class="text-blue-600 hover:text-blue-800" (click)="verifyAddress()">Verify</button></p>
+          <p *ngIf="shipment.addressValidationSource && shipment.addressValidationSource !== 'Unverified'"><span class="text-gray-500">Address verified by {{shipment.addressValidationSource}}.</span></p>
         </div>
-        <p *ngIf="!shipment.addressValidationSource || shipment.addressValidationSource === 'Unverified'"><span class="text-gray-500">Address is unverified. </span><button *ngIf="shipmentEditable" class="text-blue-600 hover:text-blue-800" (click)="verifyAddress()">Verify</button></p>
-        <p *ngIf="shipment.addressValidationSource && shipment.addressValidationSource !== 'Unverified'"><span class="text-gray-500">Address verified by {{shipment.addressValidationSource}}.</span></p>
       </div>
-
-      <div class="h-6 lg:flex-1"></div>
-
-      <div class="w-64">
-        <p class="data-label">SCHEDULE</p>
-        <p class="font-light" *ngIf="shipment.placedAt">Placed On: {{shipment.placedAt | date: 'EE, MMM d'}}</p>
-        <p class="font-light" *ngIf="shipment.estimatedShipDate">Ship By: {{shipment.estimatedShipDate | date: 'EE, MMM d'}}</p>
-        <p class="font-light" *ngIf="shipment.estimatedDeliveryDate">Deliver By: {{shipment.estimatedDeliveryDate | date: 'EE, MMM d'}}</p>
-        <p class="font-light" *ngIf="shipment.shippedAt">Shipped On: {{shipment.shippedAt | date: 'EE, MMM d'}}</p>
-        <p class="font-light" *ngIf="shipment.shippedBy">Shipped By: {{shipment.shippedBy}}</p>
+      <div class="flex-1">
+        <div class="w-64">
+          <p class="data-label">SCHEDULE</p>
+          <p class="font-light" *ngIf="shipment.placedAt">Placed On: {{shipment.placedAt | date: 'EE, MMM d'}}</p>
+          <p class="font-light" *ngIf="shipment.estimatedShipDate">Ship By: {{shipment.estimatedShipDate | date: 'EE, MMM d'}}</p>
+          <p class="font-light" *ngIf="shipment.estimatedDeliveryDate">Deliver By: {{shipment.estimatedDeliveryDate | date: 'EE, MMM d'}}</p>
+          <p class="font-light" *ngIf="shipment.shippedAt">Shipped On: {{shipment.shippedAt | date: 'EE, MMM d'}}</p>
+          <p class="font-light" *ngIf="shipment.shippedBy">Shipped By: {{shipment.shippedBy}}</p>
+        </div>
       </div>
-
-      <div class="h-6 lg:flex-1"></div>
-
     </div>
   </div>
 
@@ -211,129 +197,60 @@
     <p class="data-label">DIMENSIONS</p>
     <span *ngIf="shipment.actualLength && shipment.actualWidth && shipment.actualHeight">{{shipment.actualLength}} x {{shipment.actualWidth}} x {{shipment.actualHeight}} IN</span>
     <span *ngIf="shipment.trackingNos.length > 1">Multi Package</span>
-  </div>
-
-  <div class="p-4" *ngIf="shipment && shipmentSent">
-    <p class="data-label">WEIGHT</p>
+    <p class="data-label mt-2">WEIGHT</p>
     <span *ngIf="shipment.actualWeight">{{shipment.actualWeight}} LB</span>
     <span *ngIf="shipment.trackingNos.length > 1">Multi Package</span>
   </div>
 
-  <div class="p-4" *ngIf="shipment && shipmentEditable">
-    <div class="block lg:flex lg:flex-row">
-      <div class="w-full">
-        <p class="data-label">SERVICE</p>
-        <div class="relative w-full max-w-lg click-area-offset" [ngClass]="checkMethodRequirements() ? 'click-area' : 'cursor-not-allowed opacity-50'" (click)="showMethodDialog()">
-          <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
-            <span class="icon is-medium is-left">
-              <app-carrier-icon [carrier]="carrier"></app-carrier-icon>
-            </span>
-          </div>
-          <div class="input-base h-20 pl-15 pr-3">
-            <p class="text-2xl" [ngClass]="{'pt-3': !(options && options.length > 0)}">
-              <span *ngIf='(carrier && service)' class="font-light text-gray-600">{{carrier | carrier}}</span> {{service | service}}
-              <span *ngIf='!(carrier && service)' class="font-light text-gray-600">Not Specified</span>
-            </p>
-            <p class="font-light">
-              <span *ngFor="let option of options">
-                {{ option | option }}&nbsp;
-              </span>
-            </p>
-          </div>
-          <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
-            <span class="icon is-medium is-left">
-              <span *ngIf="checkMethodRequirements()" class="icon is-medium is-left"><fa-icon [icon]="faPencil"></fa-icon></span>
-            </span>
-          </div>
-        </div>
+  <div class="p-4" *ngIf="shipment">
+    <p class="data-label">SERVICE</p>
+    <div class="relative max-w-lg" (click)="shipmentEditable ? showMethodDialog() : ''"
+         [ngClass]="shipmentEditable ? 'click-area-offset ' + (checkMethodRequirements() ? 'click-area' : 'cursor-not-allowed opacity-50') : ''">
+      <app-carrier-icon class="absolute inset-y-0 left-3 flex items-center pointer-events-none" [carrier]="shipment.carrier"></app-carrier-icon>
+      <div class="input-base pl-15 pr-3 flex flex-col justify-center" style="min-height: 5rem" [ngClass]="{'cursor-default' : shipmentSent}">
+        <p class="text-2xl">
+          <span *ngIf="(shipment.carrier && shipment.service)" class="font-light text-gray-600">{{shipment.carrier | carrier}}</span> {{shipment.service | service}}
+          <span *ngIf="!(shipment.carrier && shipment.service)" class="font-light text-gray-600">Not Specified</span>
+        </p>
+        <p class="font-light">
+          <span *ngFor="let option of shipment.options">
+            {{ option | option }}&nbsp;
+          </span>
+        </p>
       </div>
+      <fa-icon *ngIf="shipmentEditable && checkMethodRequirements()" class="absolute inset-y-0 right-3 flex items-center pointer-events-none" [icon]="faPencil"></fa-icon>
     </div>
   </div>
 
-  <div class="p-4" *ngIf="shipment && shipmentSent">
-    <div class="block lg:flex lg:flex-row">
-      <div class="w-full">
-        <p class="data-label">SERVICE</p>
-        <div class="relative w-full max-w-lg">
-          <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
-              <span class="icon is-medium is-left">
-                <app-carrier-icon [carrier]="shipment.carrier"></app-carrier-icon>
-              </span>
-          </div>
-          <div class="input-base h-20 pl-15 pr-3 cursor-default">
-            <p class="text-2xl" [ngClass]="{'pt-3':!(options && options.length > 0)}">
-              <span class="font-light text-gray-600">{{shipment.carrier | carrier}}</span> {{shipment.service | service}}
-            </p>
-            <p class="font-light">
-              <span *ngFor="let option of shipment.options">
-                {{ option | option }}&nbsp;
-              </span>
-            </p>
-          </div>
+  <div class="p-4" *ngIf="shipment">
+    <p class="data-label">PACKAGING</p>
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-center">
+      <div class="relative w-full max-w-lg" (click)="shipmentEditable ? showPackagingDialog() : ''"
+           [ngClass]="shipmentEditable ? 'click-area-offset ' + (packages.length === 1 ? 'click-area' : 'cursor-not-allowed opacity-50') : ''">
+        <app-packaging-icon [packaging]="shipment.packaging" class="absolute inset-y-0 left-3 flex items-center pointer-events-none"></app-packaging-icon>
+        <div class="input-base pl-15 pr-3 text-4xl font-light text-gray-600">
+          {{shipment.packaging ? (shipment.packaging | packaging): 'Not Specified'}}
         </div>
+        <fa-icon *ngIf="shipmentEditable && packages.length === 1" [icon]="faPencil" class="absolute inset-y-0 right-3 flex items-center pointer-events-none"></fa-icon>
       </div>
+
+      <button *ngIf="shipmentEditable" class="w-64 h-16 font-bold button button-green"
+              [disabled]="!checkShippingRequirements()"
+              (click)="shipShipment()">
+        Ship
+      </button>
     </div>
   </div>
 
-  <div class="p-4" *ngIf="shipment && shipmentEditable">
-    <div class="block lg:flex lg:flex-row lg:gap-2 max-w-screen-md">
-      <div class="w-full max-w-lg">
-        <p class="data-label">PACKAGING</p>
-        <div class="relative w-full max-w-lg click-area-offset" [ngClass]="packages.length === 1 ? 'click-area' : 'cursor-not-allowed opacity-50'" (click)="showPackagingDialog()">
-          <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
-            <span class="icon is-medium is-left">
-              <app-packaging-icon [packaging]="packaging"></app-packaging-icon>
-            </span>
-          </div>
-          <div class="input-base pl-15 pr-3 text-4xl">
-            <span *ngIf='packaging' class="font-light text-gray-600">{{packaging | packaging}}</span>
-            <span *ngIf='!packaging' class="font-light text-gray-600">Not Specified</span>
-          </div>
-          <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
-            <span class="icon is-medium is-left">
-              <span *ngIf="packages.length === 1" class="icon is-medium is-left"><fa-icon [icon]="faPencil"></fa-icon></span>
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="w-64">
-        <button class="w-full h-16 font-bold mt-5 button button-green"
-                [disabled]="!checkShippingRequirements()"
-                (click)="shipShipment()">
-          Ship
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="p-4" *ngIf="shipment && shipmentSent">
-    <div class="block lg:flex lg:flex-row">
-      <div class="w-full">
-        <p class="data-label">PACKAGING</p>
-        <div class="relative w-full max-w-lg">
-          <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
-              <span class="icon is-medium is-left">
-                <app-packaging-icon [packaging]="shipment.packaging"></app-packaging-icon>
-              </span>
-          </div>
-          <div class="input-base pl-15 pr-3 text-4xl cursor-default">
-            <span class="font-light text-gray-600">{{shipment.packaging | packaging}}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="p-4 lg:flex" *ngIf="shipment && shipment.shipmentStatus === 'Shipped'">
-    <div class="w-64">
-      <button class="w-full font-bold button button-red" (click)="voidShipment()">
+  <div class="p-4 flex flex-col gap-4 lg:flex-row" *ngIf="shipment && shipment.shipmentStatus === 'Shipped'">
+    <div class="flex-1">
+      <button class="w-64 font-bold button button-red" (click)="voidShipment()">
         Void Shipment
       </button>
     </div>
 
-    <div class="w-64 lg:ml-64">
-      <button class="w-full mt-2 lg:mt-0 font-bold button button-green" (click)="reprintLabel()">
+    <div class="flex-1">
+      <button class="w-64 font-bold button button-green" (click)="reprintLabel()">
         Reprint Label
       </button>
     </div>
