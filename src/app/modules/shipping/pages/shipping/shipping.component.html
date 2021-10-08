@@ -108,7 +108,7 @@
                 <fa-icon [icon]="faRulerHorizontal"></fa-icon>
               </span>
               </div>
-              <input id="length" type="number" min="0" class="input-base pl-10 pr-7 text-4xl text-right"
+              <input id="length" type="number" min="0" step="any" class="input-base pl-10 pr-7 text-4xl text-right"
                      [placeholder]="shipment.estimatedLength && packages.length === 1 ? (shipment.estimatedLength | number: '0.0-0') : ''"
                      autocomplete="off" autocapitalize="words" (tap)="showLengthDialog()"
                      [(ngModel)]="packages[i].length" appAutofocus/>
@@ -128,7 +128,7 @@
                 <fa-icon [icon]="faRuler"></fa-icon>
               </span>
               </div>
-              <input id="width" type="number" min="0" class="input-base pl-10 pr-7 text-4xl text-right"
+              <input id="width" type="number" min="0" step="any" class="input-base pl-10 pr-7 text-4xl text-right"
                      [placeholder]="shipment.estimatedWidth && packages.length === 1 ? (shipment.estimatedWidth | number: '0.0-0') : ''"
                      autocomplete="off" autocapitalize="words" (tap)="showWidthDialog()"
                      [(ngModel)]="packages[i].width" />
@@ -148,7 +148,7 @@
                 <fa-icon [icon]="faRulerVertical"></fa-icon>
               </span>
               </div>
-              <input id="height" type="number" min="0" class="input-base pl-10 pr-7 text-4xl text-right"
+              <input id="height" type="number" min="0" step="any" class="input-base pl-10 pr-7 text-4xl text-right"
                      [placeholder]="shipment.estimatedHeight && packages.length === 1 ? (shipment.estimatedHeight | number: '0.0-0') : ''"
                      autocomplete="off" autocapitalize="words" (tap)="showHeightDialog()"
                      [(ngModel)]="packages[i].height" />
@@ -168,7 +168,7 @@
                 <fa-icon [icon]="faBalanceScale"></fa-icon>
               </span>
               </div>
-              <input id="weight" type="number" min="0" step=".1" class="input-base pl-10 pr-7 text-4xl text-right"
+              <input id="weight" type="number" min="0" step="any" class="input-base pl-10 pr-7 text-4xl text-right"
                      [placeholder]="shipment.estimatedWeight && packages.length === 1 ? (shipment.estimatedWeight | number: '0.1-1') : ''"
                      autocomplete="off" autocapitalize="words" (tap)="showWeightDialog()"
                      [(ngModel)]="packages[i].weight" />
