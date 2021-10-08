@@ -7,12 +7,12 @@
     "build": "tsc",
     "electron:rebuild-deps-windows": "./node_modules/.bin/electron-rebuild.cmd -m ./node_modules/capacitor-mettler-toledo && ./node_modules/.bin/electron-rebuild.cmd -m ./node_modules/capacitor-zebra-printer && ./node_modules/.bin/electron-rebuild.cmd -m ./node_modules/capacitor-zebra-scanner",
     "electron:rebuild-deps-linux": "$(npm bin)/electron-rebuild -m ./node_modules/capacitor-mettler-toledo && $(npm bin)/electron-rebuild -m ./node_modules/capacitor-zebra-printer && $(npm bin)/electron-rebuild -m ./node_modules/capacitor-zebra-scanner",
-    "electron:start": "npm run build && electron ./",
+    "electron:start": "npm run build && copy .\\node_modules\\capacitor-mettler-toledo\\hidapi.dll .\\ && electron ./",
     "electron:pack": "npm run build && electron-builder build --dir",
     "electron:build-windows": "npm run build && electron-builder build --windows",
     "electron:build-mac": "npm run build && electron-builder build --mac",
-    "electron:package": "electron-packager . --overwrite --asar --icon=./app/assets/icon.ico",
-    "electron:package-no-asar": "electron-packager . --overwrite --icon=./app/assets/icon.ico"
+    "electron:package": "electron-packager . --overwrite --asar --icon=./app/assets/icon.ico && copy .\\node_modules\\capacitor-mettler-toledo\\hidapi.dll JoshsFrogsAdmin-win32-x64\\",
+    "electron:package-no-asar": "electron-packager . --overwrite --icon=./app/assets/icon.ico && copy .\\node_modules\\capacitor-mettler-toledo\\hidapi.dll JoshsFrogsAdmin-win32-x64\\"
   },
   "dependencies": {
     "@capacitor-community/electron": "1.3.0-1",
