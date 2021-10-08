@@ -41,11 +41,10 @@ mutation shipmentUpdateAddress (
         actualLength,
         actualWidth,
         actualHeight,
+        placedAt,
         estimatedShipDate,
         estimatedDeliveryDate,
         shippedAt,
-        trackingNo,
-        zplContent,
 
         firstName,
         lastName,
@@ -79,6 +78,14 @@ mutation shipmentUpdateAddress (
                 sku,
                 name
             }
+        },
+
+        shipmentAddons {
+            id,
+            cls,
+            quantity,
+            sku,
+            name
         }
     }
 }

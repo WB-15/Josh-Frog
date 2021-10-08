@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @layer components {
+
+  .focus-shadow {
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, .35);
+  }
+
   .input-label {
     @apply text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider
   }
@@ -16,12 +21,68 @@
   }
 
   .input-base:focus {
-    @apply outline-none border-blue-300;
-    box-shadow: 0 0 0 3px rgba(164, 202, 254, 0.45);
+    @apply outline-none border-blue-300 focus-shadow
   }
 
   .input-base:disabled {
-    @apply cursor-not-allowed;
-    opacity: 0.5;
+    @apply cursor-not-allowed opacity-50
+  }
+
+  .input-base::placeholder {
+    @apply opacity-100 text-gray-400
+  }
+
+  .click-area {
+    @apply cursor-pointer rounded-lg
+  }
+
+  .click-area:hover {
+    @apply text-blue-600 bg-blue-100;
+    outline: 2px solid theme('colors.blue.500');
+  }
+
+  .click-area-offset {
+    outline-offset: -2px;
+  }
+
+  .data-label {
+    @apply text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider
+  }
+
+  .button-blue {
+    @apply bg-blue-600 border-blue-600
+  }
+
+  .button-blue:hover {
+    @apply bg-blue-800 border-blue-800
+  }
+
+  .button-green {
+    @apply bg-jfgreen-600 border-jfgreen-600
+  }
+
+  .button-green:hover {
+    @apply bg-jfgreen-800 border-jfgreen-800
+  }
+
+  .button-red {
+    @apply bg-red-600 border-red-600
+  }
+
+  .button-red:hover {
+    @apply bg-red-800 border-red-800
+  }
+
+  .button {
+    @apply text-white border rounded px-6 py-2.5;
+    min-width: 10rem;
+  }
+
+  .button:disabled {
+    @apply cursor-not-allowed border-gray-300 bg-gray-300 text-gray-700 opacity-75
+  }
+
+  .button:focus {
+    @apply outline-none focus-shadow
   }
 }

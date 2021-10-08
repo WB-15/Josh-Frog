@@ -1,6 +1,12 @@
-mutation shipmentVoid ($id: UUID!) {
-    shipmentVoid (
-        id: $id
+mutation shipmentShipMultiPiece ($id: UUID!, $warehouse: String!, $carrier: Carrier!, $service: Service!, $packaging: Packaging!, $options: [String]!, $packages: [PackageSizeInput]!) {
+    shipmentShipMultiPiece (
+        id: $id,
+        warehouse: $warehouse,
+        carrier: $carrier,
+        service: $service,
+        packaging: $packaging,
+        options: $options,
+        packages: $packages
     ) {
         id,
         cls,
