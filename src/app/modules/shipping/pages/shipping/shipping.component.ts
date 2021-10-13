@@ -162,7 +162,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
   }
 
   search($event?) {
-    if ($event && $event.key !== 'Enter') {
+    if (!$event || $event.key !== 'Enter') {
       if (this.pendingSearchShipmentNumber == null) {
         if (this.searchShipmentNumber === '') {
           this.searchResults = [];
