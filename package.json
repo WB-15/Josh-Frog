@@ -37,7 +37,6 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^5.0.0",
     "apollo-angular": "^2.4.0",
-    "apollo-link-retry": "^2.2.16",
     "electron": "^10.1.5",
     "express": "^4.15.2",
     "graphql": "^15.0.0",
@@ -49,7 +48,7 @@
   "devDependencies": {
     "@angular-builders/custom-webpack": "^10.0.1",
     "@angular-devkit/build-angular": "~0.1000.0",
-    "@angular/cli": "~10.0.5",
+    "@angular/cli": "10.0.8",
     "@angular/compiler": "~10.0.0",
     "@angular/compiler-cli": "~10.0.0",
     "@angular/language-service": "~10.0.0",
