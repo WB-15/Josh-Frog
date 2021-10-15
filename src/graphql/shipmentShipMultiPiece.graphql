@@ -1,7 +1,8 @@
-mutation shipmentShipMultiPiece ($id: UUID!, $warehouse: String!, $carrier: Carrier!, $service: Service!, $packaging: Packaging!, $options: [String]!, $packages: [PackageSizeInput]!) {
+mutation shipmentShipMultiPiece ($id: UUID!, $warehouse: String!, $reseller: Reseller!, $carrier: Carrier!, $service: Service!, $packaging: Packaging!, $options: [String]!, $packages: [PackageSizeInput]!) {
     shipmentShipMultiPiece (
         id: $id,
         warehouse: $warehouse,
+        reseller: $reseller,
         carrier: $carrier,
         service: $service,
         packaging: $packaging,

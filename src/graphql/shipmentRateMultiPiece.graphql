@@ -6,6 +6,7 @@ mutation shipmentRateMultiPiece ($id: UUID!, $warehouse: String!, $packaging: Pa
         packages: $packages
     ) {
         domesticServiceType,
+        reseller,
         carrier,
         service,
         packaging,

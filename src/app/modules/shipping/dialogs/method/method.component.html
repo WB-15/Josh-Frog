@@ -13,7 +13,7 @@
     <div class="block lg:flex lg:flex-row">
       <div class="w-full">
         <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">OVERNIGHT EARLY</p>
-        <div *ngFor="let rate of overnightEarlyRates" class="relative w-full max-w-lg" (click)="pickMethod(rate.carrier, rate.service, rate.packaging, rate.options)">
+        <div *ngFor="let rate of overnightEarlyRates" class="relative w-full max-w-lg" (click)="pickMethod(rate.reseller, rate.carrier, rate.service, rate.packaging, rate.options)">
           <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
               <span class="icon is-medium is-left">
                 <app-carrier-icon [carrier]="rate.carrier"></app-carrier-icon>
@@ -50,7 +50,7 @@
     <div class="block lg:flex lg:flex-row">
       <div class="w-full">
         <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">OVERNIGHT MORNING</p>
-        <div *ngFor="let rate of overnightMorningRates" class="relative w-full max-w-lg" (click)="pickMethod(rate.carrier, rate.service, rate.packaging, rate.options)">
+        <div *ngFor="let rate of overnightMorningRates" class="relative w-full max-w-lg" (click)="pickMethod(rate.reseller, rate.carrier, rate.service, rate.packaging, rate.options)">
           <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
               <span class="icon is-medium is-left">
                 <app-carrier-icon [carrier]="rate.carrier"></app-carrier-icon>
@@ -87,7 +87,7 @@
     <div class="block lg:flex lg:flex-row">
       <div class="w-full">
         <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">OVERNIGHT</p>
-        <div *ngFor="let rate of overnightEveningRates" class="relative w-full max-w-lg" (click)="pickMethod(rate.carrier, rate.service, rate.packaging, rate.options)">
+        <div *ngFor="let rate of overnightEveningRates" class="relative w-full max-w-lg" (click)="pickMethod(rate.reseller, rate.carrier, rate.service, rate.packaging, rate.options)">
           <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
               <span class="icon is-medium is-left">
                 <app-carrier-icon [carrier]="rate.carrier"></app-carrier-icon>
@@ -126,7 +126,7 @@
     <div class="block lg:flex lg:flex-row">
       <div class="w-full">
         <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">TWO DAY</p>
-        <div *ngFor="let rate of twoDayRates" class="relative w-full max-w-lg" (click)="pickMethod(rate.carrier, rate.service, rate.packaging, rate.options)">
+        <div *ngFor="let rate of twoDayRates" class="relative w-full max-w-lg" (click)="pickMethod(rate.reseller, rate.carrier, rate.service, rate.packaging, rate.options)">
           <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
             <span class="icon is-medium is-left">
               <app-carrier-icon [carrier]="rate.carrier"></app-carrier-icon>
@@ -163,7 +163,7 @@
     <div class="block lg:flex lg:flex-row">
       <div class="w-full">
         <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">THREE DAY</p>
-        <div *ngFor="let rate of threeDayRates" class="relative w-full max-w-lg" (click)="pickMethod(rate.carrier, rate.service, rate.packaging, rate.options)">
+        <div *ngFor="let rate of threeDayRates" class="relative w-full max-w-lg" (click)="pickMethod(rate.reseller, rate.carrier, rate.service, rate.packaging, rate.options)">
           <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
               <span class="icon is-medium is-left">
                 <app-carrier-icon [carrier]="rate.carrier"></app-carrier-icon>
@@ -200,7 +200,7 @@
     <div class="block lg:flex lg:flex-row">
       <div class="w-full">
         <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">GROUND</p>
-        <div *ngFor="let rate of groundRates" class="relative w-full max-w-lg" (click)="pickMethod(rate.carrier, rate.service, rate.packaging, rate.options)">
+        <div *ngFor="let rate of groundRates" class="relative w-full max-w-lg" (click)="pickMethod(rate.reseller, rate.carrier, rate.service, rate.packaging, rate.options)">
           <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
               <span class="icon is-medium is-left">
                 <app-carrier-icon [carrier]="rate.carrier"></app-carrier-icon>
