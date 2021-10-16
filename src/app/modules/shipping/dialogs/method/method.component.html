@@ -231,5 +231,42 @@
     </div>
   </div>
 </div>
+
+<div class="p-4" *ngIf="economyRates && (economyRates.length > 0)">
+  <div class="p-2">
+    <div class="block lg:flex lg:flex-row">
+      <div class="w-full">
+        <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">ECONOMY</p>
+        <div *ngFor="let rate of economyRates" class="relative w-full max-w-lg" (click)="pickMethod(rate.reseller, rate.carrier, rate.service, rate.packaging, rate.options)">
+          <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
+            <span class="icon is-medium is-left">
+              <app-carrier-icon [carrier]="rate.carrier"></app-carrier-icon>
+            </span>
+          </div>
+          <div class="form-input block h-20 w-full pl-15 pr-3 rounded-lg">
+            <p class="text-2xl" [ngClass]="{'pt-3': !rate.options}">
+              <span class="font-light text-gray-600">{{rate.carrier | carrier}}</span> {{rate.service | service}}
+            </p>
+            <p class="font-light">
+            <span *ngFor="let option of rate.options">
+              {{ option | option }}&nbsp;
+            </span>
+            </p>
+          </div>
+          <div class="absolute inset-y-0 right-0 pr-3 pl-3 flex items-center pointer-events-none">
+            <div class="block">
+              <p class="text-2xl text-right">
+                <span class="font-light text-gray-600">{{rate.cost | currency: 'USD'}}</span>&nbsp;{{rate.deliveryDate | date: 'EE'}}
+              </p>
+              <p class="mb-2 font-light text-right">
+                {{ rate.packaging | packaging }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 </div>

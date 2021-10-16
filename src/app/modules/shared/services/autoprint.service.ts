@@ -97,7 +97,7 @@ export class AutoprintService {
         this.listEnabledPrinters().subscribe(
           (printers) => {
             this.printers = printers;
-            this.timerCallback(1000);
+            this.timerCallback(120000);
           },
           (error) => {
             // Probably the daemon is not running

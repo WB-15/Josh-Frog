@@ -46,6 +46,7 @@ export class MethodComponent implements OnInit {
   twoDayRates: RateQuote[];
   threeDayRates: RateQuote[];
   groundRates: RateQuote[];
+  economyRates: RateQuote[];
 
   constructor(
     private dialogService: DialogService,
@@ -115,6 +116,7 @@ export class MethodComponent implements OnInit {
           this.twoDayRates = [];
           this.threeDayRates = [];
           this.groundRates = [];
+          this.economyRates = [];
           if (this.rateQuotes.length === 0) {
             this.dialogService.showErrorMessageBox(
               new Error(
@@ -135,6 +137,8 @@ export class MethodComponent implements OnInit {
               this.threeDayRates.push(rate);
             } else if (rate.domesticServiceType === 'Ground') {
               this.groundRates.push(rate);
+            } else if (rate.domesticServiceType === 'PostOfficeLastMile') {
+              this.economyRates.push(rate);
             }
           }
           this.loading = false;
