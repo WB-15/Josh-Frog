@@ -6,7 +6,7 @@ import { map, shareReplay } from 'rxjs/operators';
 
 import { Platform } from '@ionic/angular';
 
-import { UserEntity, UserInfoGQL } from '../../../../generated/graphql';
+import { UserEntity, UserSelfGQL } from '../../../../generated/graphql';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,7 @@ export class UserService {
   constructor(
     private httpClient: HttpClient,
     private apollo: Apollo,
-    private userInfoGQL: UserInfoGQL,
+    private userSelfGQL: UserSelfGQL,
     private platform: Platform
   ) {
     console.log(platform.platforms());
@@ -109,9 +109,9 @@ export class UserService {
   }
 
   private userInfo(): void {
-    this.userInfoGQL
+    this.userSelfGQL
       .fetch()
-      .pipe(map((result) => result.data.userInfo))
+      .pipe(map((result) => result.data.userSelf))
       .subscribe(
         (result) => {
           this.user = result as UserEntity;
