@@ -1,5 +1,5 @@
-query userInfo {
-  userInfo {
+query userSelf {
+  userSelf {
     email,
     firstName,
     lastName,
