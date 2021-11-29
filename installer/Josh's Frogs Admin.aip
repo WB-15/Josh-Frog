@@ -7,10 +7,10 @@
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="ARPPRODUCTICON" Value="icon.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="Josh&apos;s Frogs"/>
-    <ROW Property="ProductCode" Value="1033:{668EC835-276B-4DE7-86F7-B571676765EF} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{3F582FA7-2A72-4940-90F9-E5AAB4AC93B9} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
-    <ROW Property="ProductName" Value="Josh&apos;s Frogs Admin"/>
-    <ROW Property="ProductVersion" Value="1.20.1" Type="32"/>
+    <ROW Property="ProductName" Value="Josh&apos;s Cogs"/>
+    <ROW Property="ProductVersion" Value="1.21.2" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{81944FD7-BED5-4065-B48F-F33A1D338084}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -287,7 +287,7 @@
     <ROW Registry="Version" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Version" Value="[ProductVersion]" Component_="ProductInformation"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiShortsComponent">
-    <ROW Shortcut="JoshsFrogsAdmin" Directory_="ProgramMenuFolder" Name="JOSH&apos;S~1|Josh&apos;s Frogs Admin" Component_="JoshsFrogsAdmin.exe" Target="[#JoshsFrogsAdmin.exe]" Hotkey="0" IconIndex="0" ShowCmd="1" WkDir="APPDIR"/>
+    <ROW Shortcut="JoshsFrogsAdmin" Directory_="ProgramMenuFolder" Name="JOSH&apos;S~2|Josh&apos;s Cogs" Component_="JoshsFrogsAdmin.exe" Target="[#JoshsFrogsAdmin.exe]" Hotkey="0" IconIndex="0" ShowCmd="1" WkDir="APPDIR"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiThemeComponent">
     <ATTRIBUTE name="UsedTheme" value="classic"/>
