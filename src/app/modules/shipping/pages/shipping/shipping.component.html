@@ -7,7 +7,7 @@
       <div class="relative pt-3 pb-4">
         <fa-icon [icon]="faSearch" class="absolute inset-y-0 left-3 flex items-center pointer-events-none"></fa-icon>
         <input id="searchByShipmentNumber" class="input-base pl-10 pr-2" [ngClass]="searchShipmentNumber?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search Shipments" autocomplete="off" autocapitalize="words"
-               [(ngModel)]="searchShipmentNumber" (keyup)='search($event)' (keyup.enter)='loadFirstShipment()' appAutofocus />
+               [(ngModel)]="searchShipmentNumber" (keyup)='searchKey($event)' appAutofocus />
         <div *ngIf="searchResults" class="block absolute bg-gray-100 z-30 w-full">
           <div *ngFor="let result of searchResults" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
             <div class="flex-none m-1 mr-3">

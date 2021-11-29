@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -49,6 +55,7 @@ import { MessageBoxOptions } from '../../../shared/components/message-box/messag
 import { ShipmentContentsComponent } from '../../dialogs/shipment-contents/shipment-contents.component';
 import { ShippingAddressComponent } from '../../dialogs/shipping-address/shipping-address.component';
 import { Platform } from '@ionic/angular';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-shipping',
@@ -88,7 +95,11 @@ export class ShippingComponent implements OnInit, OnDestroy {
   shipmentEditable = false;
   shipmentSent = false;
 
+  private windowRef: Window;
+  private searchDebounceTimer: number;
+
   constructor(
+    @Inject(DOCUMENT) private document: Document,
     private route: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
     private dialogService: DialogService,
@@ -104,7 +115,9 @@ export class ShippingComponent implements OnInit, OnDestroy {
     private shipmentShipMultiPiece: ShipmentShipMultiPieceGQL,
     private shipmentVoidGQL: ShipmentVoidGQL,
     private platform: Platform
-  ) {}
+  ) {
+    this.windowRef = this.document.defaultView;
+  }
 
   ngOnInit() {
     this.warehouseChangedSubscription = this.warehouseService.warehouseChanged$.subscribe(
@@ -162,6 +175,15 @@ export class ShippingComponent implements OnInit, OnDestroy {
     );
   }
 
+  searchKey($event) {
+    if (this.searchDebounceTimer) {
+      this.windowRef.clearTimeout(this.searchDebounceTimer);
+    }
+    this.searchDebounceTimer = this.windowRef.setTimeout(() => {
+      this.search($event);
+    }, 20);
+  }
+
   search($event?) {
     if (!$event || $event.key !== 'Enter') {
       if (this.pendingSearchShipmentNumber == null) {
@@ -209,6 +231,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
             );
         }
       }
+    } else if ($event && $event.key === 'Enter') {
+      this.loadFirstShipment();
     }
   }
 
@@ -566,6 +590,9 @@ export class ShippingComponent implements OnInit, OnDestroy {
     this.warehouseChangedSubscription.unsubscribe();
     this.shipmentScannedSubscription.unsubscribe();
     this.scaleDataSubscription.unsubscribe();
+    if (this.searchDebounceTimer) {
+      this.windowRef.clearTimeout(this.searchDebounceTimer);
+    }
   }
 }
 
