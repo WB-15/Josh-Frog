@@ -57,6 +57,7 @@ export class UserService {
   }
 
   public login(username: string, password: string): Observable<LoginResponse> {
+    this.apollo.getClient().resetStore();
     const data = this.httpClient
       .post<LoginResponse>(this.BASE_URL + '/login', { username, password })
       .pipe(shareReplay(1));
