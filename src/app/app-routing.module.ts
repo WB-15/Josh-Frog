@@ -49,6 +49,12 @@ const routes: Routes = [
       import('./modules/shipping/shipping.module').then((m) => m.ShippingModule)
   },
   {
+    path: 'weather',
+    canActivate: [AuthGuardService],
+    loadChildren: () =>
+      import('./modules/weather/weather.module').then((m) => m.WeatherModule)
+  },
+  {
     path: 'auto_print',
     canActivate: [AuthGuardService],
     loadChildren: () =>

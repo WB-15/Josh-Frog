@@ -11,16 +11,18 @@ import { ThumbnailLgComponent } from './components/thumbnail-lg/thumbnail-lg.com
 import { MarketplaceIconComponent } from './components/marketplace-icon/marketplace-icon.component';
 import { OrderStatusComponent } from './components/order-status/order-status.component';
 import { ShipmentStatusComponent } from './components/shipment-status/shipment-status.component';
+import { ShipmentContentsComponent } from './components/shipment-contents/shipment-contents.component';
+import { ShippingAddressComponent } from './components/shipping-address/shipping-address.component';
+import { CarrierIconComponent } from './components/carrier-icon/carrier-icon.component';
+import { PackagingIconComponent } from './components/packaging-icon/packaging-icon.component';
 import { HostnamePipe } from './pipes/hostname.pipe';
 import { ShippingNeedsPipe } from './pipes/shipping-needs.pipe';
 import { SqrtPipe } from './pipes/sqrt.pipe';
 import { ConfidencePipe } from './pipes/confidence.pipe';
 import { ServicePipe } from './pipes/service.pipe';
 import { CarrierPipe } from './pipes/carrier.pipe';
-import { CarrierIconComponent } from './components/carrier-icon/carrier-icon.component';
 import { OptionPipe } from './pipes/option.pipe';
 import { PackagingPipe } from './pipes/packaging.pipe';
-import { PackagingIconComponent} from './components/packaging-icon/packaging-icon.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
 
 @NgModule({
@@ -33,7 +35,11 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     ThumbnailLgComponent,
     MarketplaceIconComponent,
     ShipmentStatusComponent,
+    ShipmentContentsComponent,
+    ShippingAddressComponent,
     OrderStatusComponent,
+    CarrierIconComponent,
+    PackagingIconComponent,
     HostnamePipe,
     ShippingNeedsPipe,
     SqrtPipe,
@@ -42,8 +48,6 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     CarrierPipe,
     OptionPipe,
     PackagingPipe,
-    CarrierIconComponent,
-    PackagingIconComponent,
     AutofocusDirective
   ],
   exports: [
@@ -56,7 +60,11 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     ThumbnailLgComponent,
     MarketplaceIconComponent,
     ShipmentStatusComponent,
+    ShipmentContentsComponent,
+    ShippingAddressComponent,
     OrderStatusComponent,
+    CarrierIconComponent,
+    PackagingIconComponent,
     HostnamePipe,
     ShippingNeedsPipe,
     SqrtPipe,
@@ -65,8 +73,6 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     CarrierPipe,
     OptionPipe,
     PackagingPipe,
-    CarrierIconComponent,
-    PackagingIconComponent,
     AutofocusDirective
   ],
   imports: [CommonModule, FontAwesomeModule]

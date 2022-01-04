@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "codegen": "graphql-codegen --config codegen.yml",
-    "get-schema": "graphql get-schema --all"
+    "get-schema": "rover graph introspect https://new.joshsfrogs.com/api/graphql > ./src/graphql/_schema.graphql"
   },
   "private": true,
   "dependencies": {

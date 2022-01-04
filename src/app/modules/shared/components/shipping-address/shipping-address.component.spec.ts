@@ -1,14 +1,23 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick
+} from '@angular/core/testing';
 import { ShippingAddressComponent } from './shipping-address.component';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { StatesService } from '../../../shared/services/states.service';
+import { StatesService } from '../../services/states.service';
 import {
   ShipmentEntity,
   ShipmentUpdateAddressDocument
 } from '../../../../../generated/graphql';
-import { ApolloTestingController, ApolloTestingModule } from 'apollo-angular/testing';
+import {
+  ApolloTestingController,
+  ApolloTestingModule
+} from 'apollo-angular/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
+import { DialogComponent } from '../dialog/dialog.component';
 
 describe('ShippingAddressComponent', () => {
   let component: ShippingAddressComponent;
@@ -19,14 +28,14 @@ describe('ShippingAddressComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ShippingAddressComponent],
-      providers: [
-        FormBuilder
-      ],
+      providers: [FormBuilder],
       imports: [FontAwesomeModule, ApolloTestingModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ShippingAddressComponent);
-    statesService = TestBed.inject(StatesService) as jasmine.SpyObj<StatesService>;
+    statesService = TestBed.inject(StatesService) as jasmine.SpyObj<
+      StatesService
+    >;
     backend = TestBed.inject(ApolloTestingController);
 
     component = fixture.componentInstance;
@@ -114,14 +123,18 @@ describe('ShippingAddressComponent', () => {
   });
 
   it('updateAddress succeeds', fakeAsync(() => {
-    component.parentRef = TestBed.createComponent(DialogComponent).componentInstance;
+    component.parentRef = TestBed.createComponent(
+      DialogComponent
+    ).componentInstance;
     component.callback = (shipment: ShipmentEntity) => {};
     spyOn(component, 'callback');
     spyOn(component.parentRef, 'pressOK');
     component.ngOnInit();
     component.updateAddress();
     const call = backend.expectOne((operation) => {
-      expect(operation.query.definitions).toEqual(ShipmentUpdateAddressDocument.definitions);
+      expect(operation.query.definitions).toEqual(
+        ShipmentUpdateAddressDocument.definitions
+      );
       return true;
     });
     call.flush({
@@ -136,11 +149,15 @@ describe('ShippingAddressComponent', () => {
   }));
 
   it('updateAddress succeeds with no callback', fakeAsync(() => {
-    component.parentRef = TestBed.createComponent(DialogComponent).componentInstance;
+    component.parentRef = TestBed.createComponent(
+      DialogComponent
+    ).componentInstance;
     component.ngOnInit();
     component.updateAddress();
     const call = backend.expectOne((operation) => {
-      expect(operation.query.definitions).toEqual(ShipmentUpdateAddressDocument.definitions);
+      expect(operation.query.definitions).toEqual(
+        ShipmentUpdateAddressDocument.definitions
+      );
       return true;
     });
     call.flush({
@@ -156,7 +173,9 @@ describe('ShippingAddressComponent', () => {
     component.ngOnInit();
     component.updateAddress();
     const call = backend.expectOne((operation) => {
-      expect(operation.query.definitions).toEqual(ShipmentUpdateAddressDocument.definitions);
+      expect(operation.query.definitions).toEqual(
+        ShipmentUpdateAddressDocument.definitions
+      );
       return true;
     });
     call.networkError(new Error('Please download more ram.'));
@@ -172,14 +191,18 @@ describe('ShippingAddressComponent', () => {
     component.ngOnInit();
     component.updateAddress();
     const call = backend.expectOne((operation) => {
-      expect(operation.query.definitions).toEqual(ShipmentUpdateAddressDocument.definitions);
+      expect(operation.query.definitions).toEqual(
+        ShipmentUpdateAddressDocument.definitions
+      );
       return true;
     });
     call.networkError(new Error());
     tick();
 
     expect(component.submitting).toBeFalse();
-    expect(component.errorMessage).toEqual('{"graphQLErrors":[],"networkError":{"graphQLErrors":[],"networkError":{},"message":""},"message":""}' );
+    expect(component.errorMessage).toEqual(
+      '{"graphQLErrors":[],"networkError":{"graphQLErrors":[],"networkError":{},"message":""},"message":""}'
+    );
     expect(component.addressForm.enabled).toBeTrue();
     backend.verify();
   }));

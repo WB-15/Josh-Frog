@@ -52,8 +52,8 @@ import {
 import { MethodComponent } from '../../dialogs/method/method.component';
 import { PackagingComponent } from '../../dialogs/packaging/packaging.component';
 import { MessageBoxOptions } from '../../../shared/components/message-box/message-box.component';
-import { ShipmentContentsComponent } from '../../dialogs/shipment-contents/shipment-contents.component';
-import { ShippingAddressComponent } from '../../dialogs/shipping-address/shipping-address.component';
+import { ShipmentContentsComponent } from '../../../shared/components/shipment-contents/shipment-contents.component';
+import { ShippingAddressComponent } from '../../../shared/components/shipping-address/shipping-address.component';
 import { Platform } from '@ionic/angular';
 import { DOCUMENT } from '@angular/common';
 

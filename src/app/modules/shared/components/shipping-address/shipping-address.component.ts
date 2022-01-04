@@ -5,9 +5,9 @@ import {
   ShipmentUpdateAddressGQL
 } from '../../../../../generated/graphql';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { StatesService } from '../../../shared/services/states.service';
+import { StatesService } from '../../services/states.service';
 import { faAngleDown } from '@fortawesome/pro-regular-svg-icons';
-import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-shipping-address',
@@ -28,22 +28,33 @@ export class ShippingAddressComponent implements OnInit {
     private fb: FormBuilder,
     private statesService: StatesService,
     private shipmentUpdateAddressGQL: ShipmentUpdateAddressGQL
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.addressForm = this.fb.group({
       firstName: [{ value: this.shipment.firstName || '', disabled: false }],
       lastName: [{ value: this.shipment.lastName || '', disabled: false }],
       company: [{ value: this.shipment.company, disabled: false }],
-      line1: [{ value: this.shipment.line1, disabled: false }, [Validators.required]],
+      line1: [
+        { value: this.shipment.line1, disabled: false },
+        [Validators.required]
+      ],
       line2: [{ value: this.shipment.line2, disabled: false }],
-      city: [{ value: this.shipment.city, disabled: false }, [Validators.required]],
-      state: [{ value: this.shipment.state, disabled: false }, [Validators.required]],
-      postalCode: [{
-        value: this.shipment.postalCode,
-        disabled: false
-      }, [Validators.required, Validators.pattern('^[0-9]{5}(?:-[0-9]{4})?$')]]
+      city: [
+        { value: this.shipment.city, disabled: false },
+        [Validators.required]
+      ],
+      state: [
+        { value: this.shipment.state, disabled: false },
+        [Validators.required]
+      ],
+      postalCode: [
+        {
+          value: this.shipment.postalCode,
+          disabled: false
+        },
+        [Validators.required, Validators.pattern('^[0-9]{5}(?:-[0-9]{4})?$')]
+      ]
     });
 
     this.states = this.statesService.getStates();
@@ -70,7 +81,9 @@ export class ShippingAddressComponent implements OnInit {
             this.parentRef.pressOK();
           },
           (error) => {
-            this.errorMessage = error.message ? error.message : JSON.stringify(error);
+            this.errorMessage = error.message
+              ? error.message
+              : JSON.stringify(error);
             this.addressForm.enable();
             this.submitting = false;
           }

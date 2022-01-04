@@ -1,0 +1,2871 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+"Exposes a URL that specifies the behaviour of this scalar."
+directive @specifiedBy("The URL that specifies the behaviour of this scalar." url: String!) on SCALAR
+""
+type AddonEntity {
+  "Entity's class"
+  cls: String
+  "Addon's cost"
+  cost: BigDecimal
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Addon's slug"
+  slug: String
+  "Addon's title"
+  title: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+  "Addon's weight"
+  weight: BigDecimal
+}
+""
+type AddonSetDestinationRequirementEntity {
+  "Addon rule's addon set"
+  addonSet: AddonSetEntity
+  "Entity's class"
+  cls: String
+  "Addon rule's comparison"
+  comparison: Comparison
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Shipping rule's slug"
+  slug: String
+  "Addon rule's temperature"
+  temp: Int
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type AddonSetEntity {
+  "Addon set's addons"
+  addons: [AddonEntity]
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Addon set's name"
+  name: String
+  "Addon set's priority"
+  priority: Long
+  "Addon set's slug"
+  slug: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type AddonSetSourceRequirementEntity {
+  "Addon rule's addon set"
+  addonSet: AddonSetEntity
+  "Entity's class"
+  cls: String
+  "Addon rule's comparison"
+  comparison: Comparison
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Shipping rule's slug"
+  slug: String
+  "Addon rule's temperature"
+  temp: Int
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type AddressEntity {
+  "Address' validation source"
+  addressValidationSource: AddressValidationSource
+  "Address' city name"
+  city: String
+  "Entity's class"
+  cls: String
+  "Address' company"
+  company: String
+  "Address' ISO country code"
+  country: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Address' first name"
+  firstName: String
+  "Entity's UUID"
+  id: UUID
+  "Address' last name"
+  lastName: String
+  "Address' latitude"
+  latitude: Float
+  "Address' first line"
+  line1: String
+  "Address' last line"
+  line2: String
+  "Address' longitude"
+  longitude: Float
+  "Address' Magento Id"
+  magentoId: Long
+  "Address' postal code"
+  postalCode: String
+  "Address' residential status"
+  residential: Boolean
+  "Address' state (or province) abbreviation"
+  state: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+enum AddressValidationSource {
+  FedEx
+  SmartyStreets
+  UPS
+  Unverified
+}
+""
+type AmazonProfileEntity {
+  "Amazon profile's ASIN"
+  asin: String
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Amazon profile's Seller SKU"
+  sellerSku: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type AmazonSalesOrderEntity {
+  "Order's alternate number"
+  alternateOrderNumber: String
+  "Amazon created at"
+  amazonCreatedAt: Instant
+  "Amazon updated at"
+  amazonUpdatedAt: Instant
+  "Billing address' validation source"
+  billingAddressValidationSource: AddressValidationSource
+  "Billing address' city name"
+  billingCity: String
+  "Billing address' company"
+  billingCompany: String
+  "Billing address' ISO country code"
+  billingCountry: String
+  "Billing address' first name"
+  billingFirstName: String
+  "Billing address' last name"
+  billingLastName: String
+  "Billing address' first line"
+  billingLine1: String
+  "Billing address' last line"
+  billingLine2: String
+  "Billing address' postal code"
+  billingPostalCode: String
+  "Billing address' state (or province) abbreviation"
+  billingState: String
+  "Entity's class"
+  cls: String
+  "Sales order's comments"
+  comments: [SalesOrderCommentsEntity]
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Order's discount total"
+  discountTotal: BigDecimal
+  "Order's email"
+  email: String
+  "Order's fulfillment channel"
+  fulfillmentChannelType: FulfillmentChannelType
+  "Order's grand total"
+  grandTotal: BigDecimal
+  "Order's handling total"
+  handlingTotal: BigDecimal
+  "Order's hold status"
+  hold: Boolean
+  "Entity's UUID"
+  id: UUID
+  "Order's number"
+  orderNumber: String
+  "Sales order's payments"
+  payments: [PaymentEntity]
+  "Order's phone"
+  phone: String
+  "Order's placed time"
+  placedTime: Instant
+  "Sales order's discounts"
+  salesOrderDiscounts: [SalesOrderDiscountEntity]
+  "Sales order's item groups"
+  salesOrderItemGroups: [SalesOrderItemGroupEntity]
+  "Sales order's items"
+  salesOrderItems: [SalesOrderItemEntity]
+  "Order's type"
+  salesOrderType: SalesOrderType
+  "Sales order's shipments"
+  shipments: [ShipmentEntity]
+  "Shipping address' validation source"
+  shippingAddressValidationSource: AddressValidationSource
+  "Shipping address' city name"
+  shippingCity: String
+  "Shipping address' company"
+  shippingCompany: String
+  "Shipping address' ISO country code"
+  shippingCountry: String
+  "Shipping address' first name"
+  shippingFirstName: String
+  "Shipping address' last name"
+  shippingLastName: String
+  "Shipping address' first line"
+  shippingLine1: String
+  "Shipping address' last line"
+  shippingLine2: String
+  "Sales order's shipping method"
+  shippingMethod: String
+  "Shipping address' postal code"
+  shippingPostalCode: String
+  "Shipping address' residential status"
+  shippingResidential: Boolean
+  "Shipping address' state (or province) abbreviation"
+  shippingState: String
+  "Order's shipping total"
+  shippingTotal: BigDecimal
+  "Order's status"
+  status: SalesOrderStatus
+  "Order's sub total"
+  subTotal: BigDecimal
+  "Order's tax code"
+  taxCode: String
+  "Order's tax total"
+  taxTotal: BigDecimal
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type AnimalEntity {
+  "Animal's children"
+  children: [AnimalEntity]
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Animal's explicit products"
+  explicitProducts: [ProductEntity]
+  "Entity's UUID"
+  id: UUID
+  "Animal's name"
+  name: String
+  "Animal's parent"
+  parent: AnimalEntity
+  "Animal's route key"
+  routeKey: String
+  "Animal's route path"
+  routePath: String
+  "Animal's slug"
+  slug: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+"Built-in java.math.BigDecimal"
+scalar BigDecimal
+""
+type BinEntity {
+  "Bin's human-readable ID"
+  binId: String
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Entity's modification timestamp"
+  updatedAt: Instant
+  "Bin's zone membership"
+  zone: ZoneEntity
+}
+""
+type BrandEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Brand's name"
+  name: String
+  "Brand's simple products"
+  products: [SimpleProductEntity]
+  "Brand's slug"
+  slug: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+enum Carrier {
+  DHL
+  FEDEX
+  GENERIC
+  UPS
+  USPS
+}
+""
+type CarrierRestrictionEntity {
+  "Shipping rule's carriers"
+  carriers: [Carrier]
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Shipping rule's packagings"
+  packagings: [Packaging]
+  "Shipping rule's services"
+  services: [Service]
+  "Shipping rule's slug"
+  slug: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type CartDiscount {
+  "Cart discount's amount"
+  amount: BigDecimal
+  "Cart discount's name"
+  name: String
+}
+""
+type CartEntity {
+  "Billing address' validation source"
+  billingAddressValidationSource: AddressValidationSource
+  "Billing address' city name"
+  billingCity: String
+  "Billing address' company"
+  billingCompany: String
+  "Billing address' ISO country code"
+  billingCountry: String
+  "Billing address' first name"
+  billingFirstName: String
+  "Billing address' last name"
+  billingLastName: String
+  "Billing address' first line"
+  billingLine1: String
+  "Billing address' last line"
+  billingLine2: String
+  "Billing address' postal code"
+  billingPostalCode: String
+  "Billing address' state (or province) abbreviation"
+  billingState: String
+  "Cart's batch item count"
+  cartBatchItemsCount: Long
+  "Cart's discounts"
+  cartDiscounts: [CartDiscount]
+  "Cart's item groups"
+  cartItemGroups: [CartItemGroupEntity]
+  "Cart's items"
+  cartItems: [CartItemEntity]
+  "Cart's item count"
+  cartItemsCount: Long
+  "Entity's class"
+  cls: String
+  "Cart's coupon code"
+  couponCode: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Cart's discount total"
+  discountTotal: BigDecimal
+  "Cart's email"
+  email: String
+  "Entity's UUID"
+  id: UUID
+  "Cart's phone"
+  phone: String
+  "Shipping address' validation source"
+  shippingAddressValidationSource: AddressValidationSource
+  "Shipping address' city name"
+  shippingCity: String
+  "Shipping address' company"
+  shippingCompany: String
+  "Shipping address' ISO country code"
+  shippingCountry: String
+  "Shipping address' first name"
+  shippingFirstName: String
+  "Shipping address' last name"
+  shippingLastName: String
+  "Shipping address' first line"
+  shippingLine1: String
+  "Shipping address' last line"
+  shippingLine2: String
+  "Shipping address' postal code"
+  shippingPostalCode: String
+  "Shipping address' residential status"
+  shippingResidential: Boolean
+  "Shipping address' state (or province) abbreviation"
+  shippingState: String
+  "Cart's subtotal"
+  subtotal: BigDecimal
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type CartItemEntity {
+  "Cart item's carrier preference"
+  carrierPreference: Carrier
+  "Cart item's group"
+  cartItemGroup: CartItemGroupEntity
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Cart item's delivery date preference"
+  deliveryDatePreference: LocalDate
+  "Cart item's discount price"
+  discountPrice: BigDecimal
+  "Cart item's earliest possible ship date"
+  earliestPossibleShipDate: LocalDate
+  "Entity's UUID"
+  id: UUID
+  "Cart item's overridden shipping needs type"
+  overriddenShippingNeedsType: ShippingNeedsType
+  "Cart item's regular price"
+  price: BigDecimal
+  "Cart item's quantity"
+  quantity: Long
+  "Cart item's regular price"
+  regularPrice: BigDecimal
+  "Cart item's sale price"
+  salePrice: BigDecimal
+  "Cart item's simple product"
+  simpleProduct: SimpleProductEntity
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type CartItemGroupEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Cart item group's discount price"
+  discountPrice: BigDecimal
+  "Entity's UUID"
+  id: UUID
+  "Cart item group's kit product"
+  kitProduct: KitProductEntity
+  "Cart item group's regular price"
+  price: BigDecimal
+  "Cart item group's quantity"
+  quantity: Long
+  "Cart item group's regular price"
+  regularPrice: BigDecimal
+  "Cart item group's sale price"
+  salePrice: BigDecimal
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type CategoryEntity {
+  "Category's active flag"
+  active: Boolean
+  "Category's children"
+  children: [CategoryEntity]
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Category's explicit products"
+  explicitProducts: [ProductEntity]
+  "Entity's UUID"
+  id: UUID
+  "Category's implicit products"
+  implicitProducts: [ProductEntity]
+  "Category's Magento Id"
+  magentoIds: [String]
+  "Category's meta description"
+  metaDescription: String
+  "Category's meta keywords"
+  metaKeywords: String
+  "Category's meta title"
+  metaTitle: String
+  "Category's name"
+  name: String
+  "Category's parent"
+  parent: CategoryEntity
+  "Category's published revision"
+  publishedRevision: CategoryRevisionEntity
+  "Category's route key"
+  routeKey: String
+  "Category's route path"
+  routePath: String
+  "Category's slug"
+  slug: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type CategoryResults {
+  "Result's category"
+  category: CategoryEntity
+  "Result's products"
+  products: GraphQLPage_ProductEntity
+}
+""
+type CategoryRevisionEntity {
+  "Category revision's html content"
+  htmlContent: String
+}
+""
+type ClientTokenDetail {
+  "Client token"
+  clientToken: String
+}
+""
+enum Comparison {
+  GREATER_THAN
+  LESS_THAN
+}
+""
+type Dashboard {
+  "Dashboard's stats, last week"
+  lastWeek: Stats
+  "Dashboard's late count"
+  lateCount: Int
+  "Dashboard's needs scheduling count"
+  needsSchedulingCount: Int
+  "Dashboard's next open date"
+  nextOpenDate: String
+  "Dashboard's on-hold count"
+  onHoldCount: Int
+  "Dashboard's pending count"
+  pendingCount: Int
+  "Dashboard's summaries"
+  summaries: [Summary]
+  "Dashboard's stats, this week"
+  thisWeek: Stats
+  "Dashboard's timezone"
+  timezone: String
+  "Dashboard's today"
+  today: String
+  "Dashboard's warehouse"
+  warehouse: String
+}
+""
+type DepartmentEntity {
+  "Department's children"
+  children: [DepartmentEntity]
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Department's explicit products"
+  explicitProducts: [ProductEntity]
+  "Entity's UUID"
+  id: UUID
+  "Department's implicit products"
+  implicitProducts: [ProductEntity]
+  "Department's name"
+  name: String
+  "Department's parent"
+  parent: DepartmentEntity
+  "Department's promotions"
+  promotions: [PromotionEntity]
+  "Department's route key"
+  routeKey: String
+  "Department's route path"
+  routePath: String
+  "Department's slug"
+  slug: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type DestinationRestrictionEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Destination restriction's domestic only"
+  domesticOnly: Boolean
+  "Entity's UUID"
+  id: UUID
+  "Destination restriction's prohibited states"
+  prohibitedStates: [State]
+  "Destination restriction's slug"
+  slug: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type DiscountEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+enum DomesticServiceType {
+  Ground
+  OvernightEarly
+  OvernightEvening
+  OvernightMorning
+  PostOfficeLastMile
+  SameDay
+  ThreeDay
+  TwoDay
+}
+"Built-in Float"
+scalar Float
+""
+enum FulfillmentChannelType {
+  DirectFulfillment
+  ThirdPartyFulfillment
+}
+""
+input GraphQLLikeQueryFilterInput {
+  "Abbreviation for 'pattern'."
+  p: String
+  "Field pattern."
+  pattern: String
+}
+""
+type GraphQLPage_AnimalEntity {
+  "Total elements count."
+  count: Long!
+  "Collection of object on the current page."
+  data: [AnimalEntity]
+  "The current page number."
+  page: Int
+  "Size of each page."
+  pageSize: Int
+  "If the collection is not pages it means it displays all elements in the current view."
+  paged: Boolean!
+  "Total pages count."
+  pagesCount: Int
+}
+""
+type GraphQLPage_BrandEntity {
+  "Total elements count."
+  count: Long!
+  "Collection of object on the current page."
+  data: [BrandEntity]
+  "The current page number."
+  page: Int
+  "Size of each page."
+  pageSize: Int
+  "If the collection is not pages it means it displays all elements in the current view."
+  paged: Boolean!
+  "Total pages count."
+  pagesCount: Int
+}
+""
+type GraphQLPage_CategoryEntity {
+  "Total elements count."
+  count: Long!
+  "Collection of object on the current page."
+  data: [CategoryEntity]
+  "The current page number."
+  page: Int
+  "Size of each page."
+  pageSize: Int
+  "If the collection is not pages it means it displays all elements in the current view."
+  paged: Boolean!
+  "Total pages count."
+  pagesCount: Int
+}
+""
+type GraphQLPage_DepartmentEntity {
+  "Total elements count."
+  count: Long!
+  "Collection of object on the current page."
+  data: [DepartmentEntity]
+  "The current page number."
+  page: Int
+  "Size of each page."
+  pageSize: Int
+  "If the collection is not pages it means it displays all elements in the current view."
+  paged: Boolean!
+  "Total pages count."
+  pagesCount: Int
+}
+""
+type GraphQLPage_DiscountEntity {
+  "Total elements count."
+  count: Long!
+  "Collection of object on the current page."
+  data: [DiscountEntity]
+  "The current page number."
+  page: Int
+  "Size of each page."
+  pageSize: Int
+  "If the collection is not pages it means it displays all elements in the current view."
+  paged: Boolean!
+  "Total pages count."
+  pagesCount: Int
+}
+""
+type GraphQLPage_KitProductEntity {
+  "Total elements count."
+  count: Long!
+  "Collection of object on the current page."
+  data: [KitProductEntity]
+  "The current page number."
+  page: Int
+  "Size of each page."
+  pageSize: Int
+  "If the collection is not pages it means it displays all elements in the current view."
+  paged: Boolean!
+  "Total pages count."
+  pagesCount: Int
+}
+""
+type GraphQLPage_ProductEntity {
+  "Total elements count."
+  count: Long!
+  "Collection of object on the current page."
+  data: [ProductEntity]
+  "The current page number."
+  page: Int
+  "Size of each page."
+  pageSize: Int
+  "If the collection is not pages it means it displays all elements in the current view."
+  paged: Boolean!
+  "Total pages count."
+  pagesCount: Int
+}
+""
+type GraphQLPage_SalesOrderEntity {
+  "Total elements count."
+  count: Long!
+  "Collection of object on the current page."
+  data: [SalesOrderEntity]
+  "The current page number."
+  page: Int
+  "Size of each page."
+  pageSize: Int
+  "If the collection is not pages it means it displays all elements in the current view."
+  paged: Boolean!
+  "Total pages count."
+  pagesCount: Int
+}
+""
+type GraphQLPage_ShipmentEntity {
+  "Total elements count."
+  count: Long!
+  "Collection of object on the current page."
+  data: [ShipmentEntity]
+  "The current page number."
+  page: Int
+  "Size of each page."
+  pageSize: Int
+  "If the collection is not pages it means it displays all elements in the current view."
+  paged: Boolean!
+  "Total pages count."
+  pagesCount: Int
+}
+""
+type GraphQLPage_SimpleProductEntity {
+  "Total elements count."
+  count: Long!
+  "Collection of object on the current page."
+  data: [SimpleProductEntity]
+  "The current page number."
+  page: Int
+  "Size of each page."
+  pageSize: Int
+  "If the collection is not pages it means it displays all elements in the current view."
+  paged: Boolean!
+  "Total pages count."
+  pagesCount: Int
+}
+""
+type GraphQLPage_SupplierEntity {
+  "Total elements count."
+  count: Long!
+  "Collection of object on the current page."
+  data: [SupplierEntity]
+  "The current page number."
+  page: Int
+  "Size of each page."
+  pageSize: Int
+  "If the collection is not pages it means it displays all elements in the current view."
+  paged: Boolean!
+  "Total pages count."
+  pagesCount: Int
+}
+""
+type GraphQLPage_TradeShowEntity {
+  "Total elements count."
+  count: Long!
+  "Collection of object on the current page."
+  data: [TradeShowEntity]
+  "The current page number."
+  page: Int
+  "Size of each page."
+  pageSize: Int
+  "If the collection is not pages it means it displays all elements in the current view."
+  paged: Boolean!
+  "Total pages count."
+  pagesCount: Int
+}
+""
+type GraphQLPage_UserEntity {
+  "Total elements count."
+  count: Long!
+  "Collection of object on the current page."
+  data: [UserEntity]
+  "The current page number."
+  page: Int
+  "Size of each page."
+  pageSize: Int
+  "If the collection is not pages it means it displays all elements in the current view."
+  paged: Boolean!
+  "Total pages count."
+  pagesCount: Int
+}
+""
+input GraphQLPageableInput {
+  "The number of the page to display."
+  page: Int
+  "Size of each page."
+  pageSize: Int
+  "Sort conditions for the current view."
+  sort: [GraphQLSortInput]
+}
+""
+input GraphQLSingleValueFilter_BooleanInput {
+  "Abbreviation for 'condition'."
+  c: QueryCondition
+  "Filter condition (default: eq)."
+  condition: QueryCondition
+  "Abbreviation for 'value'."
+  v: Boolean
+  "Field value."
+  value: Boolean
+}
+""
+input GraphQLSingleValueFilter_ShipmentStatusInput {
+  "Abbreviation for 'condition'."
+  c: QueryCondition
+  "Filter condition (default: eq)."
+  condition: QueryCondition
+  "Abbreviation for 'value'."
+  v: ShipmentStatus
+  "Field value."
+  value: ShipmentStatus
+}
+""
+input GraphQLSingleValueFilter_StringInput {
+  "Abbreviation for 'condition'."
+  c: QueryCondition
+  "Filter condition (default: eq)."
+  condition: QueryCondition
+  "Abbreviation for 'value'."
+  v: String
+  "Field value."
+  value: String
+}
+""
+input GraphQLSortInput {
+  "Abbreviation for 'direction'."
+  d: SortDirection
+  "Direction of sorting (default: asc)."
+  direction: SortDirection
+  "Abbreviation for 'field'."
+  f: String
+  "Name of the field to sort by."
+  field: String
+}
+""
+input GraphQLValueRangeQueryFilter_BigDecimalInput {
+  "Abbreviation for 'from'."
+  f: BigDecimal
+  "Value from (inclusive)."
+  from: BigDecimal
+  "Abbreviation for 'to'."
+  t: BigDecimal
+  "Value to (inclusive)."
+  to: BigDecimal
+}
+"Built-in scalar representing an instant in time"
+scalar Instant
+""
+type InventoryDetails {
+  "Result's product"
+  product: SimpleProductEntity
+  "Result's warehouse quantity available"
+  warehouseQuantityAvailable: Long
+  "Result's warehouse quantity on shelf"
+  warehouseQuantityOnShelf: Long
+  "Result's warehouse quantity unshipped"
+  warehouseQuantityUnshipped: Long
+  "Result's warehouse run out days, 85% confidence"
+  warehouseRunOutDays85: Float
+  "Result's warehouse run out days, 97% confidence"
+  warehouseRunOutDays97: Float
+  "Result's warehouse weekly consumption rate"
+  warehouseWeeklyConsumptionRate: Float
+  "Result's warehouse weekly consumption variance"
+  warehouseWeeklyConsumptionVariance: Float
+}
+""
+type InventoryQuantityCacheEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Cache's quantity available for sale"
+  quantityAvailableForSale: Long
+  "Cache's quantity on shelf"
+  quantityOnShelf: Long
+  "Cache's timestamp"
+  timestamp: Instant
+  "Entity's modification timestamp"
+  updatedAt: Instant
+  "Cache's warehouse"
+  warehouse: WarehouseEntity
+}
+""
+type InventoryResult {
+  "Result's global available quantity"
+  globalQuantityAvailable: Long
+  "Result's global total quantity"
+  globalQuantityTotal: Long
+  "Result's global unshipped quantity"
+  globalQuantityUnshipped: Long
+  "Result's product"
+  product: SimpleProductEntity
+}
+""
+type InventoryStatsCacheEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Cache's timestamp"
+  timestamp: Instant
+  "Entity's modification timestamp"
+  updatedAt: Instant
+  "Cache's warehouse"
+  warehouse: WarehouseEntity
+  "Cache's weekly consumption rate"
+  weeklyConsumptionRate: Float
+  "Cache's weekly consumption variance"
+  weeklyConsumptionVariance: Float
+}
+""
+type KitItemEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Kit item's position"
+  position: Long
+  "Kit item's quantity"
+  quantity: Long
+  "Kit item's simple product"
+  simpleProduct: SimpleProductEntity
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type KitProductEntity {
+  "Product's active flag"
+  active: Boolean
+  "Product's average rating"
+  averageRating: BigDecimal
+  "Entity's class"
+  cls: String
+  "Product's cost"
+  cost: BigDecimal
+  "Product's number of ratings"
+  countRating: BigDecimal
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Product's explicit animals"
+  explicitAnimals: [AnimalEntity]
+  "Product's explicit categories"
+  explicitCategories: [CategoryEntity]
+  "Product's explicit department"
+  explicitDepartment: DepartmentEntity
+  "Product's explicit discounts"
+  explicitDiscounts: [DiscountEntity]
+  "Product's explicit promotions"
+  explicitPromotions: [PromotionEntity]
+  "Entity's UUID"
+  id: UUID
+  "Product's implicit animals"
+  implicitAnimals: [AnimalEntity]
+  "Product's implicit categories"
+  implicitCategories: [CategoryEntity]
+  "Product's implicit department"
+  implicitDepartments: [DepartmentEntity]
+  "Product's implicit discounts"
+  implicitDiscounts: [DiscountEntity]
+  "Product's implicit promotions"
+  implicitPromotions: [PromotionEntity]
+  "Kit's items"
+  kitItems: [KitItemEntity]
+  "Product's Magento Id"
+  magentoId: String
+  "Product's medias"
+  medias: [MediaEntity]
+  "Product's meta description"
+  metaDescription: String
+  "Product's meta keywords"
+  metaKeywords: String
+  "Product's meta title"
+  metaTitle: String
+  "Product's popularity"
+  popularity: BigDecimal
+  "Product's price"
+  price: BigDecimal
+  "Product's published revision"
+  publishedRevision: ProductRevisionEntity
+  "Product's quantity available for sale"
+  quantityAvailableForSale: Long
+  salePrice: BigDecimal
+  "Product's shipping needs"
+  shippingNeeds: ShippingNeedsType
+  "Product's shipping rule set"
+  shippingRuleSet: ShippingRuleSetEntity
+  "Product's SKU"
+  sku: String
+  "Product's slug"
+  slug: String
+  "Product's special price"
+  specialPrice: BigDecimal
+  "Product's title"
+  title: String
+  "Product's UPC"
+  upc: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+  "Product's variation set"
+  variationSet: VariationSetEntity
+  "Product's wholesale price"
+  wholesalePrice: BigDecimal
+}
+""
+type LineItem {
+  "Line item's line amount"
+  lineAmount: BigDecimal
+  "Line item's name"
+  name: String
+  "Line item's order number"
+  orderNumber: String
+  "Line item's quantity"
+  quantity: Long
+  "Line item's SKU"
+  sku: String
+  "Line item's unit amount"
+  unitAmount: BigDecimal
+}
+""
+type LiveArrivalGuaranteeEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Live arrival rule's max temp"
+  maxTemp: Int
+  "Live arrival rule's min temp"
+  minTemp: Int
+  "Shipping rule's slug"
+  slug: String
+  "Live arrival rule's transit time type"
+  transitTimeType: TransitTimeType
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+enum LiveArrivalGuaranteeState {
+  Guaranteed
+  NotApplicable
+  NotGuaranteed
+  UnableToDetermine
+}
+"Built-in scalar representing a local date"
+scalar LocalDate
+"Long type"
+scalar Long
+""
+type MagentoSalesOrderEntity {
+  "Order's alternate number"
+  alternateOrderNumber: String
+  "Billing address' validation source"
+  billingAddressValidationSource: AddressValidationSource
+  "Billing address' city name"
+  billingCity: String
+  "Billing address' company"
+  billingCompany: String
+  "Billing address' ISO country code"
+  billingCountry: String
+  "Billing address' first name"
+  billingFirstName: String
+  "Billing address' last name"
+  billingLastName: String
+  "Billing address' first line"
+  billingLine1: String
+  "Billing address' last line"
+  billingLine2: String
+  "Billing address' postal code"
+  billingPostalCode: String
+  "Billing address' state (or province) abbreviation"
+  billingState: String
+  "Entity's class"
+  cls: String
+  "Sales order's comments"
+  comments: [SalesOrderCommentsEntity]
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Order's discount total"
+  discountTotal: BigDecimal
+  "Order's email"
+  email: String
+  "Order's fulfillment channel"
+  fulfillmentChannelType: FulfillmentChannelType
+  "Order's grand total"
+  grandTotal: BigDecimal
+  "Order's handling total"
+  handlingTotal: BigDecimal
+  "Order's hold status"
+  hold: Boolean
+  "Entity's UUID"
+  id: UUID
+  "Magento created at"
+  magentoCreatedAt: Instant
+  "Magento order status"
+  magentoStatus: String
+  "Magento updated at"
+  magentoUpdatedAt: Instant
+  "Order's number"
+  orderNumber: String
+  "Sales order's payments"
+  payments: [PaymentEntity]
+  "Order's phone"
+  phone: String
+  "Order's placed time"
+  placedTime: Instant
+  "Sales order's discounts"
+  salesOrderDiscounts: [SalesOrderDiscountEntity]
+  "Sales order's item groups"
+  salesOrderItemGroups: [SalesOrderItemGroupEntity]
+  "Sales order's items"
+  salesOrderItems: [SalesOrderItemEntity]
+  "Order's type"
+  salesOrderType: SalesOrderType
+  "Sales order's shipments"
+  shipments: [ShipmentEntity]
+  "Shipping address' validation source"
+  shippingAddressValidationSource: AddressValidationSource
+  "Shipping address' city name"
+  shippingCity: String
+  "Shipping address' company"
+  shippingCompany: String
+  "Shipping address' ISO country code"
+  shippingCountry: String
+  "Shipping address' first name"
+  shippingFirstName: String
+  "Shipping address' last name"
+  shippingLastName: String
+  "Shipping address' first line"
+  shippingLine1: String
+  "Shipping address' last line"
+  shippingLine2: String
+  "Sales order's shipping method"
+  shippingMethod: String
+  "Shipping address' postal code"
+  shippingPostalCode: String
+  "Shipping address' residential status"
+  shippingResidential: Boolean
+  "Shipping address' state (or province) abbreviation"
+  shippingState: String
+  "Order's shipping total"
+  shippingTotal: BigDecimal
+  "Order's status"
+  status: SalesOrderStatus
+  "Order's sub total"
+  subTotal: BigDecimal
+  "Order's tax code"
+  taxCode: String
+  "Order's tax total"
+  taxTotal: BigDecimal
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type MediaEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Media's type"
+  mediaType: MediaType
+  "Media's product"
+  product: ProductEntity
+  "Media's sequence"
+  sequence: Int
+  "Entity's modification timestamp"
+  updatedAt: Instant
+  "Media's url"
+  url: String
+}
+""
+enum MediaType {
+  Image
+  Panorama
+  VimeoVideo
+  YouTubeVideo
+}
+"Mutation root"
+type Mutation {
+  "Completes checkout and processes payment."
+  cartCheckout("" method: String!, "" cartId: UUID!, "" deviceData: String, "" giftCardPin: String, "" comment: String, "" giftCardCode: String, "" useRewardPoints: Boolean, "" nonce: String): SalesOrderEntity
+  "Refreshes a sales order (with Amazon) by entity id"
+  amazonSalesOrderRefresh("" amazonId: String!): AmazonSalesOrderEntity
+  "Triggers an update to all inventory caches"
+  maintenanceUpdateInventoryCaches: Boolean
+  "Validates the address, updates it if necessary"
+  shipmentValidateAddress("" id: UUID!): ShipmentEntity
+  "Adds user to marketing list"
+  marketingSubscribe("" email: String): Boolean!
+  "Updates bin on a simple product"
+  simpleProductSetBin("" bin: String!, "" id: UUID!, "" warehouse: String!): SimpleProductEntity
+  "Clears the cart's phone"
+  cartClearPhone("" cartId: UUID): CartEntity
+  "Calculates a sales tax rate based on zip code"
+  salesTaxRate("" postalCode: String!, "" state: String): TaxDetail
+  "Generates a shipment dashboard"
+  shipmentDashboard("" warehouse: String!): Dashboard
+  "Triggers a re-sync of all orders with Magento"
+  maintenanceMagentoReSyncOrders: Boolean
+  "Sets the cart's phone"
+  cartSetPhone("" phone: String!, "" cartId: UUID): CartEntity
+  "Triggers a re-sync of all categories with Magento"
+  maintenanceMagentoSyncAllCategories: Boolean
+  "Gets rates for a shipment"
+  shipmentRate("" width: BigDecimal, "" length: BigDecimal, "" weight: BigDecimal, "" packaging: Packaging, "" id: UUID!, "" warehouse: String!, "" height: BigDecimal): [RateQuote]
+  "Refreshes a simple product (with Magento) by entity id"
+  simpleProductRefresh("" magentoId: String!): SimpleProductEntity
+  "Refreshes a new user with Magento"
+  userRefresh("" magentoId: String!): UserEntity
+  "Calculates the implicit products a discount"
+  discountEvaluateImplicitProducts("" id: UUID!): DiscountEntity
+  "Changes quantity of selected kit product in user's cart"
+  cartChangeQuantityKitProduct("" quantity: Long!, "" productId: UUID!, "" cartId: UUID): CartEntity
+  "Gets inventory details for a simple product"
+  inventoryGetDetails("" id: UUID!, "" warehouse: String!): InventoryDetails
+  "Triggers a re-index of hibernate cache"
+  maintenanceCacheFlushAll: Boolean
+  "Looks up weather for shipment"
+  shipmentLookupWeather("" id: UUID!): [Weather]
+  "Ships a multi-piece shipment"
+  shipmentShipMultiPiece("" carrier: Carrier!, "" service: Service!, "" options: [String], "" reseller: Reseller, "" packaging: Packaging, "" id: UUID!, "" packages: [PackageSizeInput]!, "" warehouse: String!): ShipmentEntity
+  "Enrolls a workstation for use with AutoPrint"
+  autoprintEnrollWorkstation("" machineKey: String!, "" name: String!, "" warehouse: String!): WorkstationEntity
+  "Gets the next shipment to print at this workstation's printer"
+  autoprintGetNextForPrinter("" machineKey: String!, "" printerName: String!): [PrintJob]
+  "Refreshes a sales order (with Walmart) by purchase order id"
+  walmartSalesOrderRefresh("" purchaseOrderId: String!): WalmartSalesOrderEntity
+  "Sets the billing address to one of the user's addresses"
+  cartSetBillingAddressById("" cartId: UUID, "" addressId: UUID!): CartEntity
+  "Sends a shipper performance report"
+  maintenanceSendShipperPerformance: Boolean
+  "Triggers a re-sync of all products with Magento"
+  maintenanceMagentoSyncAllProducts: Boolean
+  "Lists all POS terminals"
+  tradeShowListTerminals: [PosTerminalEntity]
+  "Reroutes shipments from a queue"
+  autoprintReroute: Boolean!
+  "Adds quantity of selected simple product to user's cart"
+  cartAddSimpleProduct("" quantity: Long!, "" productId: UUID!, "" cartId: UUID): CartEntity
+  "Creates a new simple product"
+  kitProductCreate("" price: BigDecimal!, "" title: String!, "" sku: String!, "" slug: String!): KitProductEntity
+  "Adds inventory for a simple product"
+  inventoryAddDetails("" quantity: Long!, "" id: UUID!, "" warehouse: String!): InventoryDetails
+  "Sets the cart's email"
+  cartSetEmail("" cartId: UUID, "" email: String!): CartEntity
+  "Sets the shipping address to one of the user's addresses"
+  cartSetShippingAddressById("" cartId: UUID, "" addressId: UUID!): CartEntity
+  "Triggers a re-sync of updated orders with Walmart"
+  maintenanceWalmartSyncUpdatedOrders: Boolean
+  "Triggers a fix to clean up inventory issues"
+  maintenanceFixInventoryIssues: Boolean
+  "Assigns a pos terminal to a tradeshow"
+  tradeShowAssignTerminal("" tradeshowId: UUID!, "" terminalId: UUID!): TradeShowEntity
+  "Triggers a re-sync of products quantities available for sale"
+  maintenanceInventoryUpdateQuantitiesAvailableForSale: Boolean
+  "Sets a carrier preference for a cart item"
+  cartSetCarrierPreference("" cartId: UUID, "" simpleProductId: UUID!, "" carrierPreference: Carrier!): CartEntity
+  "Ships a shipment"
+  shipmentShip("" carrier: Carrier!, "" service: Service!, "" width: BigDecimal, "" length: BigDecimal, "" options: [String], "" weight: BigDecimal, "" packaging: Packaging, "" id: UUID!, "" warehouse: String!, "" height: BigDecimal): ShipmentEntity
+  "Gets rates for a multi-piece shipment"
+  shipmentRateMultiPiece("" packaging: Packaging, "" id: UUID!, "" packages: [PackageSizeInput]!, "" shipDate: String, "" warehouse: String!): [RateQuote]
+  "Clears the cart's email"
+  cartClearEmail("" cartId: UUID): CartEntity
+  "Confirm user's email"
+  userConfirmEmail("" hash: String!): Boolean
+  "Refreshes a simple product (with Magento) by entity id"
+  kitProductRefresh("" magentoId: String!): KitProductEntity
+  "Adds inventory for a simple product"
+  inventoryAdd("" quantity: Long!, "" id: UUID!, "" warehouse: String): InventoryResult
+  "Change a user's password"
+  userChangePasswordByHash("" password: String!, "" hash: String!): Boolean
+  "Creates a new address"
+  addressCreate("" country: String!, "" lastName: String!, "" firstName: String!, "" residential: Boolean!, "" city: String!, "" postalCode: String!, "" company: String, "" state: String!, "" line2: String, "" line1: String!): AddressEntity
+  "Reschedule a shipment"
+  shipmentReschedule("" id: UUID!): ShipmentEntity
+  "Tests a workstation for use with AutoPrint"
+  autoprintTestWorkstation("" machineKey: String!): WorkstationEntity
+  "Triggers a re-sync of updated orders with Magento"
+  maintenanceMagentoSyncUpdatedOrders: Boolean
+  "Triggers a re-sync of updated orders with Amazon"
+  maintenanceAmazonReSyncOrders: Boolean
+  "Removes bin from a simple product"
+  simpleProductClearBin("" id: UUID!, "" warehouse: String!): SimpleProductEntity
+  "Sets a shipment to be reprinted"
+  autoprintReprint("" shipment: UUID!): Boolean!
+  "Sets a carrier preference for a cart item"
+  cartClearCarrierPreference("" cartId: UUID, "" simpleProductId: UUID!): CartEntity
+  "Update's a user's admin status"
+  userUpdateAdmin("" admin: Boolean!, "" id: UUID!): UserEntity
+  "Unssigns a pos terminal to a tradeshow"
+  tradeShowUnassignTerminal("" tradeshowId: UUID!, "" terminalId: UUID!): TradeShowEntity
+  "Sets the billing address"
+  cartSetBillingAddress("" country: String!, "" lastName: String!, "" firstName: String!, "" city: String!, "" postalCode: String!, "" cartId: UUID, "" company: String, "" state: String!, "" line2: String, "" line1: String!): CartEntity
+  "Removes a warehouse from a simple product"
+  simpleProductRemoveWarehouse("" productId: UUID!, "" warehouse: String!): SimpleProductEntity
+  "Returns the tradeshow report"
+  tradeShowReport("" id: UUID!): ShowReport
+  "Sends the tradeshow report"
+  tradeShowSendReport("" emails: [String]!, "" id: UUID!): Boolean
+  "Creates a new tradeshow"
+  tradeShowCreateShow("" endDate: LocalDate!, "" city: String!, "" postalCode: String!, "" name: String!, "" state: String!, "" line2: String, "" startDate: LocalDate!, "" line1: String!): TradeShowEntity
+  "Triggers a re-sync of products with Price2Spy"
+  maintenancePrice2SpyUpdateProducts: Boolean
+  "Reroute a shipment"
+  shipmentReroute("" id: UUID!): ShipmentEntity
+  "Adds a printer to an existing workstation"
+  autoprintAddPrinter("" machineKey: String!, "" printerName: String!): PrinterEntity
+  "Triggers a re-sync of all kits with Magento"
+  maintenanceMagentoSyncAllKits: Boolean
+  "Adds a warehouse to a simple product"
+  simpleProductAddWarehouse("" productId: UUID!, "" warehouse: String!): SimpleProductEntity
+  "Acknowledges a shipment's print job has been cancelled"
+  autoprintCancelAcknowledgeForPrinter("" shipment: UUID!): Boolean!
+  "Sends an email confirmation email"
+  userSendEmailConfirmation: Boolean
+  "Acknowledges a shipment's print job has downloaded"
+  autoprintDownloadAcknowledgeForPrinter("" shipment: UUID!): Boolean!
+  "Sets the cart's coupon code"
+  cartSetCouponCode("" cartId: UUID, "" couponCode: String): CartEntity
+  "Refreshes a sales order (with Magento) by entity id"
+  magentoSalesOrderRefresh("" magentoId: String!): MagentoSalesOrderEntity
+  "Clears the shipping address"
+  cartClearShippingAddress("" cartId: UUID): CartEntity
+  "Sets a delivery date preference for a cart item"
+  cartSetDeliveryDatePreference("" cartId: UUID, "" simpleProductId: UUID!, "" deliveryDatePreference: LocalDate!): CartEntity
+  "Refreshes a sales order (with Magento) by entity id"
+  magentoSalesOrderRefreshAsync("" magentoId: String!): Boolean!
+  "Gets status if customer is already signed up"
+  marketingStatus: Boolean!
+  "Acknowledges a shipment's print job has printed"
+  autoprintPrintAcknowledgeForPrinter("" shipment: UUID!): Boolean!
+  "Registers a new user, with raw password"
+  userRegister("" lastName: String!, "" firstName: String!, "" password: String!, "" email: String!): UserEntity
+  "Sets the shipment's hold status"
+  salesOrderSetHold("" id: UUID!, "" hold: Boolean!): SalesOrderEntity
+  "Removes all quantity of selected simple product from user's cart"
+  cartRemoveAllSimpleProduct("" productId: UUID!, "" cartId: UUID): CartEntity
+  "Verifies an existing address"
+  addressVerify("" commit: Boolean!, "" id: UUID!): AddressEntity
+  "Creates a new category"
+  categoryCreate("" name: String!, "" slug: String!): CategoryEntity
+  "Refreshes a simple product (with Magento) by sku"
+  simpleProductRefreshBySku("" sku: String!): SimpleProductEntity
+  "Adds zone to a simple product"
+  simpleProductAddZone("" productId: UUID!, "" zoneId: UUID!): SimpleProductEntity
+  "Refreshes a simple product (with Magento) by sku"
+  kitProductRefreshBySku("" sku: String!): KitProductEntity
+  "Creates a new POS terminal"
+  tradeShowCreateTerminal("" urn: String!, "" assetTag: String!): PosTerminalEntity
+  "Updates a shipment's address"
+  shipmentUpdateAddress("" country: String!, "" lastName: String!, "" firstName: String!, "" residential: Boolean!, "" city: String!, "" postalCode: String!, "" company: String, "" state: String!, "" id: UUID!, "" line2: String, "" line1: String!): ShipmentEntity
+  "Gets earliest delivery date option"
+  cartGetEarliestDeliveryDate("" quantity: Long!, "" cartId: UUID, "" simpleProductId: UUID!): LocalDate
+  "Triggers sync of transactions with Poynt"
+  maintenancePoyntSyncTransactions("" updatedBefore: Instant!, "" updatedAfter: Instant!): Boolean
+  "Sets active flag"
+  categorySetActive("" active: Boolean!, "" id: UUID!): CategoryEntity
+  "Triggers sync of products with Poynt"
+  maintenancePoyntSyncProducts: Boolean
+  "Generates a USPS scan form"
+  shipmentScanForm("" date: String!, "" warehouse: String!): String
+  "Sets a delivery date preference for a cart item"
+  cartClearDeliveryDatePreference("" cartId: UUID, "" simpleProductId: UUID!): CartEntity
+  "Triggers a re-index of all items in Elastic"
+  maintenanceElasticReindexAll: Boolean
+  "Updates a user's password"
+  userUpdatePassword("" password: String!, "" email: String!): UserEntity
+  "Sets a department's parent"
+  departmentSetParent("" parent: UUID!, "" id: UUID!): DepartmentEntity
+  "Summarizes the cart's totals"
+  cartSummarize("" cartId: UUID, "" useRewardPoints: Boolean): SalesOrderEntity
+  "Cancels the order and removes the shipments"
+  salesOrderOfflineRefund("" id: UUID!): SalesOrderEntity
+  "Deletes an existing address"
+  addressDelete("" id: UUID!): Boolean!
+  "Creates a new simple product"
+  simpleProductCreate("" price: BigDecimal!, "" title: String!, "" sku: String!, "" slug: String!): SimpleProductEntity
+  "Updates an existing address"
+  addressUpdate("" country: String!, "" lastName: String!, "" firstName: String!, "" residential: Boolean!, "" city: String!, "" postalCode: String!, "" company: String, "" state: String!, "" id: UUID!, "" line2: String, "" line1: String!): AddressEntity
+  "Creates a new user, with password hash"
+  userCreate("" lastName: String!, "" firstName: String!, "" password: String!, "" email: String!): UserEntity
+  "Clears the billing address"
+  cartClearBillingAddress("" cartId: UUID): CartEntity
+  "Triggers a re-sync of updated orders with Amazon"
+  maintenanceAmazonSyncUpdatedOrders: Boolean
+  "Sets a category's parent"
+  categorySetParent("" parent: UUID!, "" id: UUID!): CategoryEntity
+  "Validates the address, updates it if necessary"
+  salesOrderValidateAddress("" id: UUID!): SalesOrderEntity
+  "Removes a zone from a simple product"
+  simpleProductRemoveZone("" productId: UUID!, "" zoneId: UUID!): SimpleProductEntity
+  "Provides making stock status"
+  makingStockStatus("" warehouse: String!): [InventoryDetails]
+  "Sends a password reset email"
+  userSendPasswordReset("" email: String!): Boolean
+  "Sets inventory for a simple product"
+  inventorySetDetails("" quantity: Long!, "" id: UUID!, "" warehouse: String!): InventoryDetails
+  "Pushes a simple product to Poynt"
+  simpleProductPush("" price: BigDecimal, "" name: String, "" sku: String!, "" shortCode: String): Boolean!
+  "Gets printers for an existing workstation"
+  autoprintListPrinters("" machineKey: String!): [PrinterEntity]
+  "Triggers a re-sync of packaging orders with Magento"
+  maintenanceMagentoSyncPackaging: Boolean
+  "Sets the shipping zip code, as a shortcut for shipping rates"
+  cartSetShippingZip("" zip: String!, "" cartId: UUID): CartEntity
+  "Triggers sync a transaction with Poynt"
+  maintenancePoyntSyncTransaction("" orderNumber: String, "" transactionId: String!): Boolean
+  "Changes quantity of selected simple product in user's cart"
+  cartChangeQuantitySimpleProduct("" quantity: Long!, "" productId: UUID!, "" cartId: UUID): CartEntity
+  "Sets the shipping address"
+  cartSetShippingAddress("" country: String!, "" lastName: String!, "" firstName: String!, "" residential: Boolean, "" city: String!, "" postalCode: String!, "" cartId: UUID, "" company: String, "" state: String!, "" line2: String, "" line1: String!): CartEntity
+  "Generates a client token for current user."
+  checkoutGetClientToken: ClientTokenDetail
+  "Removes all quantity of selected kit product from user's cart"
+  cartRemoveAllKitProduct("" productId: UUID!, "" cartId: UUID): CartEntity
+  "Adds quantity of selected kit product to user's cart"
+  cartAddKitProduct("" quantity: Long!, "" productId: UUID!, "" cartId: UUID): CartEntity
+  "Requests a notification when a product is placed back into stock"
+  productRequestBackInStockNotification("" id: UUID!, "" email: String!): Boolean
+  "Voids a shipment"
+  shipmentVoid("" id: UUID!): ShipmentEntity
+  "Creates a new department"
+  departmentCreate("" name: String!, "" slug: String!): DepartmentEntity
+  "Clears the cart's coupon code"
+  cartClearCouponCode("" cartId: UUID): CartEntity
+  "Triggers a fix to clean up inventory issues"
+  maintenanceFixInventoryIssue("" productId: UUID): Boolean
+}
+""
+input PackageSizeInput {
+  height: BigDecimal
+  length: BigDecimal
+  weight: BigDecimal!
+  width: BigDecimal
+}
+""
+enum Packaging {
+  CARDBOARD_BOX
+  FLAT_RATE_ENVELOPE
+  POLY_BAG_12X15
+  REGIONAL_BOX_A
+  REGIONAL_BOX_B
+}
+""
+type PaymentEntity {
+  "Payment's amount"
+  amount: BigDecimal
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Payment's status"
+  paymentStatus: PaymentStatus
+  "Payment's placed timestamp"
+  placedAt: Instant
+  "Payment's sales order"
+  salesOrder: SalesOrderEntity
+  "Payment's transaction id"
+  transactionId: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+enum PaymentStatus {
+  AUTHORIZATION_EXPIRED
+  AUTHORIZED
+  AUTHORIZING
+  FAILED
+  GATEWAY_REJECTED
+  PROCESSOR_DECLINED
+  SETTLED
+  SETTLEMENT_DECLINED
+  SETTLEMENT_PENDING
+  SETTLING
+  SUBMITTED_FOR_SETTLEMENT
+  VOIDED
+}
+""
+type PdfContents {
+  "PDF's data"
+  data: String
+  "PDF's filename"
+  fileName: String
+  "PDF's HTML content"
+  htmlContent: String
+}
+""
+type PosTerminalEntity {
+  "POS terminal's asset tag"
+  assetTag: String
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  tradeShowEntities: [TradeShowEntity]
+  "Entity's modification timestamp"
+  updatedAt: Instant
+  "POS terminal's urn"
+  urn: String
+}
+""
+type PrintJob {
+  "Print job's data"
+  dataBase64: String
+  "Print job's name"
+  name: String
+  "Print job's printer"
+  printer: String
+  "Print job's rotation"
+  rotate: Boolean
+  "Print job's tray"
+  tray: String
+}
+""
+type PrinterEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Printer's name"
+  name: String
+  "Printer's rotation"
+  rotate: Boolean
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type ProductEntity {
+  "Product's active flag"
+  active: Boolean
+  "Product's average rating"
+  averageRating: BigDecimal
+  "Entity's class"
+  cls: String
+  "Product's cost"
+  cost: BigDecimal
+  "Product's number of ratings"
+  countRating: BigDecimal
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Product's explicit animals"
+  explicitAnimals: [AnimalEntity]
+  "Product's explicit categories"
+  explicitCategories: [CategoryEntity]
+  "Product's explicit department"
+  explicitDepartment: DepartmentEntity
+  "Product's explicit discounts"
+  explicitDiscounts: [DiscountEntity]
+  "Product's explicit promotions"
+  explicitPromotions: [PromotionEntity]
+  "Entity's UUID"
+  id: UUID
+  "Product's implicit animals"
+  implicitAnimals: [AnimalEntity]
+  "Product's implicit categories"
+  implicitCategories: [CategoryEntity]
+  "Product's implicit department"
+  implicitDepartments: [DepartmentEntity]
+  "Product's implicit discounts"
+  implicitDiscounts: [DiscountEntity]
+  "Product's implicit promotions"
+  implicitPromotions: [PromotionEntity]
+  "Product's Magento Id"
+  magentoId: String
+  "Product's medias"
+  medias: [MediaEntity]
+  "Product's meta description"
+  metaDescription: String
+  "Product's meta keywords"
+  metaKeywords: String
+  "Product's meta title"
+  metaTitle: String
+  "Product's popularity"
+  popularity: BigDecimal
+  "Product's price"
+  price: BigDecimal
+  "Product's published revision"
+  publishedRevision: ProductRevisionEntity
+  "Product's quantity available for sale"
+  quantityAvailableForSale: Long
+  salePrice: BigDecimal
+  "Product's shipping needs"
+  shippingNeeds: ShippingNeedsType
+  "Product's shipping rule set"
+  shippingRuleSet: ShippingRuleSetEntity
+  "Product's SKU"
+  sku: String
+  "Product's slug"
+  slug: String
+  "Product's special price"
+  specialPrice: BigDecimal
+  "Product's title"
+  title: String
+  "Product's UPC"
+  upc: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+  "Product's variation set"
+  variationSet: VariationSetEntity
+  "Product's wholesale price"
+  wholesalePrice: BigDecimal
+}
+""
+type ProductRevisionEntity {
+  "Product revision's html content"
+  htmlContent: String
+}
+""
+type PromotionEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+"Query root"
+type Query {
+  "Lists animals"
+  animalList("" page: GraphQLPageableInput!): GraphQLPage_AnimalEntity
+  "Provides user info a user"
+  userInfo("" id: UUID): UserEntity
+  "Creates transient shipments for sales order items, then rolls back"
+  salesOrderComputeBestShipping("" id: UUID!): SalesOrderEntity
+  "Deletes and recomputes shipments for a sales order"
+  salesOrderNukeAndComputeBestShipping("" id: UUID!): SalesOrderEntity
+  "Generate a PDF for the sales order"
+  salesOrderGeneratePdf: PdfContents
+  "Returns the user's reward points balance"
+  rewardPointsBalance: Long
+  "Locates the root department"
+  departmentRoot: DepartmentEntity
+  "Search categories"
+  categorySearch("" query: String!, "" page: GraphQLPageableInput): GraphQLPage_CategoryEntity
+  "Calculates a secure hash"
+  shipmentSecureHash("" id: UUID!): String
+  "Locates a product by slug"
+  productBySlug("" slug: String!): ProductEntity
+  "Provides warehouse info"
+  warehouseFindByName("" name: String!): WarehouseEntity
+  "Lists simple products"
+  kitProductList("" page: GraphQLPageableInput): GraphQLPage_KitProductEntity
+  "Lists suppliers"
+  supplierList("" page: GraphQLPageableInput!): GraphQLPage_SupplierEntity
+  "Searches for a shipment"
+  shipmentSearch("" query: String!): [ShipmentEntity]
+  "Calculates a secure hash"
+  salesOrderSecureHash("" id: UUID!): String
+  "Search products"
+  productSearch("" price: GraphQLValueRangeQueryFilter_BigDecimalInput, "" query: String, "" animal: String, "" inStock: GraphQLSingleValueFilter_BooleanInput, "" sort: GraphQLSortInput, "" page: GraphQLPageableInput!, "" category: String, "" brand: String): SearchResults
+  "Provides warehouse info"
+  warehouseList: [WarehouseEntity]
+  "Locates a category by slug"
+  categoryBySlug("" sort: GraphQLSortInput, "" page: GraphQLPageableInput!, "" slug: String!): CategoryResults
+  "Provides user info for current user"
+  userSelf: UserEntity
+  "Locates a department by slug"
+  departmentBySlug("" slug: String!): DepartmentEntity
+  "Calculates a secure hash"
+  userSecureHash("" id: UUID!): String
+  "Filters simple products"
+  simpleProductFilter("" supplier: String, "" animal: String, "" active: GraphQLSingleValueFilter_BooleanInput, "" sort: GraphQLSortInput, "" page: GraphQLPageableInput!, "" category: String, "" department: String, "" sku: GraphQLLikeQueryFilterInput, "" title: GraphQLLikeQueryFilterInput, "" brand: String): GraphQLPage_SimpleProductEntity
+  "Locates a product by id"
+  productInfo("" id: UUID!): ProductEntity
+  "Provides cart info for current user"
+  cartInfo("" cartId: UUID): CartEntity
+  "Locates a discount by id"
+  discountInfo("" id: UUID!): DiscountEntity
+  "Looks up an order by secure hash"
+  shipmentByHash("" hash: String!): ShipmentEntity
+  "Returns a tradeshow"
+  tradeShowInfo("" id: UUID): TradeShowEntity
+  "Filters users"
+  userFilter("" lastName: GraphQLLikeQueryFilterInput, "" firstName: GraphQLLikeQueryFilterInput, "" admin: GraphQLSingleValueFilter_BooleanInput, "" sort: GraphQLSortInput, "" page: GraphQLPageableInput!, "" email: GraphQLLikeQueryFilterInput): GraphQLPage_UserEntity
+  "Filter shipments"
+  shipmentFilter("" lastName: GraphQLLikeQueryFilterInput, "" firstName: GraphQLLikeQueryFilterInput, "" late: GraphQLSingleValueFilter_BooleanInput, "" sort: GraphQLSortInput, "" page: GraphQLPageableInput!, "" warehouse: GraphQLSingleValueFilter_StringInput, "" shipmentNumber: GraphQLLikeQueryFilterInput, "" shipmentStatus: GraphQLSingleValueFilter_ShipmentStatusInput): GraphQLPage_ShipmentEntity
+  "Filters sales orders"
+  salesOrderFilter("" orderType: GraphQLSingleValueFilter_StringInput, "" billingLastName: GraphQLLikeQueryFilterInput, "" orderNumber: GraphQLLikeQueryFilterInput, "" alternateOrderNumber: GraphQLLikeQueryFilterInput, "" billingFirstName: GraphQLLikeQueryFilterInput, "" sort: GraphQLSortInput, "" page: GraphQLPageableInput!, "" email: GraphQLLikeQueryFilterInput): GraphQLPage_SalesOrderEntity
+  "Lists products"
+  productList("" page: GraphQLPageableInput): GraphQLPage_ProductEntity
+  "Lists discounts"
+  discountList("" page: GraphQLPageableInput): GraphQLPage_DiscountEntity
+  "Looks up an order by secure hash"
+  salesOrderByHash("" hash: String!): SalesOrderEntity
+  "Retrieves a shipment"
+  shipmentFind("" shipmentNumber: String!): ShipmentEntity
+  "Locates a simple product by bin"
+  simpleProductFindByBin("" binId: String!, "" warehouse: String!): SimpleProductEntity
+  "Lists brands"
+  brandList("" page: GraphQLPageableInput!): GraphQLPage_BrandEntity
+  "Lists departments"
+  departmentList("" page: GraphQLPageableInput): GraphQLPage_DepartmentEntity
+  "Returns the gift card's balance"
+  giftCardBalance("" code: String!, "" pin: String): BigDecimal
+  "Locates a simple product by UPC"
+  kitProductFindByUpc("" upc: String!): KitProductEntity
+  "Provides user info by email"
+  userFindByEmail("" email: String!): UserEntity
+  "Lists address for current user"
+  addressList: [AddressEntity]
+  "Lists categories"
+  categoryList("" page: GraphQLPageableInput!): GraphQLPage_CategoryEntity
+  "Locates a simple product by SKU"
+  kitProductFindBySku("" sku: String!): KitProductEntity
+  "Locates a simple product by id"
+  simpleProductInfo("" id: UUID!): SimpleProductEntity
+  "Retrieves a shipment"
+  shipmentInfo("" id: UUID!): ShipmentEntity
+  "Provides zone info"
+  zoneList: [ZoneEntity]
+  "Locates a simple product by UPC"
+  simpleProductFindByUpc("" upc: String!): SimpleProductEntity
+  "Locates the root category"
+  categoryRoot: CategoryEntity
+  "Lists sales orders"
+  salesOrderList("" sort: GraphQLSortInput, "" page: GraphQLPageableInput!): GraphQLPage_SalesOrderEntity
+  "Filters simple products"
+  kitProductFilter("" active: GraphQLSingleValueFilter_BooleanInput, "" sort: GraphQLSortInput, "" page: GraphQLPageableInput!, "" category: String, "" sku: GraphQLLikeQueryFilterInput, "" title: GraphQLLikeQueryFilterInput): GraphQLPage_KitProductEntity
+  "Lists simple products"
+  simpleProductList("" page: GraphQLPageableInput): GraphQLPage_SimpleProductEntity
+  "Locates a simple product by id"
+  kitProductInfo("" id: UUID!): KitProductEntity
+  "Locates a simple product by SKU"
+  simpleProductFindBySku("" sku: String!): SimpleProductEntity
+  "Retrieves a sales order"
+  salesOrderInfo("" id: UUID!): SalesOrderEntity
+  "Filters tradeshows"
+  tradeShowFilter("" name: GraphQLLikeQueryFilterInput, "" sort: GraphQLSortInput, "" page: GraphQLPageableInput!): GraphQLPage_TradeShowEntity
+}
+""
+enum QueryCondition {
+  eq
+  ge
+  gt
+  isNull
+  le
+  lt
+  ne
+  notNull
+}
+""
+type RateQuote {
+  "Rate quote's carrier"
+  carrier: Carrier
+  "Rate quote's cost"
+  cost: BigDecimal
+  "Rate quote's delivery date"
+  deliveryDate: String
+  "Rate quote's domestic service type"
+  domesticServiceType: DomesticServiceType
+  "Rate quote's options"
+  options: [String]
+  "Rate quote's packaging"
+  packaging: Packaging
+  "Rate quote's postage reseller"
+  reseller: Reseller
+  "Rate quote's service"
+  service: Service
+  "Rate quote's ship date"
+  shipDate: String
+}
+""
+enum Reseller {
+  AMAZON
+  DHL
+  FEDEX
+  GENERIC
+  STAMPS
+  UPS
+}
+""
+type SalesOrderCommentsEntity {
+  "Entity's class"
+  cls: String
+  "Comment's comment"
+  comment: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Comment's name"
+  name: String
+  "Comment's sales order"
+  salesOrder: SalesOrderEntity
+  "Comment's time"
+  time: Instant
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type SalesOrderDiscountEntity {
+  "Sales order discount's amount"
+  amount: BigDecimal
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Sales order discount's name"
+  name: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type SalesOrderEntity {
+  "Order's alternate number"
+  alternateOrderNumber: String
+  "Billing address' validation source"
+  billingAddressValidationSource: AddressValidationSource
+  "Billing address' city name"
+  billingCity: String
+  "Billing address' company"
+  billingCompany: String
+  "Billing address' ISO country code"
+  billingCountry: String
+  "Billing address' first name"
+  billingFirstName: String
+  "Billing address' last name"
+  billingLastName: String
+  "Billing address' first line"
+  billingLine1: String
+  "Billing address' last line"
+  billingLine2: String
+  "Billing address' postal code"
+  billingPostalCode: String
+  "Billing address' state (or province) abbreviation"
+  billingState: String
+  "Entity's class"
+  cls: String
+  "Sales order's comments"
+  comments: [SalesOrderCommentsEntity]
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Order's discount total"
+  discountTotal: BigDecimal
+  "Order's email"
+  email: String
+  "Order's fulfillment channel"
+  fulfillmentChannelType: FulfillmentChannelType
+  "Order's grand total"
+  grandTotal: BigDecimal
+  "Order's handling total"
+  handlingTotal: BigDecimal
+  "Order's hold status"
+  hold: Boolean
+  "Entity's UUID"
+  id: UUID
+  "Order is from a marketplace"
+  marketplace: Boolean
+  "Order's number"
+  orderNumber: String
+  "Sales order's payments"
+  payments: [PaymentEntity]
+  "Order's phone"
+  phone: String
+  "Order's placed time"
+  placedTime: Instant
+  "Sales order's discounts"
+  salesOrderDiscounts: [SalesOrderDiscountEntity]
+  "Sales order's item groups"
+  salesOrderItemGroups: [SalesOrderItemGroupEntity]
+  "Sales order's items"
+  salesOrderItems: [SalesOrderItemEntity]
+  "Order's type"
+  salesOrderType: SalesOrderType
+  "Sales order's shipments"
+  shipments: [ShipmentEntity]
+  "Shipping address' validation source"
+  shippingAddressValidationSource: AddressValidationSource
+  "Shipping address' city name"
+  shippingCity: String
+  "Shipping address' company"
+  shippingCompany: String
+  "Shipping address' ISO country code"
+  shippingCountry: String
+  "Shipping address' first name"
+  shippingFirstName: String
+  "Shipping address' last name"
+  shippingLastName: String
+  "Shipping address' first line"
+  shippingLine1: String
+  "Shipping address' last line"
+  shippingLine2: String
+  "Sales order's shipping method"
+  shippingMethod: String
+  "Shipping address' postal code"
+  shippingPostalCode: String
+  "Shipping address' residential status"
+  shippingResidential: Boolean
+  "Shipping address' state (or province) abbreviation"
+  shippingState: String
+  "Order's shipping total"
+  shippingTotal: BigDecimal
+  "Order's status"
+  status: SalesOrderStatus
+  "Order's sub total"
+  subTotal: BigDecimal
+  "Order's tax code"
+  taxCode: String
+  "Order's tax total"
+  taxTotal: BigDecimal
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type SalesOrderItemEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Order item's discount"
+  discountAmount: BigDecimal
+  "Order item's expected delivery"
+  expectedDelivery: LocalDate
+  "Order item's expected ship"
+  expectedShip: LocalDate
+  "Entity's UUID"
+  id: UUID
+  "Order item's line cost"
+  lineAmount: BigDecimal
+  "Order item's live arrival guarantee"
+  liveArrivalGuaranteeState: LiveArrivalGuaranteeState
+  "Order item's name"
+  name: String
+  "Order item's overridden carrier preference"
+  overriddenCarrierPreference: Carrier
+  "Order item's overridden service type"
+  overriddenDomesticServiceType: DomesticServiceType
+  "Order item's overridden shipping needs"
+  overriddenShippingNeedsType: ShippingNeedsType
+  "Order item's quantity"
+  quantity: Long
+  "Order item's group"
+  salesOrderItemGroup: SalesOrderItemGroupEntity
+  "Order item's shipping amount"
+  shippingAmount: BigDecimal
+  "Order item's simple product"
+  simpleProduct: SimpleProductEntity
+  "Order item's SKU"
+  sku: String
+  "Order item's tax amount"
+  taxAmount: BigDecimal
+  "Order item's tax code"
+  taxCode: String
+  "Order item's unit cost"
+  unitAmount: BigDecimal
+  "Order item's unit weight"
+  unitWeight: BigDecimal
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type SalesOrderItemGroupEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Order item group's discount"
+  discountAmount: BigDecimal
+  "Entity's UUID"
+  id: UUID
+  "Order item group's kit product"
+  kitProduct: KitProductEntity
+  "Order item group's line cost"
+  lineAmount: BigDecimal
+  "Order item group's quantity"
+  quantity: Long
+  "Order item group's order items"
+  salesOrderItems: [SalesOrderItemEntity]
+  "Order item group's unit cost"
+  unitAmount: BigDecimal
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+enum SalesOrderStatus {
+  Cancelled
+  PartiallyShipped
+  PendingPayment
+  PendingReleaseOfHold
+  Shipped
+  Unshipped
+}
+""
+enum SalesOrderType {
+  Employee
+  Retail
+  TaxExempt
+  Wholesale
+}
+""
+enum SalesTaxRules {
+  NOT_TAXABLE
+  TAXABLE
+}
+""
+type SearchResults {
+  "Result's animal"
+  animal: AnimalEntity
+  "Result's brand"
+  brand: BrandEntity
+  "Result's category"
+  category: CategoryEntity
+  "Result's products"
+  products: GraphQLPage_ProductEntity
+}
+""
+enum Service {
+  FEDEX_EXPRESS_SAVER
+  FEDEX_FIRST_OVERNIGHT
+  FEDEX_GROUND
+  FEDEX_HOME_DELIVERY
+  FEDEX_INTERNATIONAL_ECONOMY
+  FEDEX_INTERNATIONAL_GROUND
+  FEDEX_PRIORITY_OVERNIGHT
+  FEDEX_SMART_POST
+  FEDEX_STANDARD_OVERNIGHT
+  FEDEX_TWO_DAY
+  GENERIC_GROUND
+  GENERIC_OVERNIGHT
+  GENERIC_TWO_DAY
+  UPS_GROUND
+  UPS_NEXT_DAY_AIR
+  UPS_NEXT_DAY_AIR_SAVER
+  UPS_SECOND_DAY_AIR
+  UPS_SURE_POST
+  UPS_THREE_DAY_SELECT
+  UPS_WORLDWIDE_EXPEDITED
+  UPS_WORLDWIDE_EXPRESS
+  UPS_WORLDWIDE_EXPRESS_PLUS
+  USPS_FIRST_CLASS_MAIL
+  USPS_PARCEL_SELECT
+  USPS_PRIORITY_MAIL
+  USPS_PRIORITY_MAIL_EXPRESS
+  USPS_PRIORITY_MAIL_INTERNATIONAL
+}
+""
+type ShipmentAddonEntity {
+  "Shipment addon's addon"
+  addon: AddonEntity
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Shipment addon's name"
+  name: String
+  "Shipment addon's quantity"
+  quantity: Long
+  "Shipment addon's shipment"
+  shipment: ShipmentEntity
+  "Shipment addon's sku"
+  sku: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type ShipmentEntity {
+  "Shipment's actual height"
+  actualHeight: BigDecimal
+  "Shipment's actual length"
+  actualLength: BigDecimal
+  "Shipment's actual weight"
+  actualWeight: BigDecimal
+  "Shipment's actual width"
+  actualWidth: BigDecimal
+  "Shipment's address validation source"
+  addressValidationSource: AddressValidationSource
+  "Shipment's carrier"
+  carrier: Carrier
+  "Shipment's carrier preference"
+  carrierPreference: Carrier
+  "Shipment's city"
+  city: String
+  "Entity's class"
+  cls: String
+  "Shipment's company"
+  company: String
+  "Shipment's content hash"
+  contentsMd5: String
+  "Shipment's country"
+  country: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Shipment's departing warehouse"
+  departingWarehouse: WarehouseEntity
+  "Shipment's download start"
+  downloadStart: Instant
+  "Shipment's estimated delivery date"
+  estimatedDeliveryDate: LocalDate
+  "Shipment's estimated height"
+  estimatedHeight: BigDecimal
+  "Shipment's estimated length"
+  estimatedLength: BigDecimal
+  "Shipment's estimated ship date"
+  estimatedShipDate: LocalDate
+  "Shipment's estimated weight"
+  estimatedWeight: BigDecimal
+  "Shipment's estimated width"
+  estimatedWidth: BigDecimal
+  "Shipment's first name"
+  firstName: String
+  "Entity's UUID"
+  id: UUID
+  "Shipment's last name"
+  lastName: String
+  "Shipment's line 1"
+  line1: String
+  "Shipment's line 2"
+  line2: String
+  "Shipment's options"
+  options: [String]
+  "Shipment's origin warehouse"
+  originWarehouse: WarehouseEntity
+  "Shipment's packaging"
+  packaging: Packaging
+  "Shipment's placed at time"
+  placedAt: Instant
+  "Shipment's postal code"
+  postalCode: String
+  "Shipment's printed end"
+  printedEnd: Instant
+  "Shipment's printed start"
+  printedStart: Instant
+  "Shipment's reprint status"
+  reprint: Boolean
+  "Shipment's postage reseller"
+  reseller: Reseller
+  "Shipment's residential flag"
+  residential: Boolean
+  "Shipment's sales order"
+  salesOrder: SalesOrderEntity
+  "Shipment's service"
+  service: Service
+  "Shipment's addons"
+  shipmentAddons: [ShipmentAddonEntity]
+  "Shipment's items"
+  shipmentItems: [ShipmentItemEntity]
+  "Shipment's shipment number"
+  shipmentNumber: String
+  "Shipment's status"
+  shipmentStatus: ShipmentStatus
+  "Shipment's shipped at time"
+  shippedAt: Instant
+  "Shipment's shipper"
+  shippedBy: String
+  "Shipment's shipping needs"
+  shippingNeeds: ShippingNeedsType
+  "Shipment's state"
+  state: String
+  "Shipment's tracking number (deprecated)"
+  trackingNo: String
+  "Shipment's tracking number"
+  trackingNos: [String]
+  "Entity's modification timestamp"
+  updatedAt: Instant
+  "Shipment's label ZPL content (deprecated)"
+  zplContent: String
+  "Shipment's label ZPL contents"
+  zplContents: [String]
+}
+""
+type ShipmentItemEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Shipment item's live arrival guarantee"
+  liveArrivalGuaranteeState: LiveArrivalGuaranteeState
+  "Shipment item's quantity"
+  quantity: Long
+  "Shipment item's sales order item"
+  salesOrderItem: SalesOrderItemEntity
+  "Shipment item's shipment"
+  shipment: ShipmentEntity
+  "Shipment item's simple product"
+  simpleProduct: SimpleProductEntity
+  "Entity's modification timestamp"
+  updatedAt: Instant
+  "Shipment item's warehouse"
+  warehouse: WarehouseEntity
+}
+""
+enum ShipmentStatus {
+  Delivered
+  External
+  Labelled
+  NeedsScheduling
+  Pending
+  Shipped
+  Unshipped
+}
+""
+enum ShippingNeedsType {
+  CourierDelivery
+  ItemNotShipped
+  ScheduleWithCustomer
+  StoreShowPickupOnly
+}
+""
+type ShippingRuleSetEntity {
+  "Shipping rule set's addon destination requirements"
+  addonSetDestinationRequirements: [AddonSetDestinationRequirementEntity]
+  "Shipping rule set's addon source requirements"
+  addonSetSourceRequirements: [AddonSetSourceRequirementEntity]
+  "Shipping rule set's carrier restriction"
+  carrierRestriction: CarrierRestrictionEntity
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Shipping rule set's live destination restriction"
+  destinationRestriction: DestinationRestrictionEntity
+  "Entity's UUID"
+  id: UUID
+  "Shipping rule set's live arrival guarantees"
+  liveArrivalGuarantees: [LiveArrivalGuaranteeEntity]
+  "Shipping rule set's name"
+  name: String
+  "Shipping rule set's ships alone restriction"
+  shipsAloneRestriction: ShipsAloneRestrictionEntity
+  "Shipping rule set's slug"
+  slug: String
+  "Shipping rule set's transit time restriction"
+  transitTimeRestriction: TransitTimeRestrictionEntity
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type ShipsAloneRestrictionEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Shipping rule's slug"
+  slug: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type ShowReport {
+  "Show report's city"
+  city: String
+  "Show report's discount total"
+  discountTotal: BigDecimal
+  "Show report's end date"
+  endDate: LocalDate
+  "Show report's grand total"
+  grandTotal: BigDecimal
+  "Show report's handling total"
+  handlingTotal: BigDecimal
+  "Show report's line items"
+  lineItems: [LineItem]
+  "Show report's shipping total"
+  shippingTotal: BigDecimal
+  "Show report's show name"
+  showName: String
+  "Show report's start date"
+  startDate: LocalDate
+  "Show report's state"
+  state: String
+  "Show report's subtotal"
+  subTotal: BigDecimal
+  "Show report's tax total"
+  taxTotal: BigDecimal
+}
+""
+type SimpleProductEntity {
+  "Product's active flag"
+  active: Boolean
+  "Simple product's Amazon profile"
+  amazonProfile: AmazonProfileEntity
+  "Product's average rating"
+  averageRating: BigDecimal
+  "Simple product's bins"
+  bins: [BinEntity]
+  "Simple product's brand"
+  brand: BrandEntity
+  "Entity's class"
+  cls: String
+  "Product's cost"
+  cost: BigDecimal
+  "Product's number of ratings"
+  countRating: BigDecimal
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Product's explicit animals"
+  explicitAnimals: [AnimalEntity]
+  "Product's explicit categories"
+  explicitCategories: [CategoryEntity]
+  "Product's explicit department"
+  explicitDepartment: DepartmentEntity
+  "Product's explicit discounts"
+  explicitDiscounts: [DiscountEntity]
+  "Product's explicit promotions"
+  explicitPromotions: [PromotionEntity]
+  "Entity's UUID"
+  id: UUID
+  "Product's implicit animals"
+  implicitAnimals: [AnimalEntity]
+  "Product's implicit categories"
+  implicitCategories: [CategoryEntity]
+  "Product's implicit department"
+  implicitDepartments: [DepartmentEntity]
+  "Product's implicit discounts"
+  implicitDiscounts: [DiscountEntity]
+  "Product's implicit promotions"
+  implicitPromotions: [PromotionEntity]
+  "Simple product's inventory quantity caches"
+  inventoryQuantityCaches: [InventoryQuantityCacheEntity]
+  "Simple product's inventory stats caches"
+  inventoryStatsCaches: [InventoryStatsCacheEntity]
+  "Product's Magento Id"
+  magentoId: String
+  "Simple product's Magento vendor"
+  magentoVendor: Vendor
+  "Simple product's MAP price"
+  mapPrice: BigDecimal
+  "Product's medias"
+  medias: [MediaEntity]
+  "Product's meta description"
+  metaDescription: String
+  "Product's meta keywords"
+  metaKeywords: String
+  "Product's meta title"
+  metaTitle: String
+  "Simple product's not ships alone"
+  notShipsAlone: Boolean
+  "Product's popularity"
+  popularity: BigDecimal
+  "Product's price"
+  price: BigDecimal
+  "Product's published revision"
+  publishedRevision: ProductRevisionEntity
+  "Product's quantity available for sale"
+  quantityAvailableForSale: Long
+  salePrice: BigDecimal
+  "Simple product's sales tax rules"
+  salesTaxRules: SalesTaxRules
+  "Simple product's shipping needs"
+  shippingNeeds: ShippingNeedsType
+  "Simple product's shipping restrictions"
+  shippingRestrictions: String
+  "Simple product's shipping rule set"
+  shippingRuleSet: ShippingRuleSetEntity
+  "Simple product's ships alone"
+  shipsAlone: Boolean
+  "Product's SKU"
+  sku: String
+  "Product's slug"
+  slug: String
+  "Product's special price"
+  specialPrice: BigDecimal
+  "Simple product's supplier"
+  supplier: SupplierEntity
+  "Product's title"
+  title: String
+  "Product's UPC"
+  upc: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+  "Product's variation set"
+  variationSet: VariationSetEntity
+  "Simple product's vendor reference"
+  vendorRef: String
+  "Simple product's warehouses"
+  warehouses: [WarehouseEntity]
+  "Simple product's weight"
+  weight: BigDecimal
+  "Product's wholesale price"
+  wholesalePrice: BigDecimal
+  "Simple product's zones"
+  zones: [ZoneEntity]
+}
+""
+enum SortDirection {
+  ASC
+  DESC
+}
+""
+enum State {
+  AA
+  AE
+  AK
+  AL
+  AP
+  AR
+  AS
+  AZ
+  CA
+  CO
+  CT
+  DC
+  DE
+  FL
+  GA
+  GU
+  HI
+  IA
+  ID
+  IL
+  IN
+  KS
+  KY
+  LA
+  MA
+  MD
+  ME
+  MI
+  MN
+  MO
+  MP
+  MS
+  MT
+  NC
+  ND
+  NE
+  NH
+  NJ
+  NM
+  NV
+  NY
+  OH
+  OK
+  OR
+  PA
+  PR
+  RI
+  SC
+  SD
+  TN
+  TX
+  UM
+  UT
+  VA
+  VI
+  VT
+  WA
+  WI
+  WV
+  WY
+}
+""
+type Stats {
+  "Stat's end date"
+  endDate: String
+  "Stat's on-hold count"
+  onHold: Int
+  "Stat's shipped late"
+  shippedLate: Int
+  "Stat's shipped on-time"
+  shippedOnTime: Int
+  "Stat's start date"
+  startDate: String
+  "Stat's unshipped count"
+  unshipped: Int
+}
+""
+type Summary {
+  "Summary's date"
+  date: String
+  "Summary's on-hold count"
+  onHold: Int
+  "Summary's shipped count"
+  shipped: Int
+  "Summary's unshipped count"
+  unshipped: Int
+}
+""
+type SupplierEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Supplier's name"
+  name: String
+  "Supplier's simple products"
+  products: [SimpleProductEntity]
+  "Supplier's slug"
+  slug: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type TaxDetail {
+  "Tax detail's rate"
+  rate: Float
+  "Tax detail's shipping taxed"
+  shippingTaxed: Boolean
+  "Tax detail's state"
+  state: String
+}
+""
+type TradeShowEntity {
+  "Trade show's city name"
+  city: String
+  "Entity's class"
+  cls: String
+  "Trade show's ISO country code"
+  country: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Trade show's end date"
+  endDate: LocalDate
+  "Entity's UUID"
+  id: UUID
+  "Trade show's first line"
+  line1: String
+  "Trade show's last line"
+  line2: String
+  "Trade show's name"
+  name: String
+  posTerminals: [PosTerminalEntity]
+  "Trade show's postal code"
+  postalCode: String
+  "Trade show's start date"
+  startDate: LocalDate
+  "Trade show's state (or province) abbreviation"
+  state: String
+  "Trade show's sales tax rate"
+  taxRate: BigDecimal
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type TransitTimeRestrictionEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Shipping rule's slug"
+  slug: String
+  "Transit time rule's transit time type"
+  transitTimeType: TransitTimeType
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+enum TransitTimeType {
+  GroundService
+  OneDayService
+  ThreeDayService
+  TwoDayService
+}
+"Use SPQR's SchemaPrinter to remove this from SDL"
+scalar UNREPRESENTABLE
+"UUID String"
+scalar UUID
+""
+type UserEntity {
+  "User's addresses"
+  addresses: [AddressEntity]
+  "User is an admin"
+  admin: Boolean
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "User's email address"
+  email: String
+  "User's email is confirmed"
+  emailConfirmed: Boolean
+  "User's first name"
+  firstName: String
+  "Entity's UUID"
+  id: UUID
+  "User's last name"
+  lastName: String
+  "User's Magento Id"
+  magentoId: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+  "User's type"
+  userType: UserType
+}
+""
+enum UserType {
+  EMPLOYEE
+  REGULAR
+  WHOLESALE
+}
+""
+type VariationSetEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Variation set's products"
+  products: [ProductEntity]
+  "Variation set's title"
+  title: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+enum Vendor {
+  Arachnid
+  CricketFarm
+  DryGoods
+  FreeShipping
+  Frogs
+  GiftCards
+  LiveInsects
+  MiceDirect
+}
+""
+type WalmartSalesOrderEntity {
+  "Order's alternate number"
+  alternateOrderNumber: String
+  "Billing address' validation source"
+  billingAddressValidationSource: AddressValidationSource
+  "Billing address' city name"
+  billingCity: String
+  "Billing address' company"
+  billingCompany: String
+  "Billing address' ISO country code"
+  billingCountry: String
+  "Billing address' first name"
+  billingFirstName: String
+  "Billing address' last name"
+  billingLastName: String
+  "Billing address' first line"
+  billingLine1: String
+  "Billing address' last line"
+  billingLine2: String
+  "Billing address' postal code"
+  billingPostalCode: String
+  "Billing address' state (or province) abbreviation"
+  billingState: String
+  "Entity's class"
+  cls: String
+  "Sales order's comments"
+  comments: [SalesOrderCommentsEntity]
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Walmart customer number"
+  customerOrderId: String
+  "Order's discount total"
+  discountTotal: BigDecimal
+  "Order's email"
+  email: String
+  "Order's fulfillment channel"
+  fulfillmentChannelType: FulfillmentChannelType
+  "Order's grand total"
+  grandTotal: BigDecimal
+  "Order's handling total"
+  handlingTotal: BigDecimal
+  "Order's hold status"
+  hold: Boolean
+  "Entity's UUID"
+  id: UUID
+  "Order's number"
+  orderNumber: String
+  "Sales order's payments"
+  payments: [PaymentEntity]
+  "Order's phone"
+  phone: String
+  "Order's placed time"
+  placedTime: Instant
+  "Sales order's discounts"
+  salesOrderDiscounts: [SalesOrderDiscountEntity]
+  "Sales order's item groups"
+  salesOrderItemGroups: [SalesOrderItemGroupEntity]
+  "Sales order's items"
+  salesOrderItems: [SalesOrderItemEntity]
+  "Order's type"
+  salesOrderType: SalesOrderType
+  "Sales order's shipments"
+  shipments: [ShipmentEntity]
+  "Shipping address' validation source"
+  shippingAddressValidationSource: AddressValidationSource
+  "Shipping address' city name"
+  shippingCity: String
+  "Shipping address' company"
+  shippingCompany: String
+  "Shipping address' ISO country code"
+  shippingCountry: String
+  "Shipping address' first name"
+  shippingFirstName: String
+  "Shipping address' last name"
+  shippingLastName: String
+  "Shipping address' first line"
+  shippingLine1: String
+  "Shipping address' last line"
+  shippingLine2: String
+  "Sales order's shipping method"
+  shippingMethod: String
+  "Shipping address' postal code"
+  shippingPostalCode: String
+  "Shipping address' residential status"
+  shippingResidential: Boolean
+  "Shipping address' state (or province) abbreviation"
+  shippingState: String
+  "Order's shipping total"
+  shippingTotal: BigDecimal
+  "Order's status"
+  status: SalesOrderStatus
+  "Order's sub total"
+  subTotal: BigDecimal
+  "Order's tax code"
+  taxCode: String
+  "Order's tax total"
+  taxTotal: BigDecimal
+  "Entity's modification timestamp"
+  updatedAt: Instant
+}
+""
+type WarehouseEntity {
+  "Warehouse's city name"
+  city: String
+  "Entity's class"
+  cls: String
+  "Warehouse' ISO country code"
+  country: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Warehouse's latitude"
+  latitude: Float
+  "Warehouse's first line"
+  line1: String
+  "Warehouse's last line"
+  line2: String
+  "Warehouse's longitude"
+  longitude: Float
+  "Warehouse's name"
+  name: String
+  "Warehouse's postal code"
+  postalCode: String
+  "Warehouse's state (or province) abbreviation"
+  state: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+  "Warehouse's type"
+  warehouseType: WarehouseType
+}
+""
+enum WarehouseType {
+  DropShipper
+  OverstockStorage
+  Production
+  TradeshowFulfillment
+  WebFulfillment
+}
+""
+type Weather {
+  "Weather's date"
+  date: LocalDate
+  "Weather's high"
+  high: Float
+  "Weather's low"
+  low: Float
+}
+""
+type WorkstationEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Workstation's key"
+  machineKey: String
+  "Workstation's name"
+  name: String
+  "Workstation's printers"
+  printers: [PrinterEntity]
+  "Entity's modification timestamp"
+  updatedAt: Instant
+  "Workstation's warehouse"
+  warehouse: WarehouseEntity
+}
+""
+type ZoneEntity {
+  "Entity's class"
+  cls: String
+  "Entity's creation timestamp"
+  createdAt: Instant
+  "Entity's UUID"
+  id: UUID
+  "Zone's name"
+  name: String
+  "Zone's sequence"
+  sequence: Long
+  "Zone's slug"
+  slug: String
+  "Entity's modification timestamp"
+  updatedAt: Instant
+  "Zone's warehouse"
+  warehouse: WarehouseEntity
+}

@@ -1,0 +1,9 @@
+mutation shipmentLookupWeather ($id: UUID!) {
+    shipmentLookupWeather (
+        id: $id
+    ) {
+        date,
+        high,
+        low
+    }
+}
