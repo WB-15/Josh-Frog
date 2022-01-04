@@ -24,6 +24,7 @@ import { CarrierPipe } from './pipes/carrier.pipe';
 import { OptionPipe } from './pipes/option.pipe';
 import { PackagingPipe } from './pipes/packaging.pipe';
 import { AutofocusDirective } from './directives/autofocus.directive';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,6 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     PackagingPipe,
     AutofocusDirective
   ],
-  imports: [CommonModule, FontAwesomeModule]
+  imports: [CommonModule, FontAwesomeModule, FormsModule, ReactiveFormsModule]
 })
 export class GlobalSharedModule {}
