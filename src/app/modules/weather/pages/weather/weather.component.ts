@@ -135,6 +135,7 @@ export class WeatherComponent implements OnInit, OnDestroy {
             .subscribe(
               (result) => {
                 this.shipment = null;
+                this.weathers = null;
                 this.searchResults = result as ShipmentEntity[];
                 this.changeDetectorRef.detectChanges();
                 if (
