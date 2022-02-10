@@ -18,7 +18,8 @@ import {
   faPlusCircle,
   faClock,
   faWarehouse,
-  faSunCloud
+  faSunCloud,
+  faClipboardListCheck
 } from '@fortawesome/pro-duotone-svg-icons';
 
 import { DialogBoxOptions } from './modules/shared/components/dialog/dialog.component';
@@ -52,6 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
   faWarehouse = faWarehouse;
   faPlusCircle = faPlusCircle;
   faSunCloud = faSunCloud;
+  faClipboardListCheck = faClipboardListCheck;
 
   public menuShown = false;
 
@@ -120,6 +122,12 @@ export class AppComponent implements OnInit, OnDestroy {
       name: 'Plant Labels',
       route: 'plant_labels',
       platform: 'capacitor'
+    },
+    {
+      icon: faClipboardListCheck,
+      name: 'Prepping',
+      route: 'prepping',
+      platform: null
     },
     {
       icon: faClock,

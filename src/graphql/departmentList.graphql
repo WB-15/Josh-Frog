@@ -1,0 +1,18 @@
+query departmentList {
+  departmentList (
+    page: { page: 1, pageSize: 1000 }
+  ) {
+    data {
+      id,
+      slug,
+      name,
+      routePath
+      parent {
+        id
+      },
+      children {
+        id
+      }
+    }
+  }
+}

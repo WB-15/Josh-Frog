@@ -38,7 +38,10 @@ module.exports = {
     borderRadius: ['first', 'last'],
     backgroundColor: ['disabled', 'hover', 'active'],
     opacity: ['disabled'],
-    cursor: ['disabled']
+    cursor: ['disabled'],
+    extend: {
+      outline: ['focus-visible'],
+    }
   },
   plugins: [require('@tailwindcss/ui')]
 };
