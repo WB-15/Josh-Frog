@@ -1,0 +1,104 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+  <h1 class="text-2xl font-semibold text-gray-900">Weather</h1>
+
+  <div class="flex">
+    <div class="block mx-auto">
+      <label for="searchByShipmentNumber" class="hidden">Search</label>
+      <div class="relative pt-3 pb-4">
+        <fa-icon [icon]="faSearch" class="absolute inset-y-0 left-3 flex items-center pointer-events-none"></fa-icon>
+        <input id="searchByShipmentNumber" class="input-base pl-10 pr-2" [ngClass]="searchShipmentNumber?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search Shipments" autocomplete="off" autocapitalize="words"
+               [(ngModel)]="searchShipmentNumber" (keyup)='searchKey($event)' appAutofocus />
+        <div *ngIf="searchResults" class="block absolute bg-gray-100 z-30 w-full">
+          <div *ngFor="let result of searchResults" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
+            <div class="flex-none m-1 mr-3">
+              <app-marketplace-icon [cls]="result?.salesOrder.cls"></app-marketplace-icon>
+            </div>
+
+            <div class="m-1 mr-3">
+              <p class="font-semibold">{{result.shipmentNumber}}</p>
+              <p class="font-light">{{result?.salesOrder.alternateOrderNumber}}</p>
+              <p class="font-light">{{result?.departingWarehouse.name}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4" *ngIf="shipment">
+    <div class="flex flex-col gap-4 lg:flex-row">
+      <div class="w-64">
+        <p class="data-label">DETAILS</p>
+        <div class="flex items-center">
+          <app-marketplace-icon [cls]="shipment?.salesOrder.cls"></app-marketplace-icon>
+          <div *ngIf="shipment.shipmentNumber" class="ml-4">
+            <div *ngIf="shipment.shipmentNumber" class="leading-5 font-medium text-gray-900"><span class="font-light">{{shipment.shipmentNumber.substr(0, 11)}}</span><span class="font-semibold">{{shipment.shipmentNumber.substr(11)}}</span></div>
+            <div *ngIf="shipment.salesOrder.alternateOrderNumber" class="text-sm leading-5 font-light text-gray-500">{{shipment.salesOrder.alternateOrderNumber}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="w-64 click-area" (click)="showShipmentDialog()">
+        <p class="data-label">CONTENTS</p>
+        <div *ngFor="let item of shipment.shipmentItems; index as i">
+          <p *ngIf="i < 3" class="text-xs leading-5">
+            <span class="font-semibold text-gray-900">{{item.quantity}}</span><span class="font-thin">x</span>&nbsp;<span class="font-medium text-gray-900">{{item.salesOrderItem.sku}}</span>:&nbsp;<span class="font-thin text-gray-900">{{item.salesOrderItem.name}}</span>
+          </p>
+        </div>
+        <div *ngIf="shipment.shipmentItems.length > 3">
+          <span class="text-sm leading-5 font-medium text-gray-900">and more...</span>
+        </div>
+      </div>
+      <div class="w-64">
+        <p class="data-label">STATUS</p>
+        <app-shipment-status [shipmentStatus]="shipment.shipmentStatus"></app-shipment-status>
+        <ng-container *ngIf="shipmentSent">
+          <p class="data-label">TRACKING</p>
+          <span *ngFor="let trackingNo of shipment.trackingNos; index as i">
+            {{trackingNo}}<ng-container *ngIf="i + 1 !== shipment.trackingNos.length">, </ng-container>
+          </span>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4" *ngIf="shipment">
+    <div class="flex flex-col gap-4 lg:flex-row">
+      <div class="flex-1">
+        <div class="w-64">
+          <div (click)="showEditAddressDialog()" [ngClass]="{'relative click-area' : shipmentEditable}">
+            <p class="data-label">DESTINATION</p>
+            <p class="font-light">{{shipment.firstName}} {{shipment.lastName}}</p>
+            <p class="font-light" *ngIf="shipment.company">{{shipment.company}}</p>
+            <p class="font-light">{{shipment.line1}}</p>
+            <p class="font-light" *ngIf="shipment.line2">{{shipment.line2}}</p>
+            <p class="font-light">{{shipment.city}}<span *ngIf="shipment.city">, </span>{{shipment.state}}  {{shipment.postalCode}}</p>
+            <fa-icon *ngIf="shipmentEditable" class="absolute top-1 right-1 flex" [icon]="faPencil"></fa-icon>
+          </div>
+          <p *ngIf="!shipment.addressValidationSource || shipment.addressValidationSource === 'Unverified'"><span class="text-gray-500">Address is unverified. </span><button *ngIf="shipmentEditable" class="text-blue-600 hover:text-blue-800" (click)="verifyAddress()">Verify</button></p>
+          <p *ngIf="shipment.addressValidationSource && shipment.addressValidationSource !== 'Unverified'"><span class="text-gray-500">Address verified by {{shipment.addressValidationSource}}.</span></p>
+        </div>
+      </div>
+      <div class="flex-1">
+        <div class="w-64">
+          <p class="data-label">SCHEDULE</p>
+          <p class="font-light" *ngIf="shipment.placedAt">Placed On: {{shipment.placedAt | date: 'EE, MMM d'}}</p>
+          <p class="font-light" *ngIf="shipment.estimatedShipDate">Ship By: {{shipment.estimatedShipDate | date: 'EE, MMM d'}}</p>
+          <p class="font-light" *ngIf="shipment.estimatedDeliveryDate">Deliver By: {{shipment.estimatedDeliveryDate | date: 'EE, MMM d'}}</p>
+          <p class="font-light" *ngIf="shipment.shippedAt">Shipped On: {{shipment.shippedAt | date: 'EE, MMM d'}}</p>
+          <p class="font-light" *ngIf="shipment.shippedBy">Shipped By: {{shipment.shippedBy}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4" *ngIf="weathers">
+    <p class="data-label">WEATHER</p>
+    <div class="flex flex-col gap-4 lg:flex-row">
+      <div class="flex-1" *ngFor="let weather of weathers">
+        <p class="font-light" >{{weather.date | date: 'EE, MMM d'}}</p>
+        <p class="font-light" >{{weather.low | number: '0.0-0'}} °F</p>
+        <p class="font-light" >{{weather.high | number: '0.0-0'}} °F</p>
+      </div>
+    </div>
+  </div>
+</div>

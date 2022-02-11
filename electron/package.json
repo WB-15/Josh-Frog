@@ -36,7 +36,7 @@
   "license": "MIT",
   "build": {
     "appId": "com.joshsfrogs.admin",
-    "productName": "Josh's Frogs Admin",
+    "productName": "Josh's Cogs",
     "files": [
       "assets/*",
       "build/*",

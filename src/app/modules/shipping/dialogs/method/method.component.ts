@@ -5,6 +5,7 @@ import {
   PackageSizeInput,
   Packaging,
   RateQuote,
+  Reseller,
   Service,
   ShipmentEntity,
   ShipmentRateMultiPieceGQL,
@@ -29,6 +30,7 @@ export class MethodComponent implements OnInit {
   @Input() packaging: Packaging;
   @Input() packages: PackageSizeInput[];
   @Input() callback: (
+    reseller: Reseller,
     carrier: Carrier,
     service: Service,
     packaging: Packaging,
@@ -44,6 +46,7 @@ export class MethodComponent implements OnInit {
   twoDayRates: RateQuote[];
   threeDayRates: RateQuote[];
   groundRates: RateQuote[];
+  economyRates: RateQuote[];
 
   constructor(
     private dialogService: DialogService,
@@ -113,8 +116,13 @@ export class MethodComponent implements OnInit {
           this.twoDayRates = [];
           this.threeDayRates = [];
           this.groundRates = [];
+          this.economyRates = [];
           if (this.rateQuotes.length === 0) {
-            this.dialogService.showErrorMessageBox(new Error('No shipment methods were found for the provided dimensions.'));
+            this.dialogService.showErrorMessageBox(
+              new Error(
+                'No shipment methods were found for the provided dimensions.'
+              )
+            );
           }
           for (const rate of this.rateQuotes) {
             if (rate.domesticServiceType === 'OvernightEarly') {
@@ -129,6 +137,8 @@ export class MethodComponent implements OnInit {
               this.threeDayRates.push(rate);
             } else if (rate.domesticServiceType === 'Ground') {
               this.groundRates.push(rate);
+            } else if (rate.domesticServiceType === 'PostOfficeLastMile') {
+              this.economyRates.push(rate);
             }
           }
           this.loading = false;
@@ -141,13 +151,14 @@ export class MethodComponent implements OnInit {
   }
 
   pickMethod(
+    reseller: Reseller,
     carrier: Carrier,
     service: Service,
     packaging: Packaging,
     options: string[]
   ) {
     if (this.callback) {
-      this.callback(carrier, service, packaging, options);
+      this.callback(reseller, carrier, service, packaging, options);
     }
     this.parentRef.pressOK();
   }

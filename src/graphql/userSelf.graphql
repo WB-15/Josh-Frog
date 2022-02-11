@@ -1,0 +1,9 @@
+query userSelf {
+  userSelf {
+    email,
+    firstName,
+    lastName,
+    admin,
+    emailConfirmed
+  }
+}

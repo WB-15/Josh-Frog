@@ -11,6 +11,7 @@ query shipmentFilter ($shipmentNumber: String!, $pageable: GraphQLPageableInput!
             shipmentNumber,
             shipmentStatus,
             shippingNeeds,
+            reseller,
             carrier,
             service,
             packaging,

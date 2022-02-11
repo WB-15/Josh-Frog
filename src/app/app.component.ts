@@ -17,7 +17,8 @@ import {
   faTags,
   faPlusCircle,
   faClock,
-  faWarehouse
+  faWarehouse,
+  faSunCloud
 } from '@fortawesome/pro-duotone-svg-icons';
 
 import { DialogBoxOptions } from './modules/shared/components/dialog/dialog.component';
@@ -50,6 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
   faClock = faClock;
   faWarehouse = faWarehouse;
   faPlusCircle = faPlusCircle;
+  faSunCloud = faSunCloud;
 
   public menuShown = false;
 
@@ -100,6 +102,12 @@ export class AppComponent implements OnInit, OnDestroy {
       name: 'Shipping',
       route: 'shipping',
       platform: 'electron'
+    },
+    {
+      icon: faSunCloud,
+      name: 'Weather',
+      route: 'weather',
+      platform: null
     },
     {
       icon: faPrint,

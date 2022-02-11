@@ -29,6 +29,7 @@ mutation shipmentUpdateAddress (
         shipmentNumber,
         shipmentStatus,
         shippingNeeds,
+        reseller,
         carrier,
         service,
         packaging,

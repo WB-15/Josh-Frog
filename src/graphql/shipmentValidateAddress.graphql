@@ -7,6 +7,7 @@ mutation shipmentValidateAddress ($id: UUID!) {
         shipmentNumber,
         shipmentStatus,
         shippingNeeds,
+        reseller,
         carrier,
         service,
         packaging,

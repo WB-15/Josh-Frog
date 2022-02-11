@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -40,14 +46,16 @@ import {
   ShipmentSearchGQL,
   Packaging,
   ShipmentValidateAddressGQL,
-  ShipmentVoidGQL
+  ShipmentVoidGQL,
+  Reseller
 } from '../../../../../generated/graphql';
 import { MethodComponent } from '../../dialogs/method/method.component';
 import { PackagingComponent } from '../../dialogs/packaging/packaging.component';
 import { MessageBoxOptions } from '../../../shared/components/message-box/message-box.component';
-import { ShipmentContentsComponent } from '../../dialogs/shipment-contents/shipment-contents.component';
-import { ShippingAddressComponent } from '../../dialogs/shipping-address/shipping-address.component';
+import { ShipmentContentsComponent } from '../../../shared/components/shipment-contents/shipment-contents.component';
+import { ShippingAddressComponent } from '../../../shared/components/shipping-address/shipping-address.component';
 import { Platform } from '@ionic/angular';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-shipping',
@@ -87,7 +95,11 @@ export class ShippingComponent implements OnInit, OnDestroy {
   shipmentEditable = false;
   shipmentSent = false;
 
+  private windowRef: Window;
+  private searchDebounceTimer: number;
+
   constructor(
+    @Inject(DOCUMENT) private document: Document,
     private route: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
     private dialogService: DialogService,
@@ -103,7 +115,9 @@ export class ShippingComponent implements OnInit, OnDestroy {
     private shipmentShipMultiPiece: ShipmentShipMultiPieceGQL,
     private shipmentVoidGQL: ShipmentVoidGQL,
     private platform: Platform
-  ) {}
+  ) {
+    this.windowRef = this.document.defaultView;
+  }
 
   ngOnInit() {
     this.warehouseChangedSubscription = this.warehouseService.warehouseChanged$.subscribe(
@@ -161,6 +175,15 @@ export class ShippingComponent implements OnInit, OnDestroy {
     );
   }
 
+  searchKey($event) {
+    if (this.searchDebounceTimer) {
+      this.windowRef.clearTimeout(this.searchDebounceTimer);
+    }
+    this.searchDebounceTimer = this.windowRef.setTimeout(() => {
+      this.search($event);
+    }, 20);
+  }
+
   search($event?) {
     if (!$event || $event.key !== 'Enter') {
       if (this.pendingSearchShipmentNumber == null) {
@@ -208,6 +231,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
             );
         }
       }
+    } else if ($event && $event.key === 'Enter') {
+      this.loadFirstShipment();
     }
   }
 
@@ -233,7 +258,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
   }
 
   shipmentLoaded(shipment: ShipmentEntity) {
-    this.shipment = Object.assign({ }, shipment);
+    this.shipment = Object.assign({}, shipment);
     this.addPackage(true);
     this.shipment.packaging = this.shipment.packaging || Packaging.CardboardBox;
     this.setProgressBooleans();
@@ -345,13 +370,18 @@ export class ShippingComponent implements OnInit, OnDestroy {
         shipment: this.shipment,
         warehouse: this.warehouse,
         packaging: this.shipment.packaging,
-        packages: this.packages.length === 1 ? [this.getEstimatedPackage()] : this.packages,
+        packages:
+          this.packages.length === 1
+            ? [this.getEstimatedPackage()]
+            : this.packages,
         callback: (
+          reseller: Reseller,
           carrier: Carrier,
           service: Service,
           packaging: Packaging,
           options: string[]
         ) => {
+          this.shipment.reseller = reseller;
           this.shipment.carrier = carrier;
           this.shipment.service = service;
           this.shipment.packaging = packaging;
@@ -387,12 +417,16 @@ export class ShippingComponent implements OnInit, OnDestroy {
     this.shipmentShipMultiPiece
       .mutate({
         id: this.shipment.id,
+        reseller: this.shipment.reseller,
         carrier: this.shipment.carrier,
         service: this.shipment.service,
         packaging: this.shipment.packaging,
         options: this.shipment.options,
         warehouse: this.warehouse.name,
-        packages: this.packages.length === 1 ? [this.getEstimatedPackage()] : this.packages
+        packages:
+          this.packages.length === 1
+            ? [this.getEstimatedPackage()]
+            : this.packages
       })
       .pipe(map((result) => result.data.shipmentShipMultiPiece))
       .subscribe(
@@ -412,10 +446,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
 
   reprintLabel(): void {
     for (const zpl of this.shipment.zplContents) {
-      this.printerService.printShippingLabel(
-        this.shipment.shipmentNumber,
-        zpl
-      );
+      this.printerService.printShippingLabel(this.shipment.shipmentNumber, zpl);
     }
   }
 
@@ -453,18 +484,42 @@ export class ShippingComponent implements OnInit, OnDestroy {
   }
 
   checkShippingRequirements() {
-    if (!this.shipment.carrier || !this.shipment.service || !this.shipment.packaging) {
+    if (
+      !this.shipment.reseller ||
+      !this.shipment.carrier ||
+      !this.shipment.service ||
+      !this.shipment.packaging
+    ) {
       return false;
     }
     if (this.shipment.packaging === Packaging.CardboardBox) {
       const single = this.packages.length === 1;
       for (const pack of this.packages) {
-        if
-        (
-          !(single && this.shipment.estimatedLength && this.shipment.estimatedLength > 0) && !(pack.length && pack.length > 0) ||
-          !(single && this.shipment.estimatedWidth && this.shipment.estimatedWidth > 0) && !(pack.width && pack.width > 0) ||
-          !(single && this.shipment.estimatedHeight && this.shipment.estimatedHeight > 0) && !(pack.height && pack.height > 0) ||
-          !(single && this.shipment.estimatedWeight && this.shipment.estimatedWeight > 0) && !(pack.weight && pack.weight > 0)
+        if (
+          (!(
+            single &&
+            this.shipment.estimatedLength &&
+            this.shipment.estimatedLength > 0
+          ) &&
+            !(pack.length && pack.length > 0)) ||
+          (!(
+            single &&
+            this.shipment.estimatedWidth &&
+            this.shipment.estimatedWidth > 0
+          ) &&
+            !(pack.width && pack.width > 0)) ||
+          (!(
+            single &&
+            this.shipment.estimatedHeight &&
+            this.shipment.estimatedHeight > 0
+          ) &&
+            !(pack.height && pack.height > 0)) ||
+          (!(
+            single &&
+            this.shipment.estimatedWeight &&
+            this.shipment.estimatedWeight > 0
+          ) &&
+            !(pack.weight && pack.weight > 0))
         ) {
           return false;
         }
@@ -497,7 +552,10 @@ export class ShippingComponent implements OnInit, OnDestroy {
     if (this.packages.length > 1) {
       this.packages.splice(i, 1);
       this.weightLocks.splice(i, 1);
-      if (this.activePackage > i || (this.activePackage === i && this.packages.length <= i)) {
+      if (
+        this.activePackage > i ||
+        (this.activePackage === i && this.packages.length <= i)
+      ) {
         this.activePackage -= 1;
       }
     }
@@ -519,15 +577,22 @@ export class ShippingComponent implements OnInit, OnDestroy {
   }
 
   setProgressBooleans() {
-    this.shipmentEditable = this.shipment.shipmentStatus === 'NeedsScheduling' ||
-      this.shipment.shipmentStatus === 'Unshipped' || this.shipment.shipmentStatus === 'External';
-    this.shipmentSent = this.shipment.shipmentStatus === 'Shipped' || this.shipment.shipmentStatus === 'Delivered';
+    this.shipmentEditable =
+      this.shipment.shipmentStatus === 'NeedsScheduling' ||
+      this.shipment.shipmentStatus === 'Unshipped' ||
+      this.shipment.shipmentStatus === 'External';
+    this.shipmentSent =
+      this.shipment.shipmentStatus === 'Shipped' ||
+      this.shipment.shipmentStatus === 'Delivered';
   }
 
   ngOnDestroy(): void {
     this.warehouseChangedSubscription.unsubscribe();
     this.shipmentScannedSubscription.unsubscribe();
     this.scaleDataSubscription.unsubscribe();
+    if (this.searchDebounceTimer) {
+      this.windowRef.clearTimeout(this.searchDebounceTimer);
+    }
   }
 }
 
