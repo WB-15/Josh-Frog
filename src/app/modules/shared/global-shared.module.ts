@@ -25,6 +25,7 @@ import { OptionPipe } from './pipes/option.pipe';
 import { PackagingPipe } from './pipes/packaging.pipe';
 import { AutofocusDirective } from './directives/autofocus.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ShipmentStatusPipe } from './pipes/shipment-status.pipe';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CarrierPipe,
     OptionPipe,
     PackagingPipe,
-    AutofocusDirective
+    AutofocusDirective,
+    ShipmentStatusPipe
   ],
   exports: [
     DialogComponent,
