@@ -27,16 +27,21 @@
     </button>
   </div>
 
-
   <div *ngIf="preparationSummary && submitting === 0" class="">
     <div *ngIf="preparationSummary.length === 0" class="italic">
       There are no products needing preparation for <span class="font-semibold">{{department.name}}</span> at <span
       class="font-semibold">{{warehouse.name}}</span>.
     </div>
     <div *ngIf="needPrepped?.length > 0">
-      <h2 class="text-xl font-semibold text-gray-900">Products Needing Prepped</h2>
-      <div class="py-3">
-        <div *ngFor="let summary of needPrepped"
+      <button type="button" class="prep-header" (click)="needPreppedOpen = !needPreppedOpen;">
+        <h2>
+          <fa-icon [icon]="needPreppedOpen ? faAngleDown : faAngleRight" [fixedWidth]="true"></fa-icon>
+          <span>Products Needing Prepped</span>
+        </h2>
+      </button>
+
+      <div class="my-3">
+        <div *ngFor="let summary of needPrepped" [hidden]="!needPreppedOpen"
              class="relative bg-white hover:bg-blue-100 border-gray-200 border-r border-b first:rounded-t-lg last:rounded-b-lg">
           <div class="flex gap-4 py-1 px-2">
             <div class="flex-none h-10 w-10 rounded-lg bg-white">
@@ -74,10 +79,15 @@
       </div>
     </div>
     <div *ngIf="fullyPrepped?.length > 0">
-      <h2 class="text-xl font-semibold text-gray-900">Products Fully Prepped</h2>
+      <button type="button" class="prep-header" (click)="fullyPreppedOpen = !fullyPreppedOpen;">
+        <h2>
+          <fa-icon [icon]="fullyPreppedOpen ? faAngleDown : faAngleRight" [fixedWidth]="true"></fa-icon>
+          <span>Products Fully Prepped</span>
+        </h2>
+      </button>
 
-      <div class="py-3">
-        <div *ngFor="let summary of fullyPrepped"
+      <div class="my-3">
+        <div *ngFor="let summary of fullyPrepped" [hidden]="!fullyPreppedOpen"
              class="relative bg-white hover:bg-blue-100 border-gray-200 border-r border-b first:rounded-t-lg last:rounded-b-lg">
           <div class="flex gap-4 py-1 px-2">
             <div class="flex-none h-10 w-10 rounded-lg bg-white">

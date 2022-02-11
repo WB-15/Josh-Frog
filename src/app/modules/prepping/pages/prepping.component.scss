@@ -1,0 +1,15 @@
+.prep-header {
+  @apply text-xl font-semibold pr-2;
+
+  &:focus:not(:focus-visible) {
+    @apply outline-none;
+  }
+
+  h2 {
+    @apply flex gap-1;
+  }
+
+  span {
+    @apply text-gray-900;
+  }
+}

@@ -17,7 +17,7 @@ import { QueryOptionsAlone } from 'apollo-angular/types';
 @Component({
   selector: 'app-prepping',
   templateUrl: './prepping.component.html',
-  styles: []
+  styleUrls: ['./prepping.component.scss']
 })
 export class PreppingComponent implements OnInit, OnDestroy {
   warehouse: WarehouseEntity;
@@ -28,6 +28,8 @@ export class PreppingComponent implements OnInit, OnDestroy {
   fullyPrepped: PreparationSummary[];
   departments: DepartmentEntity[];
 
+  fullyPreppedOpen = false;
+  needPreppedOpen = true;
   defaultDepartment = 'insects';
   loading = true;
   submitting = 0;
@@ -35,12 +37,9 @@ export class PreppingComponent implements OnInit, OnDestroy {
   math = Math;
   faSpinnerThird = faSpinnerThird;
   faAngleDown = faAngleDown;
+  faAngleRight = faAngleRight;
   warehouseChangedSubscription: Subscription;
   departmentsChangedSubscription: Subscription;
-
-
-  faAngleRight = faAngleRight;
-
 
   constructor(
     private departmentService: DepartmentService,
