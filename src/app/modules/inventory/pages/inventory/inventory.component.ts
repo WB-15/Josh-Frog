@@ -253,13 +253,16 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   setInventory() {
-    this.quantityUpdated = this.quantityEntry;
     // TODO: when this is returned from server, don't calculate here
+    /*
     this.inventoryDetails.warehouseQuantityOnShelf = this.quantityUpdated;
     this.inventoryDetails.warehouseQuantityAvailable =
       this.inventoryDetails.warehouseQuantityOnShelf -
       this.inventoryDetails.warehouseQuantityUnshipped;
+    */
     // and remove the TODO below
+    this.inventoryDetails = null;
+    this.inventoryLoading = true;
     this.inventorySetDetailsGQL
       .mutate({
         warehouse: this.warehouse.name,
@@ -269,13 +272,14 @@ export class InventoryComponent implements OnInit, OnDestroy {
       .pipe(map((result) => result.data.inventorySetDetails))
       .subscribe(
         (result) => {
-          // TODO: get this from the server
-          // this.inventoryDetails = result as InventoryDetails;
-          // and remove the TODO above.
+          this.quantityUpdated = this.quantityEntry;
+          this.inventoryDetails = result as InventoryDetails;
+          this.inventoryLoading = false;
           this.changeDetectorRef.detectChanges();
         },
         (error) => {
           this.inventoryDetails = null;
+          this.inventoryLoading = false;
           this.dialogService.showErrorMessageBox(error);
           this.changeDetectorRef.detectChanges();
         }
