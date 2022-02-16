@@ -41,8 +41,8 @@
       </button>
 
       <div class="my-3">
-        <div *ngFor="let summary of needPrepped" [hidden]="!needPreppedOpen"
-             class="relative bg-white hover:bg-blue-100 border-gray-200 border-r border-b first:rounded-t-lg last:rounded-b-lg">
+        <div *ngFor="let summary of needPrepped" [hidden]="!needPreppedOpen" (click)="showPreparationDialog(summary)"
+             class="relative bg-white hover:bg-blue-100 border-gray-200 border-r border-b first:rounded-t-lg last:rounded-b-lg cursor-pointer">
           <div class="flex gap-4 py-1 px-2">
             <div class="flex-none h-10 w-10 rounded-lg bg-white">
               <app-thumbnail-sm [src]="summary.simpleProduct.medias[0]?.url"
@@ -87,8 +87,8 @@
       </button>
 
       <div class="my-3">
-        <div *ngFor="let summary of fullyPrepped" [hidden]="!fullyPreppedOpen"
-             class="relative bg-white hover:bg-blue-100 border-gray-200 border-r border-b first:rounded-t-lg last:rounded-b-lg">
+        <div *ngFor="let summary of fullyPrepped" [hidden]="!fullyPreppedOpen" (click)="showPreparationDialog(summary)"
+             class="relative bg-white hover:bg-blue-100 border-gray-200 border-r border-b first:rounded-t-lg last:rounded-b-lg cursor-pointer">
           <div class="flex gap-4 py-1 px-2">
             <div class="flex-none h-10 w-10 rounded-lg bg-white">
               <app-thumbnail-sm [src]="summary.simpleProduct.medias[0]?.url"
@@ -113,12 +113,12 @@
             <div class="relative bg-red-200 flex-none h-8 w-32 border self-center">
               <div class="opacity-100 bg-green-200"
                    [style]="'height: 100%; width: ' + math.min(100 * summary.quantityPrepped / summary.quantityOrdered, 100) + '%'"></div>
-              <div class="flex items-center absolute inset-y-0 w-full justify-center">
-                <div>
-                  Prepare
-                  <span class="font-semibold">{{summary.quantityNeeded}}</span>
-                </div>
-              </div>
+<!--              <div class="flex items-center absolute inset-y-0 w-full justify-center">-->
+<!--                <div>-->
+<!--                  Prepare-->
+<!--                  <span class="font-semibold">{{summary.quantityNeeded}}</span>-->
+<!--                </div>-->
+<!--              </div>-->
             </div>
           </div>
         </div>

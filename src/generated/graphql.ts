@@ -4931,6 +4931,32 @@ export type MakingStockStatusMutation = (
   )>>> }
 );
 
+export type PreppedProductsAddPreparationMutationVariables = Exact<{
+  warehouse: Scalars['String'];
+  productId: Scalars['UUID'];
+  quantity: Scalars['Long'];
+}>;
+
+
+export type PreppedProductsAddPreparationMutation = (
+  { __typename?: 'Mutation' }
+  & { preppedProductsAddPreparation?: Maybe<(
+    { __typename?: 'PreparationSummary' }
+    & Pick<PreparationSummary, 'quantityNeeded' | 'quantityOrdered' | 'quantityPrepped' | 'quantityShipped'>
+    & { simpleProduct?: Maybe<(
+      { __typename?: 'SimpleProductEntity' }
+      & Pick<SimpleProductEntity, 'id' | 'title' | 'sku'>
+      & { medias?: Maybe<Array<Maybe<(
+        { __typename?: 'MediaEntity' }
+        & Pick<MediaEntity, 'id' | 'mediaType' | 'url'>
+      )>>> }
+    )>, todaysPreparations?: Maybe<Array<Maybe<(
+      { __typename?: 'PreparationEntity' }
+      & Pick<PreparationEntity, 'createdAt' | 'shipDate' | 'id' | 'preparer' | 'quantity'>
+    )>>> }
+  )> }
+);
+
 export type PreppedProductsListQueryVariables = Exact<{
   department: Scalars['String'];
   warehouse: Scalars['String'];
@@ -4949,8 +4975,37 @@ export type PreppedProductsListQuery = (
         { __typename?: 'MediaEntity' }
         & Pick<MediaEntity, 'id' | 'mediaType' | 'url'>
       )>>> }
-    )> }
+    )>, todaysPreparations?: Maybe<Array<Maybe<(
+      { __typename?: 'PreparationEntity' }
+      & Pick<PreparationEntity, 'createdAt' | 'shipDate' | 'id' | 'preparer' | 'quantity'>
+    )>>> }
   )>>> }
+);
+
+export type PreppedProductsRemovePreparationMutationVariables = Exact<{
+  warehouse: Scalars['String'];
+  productId: Scalars['UUID'];
+  preparationId: Scalars['UUID'];
+}>;
+
+
+export type PreppedProductsRemovePreparationMutation = (
+  { __typename?: 'Mutation' }
+  & { preppedProductsRemovePreparation?: Maybe<(
+    { __typename?: 'PreparationSummary' }
+    & Pick<PreparationSummary, 'quantityNeeded' | 'quantityOrdered' | 'quantityPrepped' | 'quantityShipped'>
+    & { simpleProduct?: Maybe<(
+      { __typename?: 'SimpleProductEntity' }
+      & Pick<SimpleProductEntity, 'id' | 'title' | 'sku'>
+      & { medias?: Maybe<Array<Maybe<(
+        { __typename?: 'MediaEntity' }
+        & Pick<MediaEntity, 'id' | 'mediaType' | 'url'>
+      )>>> }
+    )>, todaysPreparations?: Maybe<Array<Maybe<(
+      { __typename?: 'PreparationEntity' }
+      & Pick<PreparationEntity, 'createdAt' | 'shipDate' | 'id' | 'preparer' | 'quantity'>
+    )>>> }
+  )> }
 );
 
 export type ShipmentFilterQueryVariables = Exact<{
@@ -5973,6 +6028,48 @@ export const MakingStockStatusDocument = gql`
       super(apollo);
     }
   }
+export const PreppedProductsAddPreparationDocument = gql`
+    mutation preppedProductsAddPreparation($warehouse: String!, $productId: UUID!, $quantity: Long!) {
+  preppedProductsAddPreparation(
+    warehouse: $warehouse
+    productId: $productId
+    quantity: $quantity
+  ) {
+    quantityNeeded
+    quantityOrdered
+    quantityPrepped
+    quantityShipped
+    simpleProduct {
+      id
+      title
+      sku
+      medias {
+        id
+        mediaType
+        url
+      }
+    }
+    todaysPreparations {
+      createdAt
+      shipDate
+      id
+      preparer
+      quantity
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class PreppedProductsAddPreparationGQL extends Apollo.Mutation<PreppedProductsAddPreparationMutation, PreppedProductsAddPreparationMutationVariables> {
+    document = PreppedProductsAddPreparationDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const PreppedProductsListDocument = gql`
     query preppedProductsList($department: String!, $warehouse: String!) {
   preppedProductsList(warehouse: $warehouse, department: $department) {
@@ -5990,6 +6087,13 @@ export const PreppedProductsListDocument = gql`
         url
       }
     }
+    todaysPreparations {
+      createdAt
+      shipDate
+      id
+      preparer
+      quantity
+    }
   }
 }
     `;
@@ -5999,6 +6103,48 @@ export const PreppedProductsListDocument = gql`
   })
   export class PreppedProductsListGQL extends Apollo.Query<PreppedProductsListQuery, PreppedProductsListQueryVariables> {
     document = PreppedProductsListDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const PreppedProductsRemovePreparationDocument = gql`
+    mutation preppedProductsRemovePreparation($warehouse: String!, $productId: UUID!, $preparationId: UUID!) {
+  preppedProductsRemovePreparation(
+    warehouse: $warehouse
+    productId: $productId
+    preparationId: $preparationId
+  ) {
+    quantityNeeded
+    quantityOrdered
+    quantityPrepped
+    quantityShipped
+    simpleProduct {
+      id
+      title
+      sku
+      medias {
+        id
+        mediaType
+        url
+      }
+    }
+    todaysPreparations {
+      createdAt
+      shipDate
+      id
+      preparer
+      quantity
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class PreppedProductsRemovePreparationGQL extends Apollo.Mutation<PreppedProductsRemovePreparationMutation, PreppedProductsRemovePreparationMutationVariables> {
+    document = PreppedProductsRemovePreparationDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

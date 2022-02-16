@@ -1,7 +1,8 @@
-query preppedProductsList ($department: String!, $warehouse: String!) {
-    preppedProductsList (
-        warehouse: $warehouse
-        department: $department
+mutation preppedProductsRemovePreparation ($warehouse: String!, $productId: UUID!, $preparationId: UUID!) {
+    preppedProductsRemovePreparation(
+        warehouse: $warehouse,
+        productId: $productId,
+        preparationId: $preparationId
     ) {
         quantityNeeded,
         quantityOrdered,

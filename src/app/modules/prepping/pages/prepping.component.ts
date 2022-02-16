@@ -13,6 +13,8 @@ import { WarehouseService } from '../../shared/services/warehouse.service';
 import { Subscription } from 'rxjs';
 import { DepartmentService } from '../../shared/services/department.service';
 import { QueryOptionsAlone } from 'apollo-angular/types';
+import { DialogBoxOptions } from '../../shared/components/dialog/dialog.component';
+import { ProductPreparationsComponent } from '../dialogs/product-preparations/product-preparations.component';
 
 @Component({
   selector: 'app-prepping',
@@ -30,7 +32,7 @@ export class PreppingComponent implements OnInit, OnDestroy {
 
   fullyPreppedOpen = false;
   needPreppedOpen = true;
-  defaultDepartment = 'insects';
+  defaultDepartment = 'insects'; //Todo: Have a way to save this locally by user
   loading = true;
   submitting = 0;
 
@@ -66,7 +68,7 @@ export class PreppingComponent implements OnInit, OnDestroy {
 
     this.departmentsChangedSubscription = this.departmentService.departmentsChanged$.subscribe((departments) => {
       if (departments) {
-        this.departments = [...departments].sort(function (a, b) {
+        this.departments = [...departments].sort(function(a, b) {
           if (a.name < b.name) {
             return -1;
           }
@@ -97,7 +99,7 @@ export class PreppingComponent implements OnInit, OnDestroy {
       .pipe(map((result) => result.data.preppedProductsList))
       .subscribe(
         (result) => {
-          this.preparationSummary = [...result].sort(function (a, b) {
+          this.preparationSummary = [...result].sort(function(a, b) {
             if (a.quantityNeeded > b.quantityNeeded) {
               return -1;
             }
@@ -123,6 +125,21 @@ export class PreppingComponent implements OnInit, OnDestroy {
           this.dialogService.showErrorMessageBox(error);
         }
       );
+  }
+
+  showPreparationDialog(preparationSummary: PreparationSummary) {
+    const options = new DialogBoxOptions();
+    options.component = ProductPreparationsComponent;
+    options.inputs = {
+      preparationSummary: preparationSummary,
+      warehouse: this.warehouse,
+      callback: () => {
+        this.loadPreppedProducts();
+      }
+    };
+    options.title = 'Product Preparations';
+    options.okText = 'Close';
+    this.dialogService.showDialog(options);
   }
 
   ngOnDestroy() {

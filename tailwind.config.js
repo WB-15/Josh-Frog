@@ -35,12 +35,12 @@ module.exports = {
     }
   },
   variants: {
-    borderRadius: ['first', 'last'],
+    borderRadius: ['responsive', 'first', 'last'],
     backgroundColor: ['disabled', 'hover', 'active'],
     opacity: ['disabled'],
     cursor: ['disabled'],
     extend: {
-      outline: ['focus-visible'],
+      outline: ['focus-visible']
     }
   },
   plugins: [require('@tailwindcss/ui')]
