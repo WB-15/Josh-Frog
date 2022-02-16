@@ -13,6 +13,7 @@ mutation shipmentRateMultiPiece ($id: UUID!, $warehouse: String!, $packaging: Pa
         options,
         cost,
         shipDate,
-        deliveryDate
+        deliveryDate,
+        fitness
     }
 }

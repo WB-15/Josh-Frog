@@ -47,7 +47,9 @@ import {
   Packaging,
   ShipmentValidateAddressGQL,
   ShipmentVoidGQL,
-  Reseller
+  Reseller,
+  ShipmentRateMultiPieceGQL,
+  RateQuote
 } from '../../../../../generated/graphql';
 import { MethodComponent } from '../../dialogs/method/method.component';
 import { PackagingComponent } from '../../dialogs/packaging/packaging.component';
@@ -95,6 +97,10 @@ export class ShippingComponent implements OnInit, OnDestroy {
   shipmentEditable = false;
   shipmentSent = false;
 
+  rating = false;
+  shipping = false;
+  voiding = false;
+
   private windowRef: Window;
   private searchDebounceTimer: number;
 
@@ -112,7 +118,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
     private shipmentFilterGQL: ShipmentFilterGQL,
     private shipmentSearchGQL: ShipmentSearchGQL,
     private shipmentValidateAddressGQL: ShipmentValidateAddressGQL,
-    private shipmentShipMultiPiece: ShipmentShipMultiPieceGQL,
+    private shipmentShipMultiPieceGQL: ShipmentShipMultiPieceGQL,
+    private shipmentRateMultiPieceGQL: ShipmentRateMultiPieceGQL,
     private shipmentVoidGQL: ShipmentVoidGQL,
     private platform: Platform
   ) {
@@ -181,10 +188,11 @@ export class ShippingComponent implements OnInit, OnDestroy {
     }
     this.searchDebounceTimer = this.windowRef.setTimeout(() => {
       this.search($event);
-    }, 20);
+    }, 200);
   }
 
   search($event?) {
+    console.log($event);
     if (!$event || $event.key !== 'Enter') {
       if (this.pendingSearchShipmentNumber == null) {
         if (this.searchShipmentNumber === '') {
@@ -409,12 +417,56 @@ export class ShippingComponent implements OnInit, OnDestroy {
     }
   }
 
+  rateShipment(): void {
+    this.loading++;
+    this.rating = true;
+    this.shipmentRateMultiPieceGQL
+      .mutate({
+        id: this.shipment.id,
+        warehouse: this.warehouse.name,
+        packaging: this.shipment.packaging,
+        packages:
+          this.packages.length === 1
+            ? [this.getEstimatedPackage()]
+            : this.packages
+      })
+      .pipe(map((result) => result.data.shipmentRateMultiPiece))
+      .subscribe(
+        (result) => {
+          this.loading--;
+          this.rating = false;
+          const rateQuotes = result as RateQuote[];
+          let found = false;
+          for (const rate of rateQuotes) {
+            if (rate.fitness === 'BEST') {
+              this.shipment.reseller = rate.reseller;
+              this.shipment.carrier = rate.carrier;
+              this.shipment.service = rate.service;
+              this.shipment.packaging = rate.packaging;
+              this.shipment.options = rate.options;
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            this.showMethodDialog();
+          }
+        },
+        (error) => {
+          this.loading--;
+          this.rating = false;
+          console.log(error);
+          this.dialogService.showErrorMessageBox(error);
+        }
+      );
+  }
+
   shipShipment(): void {
     if (this.shipment.options == null) {
       this.shipment.options = [];
     }
     this.loading++;
-    this.shipmentShipMultiPiece
+    this.shipmentShipMultiPieceGQL
       .mutate({
         id: this.shipment.id,
         reseller: this.shipment.reseller,
@@ -457,6 +509,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
     messageBoxOptions.okText = 'Void';
     this.dialogService.showMessageBox(messageBoxOptions, () => {
       this.loading++;
+      this.voiding = true;
       this.shipmentVoidGQL
         .mutate({
           id: this.shipment.id
@@ -464,9 +517,11 @@ export class ShippingComponent implements OnInit, OnDestroy {
         .pipe(map((result) => result.data.shipmentVoid))
         .subscribe(
           (result) => {
+            this.voiding = false;
             this.shipmentLoaded(result as ShipmentEntity);
           },
           (error) => {
+            this.voiding = false;
             this.loading--;
             this.dialogService.showErrorMessageBox(error);
           }

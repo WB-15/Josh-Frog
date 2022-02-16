@@ -17,14 +17,9 @@
       <div class="pt-6">
         <input aria-label="Password" name="_password" type="password" required class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm sm:leading-5" placeholder="Password"
                [(ngModel)]="password"
-               #_password=ngModel
-               pattern="^(?=.*?[A-Za-z])(?=.*?[0-9]).{8,}$"/>
+               #_password=ngModel />
         <div *ngIf="_password.invalid && _password.touched && _password.errors">
           <p class="text-sm text-red-800" *ngIf="_password.errors.required">Please enter your password.</p>
-          <p class="text-sm text-red-800" *ngIf="_password.errors.pattern">
-            Password must have at least 8 characters.
-            Use at least 1 letter and at least 1 number.
-          </p>
         </div>
       </div>
     </div>
