@@ -1,0 +1,30 @@
+query preppedProductsList ($department: String!, $warehouse: String!) {
+    preppedProductsList (
+        warehouse: $warehouse
+        department: $department
+    ) {
+        quantityNeeded,
+        quantityOrdered,
+        quantityPrepped,
+        quantityShipped,
+
+        simpleProduct {
+            id,
+            title,
+            sku,
+            medias {
+                id,
+                mediaType,
+                url
+            }
+        },
+
+        todaysPreparations {
+            createdAt,
+            shipDate,
+            id,
+            preparer,
+            quantity
+        }
+    }
+}

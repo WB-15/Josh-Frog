@@ -1,0 +1,31 @@
+mutation preppedProductsRemovePreparation ($warehouse: String!, $productId: UUID!, $preparationId: UUID!) {
+    preppedProductsRemovePreparation(
+        warehouse: $warehouse,
+        productId: $productId,
+        preparationId: $preparationId
+    ) {
+        quantityNeeded,
+        quantityOrdered,
+        quantityPrepped,
+        quantityShipped,
+
+        simpleProduct {
+            id,
+            title,
+            sku,
+            medias {
+                id,
+                mediaType,
+                url
+            }
+        },
+
+        todaysPreparations {
+            createdAt,
+            shipDate,
+            id,
+            preparer,
+            quantity
+        }
+    }
+}

@@ -71,6 +71,14 @@ const routes: Routes = [
       )
   },
   {
+    path: 'prepping',
+    canActivate: [AuthGuardService],
+    loadChildren: () =>
+      import('./modules/prepping/prepping.module').then(
+        (m) => m.PreppingModule
+      )
+  },
+  {
     path: 'time_clock',
     canActivate: [],
     loadChildren: () =>
