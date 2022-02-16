@@ -25,6 +25,7 @@ import { OptionPipe } from './pipes/option.pipe';
 import { PackagingPipe } from './pipes/packaging.pipe';
 import { AutofocusDirective } from './directives/autofocus.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CarrierPipe,
     OptionPipe,
     PackagingPipe,
-    AutofocusDirective
+    AutofocusDirective,
+    LoadingComponent
   ],
   exports: [
     DialogComponent,
@@ -74,7 +76,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CarrierPipe,
     OptionPipe,
     PackagingPipe,
-    AutofocusDirective
+    AutofocusDirective,
+    LoadingComponent
   ],
   imports: [CommonModule, FontAwesomeModule, FormsModule, ReactiveFormsModule]
 })
