@@ -112,8 +112,10 @@ export class PreppingComponent implements OnInit, OnDestroy {
           const index = this.preparationSummary.findIndex(prep => prep.quantityNeeded === 0);
           if (index > -1) {
             this.fullyPrepped = this.preparationSummary.slice(index);
+            this.needPrepped = this.preparationSummary.slice(0, index);
+          } else {
+            this.needPrepped = this.preparationSummary;
           }
-          this.needPrepped = this.preparationSummary.slice(0, index);
 
           this.submitting--;
         },
