@@ -36,7 +36,7 @@
       <button type="button" class="prep-header" (click)="needPreppedOpen = !needPreppedOpen;">
         <h2>
           <fa-icon [icon]="needPreppedOpen ? faAngleDown : faAngleRight" [fixedWidth]="true"></fa-icon>
-          <span>Products Needing Prepped</span>
+          <span>Products Needing Prepped ({{needPrepped.length}})</span>
         </h2>
       </button>
 
@@ -82,7 +82,7 @@
       <button type="button" class="prep-header" (click)="fullyPreppedOpen = !fullyPreppedOpen;">
         <h2>
           <fa-icon [icon]="fullyPreppedOpen ? faAngleDown : faAngleRight" [fixedWidth]="true"></fa-icon>
-          <span>Products Fully Prepped</span>
+          <span>Products Fully Prepped ({{fullyPrepped.length}})</span>
         </h2>
       </button>
 
