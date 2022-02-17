@@ -55,10 +55,10 @@ export class SearchService {
         this.searchProductsByMultipleTypes(additionalSearchParams).subscribe(
           (result) => {
             this.searchData[type].results = result.data as SimpleProductEntity[];
-            this.searchFinished(type);
+            this.searchFinished(type, additionalSearchParams);
           },
           (error) => {
-            this.handleSearchError(error, type);
+            this.handleSearchError(error, type, additionalSearchParams);
           }
         );
       }
@@ -88,17 +88,17 @@ export class SearchService {
       .pipe(map((result) => result.data.simpleProductFilter));
   }
 
-  handleSearchError(error, type: SearchType) {
+  handleSearchError(error, type: SearchType, additionalSearchParams?: object) {
     console.error(error);
     this.dialogService.showErrorMessageBox(error);
-    this.searchFinished(type);
+    this.searchFinished(type, additionalSearchParams);
   }
 
-  searchFinished(type: SearchType) {
+  searchFinished(type: SearchType, additionalSearchParams?: object) {
     this.dataUpdated.emit();
     if (this.searchData[type].pending !== this.searchData[type].value) {
       this.searchData[type].pending = null;
-      this.searchProducts(type);
+      this.searchProducts(type, additionalSearchParams);
     } else {
       this.searchData[type].pending = null;
     }
