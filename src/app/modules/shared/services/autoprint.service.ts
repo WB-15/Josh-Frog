@@ -93,11 +93,11 @@ export class AutoprintService {
   timerCallback(duration: number) {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
-      if (!this.printers) {
+      if (!this.printers || (this.printers.length === 0)) {
         this.listEnabledPrinters().subscribe(
           (printers) => {
             this.printers = printers;
-            this.timerCallback(1000);
+            this.timerCallback(120000);
           },
           (error) => {
             // Probably the daemon is not running
@@ -109,7 +109,6 @@ export class AutoprintService {
         if (this.printerIndex >= this.printers.length) {
           this.printerIndex = 0;
         }
-
         const printerName = this.printers[this.printerIndex].name;
         this.listJobsForPrinter(printerName).subscribe(
           (jobs) => {

@@ -7,6 +7,7 @@ query shipmentFind ($shipmentNumber: String!) {
         shipmentNumber,
         shipmentStatus,
         shippingNeeds,
+        reseller,
         carrier,
         service,
         packaging,
@@ -19,10 +20,25 @@ query shipmentFind ($shipmentNumber: String!) {
         actualLength,
         actualWidth,
         actualHeight,
+        placedAt,
         estimatedShipDate,
         estimatedDeliveryDate,
         shippedAt,
-        trackingNo,
+        shippedBy,
+        trackingNos,
+        zplContents,
+
+        firstName,
+        lastName,
+        company,
+        line1,
+        line2,
+        city,
+        state,
+        postalCode,
+        country,
+        residential,
+        addressValidationSource,
 
         salesOrder {
             id,
@@ -44,6 +60,14 @@ query shipmentFind ($shipmentNumber: String!) {
                 sku,
                 name
             }
+        },
+
+        shipmentAddons {
+            id,
+            cls,
+            quantity,
+            sku,
+            name
         }
     }
 }

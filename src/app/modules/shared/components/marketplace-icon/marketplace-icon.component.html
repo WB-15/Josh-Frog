@@ -1,3 +1,9 @@
+<div *ngIf="cls == 'WebSalesOrderEntity'" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg" style="background-color: #aaaaaa">
+  <span style="font-size: 28px; color: #7ac144"><fa-icon [icon]="faGlobe"></fa-icon></span>
+</div>
+<div *ngIf="cls == 'PhoneSalesOrderEntity'" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg" style="background-color: #aaaaaa">
+  <span style="font-size: 28px; color: #7ac144"><fa-icon [icon]="faPhone"></fa-icon></span>
+</div>
 <div *ngIf="cls == 'WalmartSalesOrderEntity'" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg" style="background-color: #0072CE">
   <span style="font-size: 28px; color: #FFB81C">
     <svg viewBox="0 0 47 50" class="svg-inline--fa fa-w-14" xmlns="http://www.w3.org/2000/svg">
@@ -13,8 +19,14 @@
   </span>
 </div>
 <div *ngIf="cls == 'AmazonSalesOrderEntity'" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg" style="background-color: black">
-  <span style="font-size: 28px; color: #FF9900" *ngIf="cls == 'AmazonSalesOrderEntity'"><fa-icon [icon]="faAmazon"></fa-icon></span>
+  <span style="font-size: 28px; color: #FF9900"><fa-icon [icon]="faAmazon"></fa-icon></span>
+</div>
+<div *ngIf="cls == 'EbaySalesOrderEntity'" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg" style="background-color: #0064D2">
+  <span style="font-size: 28px; color: #E53238"><fa-icon [icon]="faEbay"></fa-icon></span>
 </div>
 <div *ngIf="cls == 'MagentoSalesOrderEntity'" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg" style="background-color: dimgray">
-  <span style="font-size: 28px; color: #f46f25" *ngIf="cls == 'MagentoSalesOrderEntity'"><fa-icon [icon]="faMagento"></fa-icon></span>
+  <span style="font-size: 28px; color: #f46f25"><fa-icon [icon]="faMagento"></fa-icon></span>
+</div>
+<div *ngIf="cls == 'PoyntSalesOrderEntity'" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg" style="background-color: lightblue">
+  <span style="font-size: 28px; color: mediumblue"><fa-icon [icon]="faDotCircle"></fa-icon></span>
 </div>

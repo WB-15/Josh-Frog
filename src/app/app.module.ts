@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { GlobalSharedModule } from './modules/shared/global-shared.module';
 import { GraphQLModule } from './graphql.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +22,8 @@ import { GraphQLModule } from './graphql.module';
     IonicModule.forRoot(),
     AppRoutingModule,
     GlobalSharedModule,
-    GraphQLModule
+    GraphQLModule,
+    ReactiveFormsModule
   ],
   providers: [
     StatusBar,

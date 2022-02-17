@@ -93,6 +93,7 @@
         -->
         <p *ngIf="inventoryDetails?.warehouseQuantityUnshipped != 0" class="font-medium text-lg text-center">{{inventoryDetails.warehouseQuantityUnshipped}} to Ship</p>
         <p *ngIf="inventoryDetails?.warehouseQuantityUnshipped != 0" class="font-medium text-lg text-center">{{inventoryDetails.warehouseQuantityAvailable}} for Sale</p>
+        <p *ngIf="(inventoryDetails?.warehouseQuantityOnShelf > 0) && (inventoryDetails?.warehouseQuantityUnshipped == 0)" class="font-light text-sm italic text-center">All available for sale.</p>
       </div>
     </div>
 

@@ -1,9 +1,0 @@
-query userInfo {
-  userInfo {
-    email,
-    firstName,
-    lastName,
-    admin,
-    emailConfirmed
-  }
-}

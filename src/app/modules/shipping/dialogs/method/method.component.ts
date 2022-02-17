@@ -2,17 +2,19 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
 import {
   Carrier,
-  DomesticServiceType,
+  PackageSizeInput,
   Packaging,
   RateQuote,
+  Reseller,
   Service,
   ShipmentEntity,
-  ShipmentRateGQL,
+  ShipmentRateMultiPieceGQL,
   WarehouseEntity
 } from '../../../../../generated/graphql';
 import { map } from 'rxjs/operators';
 
 import { faSpinnerThird } from '@fortawesome/pro-duotone-svg-icons';
+import { DialogService } from '../../../shared/services/dialog.service';
 
 @Component({
   selector: 'app-method',
@@ -26,11 +28,9 @@ export class MethodComponent implements OnInit {
   @Input() shipment: ShipmentEntity;
   @Input() warehouse: WarehouseEntity;
   @Input() packaging: Packaging;
-  @Input() length: number;
-  @Input() width: number;
-  @Input() height: number;
-  @Input() weight: number;
+  @Input() packages: PackageSizeInput[];
   @Input() callback: (
+    reseller: Reseller,
     carrier: Carrier,
     service: Service,
     packaging: Packaging,
@@ -46,68 +46,28 @@ export class MethodComponent implements OnInit {
   twoDayRates: RateQuote[];
   threeDayRates: RateQuote[];
   groundRates: RateQuote[];
+  economyRates: RateQuote[];
 
-  constructor(private shipmentRateGQL: ShipmentRateGQL) {}
+  constructor(
+    private dialogService: DialogService,
+    private shipmentRateMultiPieceGQL: ShipmentRateMultiPieceGQL
+  ) {}
 
   ngOnInit() {
     this.loadMethods();
   }
 
   loadMethods() {
-    this.shipmentRateGQL
+    this.shipmentRateMultiPieceGQL
       .mutate({
         id: this.shipment.id,
         warehouse: this.warehouse.name,
         packaging: this.packaging,
-        weight: this.weight ? this.weight : this.shipment.estimatedWeight,
-        length: this.length ? this.length : this.shipment.estimatedLength,
-        width: this.width ? this.width : this.shipment.estimatedWidth,
-        height: this.height ? this.height : this.shipment.estimatedHeight
+        packages: this.packages
       })
-      .pipe(map((result) => result.data.shipmentRate))
+      .pipe(map((result) => result.data.shipmentRateMultiPiece))
       .subscribe(
         (result) => {
-          /*
-          this.rateQuotes = [
-            {
-              domesticServiceType: DomesticServiceType.Ground,
-              carrier: Carrier.Usps,
-              service: Service.UspsPriorityMail,
-              packaging: Packaging.CardboardBox,
-              cost: 7.67,
-              shipDate: 'Tue Sep 07 00:00:00 EDT 2021',
-              deliveryDate: 'Thu Sep 09 00:00:00 EDT 2021'
-            },
-            {
-              domesticServiceType: DomesticServiceType.Ground,
-              carrier: Carrier.Usps,
-              service: Service.UspsPriorityMail,
-              packaging: Packaging.RegionalBoxA,
-              cost: 8.34,
-              shipDate: 'Tue Sep 07 00:00:00 EDT 2021',
-              deliveryDate: 'Thu Sep 09 00:00:00 EDT 2021'
-            },
-            {
-              domesticServiceType: DomesticServiceType.Ground,
-              carrier: Carrier.Usps,
-              service: Service.UspsPriorityMail,
-              packaging: Packaging.RegionalBoxB,
-              cost: 9.56,
-              shipDate: 'Tue Sep 07 00:00:00 EDT 2021',
-              deliveryDate: 'Thu Sep 09 00:00:00 EDT 2021'
-            },
-            {
-              domesticServiceType: DomesticServiceType.Ground,
-              carrier: Carrier.Usps,
-              service: Service.UspsParcelSelect,
-              packaging: Packaging.CardboardBox,
-              cost: 7.52,
-              shipDate: 'Tue Sep 07 00:00:00 EDT 2021',
-              deliveryDate: 'Mon Sep 13 00:00:00 EDT 2021'
-            }
-          ];
-          */
-
           this.rateQuotes = result as RateQuote[];
           this.overnightEarlyRates = [];
           this.overnightMorningRates = [];
@@ -115,6 +75,14 @@ export class MethodComponent implements OnInit {
           this.twoDayRates = [];
           this.threeDayRates = [];
           this.groundRates = [];
+          this.economyRates = [];
+          if (this.rateQuotes.length === 0) {
+            this.dialogService.showErrorMessageBox(
+              new Error(
+                'No shipment methods were found for the provided dimensions.'
+              )
+            );
+          }
           for (const rate of this.rateQuotes) {
             if (rate.domesticServiceType === 'OvernightEarly') {
               this.overnightEarlyRates.push(rate);
@@ -128,24 +96,28 @@ export class MethodComponent implements OnInit {
               this.threeDayRates.push(rate);
             } else if (rate.domesticServiceType === 'Ground') {
               this.groundRates.push(rate);
+            } else if (rate.domesticServiceType === 'PostOfficeLastMile') {
+              this.economyRates.push(rate);
             }
           }
           this.loading = false;
         },
         (error) => {
           console.log(error);
+          this.dialogService.showErrorMessageBox(error);
         }
       );
   }
 
   pickMethod(
+    reseller: Reseller,
     carrier: Carrier,
     service: Service,
     packaging: Packaging,
     options: string[]
   ) {
     if (this.callback) {
-      this.callback(carrier, service, packaging, options);
+      this.callback(reseller, carrier, service, packaging, options);
     }
     this.parentRef.pressOK();
   }

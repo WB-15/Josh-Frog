@@ -1,0 +1,79 @@
+mutation shipmentShipMultiPiece ($id: UUID!, $warehouse: String!, $reseller: Reseller!, $carrier: Carrier!, $service: Service!, $packaging: Packaging!, $options: [String]!, $packages: [PackageSizeInput]!) {
+    shipmentShipMultiPiece (
+        id: $id,
+        warehouse: $warehouse,
+        reseller: $reseller,
+        carrier: $carrier,
+        service: $service,
+        packaging: $packaging,
+        options: $options,
+        packages: $packages
+    ) {
+        id,
+        cls,
+        shipmentNumber,
+        shipmentStatus,
+        shippingNeeds,
+        carrier,
+        service,
+        packaging,
+        options,
+        estimatedWeight,
+        actualWeight,
+        estimatedLength,
+        estimatedWidth,
+        estimatedHeight,
+        actualLength,
+        actualWidth,
+        actualHeight,
+        placedAt,
+        estimatedShipDate,
+        estimatedDeliveryDate,
+        shippedAt,
+        shippedBy,
+        trackingNos,
+        zplContents,
+
+        firstName,
+        lastName,
+        company,
+        line1,
+        line2,
+        city,
+        state,
+        postalCode,
+        country,
+        residential,
+        addressValidationSource,
+
+        salesOrder {
+            id,
+            cls,
+            orderNumber,
+            alternateOrderNumber,
+            placedTime,
+            email,
+            status
+        },
+
+        shipmentItems {
+            id,
+            cls,
+            quantity,
+            salesOrderItem {
+                id,
+                cls,
+                sku,
+                name
+            }
+        },
+
+        shipmentAddons {
+            id,
+            cls,
+            quantity,
+            sku,
+            name
+        }
+    }
+}

@@ -1,0 +1,19 @@
+mutation shipmentRateMultiPiece ($id: UUID!, $warehouse: String!, $packaging: Packaging, $packages: [PackageSizeInput]!) {
+    shipmentRateMultiPiece (
+        id: $id,
+        warehouse: $warehouse,
+        packaging: $packaging,
+        packages: $packages
+    ) {
+        domesticServiceType,
+        reseller,
+        carrier,
+        service,
+        packaging,
+        options,
+        cost,
+        shipDate,
+        deliveryDate,
+        fitness
+    }
+}

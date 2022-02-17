@@ -7,6 +7,7 @@ mutation shipmentValidateAddress ($id: UUID!) {
         shipmentNumber,
         shipmentStatus,
         shippingNeeds,
+        reseller,
         carrier,
         service,
         packaging,
@@ -19,11 +20,10 @@ mutation shipmentValidateAddress ($id: UUID!) {
         actualLength,
         actualWidth,
         actualHeight,
+        placedAt,
         estimatedShipDate,
         estimatedDeliveryDate,
         shippedAt,
-        trackingNo,
-        zplContent,
 
         firstName,
         lastName,
@@ -57,6 +57,14 @@ mutation shipmentValidateAddress ($id: UUID!) {
                 sku,
                 name
             }
+        },
+
+        shipmentAddons {
+            id,
+            cls,
+            quantity,
+            sku,
+            name
         }
     }
 }

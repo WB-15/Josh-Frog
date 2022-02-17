@@ -57,6 +57,9 @@ export class ServicePipe implements PipeTransform {
       case 'USPS_PARCEL_SELECT':
         return 'Parcel Select';
 
+      case 'LASERSHIP_GROUND':
+        return 'LaserShip Ground';
+
       default:
         return value;
     }

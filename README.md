@@ -1,5 +1,8 @@
 
 ### Updating GraphQL Schema & Generating Code
+Make sure this is installed globally in yarn
+https://github.com/Urigo/graphql-cli, version 3.0.14 and no later
+
 ``` shell
  npm run get-schema
  npm run codegen

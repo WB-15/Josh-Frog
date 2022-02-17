@@ -30,6 +30,10 @@
       <use *ngIf="shipmentStatus == 'Shipped'" transform="translate(50 0)" style="stroke:#56a646; fill:#7ac144" xlink:href="#fg"/>
       <use *ngIf="shipmentStatus == 'Shipped'" transform="translate(0 0)" style="stroke:#56a646; fill:#7ac144" xlink:href="#fg"/>
 
+      <use *ngIf="shipmentStatus == 'Labelled'" transform="translate(100 0)" style="stroke:#d9cd48; fill:#f2e768" xlink:href="#fg"/>
+      <use *ngIf="shipmentStatus == 'Labelled'" transform="translate(50 0)" style="stroke:#d9cd48; fill:#f2e768" xlink:href="#fg"/>
+      <use *ngIf="shipmentStatus == 'Labelled'" transform="translate(0 0)" style="stroke:#d9cd48; fill:#f2e768" xlink:href="#fg"/>
+
       <use *ngIf="shipmentStatus == 'Unshipped'" transform="translate(100 0)" style="stroke:#d9cd48; fill:#f2e768" xlink:href="#fg"/>
       <use *ngIf="shipmentStatus == 'Unshipped'" transform="translate(50 0)" style="stroke:#d9cd48; fill:#f2e768" xlink:href="#fg"/>
       <use *ngIf="shipmentStatus == 'Unshipped'" transform="translate(0 0)" style="stroke:#d9cd48; fill:#f2e768" xlink:href="#fg"/>
@@ -38,7 +42,9 @@
       <use *ngIf="shipmentStatus == 'NeedsScheduling'" transform="translate(0 0)" style="stroke:#c18544; fill:#e6a865" xlink:href="#fg"/>
 
       <use *ngIf="shipmentStatus == 'Pending'" transform="translate(0 0)" style="stroke:#c14844; fill:#eb706c" xlink:href="#fg"/>
+
+      <!-- cancelled has no color... -->
     </svg>
   </span>
-  <span>{{shipmentStatus}}</span>
+  <span *ngIf='shipmentStatus'>{{shipmentStatus | shipmentStatus}}</span>
 </div>

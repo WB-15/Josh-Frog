@@ -11,16 +11,22 @@ import { ThumbnailLgComponent } from './components/thumbnail-lg/thumbnail-lg.com
 import { MarketplaceIconComponent } from './components/marketplace-icon/marketplace-icon.component';
 import { OrderStatusComponent } from './components/order-status/order-status.component';
 import { ShipmentStatusComponent } from './components/shipment-status/shipment-status.component';
+import { ShipmentContentsComponent } from './components/shipment-contents/shipment-contents.component';
+import { ShippingAddressComponent } from './components/shipping-address/shipping-address.component';
+import { CarrierIconComponent } from './components/carrier-icon/carrier-icon.component';
+import { PackagingIconComponent } from './components/packaging-icon/packaging-icon.component';
 import { HostnamePipe } from './pipes/hostname.pipe';
 import { ShippingNeedsPipe } from './pipes/shipping-needs.pipe';
 import { SqrtPipe } from './pipes/sqrt.pipe';
 import { ConfidencePipe } from './pipes/confidence.pipe';
 import { ServicePipe } from './pipes/service.pipe';
 import { CarrierPipe } from './pipes/carrier.pipe';
-import { CarrierIconComponent } from './components/carrier-icon/carrier-icon.component';
 import { OptionPipe } from './pipes/option.pipe';
 import { PackagingPipe } from './pipes/packaging.pipe';
-import { PackagingIconComponent} from './components/packaging-icon/packaging-icon.component';
+import { AutofocusDirective } from './directives/autofocus.directive';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ShipmentStatusPipe } from './pipes/shipment-status.pipe';
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +38,11 @@ import { PackagingIconComponent} from './components/packaging-icon/packaging-ico
     ThumbnailLgComponent,
     MarketplaceIconComponent,
     ShipmentStatusComponent,
+    ShipmentContentsComponent,
+    ShippingAddressComponent,
     OrderStatusComponent,
+    CarrierIconComponent,
+    PackagingIconComponent,
     HostnamePipe,
     ShippingNeedsPipe,
     SqrtPipe,
@@ -41,8 +51,9 @@ import { PackagingIconComponent} from './components/packaging-icon/packaging-ico
     CarrierPipe,
     OptionPipe,
     PackagingPipe,
-    CarrierIconComponent,
-    PackagingIconComponent
+    AutofocusDirective,
+    ShipmentStatusPipe,
+    LoadingComponent
   ],
   exports: [
     DialogComponent,
@@ -54,7 +65,11 @@ import { PackagingIconComponent} from './components/packaging-icon/packaging-ico
     ThumbnailLgComponent,
     MarketplaceIconComponent,
     ShipmentStatusComponent,
+    ShipmentContentsComponent,
+    ShippingAddressComponent,
     OrderStatusComponent,
+    CarrierIconComponent,
+    PackagingIconComponent,
     HostnamePipe,
     ShippingNeedsPipe,
     SqrtPipe,
@@ -63,9 +78,9 @@ import { PackagingIconComponent} from './components/packaging-icon/packaging-ico
     CarrierPipe,
     OptionPipe,
     PackagingPipe,
-    CarrierIconComponent,
-    PackagingIconComponent
+    AutofocusDirective,
+    LoadingComponent
   ],
-  imports: [CommonModule, FontAwesomeModule]
+  imports: [CommonModule, FontAwesomeModule, FormsModule, ReactiveFormsModule]
 })
 export class GlobalSharedModule {}

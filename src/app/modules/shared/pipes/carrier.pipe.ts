@@ -14,6 +14,8 @@ export class CarrierPipe implements PipeTransform {
         return 'UPS';
       case 'DHL':
         return 'DHL';
+      case 'LASERSHIP':
+        return 'LaserShip';
       default:
         return value;
     }
