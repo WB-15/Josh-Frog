@@ -45,6 +45,7 @@ export class PlantLabelsComponent implements OnInit, OnDestroy {
 
   simpleProduct: SimpleProductEntity;
   searchData = this.searchService.getSearchData();
+  searchTypeEnum = SearchType;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -152,9 +153,9 @@ export class PlantLabelsComponent implements OnInit, OnDestroy {
       );
   }
 
-  search() {
+  search(searchType: SearchType) {
     const searchParam = { department: 'Plants' };
-    this.searchService.searchProducts(SearchType.TITLE, searchParam);
+    this.searchService.searchProducts(searchType, searchParam);
   }
 
   ngOnDestroy(): void {
