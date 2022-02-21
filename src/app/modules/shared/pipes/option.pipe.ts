@@ -10,6 +10,8 @@ export class OptionPipe implements PipeTransform {
         return 'FedEx One Rate';
       case 'SATURDAY_DELIVERY':
         return 'Saturday Delivery';
+      case 'FREE_SATURDAY_DELIVERY':
+        return 'Free Saturday Delivery';
       default:
         return value;
     }
