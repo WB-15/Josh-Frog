@@ -11,7 +11,7 @@
           </span>
         </div>
         <input id="searchBySku" class="form-input block w-full pl-10 pr-2 rounded-lg" [ngClass]="searchData.sku.results?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search SKUs" autocomplete="off" autocapitalize="words"
-               [(ngModel)]="searchData.sku.value" (keyup)="search(searchTypeEnum.SKU)" />
+               [(ngModel)]="searchData.sku.value" (ngModelChange)="searchData.sku.value = searchData.sku.value.trim();" (keyup)="search(searchTypeEnum.SKU)" />
         <div *ngIf="searchData.sku.results" class="block absolute bg-gray-100 z-30 w-full">
           <div *ngFor="let result of searchData.sku.results" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
             <div class="flex-none h-10 w-10 m-1 mr-3 rounded-lg bg-white">
@@ -38,7 +38,7 @@
           </span>
         </div>
         <input id="searchByTitle" class="form-input block w-full pl-10 pr-2 rounded-lg" [ngClass]="searchData.title.results?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search Title" autocomplete="off" autocapitalize="words"
-               [(ngModel)]="searchData.title.value" (keyup)="search(searchTypeEnum.TITLE)" />
+               [(ngModel)]="searchData.title.value" (ngModelChange)="searchData.title.value = searchData.title.value.trim();" (keyup)="search(searchTypeEnum.TITLE)" />
         <div *ngIf="searchData.title.results" class="block absolute bg-gray-100 z-30 w-full">
           <div *ngFor="let result of searchData.title.results" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
             <div class="flex-none h-10 w-10 m-1 mr-3 rounded-lg bg-white">
