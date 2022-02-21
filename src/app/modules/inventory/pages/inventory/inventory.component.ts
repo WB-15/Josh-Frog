@@ -171,43 +171,33 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
     this.binScannedSubscription = this.barcodeService.binScanned$.subscribe(
       (bin) => {
-        if (bin) {
-          this.loadByBin(bin);
+        this.bin = bin;
+        if (this.bin) {
+          this.loading++;
+          this.changeDetectorRef.detectChanges();
+          this.simpleProductFindByBinGQL
+            .fetch({ warehouse: this.warehouse.name, binId: this.bin })
+            .pipe(map((result) => result.data.simpleProductFindByBin))
+            .subscribe(
+              (result) => {
+                this.simpleProduct = result as SimpleProductEntity;
+                this.quantityUpdated = null;
+                this.quantityEntry = null;
+                this.loading--;
+                this.changeDetectorRef.detectChanges();
+                this.getInventory();
+              },
+              (error) => {
+                console.error(error);
+                this.loading--;
+                this.inventoryDetails = null;
+                this.dialogService.showErrorMessageBox(error);
+                this.changeDetectorRef.detectChanges();
+              }
+            );
         }
       }
     );
-  }
-
-  loadByBin(bin: string) {
-    this.searchService.clearSearchData(SearchType.BIN);
-    this.loading++;
-    this.changeDetectorRef.detectChanges();
-    return this.simpleProductFindByBinGQL
-      .fetch({ warehouse: this.warehouse.name, binId: bin })
-      .pipe(map((result) => result.data.simpleProductFindByBin))
-      .subscribe(
-        (result) => {
-          if (result) {
-            this.searchService.clearSearchData();
-            this.simpleProduct = result as SimpleProductEntity;
-            this.getInventory();
-          } else {
-            this.simpleProduct = null;
-            this.dialogService.showErrorMessageBox(new Error(`No product found for bin '${bin}' at warehouse '${this.warehouse.name}'.`));
-          }
-          this.quantityUpdated = null;
-          this.quantityEntry = null;
-          this.loading--;
-          this.changeDetectorRef.detectChanges();
-        },
-        (error) => {
-          console.error(error);
-          this.loading--;
-          this.inventoryDetails = null;
-          this.dialogService.showErrorMessageBox(error);
-          this.changeDetectorRef.detectChanges();
-        }
-      );
   }
 
   load(id: string) {

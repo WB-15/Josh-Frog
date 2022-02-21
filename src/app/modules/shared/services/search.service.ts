@@ -20,7 +20,9 @@ export class SearchService {
       results: []
     },
     bin: {
-      value: ''
+      value: '',
+      pending: null,
+      results: []
     }
   };
 
@@ -78,6 +80,10 @@ export class SearchService {
     const sku = this.searchData[SearchType.SKU].pending || this.searchData[SearchType.SKU].value;
     if (sku) {
       fetchParam[SearchType.SKU] = `${sku}%`;
+    }
+    const bin = this.searchData[SearchType.BIN].pending || this.searchData[SearchType.BIN].value;
+    if (bin) {
+      fetchParam[SearchType.BIN] = `%${bin}%`;
     }
     if (additionalSearchParams) {
       Object.assign(fetchParam, additionalSearchParams);
