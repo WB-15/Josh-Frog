@@ -2,24 +2,30 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { GraphQlPageableInput, SimpleProductEntity, SimpleProductFilterGQL } from '../../../../generated/graphql';
 import { DialogService } from './dialog.service';
 import { map } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
   public dataUpdated = new EventEmitter();
+  private searchDataByMultipleTypes: { value: string, pending: string, results: SimpleProductEntity[] } = {
+    value: '',
+    pending: null,
+    results: []
+  };
   private searchData: { [key in SearchType]: { value: string, pending?: string, results?: SimpleProductEntity[] } } = {
-    sku: {
+    [SearchType.SKU]: {
       value: '',
       pending: null,
       results: []
     },
-    title: {
+    [SearchType.TITLE]: {
       value: '',
       pending: null,
       results: []
     },
-    bin: {
+    [SearchType.BIN]: {
       value: '',
       pending: null,
       results: []
@@ -44,6 +50,8 @@ export class SearchService {
         }
       }
     }
+    this.searchDataByMultipleTypes.value = '';
+    this.searchDataByMultipleTypes.results = [];
   }
 
   searchProducts(type: SearchType, additionalSearchParams?: object) {
@@ -54,7 +62,7 @@ export class SearchService {
       } else {
         this.searchData[type].pending = this.searchData[type].value;
 
-        this.searchProductsByMultipleTypes(additionalSearchParams).subscribe(
+        this.searchProductsByAllTypes(additionalSearchParams).subscribe(
           (result) => {
             this.searchData[type].results = result.data as SimpleProductEntity[];
             this.searchFinished(type, additionalSearchParams);
@@ -67,7 +75,7 @@ export class SearchService {
     }
   }
 
-  searchProductsByMultipleTypes(additionalSearchParams?: object) {
+  searchProductsByAllTypes(additionalSearchParams?: object) {
     const pageable: GraphQlPageableInput = {
       page: 1,
       pageSize: 5
@@ -108,6 +116,83 @@ export class SearchService {
     } else {
       this.searchData[type].pending = null;
     }
+  }
+
+  getSearchDataByMultipleTypes() {
+    return this.searchDataByMultipleTypes;
+  }
+
+  searchProductsByMultipleTypes(types: SearchType[], additionalSearchParams?: object) {
+    if (this.searchDataByMultipleTypes.pending == null) {
+      if (this.searchDataByMultipleTypes.value === '') {
+        this.searchDataByMultipleTypes.results = [];
+      } else {
+        this.searchDataByMultipleTypes.pending = this.searchDataByMultipleTypes.value;
+
+        this.getMultipleTypesObservable(types, additionalSearchParams).subscribe(
+          (results: any) => {
+            const data = [];
+            // Combine search results
+            results.forEach(result => {
+              data.push(...result.data);
+            })
+            // Remove duplicate products
+            this.searchDataByMultipleTypes.results = data.filter((v,i,a)=>a.findIndex(t=>(t.id===v.id))===i);
+
+            this.searchMultipleTypesFinished(types, additionalSearchParams);
+          },
+          (error) => {
+            this.handleSearchMultipleTypesError(error, types, additionalSearchParams);
+          }
+        );
+      }
+    }
+  }
+
+  private getMultipleTypesObservable(types: SearchType[], additionalSearchParams?: object) {
+    const pageable: GraphQlPageableInput = {
+      page: 1,
+      pageSize: 5
+    };
+    const fetchParam = { pageable };
+
+    if (additionalSearchParams) {
+      Object.assign(fetchParam, additionalSearchParams);
+    }
+    const observables = [];
+
+
+    if (types.includes(SearchType.TITLE)) {
+      const title = this.simpleProductFilterGQL
+        .fetch(Object.assign({'title': `%${this.searchDataByMultipleTypes.pending}%`}, fetchParam))
+        .pipe(map((result) => result.data.simpleProductFilter));
+      observables.push(title);
+
+    }
+    if (types.includes(SearchType.SKU)) {
+      const sku = this.simpleProductFilterGQL
+        .fetch(Object.assign({'sku': `${this.searchDataByMultipleTypes.pending}%`}, fetchParam))
+        .pipe(map((result) => result.data.simpleProductFilter));
+      observables.push(sku);
+    }
+
+    return forkJoin(observables);
+  }
+
+  searchMultipleTypesFinished(types: SearchType[], additionalSearchParams?: object) {
+    this.dataUpdated.emit();
+    if (this.searchDataByMultipleTypes.pending !== this.searchDataByMultipleTypes.value) {
+      this.searchDataByMultipleTypes.pending = null;
+      this.searchProductsByMultipleTypes(types, additionalSearchParams);
+    } else {
+      this.searchDataByMultipleTypes.pending = null;
+    }
+  }
+
+  handleSearchMultipleTypesError(error, types: SearchType[], additionalSearchParams?: object) {
+    console.error(error);
+    this.dialogService.showErrorMessageBox(error);
+    this.searchMultipleTypesFinished(types, additionalSearchParams);
   }
 }
 
