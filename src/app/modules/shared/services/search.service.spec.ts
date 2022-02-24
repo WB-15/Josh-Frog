@@ -57,25 +57,25 @@ describe('SearchService', () => {
     });
 
     it('does nothing if pending is not null', () => {
-      spyOn(service, 'searchProductsByMultipleTypes');
+      spyOn(service, 'searchProductsByAllTypes');
       service.getSearchData().sku.pending = '1234';
       service.searchProducts(SearchType.SKU);
 
-      expect(service.searchProductsByMultipleTypes).not.toHaveBeenCalled();
+      expect(service.searchProductsByAllTypes).not.toHaveBeenCalled();
     });
 
     it('clears results if value is empty', () => {
-      spyOn(service, 'searchProductsByMultipleTypes');
+      spyOn(service, 'searchProductsByAllTypes');
       service.getSearchData().sku.results = [{ id: '1234' }];
       service.searchProducts(SearchType.SKU);
 
-      expect(service.searchProductsByMultipleTypes).not.toHaveBeenCalled();
+      expect(service.searchProductsByAllTypes).not.toHaveBeenCalled();
       expect(service.getSearchData().sku.results).toEqual([]);
     });
 
     it('succeeds', () => {
       const mockCall = new Subject<any>();
-      spyOn(service, 'searchProductsByMultipleTypes').and.returnValue(mockCall.asObservable());
+      spyOn(service, 'searchProductsByAllTypes').and.returnValue(mockCall.asObservable());
       spyOn(service, 'searchFinished');
       service.getSearchData().sku.value = '1234';
       service.searchProducts(SearchType.SKU);
@@ -84,14 +84,14 @@ describe('SearchService', () => {
 
       mockCall.next({ data: [{ id: '1234' }] });
 
-      expect(service.searchProductsByMultipleTypes).toHaveBeenCalled();
+      expect(service.searchProductsByAllTypes).toHaveBeenCalled();
       expect(service.searchFinished).toHaveBeenCalledWith(SearchType.SKU);
       expect(service.getSearchData().sku.results).toEqual([{ id: '1234' }]);
     });
 
     it('handles errors', () => {
       const mockCall = new Subject<any>();
-      spyOn(service, 'searchProductsByMultipleTypes').and.returnValue(mockCall.asObservable());
+      spyOn(service, 'searchProductsByAllTypes').and.returnValue(mockCall.asObservable());
       spyOn(service, 'handleSearchError');
       service.getSearchData().sku.value = '1234';
       service.searchProducts(SearchType.SKU);
@@ -101,19 +101,19 @@ describe('SearchService', () => {
       const error = new Error();
       mockCall.error(error);
 
-      expect(service.searchProductsByMultipleTypes).toHaveBeenCalled();
+      expect(service.searchProductsByAllTypes).toHaveBeenCalled();
       expect(service.handleSearchError).toHaveBeenCalledWith(error, SearchType.SKU);
     });
   });
 
-  describe('searchProductsByMultipleTypes', () => {
+  describe('searchProductsByAllTypes', () => {
     it('sets params from pending', () => {
       const data = service.getSearchData();
       data.title.pending = '1234';
       data.title.value = '5678';
       data.sku.pending = '4321';
       data.sku.value = '8765';
-      service.searchProductsByMultipleTypes().subscribe();
+      service.searchProductsByAllTypes().subscribe();
 
       const call = backend.expectOne(SimpleProductFilterDocument);
       expect(call.operation.variables.pageable).toEqual({ page: 1, pageSize: 5 });
@@ -129,7 +129,7 @@ describe('SearchService', () => {
       data.title.value = '5678';
       data.sku.pending = null;
       data.sku.value = '8765';
-      service.searchProductsByMultipleTypes().subscribe();
+      service.searchProductsByAllTypes().subscribe();
 
       const call = backend.expectOne(SimpleProductFilterDocument);
       expect(call.operation.variables.pageable).toEqual({ page: 1, pageSize: 5 });
@@ -144,7 +144,7 @@ describe('SearchService', () => {
         page: 1,
         pageSize: 20
       };
-      service.searchProductsByMultipleTypes({ pageable }).subscribe();
+      service.searchProductsByAllTypes({ pageable }).subscribe();
 
       const call = backend.expectOne(SimpleProductFilterDocument);
       expect(call.operation.variables.pageable).toEqual(pageable);
@@ -154,7 +154,7 @@ describe('SearchService', () => {
 
     it('returns data', fakeAsync(() => {
       const response = { data: { simpleProductFilter: { count: 1, pageSize: 1, page: 1, data: [{ id: '1234' }] } } };
-      service.searchProductsByMultipleTypes().subscribe((result) => {
+      service.searchProductsByAllTypes().subscribe((result) => {
         expect(result).toBe(response.data.simpleProductFilter);
       });
       const call = backend.expectOne(SimpleProductFilterDocument);
