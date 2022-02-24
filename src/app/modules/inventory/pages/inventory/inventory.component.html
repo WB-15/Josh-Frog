@@ -3,71 +3,17 @@
 
   <div class="flex">
     <div class="block mx-auto">
-      <label for="searchBySku" class="sr-only">Search by Sku</label>
+      <label for="search" class="sr-only">Search</label>
       <div class="relative pt-3 pb-4">
         <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
           <span class="icon is-medium is-left">
             <fa-icon [icon]="faSearch"></fa-icon>
           </span>
         </div>
-        <input id="searchBySku" class="form-input block w-full pl-10 pr-2 rounded-lg" [ngClass]="searchData.sku.results?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search SKUs" autocomplete="off" autocapitalize="words"
-               [(ngModel)]="searchData.sku.value" (ngModelChange)="searchData.sku.value = searchData.sku.value.trim();" (keyup)="this.search(searchTypeEnum.SKU)" />
-        <div *ngIf="searchData.sku.results" class="block absolute bg-gray-100 z-30 w-full">
-          <div *ngFor="let result of searchData.sku.results" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
-            <div class="flex-none h-10 w-10 m-1 mr-3 rounded-lg bg-white">
-              <app-thumbnail-sm [src]="result.medias[0]?.url" [alt]="result.title"></app-thumbnail-sm>
-            </div>
-
-            <div class="m-1 mr-3">
-              <p class="font-semibold">{{result.sku}}</p>
-              <p class="font-narrow">{{result.title}}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="flex">
-    <div class="block mx-auto">
-      <label for="searchByTitle" class="sr-only">Search by Title</label>
-      <div class="relative pt-3 pb-4">
-        <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
-          <span class="icon is-medium is-left">
-            <fa-icon [icon]="faSearch"></fa-icon>
-          </span>
-        </div>
-        <input id="searchByTitle" class="form-input block w-full pl-10 pr-2 rounded-lg" [ngClass]="searchData.title.results?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search Title" autocomplete="off" autocapitalize="words"
-               [(ngModel)]="searchData.title.value" (ngModelChange)="searchData.title.value = searchData.title.value.trim();" (keyup)="this.search(searchTypeEnum.TITLE)" />
-        <div *ngIf="searchData.title.results" class="block absolute bg-gray-100 z-30 w-full">
-          <div *ngFor="let result of searchData.title.results" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
-            <div class="flex-none h-10 w-10 m-1 mr-3 rounded-lg bg-white">
-              <app-thumbnail-sm [src]="result.medias[0]?.url" [alt]="result.title"></app-thumbnail-sm>
-            </div>
-
-            <div class="m-1 mr-3">
-              <p class="font-semibold">{{result.sku}}</p>
-              <p class="font-narrow">{{result.title}}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="flex">
-    <div class="block mx-auto">
-      <label for="searchByBin" class="sr-only">Search by Bin</label>
-      <div class="relative pt-3 pb-4">
-        <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
-          <span class="icon is-medium is-left">
-            <fa-icon [icon]="faSearch"></fa-icon>
-          </span>
-        </div>
-        <input id="searchByBin" class="form-input block w-full pl-10 pr-2 rounded-lg" [ngClass]="searchData.bin.results?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search Bin" autocomplete="off" autocapitalize="words"
-               [(ngModel)]="searchData.bin.value" (ngModelChange)="searchData.bin.value = searchData.bin.value.trim();" (keyup)="this.search(searchTypeEnum.BIN)" />
-        <div *ngIf="searchData.bin.results" class="block absolute bg-gray-100 z-30 w-full">
-          <div *ngFor="let result of searchData.bin.results" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
+        <input id="search" class="form-input block w-full pl-10 pr-2 rounded-lg" [ngClass]="searchData.results?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search by Title/SKU" autocomplete="off" autocapitalize="words"
+               [(ngModel)]="searchData.value" (ngModelChange)="searchData.value = searchData.value.trim();" (keyup)="search()" />
+        <div *ngIf="searchData.results" class="block absolute bg-gray-100 z-30 w-full">
+          <div *ngFor="let result of searchData.results" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
             <div class="flex-none h-10 w-10 m-1 mr-3 rounded-lg bg-white">
               <app-thumbnail-sm [src]="result.medias[0]?.url" [alt]="result.title"></app-thumbnail-sm>
             </div>

@@ -51,7 +51,7 @@ export class CatalogComponent implements OnInit {
 
   filter() {
     this.loading++;
-    this.searchService.searchProductsByMultipleTypes({ pageable: this.pageable }).subscribe(
+    this.searchService.searchProductsByAllTypes({ pageable: this.pageable }).subscribe(
       (result) => {
         this.searchResults = result.data as SimpleProductEntity[];
         this.pageable.page = result.page;
