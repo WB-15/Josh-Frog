@@ -1,20 +1,9 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  NgZone,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import {
-  faSpinnerThird,
-  faSearch,
-  faHandReceiving,
-  faChevronCircleRight
-} from '@fortawesome/pro-duotone-svg-icons';
+import { faChevronCircleRight, faHandReceiving, faSearch, faSpinnerThird } from '@fortawesome/pro-duotone-svg-icons';
 
 import { DialogService } from '../../../shared/services/dialog.service';
 import { WarehouseService } from '../../../shared/services/warehouse.service';
@@ -62,8 +51,8 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   searchDataSubscription: Subscription;
 
   simpleProduct: SimpleProductEntity;
-  searchData = this.searchService.getSearchData();
-  searchTypeEnum = SearchType;
+  //TODO: Add SearchType.VENDOR when it is hooked up
+  searchTypes = [SearchType.SKU, SearchType.TITLE];
 
   constructor(
     private route: ActivatedRoute,
@@ -167,7 +156,6 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   }
 
   load(id: string) {
-    this.searchService.clearSearchData();
     this.loading++;
     this.changeDetectorRef.detectChanges();
     this.simpleProductInfo
@@ -277,10 +265,6 @@ export class ReceivingComponent implements OnInit, OnDestroy {
           this.changeDetectorRef.detectChanges();
         }
       );
-  }
-
-  search(searchType: SearchType) {
-    this.searchService.searchProducts(searchType);
   }
 
   ngOnDestroy(): void {

@@ -30,7 +30,7 @@ export class SearchService {
       pending: null,
       results: []
     },
-    vendor_reference: {
+    [SearchType.VENDOR]: {
       value: '',
       pending: null,
       results: []
@@ -98,9 +98,9 @@ export class SearchService {
     if (bin) {
       fetchParam[SearchType.BIN] = `%${bin}%`;
     }
-    const vendor = this.searchData[SearchType.VENDOR_REFERENCE].pending || this.searchData[SearchType.VENDOR_REFERENCE].value;
+    const vendor = this.searchData[SearchType.VENDOR].pending || this.searchData[SearchType.VENDOR].value;
     if (vendor) {
-      fetchParam[SearchType.VENDOR_REFERENCE] = `%${vendor}%`;
+      fetchParam[SearchType.VENDOR] = `%${vendor}%`;
     }
     if (additionalSearchParams) {
       Object.assign(fetchParam, additionalSearchParams);
@@ -209,5 +209,5 @@ export enum SearchType {
   SKU = 'sku',
   TITLE = 'title',
   BIN = 'bin',
-  VENDOR_REFERENCE = 'vendor_reference'
+  VENDOR = 'vendor'
 }
