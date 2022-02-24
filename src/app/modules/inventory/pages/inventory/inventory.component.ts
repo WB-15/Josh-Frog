@@ -57,9 +57,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   inventoryDetails: InventoryDetails;
   simpleProduct: SimpleProductEntity;
-  //TODO: Add SearchType.BIN and change the placeholder of the input element when it is hooked up
+  //TODO: Add SearchType.BIN when it is hooked up
   searchTypes = [SearchType.SKU, SearchType.TITLE];
-  searchData = this.searchService.getSearchDataByMultipleTypes();
 
   constructor(
     private route: ActivatedRoute,
@@ -191,7 +190,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   load(id: string) {
-    this.searchService.clearSearchData();
     this.loading++;
     this.changeDetectorRef.detectChanges();
     this.simpleProductInfo
@@ -335,10 +333,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
           this.changeDetectorRef.detectChanges();
         }
       );
-  }
-
-  search() {
-    this.searchService.searchProductsByMultipleTypes(this.searchTypes);
   }
 
   ngOnDestroy(): void {
