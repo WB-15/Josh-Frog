@@ -9,6 +9,7 @@ import { faSearch } from '@fortawesome/pro-duotone-svg-icons';
 })
 export class ProductSearchComponent {
   @Input() searchTypes: SearchType[];
+  @Input() additionalSearchParams: Object;
   @Output() productSelected = new EventEmitter<string>();
 
   searchData = this.searchService.getSearchDataByMultipleTypes();
@@ -17,7 +18,7 @@ export class ProductSearchComponent {
   constructor(private searchService: SearchService) {}
 
   search() {
-    this.searchService.searchProductsByMultipleTypes(this.searchTypes);
+    this.searchService.searchProductsByMultipleTypes(this.searchTypes, this.additionalSearchParams);
   }
 
   select(productId: string) {
