@@ -577,7 +577,7 @@ type ConfigurableProductEntity {
   implicitAnimals: [AnimalEntity]
   "Product's implicit categories"
   implicitCategories: [CategoryEntity]
-  "Product's implicit department"
+  "Product's implicit departments"
   implicitDepartments: [DepartmentEntity]
   "Product's implicit discounts"
   implicitDiscounts: [DiscountEntity]
@@ -1211,7 +1211,7 @@ type KitProductEntity {
   implicitAnimals: [AnimalEntity]
   "Product's implicit categories"
   implicitCategories: [CategoryEntity]
-  "Product's implicit department"
+  "Product's implicit departments"
   implicitDepartments: [DepartmentEntity]
   "Product's implicit discounts"
   implicitDiscounts: [DiscountEntity]
@@ -1453,10 +1453,10 @@ type Mutation {
   maintenanceUpdateInventoryCaches: Boolean
   "Validates the address, updates it if necessary"
   shipmentValidateAddress("" id: UUID!): ShipmentEntity
-  "Updates bin on a simple product"
-  simpleProductSetBin("" bin: String!, "" id: UUID!, "" warehouse: String!): SimpleProductEntity
   "Adds user to marketing list"
   marketingSubscribe("" email: String): Boolean!
+  "Updates bin on a simple product"
+  simpleProductSetBin("" bin: String!, "" id: UUID!, "" warehouse: String!): SimpleProductEntity
   "Clears the cart's phone"
   cartClearPhone("" cartId: UUID): CartEntity
   "Calculates a sales tax rate based on zip code"
@@ -1467,18 +1467,20 @@ type Mutation {
   maintenanceMagentoReSyncOrders: Boolean
   "Sets the cart's phone"
   cartSetPhone("" phone: String!, "" cartId: UUID): CartEntity
+  "Add a category to a product"
+  productAddCategory("" productId: UUID!, "" categoryId: UUID!): ProductEntity
   "Triggers a re-sync of all categories with Magento"
   maintenanceMagentoSyncAllCategories: Boolean
   "Refreshes a simple product (with Magento) by entity id"
   simpleProductRefresh("" magentoId: String!): SimpleProductEntity
   "Refreshes a new user with Magento"
   userRefresh("" magentoId: String!): UserEntity
+  "Gets inventory details for a simple product"
+  inventoryGetDetails("" id: UUID!, "" warehouse: String!): InventoryDetails
   "Changes quantity of selected kit product in user's cart"
   cartChangeQuantityKitProduct("" quantity: Long!, "" productId: UUID!, "" cartId: UUID): CartEntity
   "Calculates the implicit products a discount"
   discountEvaluateImplicitProducts("" id: UUID!): DiscountEntity
-  "Gets inventory details for a simple product"
-  inventoryGetDetails("" id: UUID!, "" warehouse: String!): InventoryDetails
   "Triggers a re-index of hibernate cache"
   maintenanceCacheFlushAll: Boolean
   "Looks up weather for shipment"
@@ -1491,10 +1493,10 @@ type Mutation {
   autoprintGetNextForPrinter("" machineKey: String!, "" printerName: String!): [PrintJob]
   "Refreshes a sales order (with Walmart) by purchase order id"
   walmartSalesOrderRefresh("" purchaseOrderId: String!): WalmartSalesOrderEntity
-  "Sends a shipper performance report"
-  maintenanceSendShipperPerformance: Boolean
   "Sets the billing address to one of the user's addresses"
   cartSetBillingAddressById("" cartId: UUID, "" addressId: UUID!): CartEntity
+  "Sends a shipper performance report"
+  maintenanceSendShipperPerformance: Boolean
   "Triggers a re-sync of all products with Magento"
   maintenanceMagentoSyncAllProducts: Boolean
   "Lists all POS terminals"
@@ -1507,10 +1509,10 @@ type Mutation {
   autoprintReroute: Boolean!
   "Adds quantity of selected simple product to user's cart"
   cartAddSimpleProduct("" quantity: Long!, "" productId: UUID!, "" cartId: UUID): CartEntity
-  "Creates a new kit product"
-  kitProductCreate("" price: BigDecimal!, "" title: String!, "" sku: String!, "" slug: String!): KitProductEntity
   "Adds inventory for a simple product"
   inventoryAddDetails("" quantity: Long!, "" id: UUID!, "" warehouse: String!): InventoryDetails
+  "Creates a new kit product"
+  kitProductCreate("" price: BigDecimal!, "" title: String!, "" sku: String!, "" slug: String!): KitProductEntity
   "Sets the cart's email"
   cartSetEmail("" cartId: UUID, "" email: String!): CartEntity
   "Sets the shipping address to one of the user's addresses"
@@ -1519,10 +1521,10 @@ type Mutation {
   maintenanceWalmartSyncUpdatedOrders: Boolean
   "Triggers a fix to clean up inventory issues"
   maintenanceFixInventoryIssues: Boolean
-  "Triggers a re-sync of products quantities available for sale"
-  maintenanceInventoryUpdateQuantitiesAvailableForSale: Boolean
   "Assigns a pos terminal to a tradeshow"
   tradeShowAssignTerminal("" tradeshowId: UUID!, "" terminalId: UUID!): TradeShowEntity
+  "Triggers a re-sync of products quantities available for sale"
+  maintenanceInventoryUpdateQuantitiesAvailableForSale: Boolean
   "Sets a carrier preference for a cart item"
   cartSetCarrierPreference("" cartId: UUID, "" simpleProductId: UUID!, "" carrierPreference: Carrier!): CartEntity
   "Sets a product as requiring preparation"
@@ -1533,24 +1535,26 @@ type Mutation {
   cartClearEmail("" cartId: UUID): CartEntity
   "Confirm user's email"
   userConfirmEmail("" hash: String!): Boolean
-  "Refreshes a kit product (with Magento) by entity id"
-  kitProductRefresh("" magentoId: String!): KitProductEntity
   "Adds inventory for a simple product"
   inventoryAdd("" quantity: Long!, "" id: UUID!, "" warehouse: String): InventoryResult
+  "Refreshes a kit product (with Magento) by entity id"
+  kitProductRefresh("" magentoId: String!): KitProductEntity
   "Change a user's password"
   userChangePasswordByHash("" password: String!, "" hash: String!): Boolean
-  "Removes a purchase request item"
-  purchaseRequestRemoveItem("" itemId: UUID, "" requestId: UUID): PurchaseRequestEntity
+  "Reindexes a kit product"
+  kitProductReindex("" id: UUID!): KitProductEntity
   "Creates a new address"
   addressCreate("" country: String!, "" lastName: String!, "" firstName: String!, "" residential: Boolean!, "" city: String!, "" postalCode: String!, "" company: String, "" state: String!, "" line2: String, "" line1: String!): AddressEntity
+  "Removes a purchase request item"
+  purchaseRequestRemoveItem("" itemId: UUID, "" requestId: UUID): PurchaseRequestEntity
   "Reschedule a shipment"
   shipmentReschedule("" id: UUID!): ShipmentEntity
   "Tests a workstation for use with AutoPrint"
   autoprintTestWorkstation("" machineKey: String!): WorkstationEntity
-  "Triggers a re-sync of updated orders with Magento"
-  maintenanceMagentoSyncUpdatedOrders: Boolean
   "Adds a purchase request item"
   purchaseRequestAddItem("" amount: BigDecimal, "" quantity: Long, "" name: String, "" id: UUID): PurchaseRequestEntity
+  "Triggers a re-sync of updated orders with Magento"
+  maintenanceMagentoSyncUpdatedOrders: Boolean
   "Approves a purchase request"
   purchaseRequestApprove("" id: UUID!): PurchaseRequestEntity
   "Triggers a re-sync of updated orders with Amazon"
@@ -1565,24 +1569,28 @@ type Mutation {
   simpleProductRecomputeShippingEstimates("" id: UUID!): SimpleProductEntity
   "Reindexes all products"
   maintenanceReindexProducts: Boolean
-  "Update's a user's admin status"
-  userUpdateAdmin("" admin: Boolean!, "" id: UUID!): UserEntity
+  "Triggers a re-sync of processing orders with Magento"
+  maintenanceMagentoSyncProcessing: Boolean
   "Verifies an existing address"
   addressVerifyRaw("" country: String!, "" lastName: String!, "" firstName: String!, "" residential: Boolean!, "" city: String!, "" postalCode: String!, "" company: String, "" state: String!, "" line2: String, "" line1: String!): AddressEntity
-  "Unssigns a pos terminal to a tradeshow"
-  tradeShowUnassignTerminal("" tradeshowId: UUID!, "" terminalId: UUID!): TradeShowEntity
+  "Update's a user's admin status"
+  userUpdateAdmin("" admin: Boolean!, "" id: UUID!): UserEntity
+  "Assigns a department to a product"
+  productSetDepartment("" productId: UUID!, "" departmentId: UUID!): ProductEntity
   "Sets the billing address"
   cartSetBillingAddress("" country: String!, "" lastName: String!, "" firstName: String!, "" city: String!, "" postalCode: String!, "" cartId: UUID, "" company: String, "" state: String!, "" line2: String, "" line1: String!): CartEntity
+  "Unssigns a pos terminal to a tradeshow"
+  tradeShowUnassignTerminal("" tradeshowId: UUID!, "" terminalId: UUID!): TradeShowEntity
   "Removes a warehouse from a simple product"
   simpleProductRemoveWarehouse("" productId: UUID!, "" warehouse: String!): SimpleProductEntity
   "Returns the tradeshow report"
   tradeShowReport("" id: UUID!): ShowReport
-  "Triggers a re-sync of products with Price2Spy"
-  maintenancePrice2SpyUpdateProducts: Boolean
   "Creates a new tradeshow"
   tradeShowCreateShow("" endDate: LocalDate!, "" city: String!, "" postalCode: String!, "" name: String!, "" state: String!, "" line2: String, "" startDate: LocalDate!, "" line1: String!): TradeShowEntity
   "Sends the tradeshow report"
   tradeShowSendReport("" emails: [String]!, "" id: UUID!): Boolean
+  "Triggers a re-sync of products with Price2Spy"
+  maintenancePrice2SpyUpdateProducts: Boolean
   "Adds a printer to an existing workstation"
   autoprintAddPrinter("" machineKey: String!, "" printerName: String!): PrinterEntity
   "Reroute a shipment"
@@ -1625,10 +1633,10 @@ type Mutation {
   addressVerify("" commit: Boolean!, "" id: UUID!): AddressEntity
   "Reindexes a simple product"
   simpleProductReindex("" id: UUID!): SimpleProductEntity
-  "Refreshes a simple product (with Magento) by sku"
-  simpleProductRefreshBySku("" sku: String!): SimpleProductEntity
   "Creates a new category"
   categoryCreate("" name: String!, "" slug: String!): CategoryEntity
+  "Refreshes a simple product (with Magento) by sku"
+  simpleProductRefreshBySku("" sku: String!): SimpleProductEntity
   "Retrieves cross-sells for the given cart"
   cartCrossSells("" cartId: UUID): [ProductEntity]
   "Adds zone to a simple product"
@@ -1667,16 +1675,16 @@ type Mutation {
   salesOrderOfflineRefund("" id: UUID!): SalesOrderEntity
   "Refreshes a configurable product (with Magento) by sku"
   configurableProductRefreshBySku("" sku: String!): ConfigurableProductEntity
-  "Creates a simple product"
-  simpleProductCreate("" cost: BigDecimal, "" price: BigDecimal!, "" upc: String, "" title: String!, "" sku: String!, "" slug: String, "" vendorRef: String): SimpleProductEntity
   "Deletes an existing address"
   addressDelete("" id: UUID!): Boolean!
-  "Creates a new user, with password hash"
-  userCreate("" lastName: String!, "" firstName: String!, "" password: String!, "" email: String!): UserEntity
+  "Creates a simple product"
+  simpleProductCreate("" cost: BigDecimal, "" price: BigDecimal!, "" upc: String, "" title: String!, "" sku: String!, "" slug: String, "" vendorRef: String): SimpleProductEntity
   "Clears the billing address"
   cartClearBillingAddress("" cartId: UUID): CartEntity
   "Updates an existing address"
   addressUpdate("" country: String!, "" lastName: String!, "" firstName: String!, "" residential: Boolean!, "" city: String!, "" postalCode: String!, "" company: String, "" state: String!, "" id: UUID!, "" line2: String, "" line1: String!): AddressEntity
+  "Creates a new user, with password hash"
+  userCreate("" lastName: String!, "" firstName: String!, "" password: String!, "" email: String!): UserEntity
   "Looks up weather for a zip code"
   shipmentLookupWeatherByZip("" zip: String!): [Weather]
   "Creates a new department"
@@ -1693,6 +1701,8 @@ type Mutation {
   preppedProductsAddPreparation("" quantity: Long!, "" productId: UUID!, "" warehouse: String!): PreparationSummary
   "Provides making stock status"
   makingStockStatus("" warehouse: String!): [InventoryDetails]
+  "Removes a category from a product"
+  productRemoveCategory("" productId: UUID!, "" categoryId: UUID!): ProductEntity
   "Sends a password reset email"
   userSendPasswordReset("" email: String!): Boolean
   "Sets inventory for a simple product"
@@ -1703,10 +1713,10 @@ type Mutation {
   simpleProductPush("" price: BigDecimal, "" name: String, "" sku: String!, "" shortCode: String): Boolean!
   "Triggers a re-sync of packaging orders with Magento"
   maintenanceMagentoSyncPackaging: Boolean
-  "Triggers sync a transaction with Poynt"
-  maintenancePoyntSyncTransaction("" orderNumber: String, "" transactionId: String!): Boolean
   "Sets the shipping zip code, as a shortcut for shipping rates"
   cartSetShippingZip("" zip: String!, "" cartId: UUID): CartEntity
+  "Triggers sync a transaction with Poynt"
+  maintenancePoyntSyncTransaction("" orderNumber: String, "" transactionId: String!): Boolean
   "Changes quantity of selected simple product in user's cart"
   cartChangeQuantitySimpleProduct("" quantity: Long!, "" productId: UUID!, "" cartId: UUID): CartEntity
   "Sets the shipping address"
@@ -1717,10 +1727,10 @@ type Mutation {
   cartRemoveAllKitProduct("" productId: UUID!, "" cartId: UUID): CartEntity
   "Adds quantity of selected kit product to user's cart"
   cartAddKitProduct("" quantity: Long!, "" productId: UUID!, "" cartId: UUID): CartEntity
-  "Voids a shipment"
-  shipmentVoid("" id: UUID!): ShipmentEntity
   "Requests a notification when a product is placed back into stock"
   productRequestBackInStockNotification("" id: UUID!, "" email: String!): Boolean
+  "Voids a shipment"
+  shipmentVoid("" id: UUID!): ShipmentEntity
   "Creates a new department"
   departmentCreate("" name: String!, "" slug: String!): DepartmentEntity
   "Clears the cart's coupon code"
@@ -1901,7 +1911,7 @@ type ProductEntity {
   implicitAnimals: [AnimalEntity]
   "Product's implicit categories"
   implicitCategories: [CategoryEntity]
-  "Product's implicit department"
+  "Product's implicit departments"
   implicitDepartments: [DepartmentEntity]
   "Product's implicit discounts"
   implicitDiscounts: [DiscountEntity]
@@ -2112,10 +2122,10 @@ type Query {
   configurableProductInfo("" id: UUID!): ConfigurableProductEntity
   "Locates a department by slug"
   departmentBySlug("" slug: String!): DepartmentEntity
-  "Calculates a secure hash"
-  userSecureHash("" id: UUID!): String
   "Filters simple products"
   simpleProductFilter("" supplier: String, "" rating: GraphQLSingleValueFilter_LongInput, "" animal: String, "" active: GraphQLSingleValueFilter_BooleanInput, "" sort: GraphQLSortInput, "" page: GraphQLPageableInput!, "" category: String, "" department: String, "" sku: GraphQLLikeQueryFilterInput, "" title: GraphQLLikeQueryFilterInput, "" brand: String): GraphQLPage_SimpleProductEntity
+  "Calculates a secure hash"
+  userSecureHash("" id: UUID!): String
   "Locates a product by id"
   productInfo("" id: UUID!): ProductEntity
   "Provides cart info for current user"
@@ -2124,10 +2134,10 @@ type Query {
   discountInfo("" id: UUID!): DiscountEntity
   "Looks up an order by secure hash"
   shipmentByHash("" hash: String!): ShipmentEntity
-  "Filters users"
-  userFilter("" lastName: GraphQLLikeQueryFilterInput, "" firstName: GraphQLLikeQueryFilterInput, "" admin: GraphQLSingleValueFilter_BooleanInput, "" sort: GraphQLSortInput, "" page: GraphQLPageableInput!, "" email: GraphQLLikeQueryFilterInput): GraphQLPage_UserEntity
   "Returns a tradeshow"
   tradeShowInfo("" id: UUID): TradeShowEntity
+  "Filters users"
+  userFilter("" lastName: GraphQLLikeQueryFilterInput, "" firstName: GraphQLLikeQueryFilterInput, "" admin: GraphQLSingleValueFilter_BooleanInput, "" sort: GraphQLSortInput, "" page: GraphQLPageableInput!, "" email: GraphQLLikeQueryFilterInput): GraphQLPage_UserEntity
   "Filter shipments"
   shipmentFilter("" lastName: GraphQLLikeQueryFilterInput, "" firstName: GraphQLLikeQueryFilterInput, "" late: GraphQLSingleValueFilter_BooleanInput, "" sort: GraphQLSortInput, "" page: GraphQLPageableInput!, "" warehouse: GraphQLSingleValueFilter_StringInput, "" shipmentNumber: GraphQLLikeQueryFilterInput, "" email: GraphQLLikeQueryFilterInput, "" shipmentStatus: GraphQLSingleValueFilter_ShipmentStatusInput): GraphQLPage_ShipmentEntity
   "Filters sales orders"
@@ -2168,12 +2178,12 @@ type Query {
   addressList: [AddressEntity]
   "Lists categories"
   categoryList("" page: GraphQLPageableInput!): GraphQLPage_CategoryEntity
+  "Locates a kit product by SKU"
+  kitProductFindBySku("" sku: String!): KitProductEntity
   "Locates a simple product by id"
   simpleProductInfo("" id: UUID!): SimpleProductEntity
   "Lists configurable products"
   configurableProductList("" page: GraphQLPageableInput): GraphQLPage_ConfigurableProductEntity
-  "Locates a kit product by SKU"
-  kitProductFindBySku("" sku: String!): KitProductEntity
   "Queries a preparation summary for a product"
   preppedProductsInfo("" productId: UUID!, "" warehouse: String!): PreparationSummary
   "Retrieves a shipment"
@@ -2198,9 +2208,9 @@ type Query {
   simpleProductFindBySku("" sku: String!): SimpleProductEntity
   "Retrieves a sales order"
   salesOrderInfo("" id: UUID!): SalesOrderEntity
+  simpleProductProfitabilityReport("" endDate: LocalDate!, "" sort: GraphQLSortInput, "" page: GraphQLPageableInput!, "" category: String, "" department: String, "" startDate: LocalDate!): GraphQLPage_ProfitabilitySummary
   "Filters tradeshows"
   tradeShowFilter("" name: GraphQLLikeQueryFilterInput, "" sort: GraphQLSortInput, "" page: GraphQLPageableInput!): GraphQLPage_TradeShowEntity
-  simpleProductProfitabilityReport("" endDate: LocalDate!, "" sort: GraphQLSortInput, "" page: GraphQLPageableInput!, "" category: String, "" department: String, "" startDate: LocalDate!): GraphQLPage_ProfitabilitySummary
 }
 ""
 enum QueryCondition {
@@ -2591,6 +2601,8 @@ type ShipmentEntity {
   actualHeight: BigDecimal
   "Shipment's actual length"
   actualLength: BigDecimal
+  "Shipment's actual shipping cost"
+  actualShippingCost: BigDecimal
   "Shipment's actual weight"
   actualWeight: BigDecimal
   "Shipment's actual width"
@@ -2840,7 +2852,7 @@ type SimpleProductEntity {
   implicitAnimals: [AnimalEntity]
   "Product's implicit categories"
   implicitCategories: [CategoryEntity]
-  "Product's implicit department"
+  "Product's implicit departments"
   implicitDepartments: [DepartmentEntity]
   "Product's implicit discounts"
   implicitDiscounts: [DiscountEntity]

@@ -126,8 +126,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
                 this.loading--;
                 this.quantityUpdated = null;
                 this.quantityEntry = null;
-                this.changeDetectorRef.detectChanges();
                 this.getInventory();
+                this.changeDetectorRef.detectChanges();
               },
               (error) => {
                 console.error(error);
@@ -156,8 +156,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
                 this.loading--;
                 this.quantityUpdated = null;
                 this.quantityEntry = null;
-                this.changeDetectorRef.detectChanges();
                 this.getInventory();
+                this.changeDetectorRef.detectChanges();
               },
               (error) => {
                 console.error(error);
@@ -185,8 +185,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
                 this.loading--;
                 this.quantityUpdated = null;
                 this.quantityEntry = null;
-                this.changeDetectorRef.detectChanges();
                 this.getInventory();
+                this.changeDetectorRef.detectChanges();
               },
               (error) => {
                 console.error(error);
@@ -217,9 +217,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
           this.loading--;
           this.quantityUpdated = null;
           this.quantityEntry = null;
-
-          this.changeDetectorRef.detectChanges();
           this.getInventory();
+          this.changeDetectorRef.detectChanges();
         },
         (error) => {
           console.error(error);
