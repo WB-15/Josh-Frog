@@ -3,23 +3,23 @@
 
   <div class="flex">
     <div class="block mx-auto">
-      <label for="searchSku" class="hidden">Search</label>
+      <label for="searchSku" class="sr-only">Search By Sku</label>
       <div class="relative pt-3 pb-4">
         <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
           <span class="icon is-medium is-left">
             <fa-icon [icon]="faSearch"></fa-icon>
           </span>
         </div>
-        <input id="searchSku" class="form-input block w-full pl-10 pr-2 rounded-lg" placeholder="Search SKUs" autocomplete="off" autocapitalize="words" [(ngModel)]="searchSku" (keyup)='search()' />
+        <input id="searchSku" class="form-input block w-full pl-10 pr-2 rounded-lg" placeholder="Search SKUs" autocomplete="off" autocapitalize="words" [(ngModel)]="searchData.sku.value" (ngModelChange)="searchData.sku.value = searchData.sku.value.trim();" (keyup)="search()" />
       </div>
-      <label for="searchTitle" class="hidden">Search</label>
+      <label for="searchTitle" class="sr-only">Search by Title</label>
       <div class="relative pt-3 pb-4">
         <div class="absolute inset-y-0 left-0 pr-3 pl-3 flex items-center pointer-events-none">
           <span class="icon is-medium is-left">
             <fa-icon [icon]="faSearch"></fa-icon>
           </span>
         </div>
-        <input id="searchTitle" class="form-input block w-full pl-10 pr-2 rounded-lg" placeholder="Search Name" autocomplete="off" autocapitalize="words" [(ngModel)]="searchTitle" (keyup)='search()' />
+        <input id="searchTitle" class="form-input block w-full pl-10 pr-2 rounded-lg" placeholder="Search Title" autocomplete="off" autocapitalize="words" [(ngModel)]="searchData.title.value" (ngModelChange)="searchData.title.value = searchData.title.value.trim();" (keyup)="search()" />
       </div>
     </div>
   </div>

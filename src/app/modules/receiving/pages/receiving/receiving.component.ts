@@ -1,31 +1,18 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  NgZone,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import {
-  faSpinnerThird,
-  faSearch,
-  faHandReceiving,
-  faChevronCircleRight
-} from '@fortawesome/pro-duotone-svg-icons';
+import { faChevronCircleRight, faHandReceiving, faSearch, faSpinnerThird } from '@fortawesome/pro-duotone-svg-icons';
 
 import { DialogService } from '../../../shared/services/dialog.service';
 import { WarehouseService } from '../../../shared/services/warehouse.service';
 import { BarcodeService } from '../../../shared/services/barcode.service';
 
 import {
-  GraphQlPageableInput,
   InventoryAddDetailsGQL,
   SimpleProductClearBinGQL,
   SimpleProductEntity,
-  SimpleProductFilterGQL,
   SimpleProductFindBySkuGQL,
   SimpleProductFindByUpcGQL,
   SimpleProductInfoGQL,
@@ -34,6 +21,7 @@ import {
 } from '../../../../../generated/graphql';
 import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
 import { ChangeBinComponent } from '../../../inventory/dialogs/change-bin/change-bin.component';
+import { SearchService, SearchType } from '../../../shared/services/search.service';
 
 @Component({
   selector: 'app-receiving',
@@ -45,11 +33,6 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   faSearch = faSearch;
   faHandReceiving = faHandReceiving;
   faChevronCircleRight = faChevronCircleRight;
-
-  searchSku = '';
-  pendingSearchSku: string = null;
-  searchTitle = '';
-  pendingSearchTitle: string = null;
 
   quantityEntry: number;
   quantityReceived: number;
@@ -65,10 +48,11 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   upcScannedSubscription: Subscription;
   skuScannedSubscription: Subscription;
   binScannedSubscription: Subscription;
+  searchDataSubscription: Subscription;
 
   simpleProduct: SimpleProductEntity;
-  searchBySkuResults: SimpleProductEntity[];
-  searchByTitleResults: SimpleProductEntity[];
+  //TODO: Add SearchType.VENDOR when it is hooked up
+  searchTypes = [SearchType.SKU, SearchType.TITLE];
 
   constructor(
     private route: ActivatedRoute,
@@ -77,16 +61,19 @@ export class ReceivingComponent implements OnInit, OnDestroy {
     private dialogService: DialogService,
     private warehouseService: WarehouseService,
     private barcodeService: BarcodeService,
+    private searchService: SearchService,
     private simpleProductInfo: SimpleProductInfoGQL,
     private simpleProductFindByUpcGQL: SimpleProductFindByUpcGQL,
     private simpleProductFindBySkuGQL: SimpleProductFindBySkuGQL,
-    private simpleProductFilterGQL: SimpleProductFilterGQL,
     private simpleProductSetBinGQL: SimpleProductSetBinGQL,
     private simpleProductClearBinGQL: SimpleProductClearBinGQL,
     private inventoryAddDetailsGQL: InventoryAddDetailsGQL
   ) {}
 
   ngOnInit() {
+    this.searchService.clearSearchData();
+    this.searchDataSubscription = this.searchService.dataUpdated.subscribe(() => this.changeDetectorRef.detectChanges());
+
     this.warehouseChangedSubscription = this.warehouseService.warehouseChanged$.subscribe(
       (warehouse) => {
         this.warehouse = warehouse;
@@ -169,10 +156,6 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   }
 
   load(id: string) {
-    this.searchSku = '';
-    this.searchTitle = '';
-    this.searchBySkuResults = [];
-    this.searchByTitleResults = [];
     this.loading++;
     this.changeDetectorRef.detectChanges();
     this.simpleProductInfo
@@ -284,102 +267,11 @@ export class ReceivingComponent implements OnInit, OnDestroy {
       );
   }
 
-  searchBySku() {
-    this.searchTitle = '';
-    this.searchByTitleResults = [];
-    if (this.pendingSearchSku == null) {
-      if (this.searchSku === '') {
-        this.searchBySkuResults = [];
-      } else {
-        this.pendingSearchSku = this.searchSku;
-        const pageable: GraphQlPageableInput = {
-          page: 1,
-          pageSize: 5
-        };
-
-        this.simpleProductFilterGQL
-          .fetch({
-            pageable,
-            sku: this.pendingSearchSku + '%'
-          })
-          .pipe(map((result) => result.data.simpleProductFilter.data))
-          .subscribe(
-            (result) => {
-              this.searchBySkuResults = result as SimpleProductEntity[];
-              this.changeDetectorRef.detectChanges();
-              if (this.pendingSearchSku !== this.searchSku) {
-                this.pendingSearchSku = null;
-                this.searchBySku();
-              } else {
-                this.pendingSearchSku = null;
-              }
-            },
-            (error) => {
-              console.error(error);
-              this.dialogService.showErrorMessageBox(error);
-              this.changeDetectorRef.detectChanges();
-              if (this.pendingSearchSku !== this.searchSku) {
-                this.pendingSearchSku = null;
-                this.searchBySku();
-              } else {
-                this.pendingSearchSku = null;
-              }
-            }
-          );
-      }
-    }
-  }
-
-  searchByTitle() {
-    this.searchSku = '';
-    this.searchBySkuResults = [];
-    if (this.pendingSearchTitle == null) {
-      if (this.searchTitle === '') {
-        this.searchByTitleResults = [];
-      } else {
-        this.pendingSearchTitle = this.searchTitle;
-        const pageable: GraphQlPageableInput = {
-          page: 1,
-          pageSize: 5
-        };
-
-        this.simpleProductFilterGQL
-          .fetch({
-            pageable,
-            title: '%' + this.pendingSearchTitle + '%'
-          })
-          .pipe(map((result) => result.data.simpleProductFilter.data))
-          .subscribe(
-            (result) => {
-              this.searchByTitleResults = result as SimpleProductEntity[];
-              this.changeDetectorRef.detectChanges();
-              if (this.pendingSearchTitle !== this.searchTitle) {
-                this.pendingSearchTitle = null;
-                this.searchByTitle();
-              } else {
-                this.pendingSearchTitle = null;
-              }
-            },
-            (error) => {
-              console.error(error);
-              this.dialogService.showErrorMessageBox(error);
-              this.changeDetectorRef.detectChanges();
-              if (this.pendingSearchTitle !== this.searchTitle) {
-                this.pendingSearchTitle = null;
-                this.searchByTitle();
-              } else {
-                this.pendingSearchTitle = null;
-              }
-            }
-          );
-      }
-    }
-  }
-
   ngOnDestroy(): void {
     this.warehouseChangedSubscription.unsubscribe();
     this.upcScannedSubscription.unsubscribe();
     this.skuScannedSubscription.unsubscribe();
     this.binScannedSubscription.unsubscribe();
+    this.searchDataSubscription.unsubscribe();
   }
 }

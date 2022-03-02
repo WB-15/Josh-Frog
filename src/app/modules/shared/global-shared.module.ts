@@ -27,6 +27,7 @@ import { AutofocusDirective } from './directives/autofocus.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShipmentStatusPipe } from './pipes/shipment-status.pipe';
 import { LoadingComponent } from './components/loading/loading.component';
+import { ProductSearchComponent } from './components/product-search/product-search.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { LoadingComponent } from './components/loading/loading.component';
     PackagingPipe,
     AutofocusDirective,
     ShipmentStatusPipe,
-    LoadingComponent
+    LoadingComponent,
+    ProductSearchComponent
   ],
   exports: [
     DialogComponent,
@@ -79,7 +81,8 @@ import { LoadingComponent } from './components/loading/loading.component';
     OptionPipe,
     PackagingPipe,
     AutofocusDirective,
-    LoadingComponent
+    LoadingComponent,
+    ProductSearchComponent
   ],
   imports: [CommonModule, FontAwesomeModule, FormsModule, ReactiveFormsModule]
 })
