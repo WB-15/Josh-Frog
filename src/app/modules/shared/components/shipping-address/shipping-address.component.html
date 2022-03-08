@@ -60,15 +60,12 @@
   </div>
 
   <div class='mt-10 pt-6 border-t border-gray-200 sm:flex sm:items-center sm:justify-between'>
-    <button *ngIf='!submitting'
-            class='w-full bg-blue-600 border border-transparent rounded-md shadow-sm py-2 px-4 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:shadow-outline-blue sm:ml-6 sm:order-last sm:w-auto'>
-      Update Address
+    <button [disabled]='submitting'
+            class='button button-blue w-full sm:ml-6 sm:order-last sm:w-auto'>
+      <ng-container *ngIf="!submitting">Update Address</ng-container>
+      <app-loading *ngIf="submitting" message="Updating Address..."></app-loading>
     </button>
-    <button *ngIf='submitting'
-            class='w-full bg-gray-600 border border-transparent rounded-md shadow-sm py-2 px-4 text-sm font-medium text-white sm:ml-6 sm:order-last sm:w-auto cursor-wait'
-            disabled>
-      Updating...
-    </button>
+
     <p class='mt-4 text-center text-sm sm:mt-0 sm:text-left text-red-500'>
       {{errorMessage}}
     </p>

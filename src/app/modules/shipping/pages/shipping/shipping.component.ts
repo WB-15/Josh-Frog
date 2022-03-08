@@ -19,7 +19,8 @@ import {
   faLock,
   faLockOpen,
   faTimesCircle,
-  faPlusCircle
+  faPlusCircle,
+  faSpinnerThird
 } from '@fortawesome/pro-duotone-svg-icons';
 
 import { DialogService } from '../../../shared/services/dialog.service';
@@ -75,6 +76,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
   faLockOpen = faLockOpen;
   faTimesCircle = faTimesCircle;
   faPlusCircle = faPlusCircle;
+  faSpinnerThird = faSpinnerThird;
 
   searchShipmentNumber = '';
   pendingSearchShipmentNumber: string = null;
@@ -100,6 +102,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
   rating = false;
   shipping = false;
   voiding = false;
+  verifying = false;
+  searching = false;
 
   private windowRef: Window;
   private searchDebounceTimer: number;
@@ -145,6 +149,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
       (shipmentNumber) => {
         this.shipmentNumber = shipmentNumber;
         if (this.shipmentNumber) {
+          this.shipment = null;
           this.loading++;
           this.changeDetectorRef.detectChanges();
           this.shipmentFindGQL
@@ -153,7 +158,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
             .subscribe(
               (result) => {
                 if (result) {
-                  this.shipmentLoaded(result as ShipmentEntity);
+                  this.shipmentLoaded(result as ShipmentEntity, true);
                 } else {
                   // Couldn't find it by shipment number, fall back to search.
                   this.searchShipmentNumber = this.shipmentNumber;
@@ -162,10 +167,9 @@ export class ShippingComponent implements OnInit, OnDestroy {
                 }
               },
               (error) => {
-                console.error(error);
-                this.loading--;
                 this.dialogService.showErrorMessageBox(error);
                 this.changeDetectorRef.detectChanges();
+                this.loading--;
               }
             );
         }
@@ -192,12 +196,12 @@ export class ShippingComponent implements OnInit, OnDestroy {
   }
 
   search($event?) {
-    console.log($event);
     if (!$event || $event.key !== 'Enter') {
       if (this.pendingSearchShipmentNumber == null) {
         if (this.searchShipmentNumber === '') {
           this.searchResults = [];
         } else {
+          this.searching = true;
           this.pendingSearchShipmentNumber = this.searchShipmentNumber;
           const pageable: GraphQlPageableInput = {
             page: 1,
@@ -211,7 +215,6 @@ export class ShippingComponent implements OnInit, OnDestroy {
             .subscribe(
               (result) => {
                 this.shipment = null;
-                this.addPackage(true);
                 this.searchResults = result as ShipmentEntity[];
                 this.changeDetectorRef.detectChanges();
                 if (
@@ -221,10 +224,10 @@ export class ShippingComponent implements OnInit, OnDestroy {
                   this.search();
                 } else {
                   this.pendingSearchShipmentNumber = null;
+                  this.searching = false;
                 }
               },
               (error) => {
-                console.error(error);
                 this.dialogService.showErrorMessageBox(error);
                 this.changeDetectorRef.detectChanges();
                 if (
@@ -234,6 +237,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
                   this.search();
                 } else {
                   this.pendingSearchShipmentNumber = null;
+                  this.searching = false;
                 }
               }
             );
@@ -254,23 +258,24 @@ export class ShippingComponent implements OnInit, OnDestroy {
       .pipe(map((result) => result.data.shipmentInfo))
       .subscribe(
         (result) => {
-          this.shipmentLoaded(result as ShipmentEntity);
+          this.shipmentLoaded(result as ShipmentEntity, true);
         },
         (error) => {
-          console.error(error);
-          this.loading--;
           this.dialogService.showErrorMessageBox(error);
           this.changeDetectorRef.detectChanges();
+          this.loading--;
         }
       );
   }
 
-  shipmentLoaded(shipment: ShipmentEntity) {
+  shipmentLoaded(shipment: ShipmentEntity, decrementLoading?: boolean) {
     this.shipment = Object.assign({}, shipment);
     this.addPackage(true);
     this.shipment.packaging = this.shipment.packaging || Packaging.CardboardBox;
     this.setProgressBooleans();
-    this.loading--;
+    if (decrementLoading) {
+      this.loading--;
+    }
     this.changeDetectorRef.detectChanges();
   }
 
@@ -287,7 +292,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
       options.inputs = {
         shipment: this.shipment,
         callback: (shipment: ShipmentEntity) => {
-          this.shipment = shipment;
+          this.shipmentLoaded(shipment);
         }
       };
       options.title = 'Edit Shipping Address';
@@ -305,15 +310,18 @@ export class ShippingComponent implements OnInit, OnDestroy {
   }
 
   verifyAddress() {
+    this.verifying = true;
     this.shipmentValidateAddressGQL
       .mutate({ id: this.shipment.id })
       .pipe(map((result) => result.data.shipmentValidateAddress))
       .subscribe(
         (result) => {
-          this.shipment = result as ShipmentEntity;
+          this.shipmentLoaded(result as ShipmentEntity);
+          this.verifying = false;
         },
         (error) => {
           this.dialogService.showErrorMessageBox(error);
+          this.verifying = false;
         }
       );
   }
@@ -418,7 +426,6 @@ export class ShippingComponent implements OnInit, OnDestroy {
   }
 
   rateShipment(): void {
-    this.loading++;
     this.rating = true;
     this.shipmentRateMultiPieceGQL
       .mutate({
@@ -433,8 +440,6 @@ export class ShippingComponent implements OnInit, OnDestroy {
       .pipe(map((result) => result.data.shipmentRateMultiPiece))
       .subscribe(
         (result) => {
-          this.loading--;
-          this.rating = false;
           const rateQuotes = result as RateQuote[];
           let found = false;
           for (const rate of rateQuotes) {
@@ -451,21 +456,20 @@ export class ShippingComponent implements OnInit, OnDestroy {
           if (!found) {
             this.showMethodDialog();
           }
+          this.rating = false;
         },
         (error) => {
-          this.loading--;
-          this.rating = false;
-          console.log(error);
           this.dialogService.showErrorMessageBox(error);
+          this.rating = false;
         }
       );
   }
 
   shipShipment(): void {
+    this.shipping = true;
     if (this.shipment.options == null) {
       this.shipment.options = [];
     }
-    this.loading++;
     this.shipmentShipMultiPieceGQL
       .mutate({
         id: this.shipment.id,
@@ -488,10 +492,11 @@ export class ShippingComponent implements OnInit, OnDestroy {
           if (this.platform.is('desktop') || this.platform.is('electron')) {
             window.document.getElementById('searchByShipmentNumber').focus();
           }
+          this.shipping = false;
         },
         (error) => {
-          this.loading--;
           this.dialogService.showErrorMessageBox(error);
+          this.shipping = false;
         }
       );
   }
@@ -508,7 +513,6 @@ export class ShippingComponent implements OnInit, OnDestroy {
     messageBoxOptions.message = 'Are you sure you want to void this shipment?';
     messageBoxOptions.okText = 'Void';
     this.dialogService.showMessageBox(messageBoxOptions, () => {
-      this.loading++;
       this.voiding = true;
       this.shipmentVoidGQL
         .mutate({
@@ -517,13 +521,12 @@ export class ShippingComponent implements OnInit, OnDestroy {
         .pipe(map((result) => result.data.shipmentVoid))
         .subscribe(
           (result) => {
-            this.voiding = false;
             this.shipmentLoaded(result as ShipmentEntity);
+            this.voiding = false;
           },
           (error) => {
-            this.voiding = false;
-            this.loading--;
             this.dialogService.showErrorMessageBox(error);
+            this.voiding = false;
           }
         );
     });

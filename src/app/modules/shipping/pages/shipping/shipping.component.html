@@ -5,7 +5,7 @@
     <div class="block mx-auto">
       <label for="searchByShipmentNumber" class="hidden">Search</label>
       <div class="relative pt-3 pb-4">
-        <fa-icon [icon]="faSearch" class="absolute inset-y-0 left-3 flex items-center pointer-events-none"></fa-icon>
+        <fa-icon [icon]="searching ? faSpinnerThird : faSearch" [spin]="searching" class="absolute inset-y-0 left-3 flex items-center pointer-events-none"></fa-icon>
         <input id="searchByShipmentNumber" class="input-base pl-10 pr-2" [ngClass]="searchShipmentNumber?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search Shipments" autocomplete="off" autocapitalize="words"
                [(ngModel)]="searchShipmentNumber" (keyup)="searchKey($event)" (paste)="searchKey($event)" appAutofocus />
         <div *ngIf="searchResults" class="block absolute bg-gray-100 z-30 w-full">
@@ -24,6 +24,8 @@
       </div>
     </div>
   </div>
+
+  <app-loading *ngIf="loading" class="block text-center py-6"></app-loading>
 
   <div class="p-4" *ngIf="shipment">
     <div class="flex flex-col gap-4 lg:flex-row">
@@ -74,7 +76,11 @@
             <p class="font-light">{{shipment.city}}<span *ngIf="shipment.city">, </span>{{shipment.state}}  {{shipment.postalCode}}</p>
             <fa-icon *ngIf="shipmentEditable" class="absolute top-1 right-1 flex" [icon]="faPencil"></fa-icon>
           </div>
-          <p *ngIf="!shipment.addressValidationSource || shipment.addressValidationSource === 'Unverified'"><span class="text-gray-500">Address is unverified. </span><button *ngIf="shipmentEditable" class="text-blue-600 hover:text-blue-800" (click)="verifyAddress()">Verify</button></p>
+          <p *ngIf="!shipment.addressValidationSource || shipment.addressValidationSource === 'Unverified'">
+            <span *ngIf="!verifying" class="text-gray-500">Address is unverified. </span>
+            <button *ngIf="shipmentEditable && !verifying" class="text-blue-600 hover:text-blue-800" (click)="verifyAddress()">Verify</button>
+            <app-loading *ngIf="verifying" message="Verifying Address..."></app-loading>
+          </p>
           <p *ngIf="shipment.addressValidationSource && shipment.addressValidationSource !== 'Unverified'"><span class="text-gray-500">Address verified by {{shipment.addressValidationSource}}.</span></p>
         </div>
       </div>
@@ -221,14 +227,12 @@
         </div>
         <fa-icon *ngIf="shipmentEditable && checkMethodRequirements()" class="absolute inset-y-0 right-3 flex items-center pointer-events-none" [icon]="faPencil"></fa-icon>
       </div>
-      <button *ngIf="shipmentEditable && !rating" class="w-64 h-16 font-bold button button-blue"
-              [disabled]="!checkShippingRequirements()"
+      <button *ngIf="shipmentEditable" class="w-64 h-16 font-bold button button-blue"
+              [disabled]="!checkShippingRequirements() || rating"
               (click)="rateShipment()">
-        Best Rate
+        <ng-container *ngIf="!rating">Best Rate</ng-container>
+        <app-loading *ngIf="rating" message="Getting Best Rate..."></app-loading>
       </button>
-      <div *ngIf="shipmentEditable && rating" class="w-64 h-16">
-        <app-loading></app-loading>
-      </div>
     </div>
   </div>
 
@@ -244,25 +248,21 @@
         <fa-icon *ngIf="shipmentEditable && packages.length === 1" [icon]="faPencil" class="absolute inset-y-0 right-3 flex items-center pointer-events-none"></fa-icon>
       </div>
 
-      <button *ngIf="shipmentEditable && !shipping" class="w-64 h-16 font-bold button button-green"
-              [disabled]="!checkShippingRequirements()"
+      <button *ngIf="shipmentEditable" class="w-64 h-16 font-bold button button-green"
+              [disabled]="!checkShippingRequirements() || shipping"
               (click)="shipShipment()">
-        Ship
+        <ng-container *ngIf="!shipping">Ship</ng-container>
+        <app-loading *ngIf="shipping" message="Shipping..."></app-loading>
       </button>
-      <div *ngIf="shipmentEditable && shipping" class="w-64 h-16">
-        <app-loading></app-loading>
-      </div>
     </div>
   </div>
 
   <div class="p-4 flex flex-col gap-4 lg:flex-row" *ngIf="shipment && shipment.shipmentStatus === 'Shipped'">
     <div class="flex-1">
-      <button *ngIf="!voiding" class="w-64 font-bold button button-red" (click)="voidShipment()">
-        Void Shipment
+      <button [disabled]="voiding" class="w-64 font-bold button button-red" (click)="voidShipment()">
+        <ng-container *ngIf="!voiding">Void Shipment</ng-container>
+        <app-loading *ngIf="voiding" message="Voiding Shipment..."></app-loading>
       </button>
-      <div *ngIf="voiding" class="w-64 h-16">
-        <app-loading></app-loading>
-      </div>
     </div>
 
     <div class="flex-1">
