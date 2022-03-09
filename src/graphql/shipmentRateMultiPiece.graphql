@@ -1,9 +1,10 @@
-mutation shipmentRateMultiPiece ($id: UUID!, $warehouse: String!, $packaging: Packaging, $packages: [PackageSizeInput]!) {
+mutation shipmentRateMultiPiece ($id: UUID!, $warehouse: String!, $packaging: Packaging, $packages: [PackageSizeInput]!, $applyRestrictions: Boolean!) {
     shipmentRateMultiPiece (
         id: $id,
         warehouse: $warehouse,
         packaging: $packaging,
-        packages: $packages
+        packages: $packages,
+        applyRestrictions: $applyRestrictions
     ) {
         domesticServiceType,
         reseller,

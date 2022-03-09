@@ -39,6 +39,7 @@ export class MethodComponent implements OnInit {
 
   loading = true;
   rateQuotes: RateQuote[];
+  applyRestrictions = true;
 
   overnightEarlyRates: RateQuote[];
   overnightMorningRates: RateQuote[];
@@ -58,12 +59,21 @@ export class MethodComponent implements OnInit {
   }
 
   loadMethods() {
+    this.overnightEarlyRates = [];
+    this.overnightMorningRates = [];
+    this.overnightEveningRates = [];
+    this.twoDayRates = [];
+    this.threeDayRates = [];
+    this.groundRates = [];
+    this.economyRates = [];
+    this.loading = true;
     this.shipmentRateMultiPieceGQL
       .mutate({
         id: this.shipment.id,
         warehouse: this.warehouse.name,
         packaging: this.packaging,
-        packages: this.packages
+        packages: this.packages,
+        applyRestrictions: this.applyRestrictions
       })
       .pipe(map((result) => result.data.shipmentRateMultiPiece))
       .subscribe(
@@ -107,6 +117,11 @@ export class MethodComponent implements OnInit {
           this.dialogService.showErrorMessageBox(error);
         }
       );
+  }
+
+  allOptions() {
+    this.applyRestrictions = false;
+    this.loadMethods();
   }
 
   pickMethod(

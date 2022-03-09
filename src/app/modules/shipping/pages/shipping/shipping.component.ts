@@ -428,7 +428,8 @@ export class ShippingComponent implements OnInit, OnDestroy {
         packages:
           this.packages.length === 1
             ? [this.getEstimatedPackage()]
-            : this.packages
+            : this.packages,
+        applyRestrictions: true
       })
       .pipe(map((result) => result.data.shipmentRateMultiPiece))
       .subscribe(
