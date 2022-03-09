@@ -99,19 +99,11 @@ export class PreppingComponent implements OnInit, OnDestroy {
       .pipe(map((result) => result.data.preppedProductsList))
       .subscribe(
         (result) => {
-          this.preparationSummary = [...result].sort(function(a, b) {
-            if (a.quantityNeeded > b.quantityNeeded) {
-              return -1;
-            }
-            if (b.quantityNeeded > a.quantityNeeded) {
-              return 1;
-            }
-            return 0;
-          });
+          this.preparationSummary = this.sortByFieldDescending([...result], 'quantityNeeded');
 
           const index = this.preparationSummary.findIndex(prep => prep.quantityNeeded === 0);
           if (index > -1) {
-            this.fullyPrepped = this.preparationSummary.slice(index);
+            this.fullyPrepped = this.sortByFieldDescending(this.preparationSummary.slice(index), 'quantityPrepped');
             this.needPrepped = this.preparationSummary.slice(0, index);
           } else {
             this.needPrepped = this.preparationSummary;
@@ -127,6 +119,18 @@ export class PreppingComponent implements OnInit, OnDestroy {
           this.dialogService.showErrorMessageBox(error);
         }
       );
+  }
+
+  sortByFieldDescending(summaries: PreparationSummary[], field: string) {
+    return summaries.sort(function(a, b) {
+      if (a[field] > b[field]) {
+        return -1;
+      }
+      if (b[field] > a[field]) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   showPreparationDialog(preparationSummary: PreparationSummary) {
