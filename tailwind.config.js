@@ -40,7 +40,8 @@ module.exports = {
     opacity: ['disabled'],
     cursor: ['disabled'],
     extend: {
-      outline: ['focus-visible']
+      outline: ['focus-visible'],
+      textOverflow: ['hover']
     }
   },
   plugins: [require('@tailwindcss/ui')]

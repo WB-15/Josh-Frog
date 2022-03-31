@@ -79,6 +79,14 @@ const routes: Routes = [
       )
   },
   {
+    path: 'purchase-orders',
+    canActivate: [AuthGuardService],
+    loadChildren: () =>
+      import('./modules/purchase-orders/purchase-orders.module').then(
+        (m) => m.PurchaseOrdersModule
+      )
+  },
+  {
     path: 'time_clock',
     canActivate: [],
     loadChildren: () =>

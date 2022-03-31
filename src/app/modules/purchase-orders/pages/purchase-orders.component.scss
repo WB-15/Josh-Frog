@@ -1,0 +1,42 @@
+.purchase-table {
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 641px;
+
+  th, td {
+    padding: .75rem;
+  }
+}
+
+.supplier {
+  flex: 5 0 200px;
+}
+
+.date {
+  flex: 1 0 120px;
+}
+
+.status {
+  flex: 1 0 120px;
+}
+
+.actions {
+  flex: 1 0 65px;
+}
+
+.multi-ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  //&:hover {
+  //  display: block !important;
+  //  position: relative;
+  //  overflow: visible;
+  //  text-overflow: unset;
+  //  background-color: white;
+  //}
+}

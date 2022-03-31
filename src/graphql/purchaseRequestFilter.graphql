@@ -1,0 +1,51 @@
+query purchaseRequestFilter ($status: PurchaseRequestStatus, $team: String, $pageable: GraphQLPageableInput!) {
+    purchaseRequestFilter(
+        status: $status
+        team: $team
+        sort: {field: "orderedDate", direction: DESC}
+        page: $pageable
+    ) {
+        count,
+        page,
+        pageSize,
+        pagesCount,
+        data {
+            id,
+            cls,
+
+            approver,
+            comments,
+            createdAt,
+            estimatedAmount,
+            finalAmount,
+            orderedDate,
+            orderer,
+            purchaseRequestItems {
+                id,
+                cls,
+
+                createdAt,
+                name,
+                quantity,
+                updatedAt
+            },
+            purchaseRequestStatus,
+            receivedDate,
+            receiver,
+            requestNumber,
+            requestedDate,
+            requester,
+            supplier,
+            team {
+                id,
+                cls
+
+                createdAt,
+                name,
+                slug,
+                updatedAt
+            }
+            updatedAt
+        }
+    }
+}

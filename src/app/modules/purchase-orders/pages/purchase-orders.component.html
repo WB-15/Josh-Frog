@@ -1,0 +1,87 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+  <h1 class="text-2xl font-semibold text-gray-900">Purchase Orders</h1>
+</div>
+<table class="shadow border border-gray-200 rounded-lg overflow-auto align-middle purchase-table bg-jfgreen-100 w-full mt-3">
+  <thead>
+  <tr class="flex text-gray-700 rounded-t-lg overflow-hidden border-b border-gray-200">
+    <th scope="col" class="text-left text-xs font-medium uppercase tracking-wider supplier">
+      Supplier
+    </th>
+    <th scope="col" class="text-left text-xs font-medium uppercase tracking-wider date">
+      Requested
+    </th>
+    <th scope="col" class="text-left text-xs font-medium uppercase tracking-wider date">
+      Ordered
+    </th>
+    <th scope="col" class="text-left text-xs font-medium uppercase tracking-wider status">
+      Status
+    </th>
+    <th scope="col" class="relative actions rounded-tr-lg">
+      <span class="sr-only">View</span>
+    </th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <ng-container *ngIf="loading">
+    <tr *ngFor="let row of loadingRows; index as i" [ngClass]="i % 2 === 0 ? 'bg-white' : 'bg-gray-50'" class="flex">
+      <td class="text-sm text-gray-500 supplier">
+        <div class="animate-pulse rounded-lg bg-gray-200">&nbsp;</div>
+      </td>
+
+      <td class="whitespace-no-wrap text-sm text-gray-500 date">
+        <div class="animate-pulse rounded-lg bg-gray-300">&nbsp;</div>
+        <div class="animate-pulse rounded-lg bg-gray-200">&nbsp;</div>
+      </td>
+
+      <td class="whitespace-no-wrap text-sm text-gray-500 date">
+        <div class="animate-pulse rounded-lg bg-gray-300">&nbsp;</div>
+        <div class="animate-pulse rounded-lg bg-gray-200">&nbsp;</div>
+      </td>
+
+      <td class="whitespace-no-wrap text-sm text-gray-500 status">
+        <div class="animate-pulse rounded-lg bg-gray-200">&nbsp;</div>
+      </td>
+
+      <td class="whitespace-no-wrap text-right text-sm font-medium actions">
+        <div class="animate-pulse rounded-lg bg-gray-200">&nbsp;</div>
+      </td>
+    </tr>
+  </ng-container>
+
+  <ng-container *ngIf="!loading">
+    <tr *ngIf="!purchaseOrders || purchaseOrders.length === 0" class="bg-white">No results found.</tr>
+    <tr *ngFor="let purchaseOrder of purchaseOrders; index as i" [ngClass]="i % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
+        class="flex">
+      <td class="text-sm text-gray-500 supplier">
+        <div class="multi-ellipsis">
+          {{purchaseOrder.supplier}}
+        </div>
+      </td>
+
+      <td class="whitespace-no-wrap text-sm text-gray-500 date">
+        <div class="font-medium text-gray-900">{{purchaseOrder.requester}}</div>
+        <div>{{purchaseOrder.requestedDate | date: 'mediumDate'}}</div>
+      </td>
+
+      <td class="whitespace-no-wrap text-sm text-gray-500 date">
+        <div class="font-medium text-gray-900">{{purchaseOrder.orderer}}</div>
+        <div>{{purchaseOrder.orderedDate  | date: 'mediumDate'}}</div>
+      </td>
+
+      <td class="whitespace-no-wrap text-sm text-gray-500 status">{{purchaseOrder.purchaseRequestStatus}}</td>
+
+      <td class="whitespace-no-wrap text-right text-sm font-medium actions">
+        <button type="button" class="hover:text-jfgreen-900 text-jfgreen-600"
+                (click)="viewPurchaseOrder(purchaseOrder)">
+          View
+        </button>
+      </td>
+    </tr>
+  </ng-container>
+  </tbody>
+  <tfoot>
+  <app-pagination class="block bg-jfgreen-100 rounded-b-lg" [count]="count" [pageSize]="pageable.pageSize"
+                  [page]="pageable.page" (pageChanged)="setPage($event)"></app-pagination>
+  </tfoot>
+</table>
