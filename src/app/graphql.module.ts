@@ -2,11 +2,14 @@ import { APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { setContext } from '@apollo/client/link/context';
 import { RetryLink } from '@apollo/client/link/retry';
-import { InMemoryCache, ApolloLink } from '@apollo/client/core';
-import { NgModule } from '@angular/core';
+import { InMemoryCache, ApolloLink, concat } from '@apollo/client/core';
+import { Injector, NgModule } from '@angular/core';
+import { Router } from '@angular/router';
+import { UserService } from './modules/shared/services/user.service';
+import { Observable } from '@apollo/client/core';
 
 let uri = '/api/graphql'; // <-- add the URL of the GraphQL server here
-export function createApollo(httpLink: HttpLink) {
+export function createApollo(httpLink: HttpLink, router: Router, injector: Injector) {
   // Get the authentication token from local storage if it exists
   const auth = setContext((operation, context) => {
     if (typeof localStorage !== 'undefined' && localStorage) {
@@ -35,8 +38,23 @@ export function createApollo(httpLink: HttpLink) {
     uri = 'https://new.joshsfrogs.com' + uri;
   }
 
+  const authCheck = new ApolloLink((operation, forward) => {
+    const userService = injector.get(UserService);
+    const authed = userService.isAuthenticated();
+    if (!authed) {
+      userService.logout(true);
+
+      return new Observable<any>((subscriber) => {
+        subscriber.error(new Error('Your user authentication has expired. Sign in again to continue.'));
+      });
+    } else {
+      return forward(operation);
+    }
+  });
+
+
   return {
-    link: ApolloLink.from([
+    link: concat(authCheck, ApolloLink.from([
       new RetryLink({
         delay: {
           initial: 300,
@@ -61,7 +79,7 @@ export function createApollo(httpLink: HttpLink) {
       }),
       auth,
       httpLink.create({ uri })
-    ]),
+    ])),
     cache: new InMemoryCache()
   };
 }
@@ -71,7 +89,7 @@ export function createApollo(httpLink: HttpLink) {
     {
       provide: APOLLO_OPTIONS,
       useFactory: createApollo,
-      deps: [HttpLink]
+      deps: [HttpLink, Router, Injector]
     }
   ]
 })
