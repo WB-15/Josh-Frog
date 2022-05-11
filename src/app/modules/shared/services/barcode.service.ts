@@ -78,9 +78,9 @@ export class BarcodeService {
             }
           } else if (barcodeDataEvent.type === 'Code 39') {
             this.shipmentDataSubject$.next(null);
-            this.skuDataSubject$.next(null);
+            this.skuDataSubject$.next(barcodeDataEvent.data);
             this.upcDataSubject$.next(null);
-            this.binDataSubject$.next(barcodeDataEvent.data);
+            this.binDataSubject$.next(null);
           }
         }
       );
@@ -108,16 +108,18 @@ export class BarcodeService {
       );
 
       CapacitorSocketMobile.addListener(
-        'C',
+        'deviceDisconnectionEvent',
         (barcodeScannerEvent: BarcodeScannerEvent) => {
           console.log(
             'deviceDisconnectionEvent',
             JSON.stringify(barcodeScannerEvent)
           );
 
-          for (let i = 0; i < this.barcodeScanners.length; ++i) {
+          for (let i = 0; i < this.barcodeScanners.length; ) {
             if (this.barcodeScanners[i].serial === barcodeScannerEvent.serial) {
               this.barcodeScanners.splice(i, 1);
+            } else {
+              ++i;
             }
           }
           this.barcodeScannersSubject$.next(this.barcodeScanners);
