@@ -7,10 +7,10 @@
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="ARPPRODUCTICON" Value="icon.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="Josh&apos;s Frogs"/>
-    <ROW Property="ProductCode" Value="1033:{C2AA16EF-350F-4345-A03A-19FBC51DAE4A} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{A314832D-C4F3-479B-B364-68822E6B00A9} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Josh&apos;s Cogs"/>
-    <ROW Property="ProductVersion" Value="1.26.0" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.27.1" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{81944FD7-BED5-4065-B48F-F33A1D338084}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
