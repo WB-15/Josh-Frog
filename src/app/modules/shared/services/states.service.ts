@@ -11,6 +11,7 @@ export class StatesService {
     { code: 'CA', value: 'California' },
     { code: 'CO', value: 'Colorado' },
     { code: 'CT', value: 'Connecticut' },
+    { code: 'DC', value: 'District of Columbia' },
     { code: 'DE', value: 'Delaware' },
     { code: 'FL', value: 'Florida' },
     { code: 'GA', value: 'Georgia' },
