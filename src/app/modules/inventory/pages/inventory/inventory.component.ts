@@ -1,10 +1,21 @@
-import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ActivatedRoute } from '@angular/router';
 
-import { faChevronCircleRight, faInventory, faSearch, faSpinnerThird } from '@fortawesome/pro-duotone-svg-icons';
+import {
+  faChevronCircleRight,
+  faInventory,
+  faSearch,
+  faSpinnerThird
+} from '@fortawesome/pro-duotone-svg-icons';
 
 import { DialogService } from '../../../shared/services/dialog.service';
 import { WarehouseService } from '../../../shared/services/warehouse.service';
@@ -25,7 +36,10 @@ import {
 } from '../../../../../generated/graphql';
 import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
 import { ChangeBinComponent } from '../../dialogs/change-bin/change-bin.component';
-import { SearchService, SearchType } from '../../../shared/services/search.service';
+import {
+  SearchService,
+  SearchType
+} from '../../../shared/services/search.service';
 
 @Component({
   selector: 'app-inventory',
@@ -80,21 +94,25 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.searchService.clearSearchData();
-    this.searchDataSubscription = this.searchService.dataUpdated.subscribe(() => this.changeDetectorRef.detectChanges());
+    this.searchDataSubscription = this.searchService.dataUpdated.subscribe(() =>
+      this.changeDetectorRef.detectChanges()
+    );
 
     this.warehouseChangedSubscription = this.warehouseService.warehouseChanged$.subscribe(
       (warehouse) => {
         this.warehouse = warehouse;
-        this.route.queryParams.subscribe(
-          (params) => {
-            if (params.id) {
-              this.load(params.id);
-            }
-          },
-          (error) => {
-            this.warehouse = null;
-          }
-        );
+        if (this.simpleProduct) {
+          this.getInventory();
+        } else {
+          this.route.queryParams.subscribe(
+            (params) => {
+              if (params.id) {
+                this.load(params.id);
+              }
+            },
+            (error) => {}
+          );
+        }
       }
     );
 
@@ -191,6 +209,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   load(id: string) {
+    console.log('load');
     this.loading++;
     this.changeDetectorRef.detectChanges();
     this.simpleProductInfo
@@ -216,6 +235,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   getInventory() {
+    console.log('getInventory: ' + this.warehouse.name);
     this.inventoryDetails = null;
     this.inventoryLoading = true;
     this.inventoryGetDetailsGQL
