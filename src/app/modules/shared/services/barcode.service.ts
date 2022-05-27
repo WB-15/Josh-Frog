@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Platform } from '@ionic/angular';
 import { Plugins } from '@capacitor/core';
 
@@ -16,28 +16,19 @@ export class BarcodeService {
   );
   public barcodeScannersChanged$ = this.barcodeScannersSubject$.asObservable();
 
-  private lastBarcodeDataEvent: BarcodeDataEvent;
-  private barcodeDataSubject$ = new BehaviorSubject<BarcodeDataEvent>(
-    this.lastBarcodeDataEvent
-  );
+  private barcodeDataSubject$ = new Subject<BarcodeDataEvent>();
   public barcodeDataChanged$ = this.barcodeDataSubject$.asObservable();
 
-  private lastUpcEvent: string;
-  private upcDataSubject$ = new BehaviorSubject<string>(this.lastUpcEvent);
+  private upcDataSubject$ = new Subject<string>();
   public upcScanned$ = this.upcDataSubject$.asObservable();
 
-  private lastSkuEvent: string;
-  private skuDataSubject$ = new BehaviorSubject<string>(this.lastSkuEvent);
+  private skuDataSubject$ = new Subject<string>();
   public skuScanned$ = this.skuDataSubject$.asObservable();
 
-  private lastBinEvent: string;
-  private binDataSubject$ = new BehaviorSubject<string>(this.lastBinEvent);
+  private binDataSubject$ = new Subject<string>();
   public binScanned$ = this.binDataSubject$.asObservable();
 
-  private lastOrderEvent: string;
-  private shipmentDataSubject$ = new BehaviorSubject<string>(
-    this.lastOrderEvent
-  );
+  private shipmentDataSubject$ = new Subject<string>();
   public shipmentScanned$ = this.shipmentDataSubject$.asObservable();
 
   private loopTimer: number;
@@ -55,32 +46,17 @@ export class BarcodeService {
           this.barcodeDataSubject$.next(barcodeDataEvent);
 
           if (barcodeDataEvent.type === 'UPC A') {
-            this.shipmentDataSubject$.next(null);
-            this.binDataSubject$.next(null);
-            this.skuDataSubject$.next(null);
             this.upcDataSubject$.next(barcodeDataEvent.data);
           } else if (barcodeDataEvent.type === 'Code 128') {
             if (barcodeDataEvent.data.charAt(0) === '#') {
-              this.shipmentDataSubject$.next(null);
-              this.skuDataSubject$.next(null);
-              this.upcDataSubject$.next(null);
               this.binDataSubject$.next(barcodeDataEvent.data.substr(1));
             } else if (barcodeDataEvent.data.charAt(0) === '*') {
-              this.shipmentDataSubject$.next(null);
-              this.binDataSubject$.next(null);
-              this.upcDataSubject$.next(null);
               this.skuDataSubject$.next(barcodeDataEvent.data.substr(1));
             } else {
-              this.binDataSubject$.next(null);
-              this.skuDataSubject$.next(null);
-              this.upcDataSubject$.next(null);
               this.shipmentDataSubject$.next(barcodeDataEvent.data);
             }
           } else if (barcodeDataEvent.type === 'Code 39') {
-            this.shipmentDataSubject$.next(null);
             this.skuDataSubject$.next(barcodeDataEvent.data);
-            this.upcDataSubject$.next(null);
-            this.binDataSubject$.next(null);
           }
         }
       );
@@ -146,25 +122,13 @@ export class BarcodeService {
       this.barcodeDataSubject$.next(barcodeDataEvent);
 
       if (barcodeDataEvent.type === 'UPC A') {
-        this.shipmentDataSubject$.next(null);
-        this.binDataSubject$.next(null);
-        this.skuDataSubject$.next(null);
         this.upcDataSubject$.next(barcodeDataEvent.data);
       } else if (barcodeDataEvent.type === 'Code 128') {
         if (barcodeDataEvent.data.charAt(0) === '#') {
-          this.shipmentDataSubject$.next(null);
-          this.skuDataSubject$.next(null);
-          this.upcDataSubject$.next(null);
           this.binDataSubject$.next(barcodeDataEvent.data.substr(1));
         } else if (barcodeDataEvent.data.charAt(0) === '*') {
-          this.shipmentDataSubject$.next(null);
-          this.binDataSubject$.next(null);
-          this.upcDataSubject$.next(null);
           this.skuDataSubject$.next(barcodeDataEvent.data.substr(1));
         } else {
-          this.binDataSubject$.next(null);
-          this.skuDataSubject$.next(null);
-          this.upcDataSubject$.next(null);
           this.shipmentDataSubject$.next(barcodeDataEvent.data);
         }
       }
