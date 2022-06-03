@@ -61,6 +61,7 @@ export class WarehouseService {
         } else {
           this.warehouse = null;
           this.warehouses = [];
+          this.warehouseSubject$.next(this.warehouse);
         }
       }
     );

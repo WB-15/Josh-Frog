@@ -7,6 +7,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { Platform } from '@ionic/angular';
 
 import { UserEntity, UserSelfGQL } from '../../../../generated/graphql';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +27,9 @@ export class UserService {
     private httpClient: HttpClient,
     private apollo: Apollo,
     private userSelfGQL: UserSelfGQL,
-    private platform: Platform
+    private platform: Platform,
+    private router: Router
   ) {
-    console.log(platform.platforms());
     if (platform.is('capacitor') || platform.is('electron')) {
       this.BASE_URL = 'https://new.joshsfrogs.com';
     }
@@ -130,13 +131,18 @@ export class UserService {
       );
   }
 
-  public logout(): void {
-    this.apollo.getClient().resetStore();
+  public logout(routeToLogin?: boolean): void {
+    //We need to stop all active queries, otherwise clearStore() will throw an error
+    this.apollo.client.stop();
+    this.apollo.client.clearStore();
     localStorage.removeItem(this.ACCESS_TOKEN_KEY);
     localStorage.removeItem(this.EXPIRATION_KEY);
     localStorage.removeItem(this.USER_DETAILS_KEY);
     this.user = undefined;
     this.userSubject$.next(this.user);
+    if (routeToLogin) {
+      this.router.navigate(['/account/login']);
+    }
   }
 }
 
