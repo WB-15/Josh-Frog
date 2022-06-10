@@ -138,11 +138,14 @@ export class UserService {
     localStorage.removeItem(this.ACCESS_TOKEN_KEY);
     localStorage.removeItem(this.EXPIRATION_KEY);
     localStorage.removeItem(this.USER_DETAILS_KEY);
+
+    if (routeToLogin) {
+      const queryParams = { message: this.user ? 'Your user authentication has expired. Sign in again to continue.' : 'You need to be logged in to do that.' };
+      this.router.navigate(['/account/login'], {queryParams});
+    }
+
     this.user = undefined;
     this.userSubject$.next(this.user);
-    if (routeToLogin) {
-      this.router.navigate(['/account/login']);
-    }
   }
 }
 

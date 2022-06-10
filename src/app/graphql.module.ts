@@ -1,12 +1,12 @@
-import { APOLLO_OPTIONS } from 'apollo-angular';
-import { HttpLink } from 'apollo-angular/http';
-import { setContext } from '@apollo/client/link/context';
-import { RetryLink } from '@apollo/client/link/retry';
-import { InMemoryCache, ApolloLink, concat } from '@apollo/client/core';
 import { Injector, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApolloLink, concat, InMemoryCache } from '@apollo/client/core';
+import { setContext } from '@apollo/client/link/context';
+import { onError } from '@apollo/client/link/error';
+import { RetryLink } from '@apollo/client/link/retry';
+import { APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
 import { UserService } from './modules/shared/services/user.service';
-import { Observable } from '@apollo/client/core';
 
 let uri = '/api/graphql'; // <-- add the URL of the GraphQL server here
 export function createApollo(httpLink: HttpLink, router: Router, injector: Injector) {
@@ -38,20 +38,16 @@ export function createApollo(httpLink: HttpLink, router: Router, injector: Injec
     uri = 'https://new.joshsfrogs.com' + uri;
   }
 
-  const authCheck = new ApolloLink((operation, forward) => {
-    const userService = injector.get(UserService);
-    const authed = userService.isAuthenticated();
-    if (!authed) {
-      userService.logout(true);
-
-      return new Observable<any>((subscriber) => {
-        subscriber.error(new Error('Your user authentication has expired. Sign in again to continue.'));
-      });
-    } else {
-      return forward(operation);
+  const authCheck = onError(({ graphQLErrors, networkError, operation, forward }) => {
+    if (graphQLErrors?.length > 0) {
+      for (let error of graphQLErrors) {
+        if (error.message.endsWith('Access denied')) {
+          const userService = injector.get(UserService);
+          userService.logout(true);
+        }
+      }
     }
   });
-
 
   return {
     link: concat(authCheck, ApolloLink.from([
