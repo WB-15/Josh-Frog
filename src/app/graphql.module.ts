@@ -44,6 +44,7 @@ export function createApollo(httpLink: HttpLink, router: Router, injector: Injec
         if (error.message.endsWith('Access denied')) {
           const userService = injector.get(UserService);
           userService.logout(true);
+          break;
         }
       }
     }
