@@ -1,42 +1,37 @@
+.purchase-table-container {
+  min-width: 507px;
+}
+
 .purchase-table {
   table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
-  min-width: 641px;
 
   th, td {
     padding: .75rem;
   }
 }
 
-.supplier {
-  flex: 5 0 200px;
+.order-column {
+  flex: 1 0 80px;
 }
 
-.date {
-  flex: 1 0 120px;
+.placed-column {
+  flex: 1 0 85px;
 }
 
-.status {
-  flex: 1 0 120px;
+.status-column {
+  flex: 1 0 85px;
 }
 
-.actions {
-  flex: 1 0 65px;
+.supplier-column {
+  flex: 1 0 90px;
 }
 
-.multi-ellipsis {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  white-space: normal;
-  //&:hover {
-  //  display: block !important;
-  //  position: relative;
-  //  overflow: visible;
-  //  text-overflow: unset;
-  //  background-color: white;
-  //}
+.warehouse-column {
+  flex: 1 0 105px;
+}
+
+.actions-column {
+  flex: 0 0 60px;
 }

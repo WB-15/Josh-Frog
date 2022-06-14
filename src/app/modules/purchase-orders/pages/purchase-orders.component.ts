@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { GraphQlPageableInput, PurchaseRequestEntity, PurchaseRequestFilterGQL } from '../../../../generated/graphql';
+import { faExclamationCircle } from '@fortawesome/pro-duotone-svg-icons';
 import { map } from 'rxjs/operators';
+import { GraphQlPageableInput, PurchaseOrderEntity, PurchaseOrderFilterGQL } from '../../../../generated/graphql';
 import { DialogService } from '../../shared/services/dialog.service';
-
 
 @Component({
   selector: 'app-purchase-orders',
@@ -18,12 +18,13 @@ export class PurchaseOrdersComponent implements OnInit {
 
   loading = true;
   loadingRows = new Array(this.pageable.pageSize);
+  faExclamationCircle = faExclamationCircle;
 
-  purchaseOrders: PurchaseRequestEntity[];
+  purchaseOrders: PurchaseOrderEntity[];
 
   constructor(
     private dialogService: DialogService,
-    private purchaseRequestFilterGQL: PurchaseRequestFilterGQL
+    private purchaseOrderFilterGQL: PurchaseOrderFilterGQL
   ) {}
 
   ngOnInit() {
@@ -35,13 +36,12 @@ export class PurchaseOrdersComponent implements OnInit {
     this.loadPurchaseOrders();
   }
 
-  // Todo: switch out graphql
   loadPurchaseOrders() {
     this.loading = true;
-    this.purchaseRequestFilterGQL.fetch({
+    this.purchaseOrderFilterGQL.fetch({
       pageable: this.pageable
     })
-      .pipe(map((result) => result.data.purchaseRequestFilter))
+      .pipe(map((result) => result.data.purchaseOrderFilter))
       .subscribe(
         (result) => {
           this.purchaseOrders = result.data;
@@ -52,14 +52,16 @@ export class PurchaseOrdersComponent implements OnInit {
           this.loading = false;
         },
         (error) => {
+          delete this.purchaseOrders;
           this.dialogService.showErrorMessageBox(error);
+
           this.loading = false;
         }
       );
   }
 
   // Todo
-  viewPurchaseOrder(purchaseOrder: PurchaseRequestEntity) {
+  viewPurchaseOrder(purchaseOrder: PurchaseOrderEntity) {
 
   }
 }

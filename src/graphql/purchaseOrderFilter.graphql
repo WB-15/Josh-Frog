@@ -1,0 +1,28 @@
+query purchaseOrderFilter ($pageable: GraphQLPageableInput!, $supplier: String, $orderNumber: String, $status: PurchaseOrderStatus) {
+    purchaseOrderFilter(
+        orderNumber: {
+            pattern: $orderNumber
+        },
+        status: $status,
+        supplier: $supplier,
+        sort: {field: "placedTime", direction: DESC},
+        page: $pageable
+    ) {
+        count,
+        page,
+        pageSize,
+        data {
+            id,
+            cls,
+            placedTime,
+            orderNumber,
+            status,
+            supplier {
+                name
+            },
+            warehouse {
+                name
+            }
+        }
+    }
+}
