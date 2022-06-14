@@ -1638,10 +1638,10 @@ export enum MediaType {
 /** Mutation root */
 export type Mutation = {
   __typename?: 'Mutation';
-  /** Completes checkout and processes payment. */
-  cartCheckout?: Maybe<SalesOrderEntity>;
   /** Schedule a shipment for today or a future date */
   scheduledShipmentSchedule?: Maybe<ShipmentEntity>;
+  /** Completes checkout and processes payment. */
+  cartCheckout?: Maybe<SalesOrderEntity>;
   /** Marks the purchase request as ordered */
   purchaseRequestOrder?: Maybe<PurchaseRequestEntity>;
   /** Refreshes a sales order (with Amazon) by entity id */
@@ -1652,10 +1652,10 @@ export type Mutation = {
   salesOrderOnlineRefund?: Maybe<SalesOrderEntity>;
   /** Validates the address, updates it if necessary */
   shipmentValidateAddress?: Maybe<ShipmentEntity>;
-  /** Adds user to marketing list */
-  marketingSubscribe: Scalars['Boolean'];
   /** Updates bin on a simple product */
   simpleProductSetBin?: Maybe<SimpleProductEntity>;
+  /** Adds user to marketing list */
+  marketingSubscribe: Scalars['Boolean'];
   /** Clears the cart's phone */
   cartClearPhone?: Maybe<CartEntity>;
   /** Calculates a sales tax rate based on zip code */
@@ -1680,10 +1680,10 @@ export type Mutation = {
   userRefresh?: Maybe<UserEntity>;
   /** Gets inventory details for a simple product */
   inventoryGetDetails?: Maybe<InventoryDetails>;
-  /** Calculates the implicit products a discount */
-  discountEvaluateImplicitProducts?: Maybe<DiscountEntity>;
   /** Changes quantity of selected kit product in user's cart */
   cartChangeQuantityKitProduct?: Maybe<CartEntity>;
+  /** Calculates the implicit products a discount */
+  discountEvaluateImplicitProducts?: Maybe<DiscountEntity>;
   /** Triggers a re-index of hibernate cache */
   maintenanceCacheFlushAll?: Maybe<Scalars['Boolean']>;
   /** Vaults a payment method for the current user. */
@@ -1700,24 +1700,24 @@ export type Mutation = {
   autoprintGetNextForPrinter?: Maybe<Array<Maybe<PrintJob>>>;
   /** Refreshes a sales order (with Walmart) by purchase order id */
   walmartSalesOrderRefresh?: Maybe<WalmartSalesOrderEntity>;
-  /** Sets the billing address to one of the user's addresses */
-  cartSetBillingAddressById?: Maybe<CartEntity>;
   /** Sends a shipper performance report */
   maintenanceSendShipperPerformance?: Maybe<Scalars['Boolean']>;
+  /** Sets the billing address to one of the user's addresses */
+  cartSetBillingAddressById?: Maybe<CartEntity>;
   /** Triggers a re-sync of all products with Magento */
   maintenanceMagentoSyncAllProducts?: Maybe<Scalars['Boolean']>;
   /** Lists all POS terminals */
   tradeShowListTerminals?: Maybe<Array<Maybe<PosTerminalEntity>>>;
-  /** Removes a preparation from a product */
-  preppedProductsRemovePreparation?: Maybe<PreparationSummary>;
   /** Recomputes shipping estimates for all products */
   maintenanceRecomputeShippingEstimates?: Maybe<Scalars['Boolean']>;
   /** Splits a shipment into two smaller shipments */
   shipmentSplit?: Maybe<ShipmentEntity>;
-  /** Calculates the implicit products a promotion */
-  promotionEvaluateImplicitProducts?: Maybe<PromotionEntity>;
+  /** Removes a preparation from a product */
+  preppedProductsRemovePreparation?: Maybe<PreparationSummary>;
   /** Reroutes shipments from a queue */
   autoprintReroute: Scalars['Boolean'];
+  /** Calculates the implicit products a promotion */
+  promotionEvaluateImplicitProducts?: Maybe<PromotionEntity>;
   /** Adds quantity of selected simple product to user's cart */
   cartAddSimpleProduct?: Maybe<CartEntity>;
   /** Adds inventory for a simple product */
@@ -1736,10 +1736,10 @@ export type Mutation = {
   tradeShowAssignTerminal?: Maybe<TradeShowEntity>;
   /** Triggers a re-sync of products quantities available for sale */
   maintenanceInventoryUpdateQuantitiesAvailableForSale?: Maybe<Scalars['Boolean']>;
-  /** Sets a carrier preference for a cart item */
-  cartSetCarrierPreference?: Maybe<CartEntity>;
   /** Rejects a scheduled shipment for departure today */
   scheduledShipmentClearApproval?: Maybe<ShipmentEntity>;
+  /** Sets a carrier preference for a cart item */
+  cartSetCarrierPreference?: Maybe<CartEntity>;
   /** Cancels a shipment within an order, but does not refund */
   shipmentCancel?: Maybe<ShipmentEntity>;
   /** Sets a product as requiring preparation */
@@ -1766,10 +1766,10 @@ export type Mutation = {
   shipmentReschedule?: Maybe<ShipmentEntity>;
   /** Tests a workstation for use with AutoPrint */
   autoprintTestWorkstation?: Maybe<WorkstationEntity>;
-  /** Triggers a re-sync of updated orders with Magento */
-  maintenanceMagentoSyncUpdatedOrders?: Maybe<Scalars['Boolean']>;
   /** Adds a purchase request item */
   purchaseRequestAddItem?: Maybe<PurchaseRequestEntity>;
+  /** Triggers a re-sync of updated orders with Magento */
+  maintenanceMagentoSyncUpdatedOrders?: Maybe<Scalars['Boolean']>;
   /** Removes a vaulted payment method for the current user. */
   checkoutDeletePaymentMethod: Scalars['Boolean'];
   /** Approves a purchase request */
@@ -1790,16 +1790,16 @@ export type Mutation = {
   maintenanceReindexProducts?: Maybe<Scalars['Boolean']>;
   /** Triggers a re-sync of processing orders with Magento */
   maintenanceMagentoSyncProcessing?: Maybe<Scalars['Boolean']>;
-  /** Update's a user's admin status */
-  userUpdateAdmin?: Maybe<UserEntity>;
   /** Verifies an existing address */
   addressVerifyRaw?: Maybe<AddressEntity>;
+  /** Update's a user's admin status */
+  userUpdateAdmin?: Maybe<UserEntity>;
   /** Assigns a department to a product */
   productSetDepartment?: Maybe<ProductEntity>;
-  /** Sets the billing address */
-  cartSetBillingAddress?: Maybe<CartEntity>;
   /** Unassigns a pos terminal to a tradeshow */
   tradeShowUnassignTerminal?: Maybe<TradeShowEntity>;
+  /** Sets the billing address */
+  cartSetBillingAddress?: Maybe<CartEntity>;
   /** Updates an existing tradeshow */
   tradeShowUpdateShow?: Maybe<TradeShowEntity>;
   /** Removes a warehouse from a simple product */
@@ -1824,28 +1824,28 @@ export type Mutation = {
   autoprintCancelAcknowledgeForPrinter: Scalars['Boolean'];
   /** Adds a warehouse to a simple product */
   simpleProductAddWarehouse?: Maybe<SimpleProductEntity>;
-  /** Sends an email confirmation email */
-  userSendEmailConfirmation?: Maybe<Scalars['Boolean']>;
   /** Acknowledges a shipment's print job has downloaded */
   autoprintDownloadAcknowledgeForPrinter: Scalars['Boolean'];
+  /** Sends an email confirmation email */
+  userSendEmailConfirmation?: Maybe<Scalars['Boolean']>;
   /** Refreshes a configurable product (with Magento) by entity id */
   configurableProductRefresh?: Maybe<ConfigurableProductEntity>;
   /** Sets the cart's coupon code */
   cartSetCouponCode?: Maybe<CartEntity>;
-  /** Refreshes a sales order (with Magento) by entity id */
-  magentoSalesOrderRefresh?: Maybe<MagentoSalesOrderEntity>;
   /** Clears the shipping address */
   cartClearShippingAddress?: Maybe<CartEntity>;
   /** Sets a delivery date preference for a cart item */
   cartSetDeliveryDatePreference?: Maybe<CartEntity>;
+  /** Refreshes a sales order (with Magento) by entity id */
+  magentoSalesOrderRefresh?: Maybe<MagentoSalesOrderEntity>;
   /** Marks the purchase request as received */
   purchaseRequestReceive?: Maybe<PurchaseRequestEntity>;
+  /** Acknowledges a shipment's print job has printed */
+  autoprintPrintAcknowledgeForPrinter: Scalars['Boolean'];
   /** Gets status if customer is already signed up */
   marketingStatus: Scalars['Boolean'];
   /** Refreshes a sales order (with Magento) by entity id */
   magentoSalesOrderRefreshAsync: Scalars['Boolean'];
-  /** Acknowledges a shipment's print job has printed */
-  autoprintPrintAcknowledgeForPrinter: Scalars['Boolean'];
   /** Registers a new user, with raw password */
   userRegister?: Maybe<UserEntity>;
   /** Sets the shipment's hold status */
@@ -1866,10 +1866,10 @@ export type Mutation = {
   simpleProductAddZone?: Maybe<SimpleProductEntity>;
   /** Refreshes a kit product (with Magento) by sku */
   kitProductRefreshBySku?: Maybe<KitProductEntity>;
-  /** Refunds the order's sales tax */
-  salesOrderSalesTaxRefund?: Maybe<SalesOrderEntity>;
   /** Creates a new POS terminal */
   tradeShowCreateTerminal?: Maybe<PosTerminalEntity>;
+  /** Refunds the order's sales tax */
+  salesOrderSalesTaxRefund?: Maybe<SalesOrderEntity>;
   /** Updates a shipment's address */
   shipmentUpdateAddress?: Maybe<ShipmentEntity>;
   /** Sets a product's discontinuation reason */
@@ -1910,12 +1910,12 @@ export type Mutation = {
   addressDelete: Scalars['Boolean'];
   /** Creates a simple product */
   simpleProductCreate?: Maybe<SimpleProductEntity>;
+  /** Updates an existing address */
+  addressUpdate?: Maybe<AddressEntity>;
   /** Creates a new user, with password hash */
   userCreate?: Maybe<UserEntity>;
   /** Clears the billing address */
   cartClearBillingAddress?: Maybe<CartEntity>;
-  /** Updates an existing address */
-  addressUpdate?: Maybe<AddressEntity>;
   /** Looks up weather for a zip code */
   shipmentLookupWeatherByZip?: Maybe<Array<Maybe<Weather>>>;
   /** Creates a new department */
@@ -1926,14 +1926,14 @@ export type Mutation = {
   categorySetParent?: Maybe<CategoryEntity>;
   /** Validates the address, updates it if necessary */
   salesOrderValidateAddress?: Maybe<SalesOrderEntity>;
-  /** Add a preparation to a product */
-  preppedProductsAddPreparation?: Maybe<PreparationSummary>;
   /** Removes a zone from a simple product */
   simpleProductRemoveZone?: Maybe<SimpleProductEntity>;
-  /** Provides making stock status */
-  makingStockStatus?: Maybe<Array<Maybe<InventoryDetails>>>;
+  /** Add a preparation to a product */
+  preppedProductsAddPreparation?: Maybe<PreparationSummary>;
   /** Clears a product from shipping alone */
   simpleProductClearShipsAlone?: Maybe<SimpleProductEntity>;
+  /** Provides making stock status */
+  makingStockStatus?: Maybe<Array<Maybe<InventoryDetails>>>;
   /** Removes a category from a product */
   productRemoveCategory?: Maybe<ProductEntity>;
   /** Sends a password reset email */
@@ -1946,10 +1946,10 @@ export type Mutation = {
   simpleProductPush: Scalars['Boolean'];
   /** Triggers a re-sync of packaging orders with Magento */
   maintenanceMagentoSyncPackaging?: Maybe<Scalars['Boolean']>;
-  /** Sets the shipping zip code, as a shortcut for shipping rates */
-  cartSetShippingZip?: Maybe<CartEntity>;
   /** Triggers sync a transaction with Poynt */
   maintenancePoyntSyncTransaction?: Maybe<Scalars['Boolean']>;
+  /** Sets the shipping zip code, as a shortcut for shipping rates */
+  cartSetShippingZip?: Maybe<CartEntity>;
   /** Changes quantity of selected simple product in user's cart */
   cartChangeQuantitySimpleProduct?: Maybe<CartEntity>;
   /** Sets the shipping address */
@@ -1958,10 +1958,10 @@ export type Mutation = {
   simpleProductSetShippingRuleSet?: Maybe<SimpleProductEntity>;
   /** Generates a client token for current user. */
   checkoutGetClientToken?: Maybe<ClientTokenDetail>;
-  /** Removes all quantity of selected kit product from user's cart */
-  cartRemoveAllKitProduct?: Maybe<CartEntity>;
   /** Approves a scheduled shipment for departure today */
   scheduledShipmentSetApproval?: Maybe<ShipmentEntity>;
+  /** Removes all quantity of selected kit product from user's cart */
+  cartRemoveAllKitProduct?: Maybe<CartEntity>;
   /** Updates payments with processor */
   salesOrderUpdatePayments?: Maybe<SalesOrderEntity>;
   /** Adds quantity of selected kit product to user's cart */
@@ -1982,6 +1982,13 @@ export type Mutation = {
 
 
 /** Mutation root */
+export type MutationScheduledShipmentScheduleArgs = {
+  date: Scalars['LocalDate'];
+  id: Scalars['UUID'];
+};
+
+
+/** Mutation root */
 export type MutationCartCheckoutArgs = {
   method: Scalars['String'];
   cartId: Scalars['UUID'];
@@ -1991,13 +1998,6 @@ export type MutationCartCheckoutArgs = {
   giftCardCode?: Maybe<Scalars['String']>;
   useRewardPoints?: Maybe<Scalars['Boolean']>;
   nonce?: Maybe<Scalars['String']>;
-};
-
-
-/** Mutation root */
-export type MutationScheduledShipmentScheduleArgs = {
-  date: Scalars['LocalDate'];
-  id: Scalars['UUID'];
 };
 
 
@@ -2027,16 +2027,16 @@ export type MutationShipmentValidateAddressArgs = {
 
 
 /** Mutation root */
-export type MutationMarketingSubscribeArgs = {
-  email?: Maybe<Scalars['String']>;
-};
-
-
-/** Mutation root */
 export type MutationSimpleProductSetBinArgs = {
   bin: Scalars['String'];
   id: Scalars['UUID'];
   warehouse: Scalars['String'];
+};
+
+
+/** Mutation root */
+export type MutationMarketingSubscribeArgs = {
+  email?: Maybe<Scalars['String']>;
 };
 
 
@@ -2105,16 +2105,16 @@ export type MutationInventoryGetDetailsArgs = {
 
 
 /** Mutation root */
-export type MutationDiscountEvaluateImplicitProductsArgs = {
-  id: Scalars['UUID'];
-};
-
-
-/** Mutation root */
 export type MutationCartChangeQuantityKitProductArgs = {
   quantity: Scalars['Long'];
   productId: Scalars['UUID'];
   cartId?: Maybe<Scalars['UUID']>;
+};
+
+
+/** Mutation root */
+export type MutationDiscountEvaluateImplicitProductsArgs = {
+  id: Scalars['UUID'];
 };
 
 
@@ -2179,18 +2179,18 @@ export type MutationCartSetBillingAddressByIdArgs = {
 
 
 /** Mutation root */
-export type MutationPreppedProductsRemovePreparationArgs = {
-  productId: Scalars['UUID'];
-  preparationId: Scalars['UUID'];
-  warehouse: Scalars['String'];
-};
-
-
-/** Mutation root */
 export type MutationShipmentSplitArgs = {
   lineItems: Array<Maybe<LineItemInput>>;
   id: Scalars['UUID'];
   reroute: Scalars['Boolean'];
+};
+
+
+/** Mutation root */
+export type MutationPreppedProductsRemovePreparationArgs = {
+  productId: Scalars['UUID'];
+  preparationId: Scalars['UUID'];
+  warehouse: Scalars['String'];
 };
 
 
@@ -2248,16 +2248,16 @@ export type MutationTradeShowAssignTerminalArgs = {
 
 
 /** Mutation root */
-export type MutationCartSetCarrierPreferenceArgs = {
-  cartId?: Maybe<Scalars['UUID']>;
-  simpleProductId: Scalars['UUID'];
-  carrierPreference: Carrier;
+export type MutationScheduledShipmentClearApprovalArgs = {
+  id: Scalars['UUID'];
 };
 
 
 /** Mutation root */
-export type MutationScheduledShipmentClearApprovalArgs = {
-  id: Scalars['UUID'];
+export type MutationCartSetCarrierPreferenceArgs = {
+  cartId?: Maybe<Scalars['UUID']>;
+  simpleProductId: Scalars['UUID'];
+  carrierPreference: Carrier;
 };
 
 
@@ -2406,13 +2406,6 @@ export type MutationSimpleProductRecomputeShippingEstimatesArgs = {
 
 
 /** Mutation root */
-export type MutationUserUpdateAdminArgs = {
-  admin: Scalars['Boolean'];
-  id: Scalars['UUID'];
-};
-
-
-/** Mutation root */
 export type MutationAddressVerifyRawArgs = {
   country: Scalars['String'];
   lastName: Scalars['String'];
@@ -2428,9 +2421,23 @@ export type MutationAddressVerifyRawArgs = {
 
 
 /** Mutation root */
+export type MutationUserUpdateAdminArgs = {
+  admin: Scalars['Boolean'];
+  id: Scalars['UUID'];
+};
+
+
+/** Mutation root */
 export type MutationProductSetDepartmentArgs = {
   productId: Scalars['UUID'];
   departmentId: Scalars['UUID'];
+};
+
+
+/** Mutation root */
+export type MutationTradeShowUnassignTerminalArgs = {
+  tradeshowId: Scalars['UUID'];
+  terminalId: Scalars['UUID'];
 };
 
 
@@ -2446,13 +2453,6 @@ export type MutationCartSetBillingAddressArgs = {
   state: Scalars['String'];
   line2?: Maybe<Scalars['String']>;
   line1: Scalars['String'];
-};
-
-
-/** Mutation root */
-export type MutationTradeShowUnassignTerminalArgs = {
-  tradeshowId: Scalars['UUID'];
-  terminalId: Scalars['UUID'];
 };
 
 
@@ -2559,12 +2559,6 @@ export type MutationCartSetCouponCodeArgs = {
 
 
 /** Mutation root */
-export type MutationMagentoSalesOrderRefreshArgs = {
-  magentoId: Scalars['String'];
-};
-
-
-/** Mutation root */
 export type MutationCartClearShippingAddressArgs = {
   cartId?: Maybe<Scalars['UUID']>;
 };
@@ -2579,20 +2573,26 @@ export type MutationCartSetDeliveryDatePreferenceArgs = {
 
 
 /** Mutation root */
+export type MutationMagentoSalesOrderRefreshArgs = {
+  magentoId: Scalars['String'];
+};
+
+
+/** Mutation root */
 export type MutationPurchaseRequestReceiveArgs = {
   id: Scalars['UUID'];
 };
 
 
 /** Mutation root */
-export type MutationMagentoSalesOrderRefreshAsyncArgs = {
-  magentoId: Scalars['String'];
+export type MutationAutoprintPrintAcknowledgeForPrinterArgs = {
+  shipment: Scalars['UUID'];
 };
 
 
 /** Mutation root */
-export type MutationAutoprintPrintAcknowledgeForPrinterArgs = {
-  shipment: Scalars['UUID'];
+export type MutationMagentoSalesOrderRefreshAsyncArgs = {
+  magentoId: Scalars['String'];
 };
 
 
@@ -2665,16 +2665,16 @@ export type MutationKitProductRefreshBySkuArgs = {
 
 
 /** Mutation root */
-export type MutationSalesOrderSalesTaxRefundArgs = {
-  id: Scalars['UUID'];
-  type: SalesOrderType;
+export type MutationTradeShowCreateTerminalArgs = {
+  urn: Scalars['String'];
+  assetTag: Scalars['String'];
 };
 
 
 /** Mutation root */
-export type MutationTradeShowCreateTerminalArgs = {
-  urn: Scalars['String'];
-  assetTag: Scalars['String'];
+export type MutationSalesOrderSalesTaxRefundArgs = {
+  id: Scalars['UUID'];
+  type: SalesOrderType;
 };
 
 
@@ -2816,21 +2816,6 @@ export type MutationSimpleProductCreateArgs = {
 
 
 /** Mutation root */
-export type MutationUserCreateArgs = {
-  lastName: Scalars['String'];
-  firstName: Scalars['String'];
-  password: Scalars['String'];
-  email: Scalars['String'];
-};
-
-
-/** Mutation root */
-export type MutationCartClearBillingAddressArgs = {
-  cartId?: Maybe<Scalars['UUID']>;
-};
-
-
-/** Mutation root */
 export type MutationAddressUpdateArgs = {
   country: Scalars['String'];
   lastName: Scalars['String'];
@@ -2843,6 +2828,21 @@ export type MutationAddressUpdateArgs = {
   id: Scalars['UUID'];
   line2?: Maybe<Scalars['String']>;
   line1: Scalars['String'];
+};
+
+
+/** Mutation root */
+export type MutationUserCreateArgs = {
+  lastName: Scalars['String'];
+  firstName: Scalars['String'];
+  password: Scalars['String'];
+  email: Scalars['String'];
+};
+
+
+/** Mutation root */
+export type MutationCartClearBillingAddressArgs = {
+  cartId?: Maybe<Scalars['UUID']>;
 };
 
 
@@ -2873,6 +2873,13 @@ export type MutationSalesOrderValidateAddressArgs = {
 
 
 /** Mutation root */
+export type MutationSimpleProductRemoveZoneArgs = {
+  productId: Scalars['UUID'];
+  zoneId: Scalars['UUID'];
+};
+
+
+/** Mutation root */
 export type MutationPreppedProductsAddPreparationArgs = {
   quantity: Scalars['Long'];
   productId: Scalars['UUID'];
@@ -2881,21 +2888,14 @@ export type MutationPreppedProductsAddPreparationArgs = {
 
 
 /** Mutation root */
-export type MutationSimpleProductRemoveZoneArgs = {
-  productId: Scalars['UUID'];
-  zoneId: Scalars['UUID'];
+export type MutationSimpleProductClearShipsAloneArgs = {
+  id: Scalars['UUID'];
 };
 
 
 /** Mutation root */
 export type MutationMakingStockStatusArgs = {
   warehouse: Scalars['String'];
-};
-
-
-/** Mutation root */
-export type MutationSimpleProductClearShipsAloneArgs = {
-  id: Scalars['UUID'];
 };
 
 
@@ -2936,16 +2936,16 @@ export type MutationSimpleProductPushArgs = {
 
 
 /** Mutation root */
-export type MutationCartSetShippingZipArgs = {
-  zip: Scalars['String'];
-  cartId?: Maybe<Scalars['UUID']>;
+export type MutationMaintenancePoyntSyncTransactionArgs = {
+  orderNumber?: Maybe<Scalars['String']>;
+  transactionId: Scalars['String'];
 };
 
 
 /** Mutation root */
-export type MutationMaintenancePoyntSyncTransactionArgs = {
-  orderNumber?: Maybe<Scalars['String']>;
-  transactionId: Scalars['String'];
+export type MutationCartSetShippingZipArgs = {
+  zip: Scalars['String'];
+  cartId?: Maybe<Scalars['UUID']>;
 };
 
 
@@ -2987,15 +2987,15 @@ export type MutationCheckoutGetClientTokenArgs = {
 
 
 /** Mutation root */
-export type MutationCartRemoveAllKitProductArgs = {
-  productId: Scalars['UUID'];
-  cartId?: Maybe<Scalars['UUID']>;
+export type MutationScheduledShipmentSetApprovalArgs = {
+  id: Scalars['UUID'];
 };
 
 
 /** Mutation root */
-export type MutationScheduledShipmentSetApprovalArgs = {
-  id: Scalars['UUID'];
+export type MutationCartRemoveAllKitProductArgs = {
+  productId: Scalars['UUID'];
+  cartId?: Maybe<Scalars['UUID']>;
 };
 
 
@@ -3568,10 +3568,10 @@ export type Query = {
   shipmentSearch?: Maybe<Array<Maybe<ShipmentEntity>>>;
   /** Locates a configurable product by SKU */
   configurableProductFindBySku?: Maybe<ConfigurableProductEntity>;
-  /** Calculates a secure hash */
-  salesOrderSecureHash?: Maybe<Scalars['String']>;
   /** Search products */
   productSearch?: Maybe<SearchResults>;
+  /** Calculates a secure hash */
+  salesOrderSecureHash?: Maybe<Scalars['String']>;
   /** Provides warehouse info */
   warehouseList?: Maybe<Array<Maybe<WarehouseEntity>>>;
   /** Locates a category by slug */
@@ -3598,10 +3598,10 @@ export type Query = {
   discountInfo?: Maybe<DiscountEntity>;
   /** Looks up an order by secure hash */
   shipmentByHash?: Maybe<ShipmentEntity>;
-  /** Filters users */
-  userFilter?: Maybe<GraphQlPage_UserEntity>;
   /** Returns a tradeshow */
   tradeShowInfo?: Maybe<TradeShowEntity>;
+  /** Filters users */
+  userFilter?: Maybe<GraphQlPage_UserEntity>;
   /** Filter shipments */
   shipmentFilter?: Maybe<GraphQlPage_ShipmentEntity>;
   /** Filters sales orders */
@@ -3616,10 +3616,10 @@ export type Query = {
   salesOrderByHash?: Maybe<SalesOrderEntity>;
   /** Locates a simple product by slug */
   simpleProductBySlug?: Maybe<SimpleProductEntity>;
-  /** Locates a simple product by bin */
-  simpleProductFindByBin?: Maybe<SimpleProductEntity>;
   /** Retrieves a shipment */
   shipmentFind?: Maybe<ShipmentEntity>;
+  /** Locates a simple product by bin */
+  simpleProductFindByBin?: Maybe<SimpleProductEntity>;
   /** Filter shipments */
   scheduledShipmentFilter?: Maybe<GraphQlPage_ShipmentEntity>;
   /** Returns a purchase request by id */
@@ -3648,14 +3648,14 @@ export type Query = {
   purchaseOrderInfo?: Maybe<PurchaseOrderEntity>;
   /** Lists categories */
   categoryList?: Maybe<GraphQlPage_CategoryEntity>;
-  /** Queries a preparation summary for a product */
-  preppedProductsInfo?: Maybe<PreparationSummary>;
   /** Lists configurable products */
   configurableProductList?: Maybe<GraphQlPage_ConfigurableProductEntity>;
-  /** Locates a kit product by SKU */
-  kitProductFindBySku?: Maybe<KitProductEntity>;
   /** Locates a simple product by id */
   simpleProductInfo?: Maybe<SimpleProductEntity>;
+  /** Locates a kit product by SKU */
+  kitProductFindBySku?: Maybe<KitProductEntity>;
+  /** Queries a preparation summary for a product */
+  preppedProductsInfo?: Maybe<PreparationSummary>;
   /** Retrieves a shipment */
   shipmentInfo?: Maybe<ShipmentEntity>;
   /** Provides zone info */
@@ -3674,10 +3674,10 @@ export type Query = {
   kitProductFilter?: Maybe<GraphQlPage_KitProductEntity>;
   /** Lists simple products */
   simpleProductList?: Maybe<GraphQlPage_SimpleProductEntity>;
-  /** Locates a kit product by id */
-  kitProductInfo?: Maybe<KitProductEntity>;
   /** Locates a promotion by id */
   promotionInfo?: Maybe<PromotionEntity>;
+  /** Locates a kit product by id */
+  kitProductInfo?: Maybe<KitProductEntity>;
   /** Provides geolocation info for current user */
   geolocationSelf?: Maybe<GeolocationType>;
   /** Locates a simple product by SKU */
@@ -3807,12 +3807,6 @@ export type QueryConfigurableProductFindBySkuArgs = {
 
 
 /** Query root */
-export type QuerySalesOrderSecureHashArgs = {
-  id: Scalars['UUID'];
-};
-
-
-/** Query root */
 export type QueryProductSearchArgs = {
   featured?: Maybe<GraphQlSingleValueFilter_BooleanInput>;
   price?: Maybe<GraphQlValueRangeQueryFilter_BigDecimalInput>;
@@ -3824,6 +3818,12 @@ export type QueryProductSearchArgs = {
   page: GraphQlPageableInput;
   category?: Maybe<Scalars['String']>;
   brand?: Maybe<Scalars['String']>;
+};
+
+
+/** Query root */
+export type QuerySalesOrderSecureHashArgs = {
+  id: Scalars['UUID'];
 };
 
 
@@ -3906,6 +3906,12 @@ export type QueryShipmentByHashArgs = {
 
 
 /** Query root */
+export type QueryTradeShowInfoArgs = {
+  id?: Maybe<Scalars['UUID']>;
+};
+
+
+/** Query root */
 export type QueryUserFilterArgs = {
   lastName?: Maybe<GraphQlLikeQueryFilterInput>;
   firstName?: Maybe<GraphQlLikeQueryFilterInput>;
@@ -3913,12 +3919,6 @@ export type QueryUserFilterArgs = {
   sort?: Maybe<GraphQlSortInput>;
   page: GraphQlPageableInput;
   email?: Maybe<GraphQlLikeQueryFilterInput>;
-};
-
-
-/** Query root */
-export type QueryTradeShowInfoArgs = {
-  id?: Maybe<Scalars['UUID']>;
 };
 
 
@@ -3980,15 +3980,15 @@ export type QuerySimpleProductBySlugArgs = {
 
 
 /** Query root */
-export type QuerySimpleProductFindByBinArgs = {
-  binId: Scalars['String'];
-  warehouse: Scalars['String'];
+export type QueryShipmentFindArgs = {
+  shipmentNumber: Scalars['String'];
 };
 
 
 /** Query root */
-export type QueryShipmentFindArgs = {
-  shipmentNumber: Scalars['String'];
+export type QuerySimpleProductFindByBinArgs = {
+  binId: Scalars['String'];
+  warehouse: Scalars['String'];
 };
 
 
@@ -4082,15 +4082,14 @@ export type QueryCategoryListArgs = {
 
 
 /** Query root */
-export type QueryPreppedProductsInfoArgs = {
-  productId: Scalars['UUID'];
-  warehouse: Scalars['String'];
+export type QueryConfigurableProductListArgs = {
+  page?: Maybe<GraphQlPageableInput>;
 };
 
 
 /** Query root */
-export type QueryConfigurableProductListArgs = {
-  page?: Maybe<GraphQlPageableInput>;
+export type QuerySimpleProductInfoArgs = {
+  id: Scalars['UUID'];
 };
 
 
@@ -4101,8 +4100,9 @@ export type QueryKitProductFindBySkuArgs = {
 
 
 /** Query root */
-export type QuerySimpleProductInfoArgs = {
-  id: Scalars['UUID'];
+export type QueryPreppedProductsInfoArgs = {
+  productId: Scalars['UUID'];
+  warehouse: Scalars['String'];
 };
 
 
@@ -4160,13 +4160,13 @@ export type QuerySimpleProductListArgs = {
 
 
 /** Query root */
-export type QueryKitProductInfoArgs = {
+export type QueryPromotionInfoArgs = {
   id: Scalars['UUID'];
 };
 
 
 /** Query root */
-export type QueryPromotionInfoArgs = {
+export type QueryKitProductInfoArgs = {
   id: Scalars['UUID'];
 };
 
@@ -5437,8 +5437,8 @@ export type AutoprintAddPrinterMutation = (
   & { autoprintAddPrinter?: Maybe<(
     { __typename?: 'PrinterEntity' }
     & Pick<PrinterEntity, 'id' | 'name'>
-  )> }
-);
+    )> }
+  );
 
 export type AutoprintCancelAcknowledgeForPrinterMutationVariables = Exact<{
   shipment: Scalars['UUID'];
@@ -5448,7 +5448,7 @@ export type AutoprintCancelAcknowledgeForPrinterMutationVariables = Exact<{
 export type AutoprintCancelAcknowledgeForPrinterMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'autoprintCancelAcknowledgeForPrinter'>
-);
+  );
 
 export type AutoprintDownloadAcknowledgeForPrinterMutationVariables = Exact<{
   shipment: Scalars['UUID'];
@@ -5458,7 +5458,7 @@ export type AutoprintDownloadAcknowledgeForPrinterMutationVariables = Exact<{
 export type AutoprintDownloadAcknowledgeForPrinterMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'autoprintDownloadAcknowledgeForPrinter'>
-);
+  );
 
 export type AutoprintEnrollWorkstationMutationVariables = Exact<{
   warehouse: Scalars['String'];
@@ -5475,9 +5475,9 @@ export type AutoprintEnrollWorkstationMutation = (
     & { warehouse?: Maybe<(
       { __typename?: 'WarehouseEntity' }
       & Pick<WarehouseEntity, 'name'>
+      )> }
     )> }
-  )> }
-);
+  );
 
 export type AutoprintGetNextForPrinterMutationVariables = Exact<{
   machineKey: Scalars['String'];
@@ -5490,8 +5490,8 @@ export type AutoprintGetNextForPrinterMutation = (
   & { autoprintGetNextForPrinter?: Maybe<Array<Maybe<(
     { __typename?: 'PrintJob' }
     & Pick<PrintJob, 'name' | 'printer' | 'tray' | 'rotate' | 'dataBase64'>
-  )>>> }
-);
+    )>>> }
+  );
 
 export type AutoprintListPrintersMutationVariables = Exact<{
   machineKey: Scalars['String'];
@@ -5503,8 +5503,8 @@ export type AutoprintListPrintersMutation = (
   & { autoprintListPrinters?: Maybe<Array<Maybe<(
     { __typename?: 'PrinterEntity' }
     & Pick<PrinterEntity, 'id' | 'name'>
-  )>>> }
-);
+    )>>> }
+  );
 
 export type AutoprintPrintAcknowledgeForPrinterMutationVariables = Exact<{
   shipment: Scalars['UUID'];
@@ -5514,7 +5514,7 @@ export type AutoprintPrintAcknowledgeForPrinterMutationVariables = Exact<{
 export type AutoprintPrintAcknowledgeForPrinterMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'autoprintPrintAcknowledgeForPrinter'>
-);
+  );
 
 export type AutoprintTestWorkstationMutationVariables = Exact<{
   machineKey: Scalars['String'];
@@ -5529,9 +5529,9 @@ export type AutoprintTestWorkstationMutation = (
     & { warehouse?: Maybe<(
       { __typename?: 'WarehouseEntity' }
       & Pick<WarehouseEntity, 'name'>
+      )> }
     )> }
-  )> }
-);
+  );
 
 export type DepartmentListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5546,13 +5546,13 @@ export type DepartmentListQuery = (
       & { parent?: Maybe<(
         { __typename?: 'DepartmentEntity' }
         & Pick<DepartmentEntity, 'id'>
-      )>, children?: Maybe<Array<Maybe<(
+        )>, children?: Maybe<Array<Maybe<(
         { __typename?: 'DepartmentEntity' }
         & Pick<DepartmentEntity, 'id'>
+        )>>> }
       )>>> }
-    )>>> }
-  )> }
-);
+    )> }
+  );
 
 export type InventoryAddDetailsMutationVariables = Exact<{
   warehouse: Scalars['String'];
@@ -5569,9 +5569,9 @@ export type InventoryAddDetailsMutation = (
     & { product?: Maybe<(
       { __typename?: 'SimpleProductEntity' }
       & Pick<SimpleProductEntity, 'id' | 'sku' | 'slug' | 'title'>
+      )> }
     )> }
-  )> }
-);
+  );
 
 export type InventoryGetDetailsMutationVariables = Exact<{
   id: Scalars['UUID'];
@@ -5587,9 +5587,9 @@ export type InventoryGetDetailsMutation = (
     & { product?: Maybe<(
       { __typename?: 'SimpleProductEntity' }
       & Pick<SimpleProductEntity, 'id' | 'sku' | 'slug' | 'title'>
+      )> }
     )> }
-  )> }
-);
+  );
 
 export type InventorySetDetailsMutationVariables = Exact<{
   warehouse: Scalars['String'];
@@ -5606,9 +5606,9 @@ export type InventorySetDetailsMutation = (
     & { product?: Maybe<(
       { __typename?: 'SimpleProductEntity' }
       & Pick<SimpleProductEntity, 'id' | 'sku' | 'slug' | 'title'>
+      )> }
     )> }
-  )> }
-);
+  );
 
 export type MakingStockStatusMutationVariables = Exact<{
   warehouse: Scalars['String'];
@@ -5626,10 +5626,10 @@ export type MakingStockStatusMutation = (
       & { medias?: Maybe<Array<Maybe<(
         { __typename?: 'MediaEntity' }
         & Pick<MediaEntity, 'id' | 'mediaType' | 'url'>
-      )>>> }
-    )> }
-  )>>> }
-);
+        )>>> }
+      )> }
+    )>>> }
+  );
 
 export type PreppedProductsAddPreparationMutationVariables = Exact<{
   warehouse: Scalars['String'];
@@ -5649,13 +5649,13 @@ export type PreppedProductsAddPreparationMutation = (
       & { medias?: Maybe<Array<Maybe<(
         { __typename?: 'MediaEntity' }
         & Pick<MediaEntity, 'id' | 'mediaType' | 'url'>
-      )>>> }
-    )>, todaysPreparations?: Maybe<Array<Maybe<(
+        )>>> }
+      )>, todaysPreparations?: Maybe<Array<Maybe<(
       { __typename?: 'PreparationEntity' }
       & Pick<PreparationEntity, 'createdAt' | 'shipDate' | 'id' | 'preparer' | 'quantity'>
-    )>>> }
-  )> }
-);
+      )>>> }
+    )> }
+  );
 
 export type PreppedProductsListQueryVariables = Exact<{
   department: Scalars['String'];
@@ -5674,13 +5674,13 @@ export type PreppedProductsListQuery = (
       & { medias?: Maybe<Array<Maybe<(
         { __typename?: 'MediaEntity' }
         & Pick<MediaEntity, 'id' | 'mediaType' | 'url'>
-      )>>> }
-    )>, todaysPreparations?: Maybe<Array<Maybe<(
+        )>>> }
+      )>, todaysPreparations?: Maybe<Array<Maybe<(
       { __typename?: 'PreparationEntity' }
       & Pick<PreparationEntity, 'createdAt' | 'shipDate' | 'id' | 'preparer' | 'quantity'>
+      )>>> }
     )>>> }
-  )>>> }
-);
+  );
 
 export type PreppedProductsRemovePreparationMutationVariables = Exact<{
   warehouse: Scalars['String'];
@@ -5700,13 +5700,13 @@ export type PreppedProductsRemovePreparationMutation = (
       & { medias?: Maybe<Array<Maybe<(
         { __typename?: 'MediaEntity' }
         & Pick<MediaEntity, 'id' | 'mediaType' | 'url'>
-      )>>> }
-    )>, todaysPreparations?: Maybe<Array<Maybe<(
+        )>>> }
+      )>, todaysPreparations?: Maybe<Array<Maybe<(
       { __typename?: 'PreparationEntity' }
       & Pick<PreparationEntity, 'createdAt' | 'shipDate' | 'id' | 'preparer' | 'quantity'>
-    )>>> }
-  )> }
-);
+      )>>> }
+    )> }
+  );
 
 export type PurchaseOrderFilterQueryVariables = Exact<{
   pageable: GraphQlPageableInput;
@@ -5727,13 +5727,13 @@ export type PurchaseOrderFilterQuery = (
       & { supplier?: Maybe<(
         { __typename?: 'SupplierEntity' }
         & Pick<SupplierEntity, 'name'>
-      )>, warehouse?: Maybe<(
+        )>, warehouse?: Maybe<(
         { __typename?: 'WarehouseEntity' }
         & Pick<WarehouseEntity, 'name'>
-      )> }
-    )>>> }
-  )> }
-);
+        )> }
+      )>>> }
+    )> }
+  );
 
 export type PurchaseRequestFilterQueryVariables = Exact<{
   status?: Maybe<PurchaseRequestStatus>;
@@ -5753,13 +5753,13 @@ export type PurchaseRequestFilterQuery = (
       & { purchaseRequestItems?: Maybe<Array<Maybe<(
         { __typename?: 'PurchaseRequestItemEntity' }
         & Pick<PurchaseRequestItemEntity, 'id' | 'cls' | 'createdAt' | 'name' | 'quantity' | 'updatedAt'>
-      )>>>, team?: Maybe<(
+        )>>>, team?: Maybe<(
         { __typename?: 'TeamEntity' }
         & Pick<TeamEntity, 'id' | 'cls' | 'createdAt' | 'name' | 'slug' | 'updatedAt'>
-      )> }
-    )>>> }
-  )> }
-);
+        )> }
+      )>>> }
+    )> }
+  );
 
 export type ShipmentFilterQueryVariables = Exact<{
   shipmentNumber: Scalars['String'];
@@ -5777,17 +5777,17 @@ export type ShipmentFilterQuery = (
       & { salesOrder?: Maybe<(
         { __typename?: 'SalesOrderEntity' }
         & Pick<SalesOrderEntity, 'id' | 'cls' | 'orderNumber' | 'alternateOrderNumber' | 'placedTime' | 'email' | 'status'>
-      )>, shipmentItems?: Maybe<Array<Maybe<(
+        )>, shipmentItems?: Maybe<Array<Maybe<(
         { __typename?: 'ShipmentItemEntity' }
         & Pick<ShipmentItemEntity, 'id' | 'cls' | 'quantity'>
         & { salesOrderItem?: Maybe<(
           { __typename?: 'SalesOrderItemEntity' }
           & Pick<SalesOrderItemEntity, 'id' | 'cls' | 'sku' | 'name'>
-        )> }
+          )> }
+        )>>> }
       )>>> }
-    )>>> }
-  )> }
-);
+    )> }
+  );
 
 export type ShipmentFindQueryVariables = Exact<{
   shipmentNumber: Scalars['String'];
@@ -5802,19 +5802,19 @@ export type ShipmentFindQuery = (
     & { salesOrder?: Maybe<(
       { __typename?: 'SalesOrderEntity' }
       & Pick<SalesOrderEntity, 'id' | 'cls' | 'orderNumber' | 'alternateOrderNumber' | 'placedTime' | 'email' | 'status'>
-    )>, shipmentItems?: Maybe<Array<Maybe<(
+      )>, shipmentItems?: Maybe<Array<Maybe<(
       { __typename?: 'ShipmentItemEntity' }
       & Pick<ShipmentItemEntity, 'id' | 'cls' | 'quantity'>
       & { salesOrderItem?: Maybe<(
         { __typename?: 'SalesOrderItemEntity' }
         & Pick<SalesOrderItemEntity, 'id' | 'cls' | 'sku' | 'name'>
-      )> }
-    )>>>, shipmentAddons?: Maybe<Array<Maybe<(
+        )> }
+      )>>>, shipmentAddons?: Maybe<Array<Maybe<(
       { __typename?: 'ShipmentAddonEntity' }
       & Pick<ShipmentAddonEntity, 'id' | 'cls' | 'quantity' | 'sku' | 'name'>
-    )>>> }
-  )> }
-);
+      )>>> }
+    )> }
+  );
 
 export type ShipmentInfoQueryVariables = Exact<{
   id: Scalars['UUID'];
@@ -5829,19 +5829,19 @@ export type ShipmentInfoQuery = (
     & { salesOrder?: Maybe<(
       { __typename?: 'SalesOrderEntity' }
       & Pick<SalesOrderEntity, 'id' | 'cls' | 'orderNumber' | 'alternateOrderNumber' | 'placedTime' | 'email' | 'status'>
-    )>, shipmentItems?: Maybe<Array<Maybe<(
+      )>, shipmentItems?: Maybe<Array<Maybe<(
       { __typename?: 'ShipmentItemEntity' }
       & Pick<ShipmentItemEntity, 'id' | 'cls' | 'quantity'>
       & { salesOrderItem?: Maybe<(
         { __typename?: 'SalesOrderItemEntity' }
         & Pick<SalesOrderItemEntity, 'id' | 'cls' | 'sku' | 'name'>
-      )> }
-    )>>>, shipmentAddons?: Maybe<Array<Maybe<(
+        )> }
+      )>>>, shipmentAddons?: Maybe<Array<Maybe<(
       { __typename?: 'ShipmentAddonEntity' }
       & Pick<ShipmentAddonEntity, 'id' | 'cls' | 'quantity' | 'sku' | 'name'>
-    )>>> }
-  )> }
-);
+      )>>> }
+    )> }
+  );
 
 export type ShipmentLookupWeatherMutationVariables = Exact<{
   id: Scalars['UUID'];
@@ -5853,8 +5853,8 @@ export type ShipmentLookupWeatherMutation = (
   & { shipmentLookupWeather?: Maybe<Array<Maybe<(
     { __typename?: 'Weather' }
     & Pick<Weather, 'date' | 'high' | 'low'>
-  )>>> }
-);
+    )>>> }
+  );
 
 export type ShipmentRateMultiPieceMutationVariables = Exact<{
   id: Scalars['UUID'];
@@ -5870,8 +5870,8 @@ export type ShipmentRateMultiPieceMutation = (
   & { shipmentRateMultiPiece?: Maybe<Array<Maybe<(
     { __typename?: 'RateQuote' }
     & Pick<RateQuote, 'domesticServiceType' | 'reseller' | 'carrier' | 'service' | 'packaging' | 'options' | 'cost' | 'shipDate' | 'deliveryDate' | 'fitness'>
-  )>>> }
-);
+    )>>> }
+  );
 
 export type ShipmentSearchQueryVariables = Exact<{
   query: Scalars['String'];
@@ -5886,22 +5886,22 @@ export type ShipmentSearchQuery = (
     & { salesOrder?: Maybe<(
       { __typename?: 'SalesOrderEntity' }
       & Pick<SalesOrderEntity, 'id' | 'cls' | 'orderNumber' | 'alternateOrderNumber'>
-    )>, originWarehouse?: Maybe<(
+      )>, originWarehouse?: Maybe<(
       { __typename?: 'WarehouseEntity' }
       & Pick<WarehouseEntity, 'id' | 'name'>
-    )>, departingWarehouse?: Maybe<(
+      )>, departingWarehouse?: Maybe<(
       { __typename?: 'WarehouseEntity' }
       & Pick<WarehouseEntity, 'id' | 'name'>
-    )>, shipmentItems?: Maybe<Array<Maybe<(
+      )>, shipmentItems?: Maybe<Array<Maybe<(
       { __typename?: 'ShipmentItemEntity' }
       & Pick<ShipmentItemEntity, 'id' | 'cls' | 'quantity'>
       & { salesOrderItem?: Maybe<(
         { __typename?: 'SalesOrderItemEntity' }
         & Pick<SalesOrderItemEntity, 'id' | 'cls' | 'sku' | 'name'>
-      )> }
+        )> }
+      )>>> }
     )>>> }
-  )>>> }
-);
+  );
 
 export type ShipmentShipMultiPieceMutationVariables = Exact<{
   id: Scalars['UUID'];
@@ -5923,19 +5923,19 @@ export type ShipmentShipMultiPieceMutation = (
     & { salesOrder?: Maybe<(
       { __typename?: 'SalesOrderEntity' }
       & Pick<SalesOrderEntity, 'id' | 'cls' | 'orderNumber' | 'alternateOrderNumber' | 'placedTime' | 'email' | 'status'>
-    )>, shipmentItems?: Maybe<Array<Maybe<(
+      )>, shipmentItems?: Maybe<Array<Maybe<(
       { __typename?: 'ShipmentItemEntity' }
       & Pick<ShipmentItemEntity, 'id' | 'cls' | 'quantity'>
       & { salesOrderItem?: Maybe<(
         { __typename?: 'SalesOrderItemEntity' }
         & Pick<SalesOrderItemEntity, 'id' | 'cls' | 'sku' | 'name'>
-      )> }
-    )>>>, shipmentAddons?: Maybe<Array<Maybe<(
+        )> }
+      )>>>, shipmentAddons?: Maybe<Array<Maybe<(
       { __typename?: 'ShipmentAddonEntity' }
       & Pick<ShipmentAddonEntity, 'id' | 'cls' | 'quantity' | 'sku' | 'name'>
-    )>>> }
-  )> }
-);
+      )>>> }
+    )> }
+  );
 
 export type ShipmentUpdateAddressMutationVariables = Exact<{
   id: Scalars['UUID'];
@@ -5960,19 +5960,19 @@ export type ShipmentUpdateAddressMutation = (
     & { salesOrder?: Maybe<(
       { __typename?: 'SalesOrderEntity' }
       & Pick<SalesOrderEntity, 'id' | 'cls' | 'orderNumber' | 'alternateOrderNumber' | 'placedTime' | 'email' | 'status'>
-    )>, shipmentItems?: Maybe<Array<Maybe<(
+      )>, shipmentItems?: Maybe<Array<Maybe<(
       { __typename?: 'ShipmentItemEntity' }
       & Pick<ShipmentItemEntity, 'id' | 'cls' | 'quantity'>
       & { salesOrderItem?: Maybe<(
         { __typename?: 'SalesOrderItemEntity' }
         & Pick<SalesOrderItemEntity, 'id' | 'cls' | 'sku' | 'name'>
-      )> }
-    )>>>, shipmentAddons?: Maybe<Array<Maybe<(
+        )> }
+      )>>>, shipmentAddons?: Maybe<Array<Maybe<(
       { __typename?: 'ShipmentAddonEntity' }
       & Pick<ShipmentAddonEntity, 'id' | 'cls' | 'quantity' | 'sku' | 'name'>
-    )>>> }
-  )> }
-);
+      )>>> }
+    )> }
+  );
 
 export type ShipmentValidateAddressMutationVariables = Exact<{
   id: Scalars['UUID'];
@@ -5987,19 +5987,19 @@ export type ShipmentValidateAddressMutation = (
     & { salesOrder?: Maybe<(
       { __typename?: 'SalesOrderEntity' }
       & Pick<SalesOrderEntity, 'id' | 'cls' | 'orderNumber' | 'alternateOrderNumber' | 'placedTime' | 'email' | 'status'>
-    )>, shipmentItems?: Maybe<Array<Maybe<(
+      )>, shipmentItems?: Maybe<Array<Maybe<(
       { __typename?: 'ShipmentItemEntity' }
       & Pick<ShipmentItemEntity, 'id' | 'cls' | 'quantity'>
       & { salesOrderItem?: Maybe<(
         { __typename?: 'SalesOrderItemEntity' }
         & Pick<SalesOrderItemEntity, 'id' | 'cls' | 'sku' | 'name'>
-      )> }
-    )>>>, shipmentAddons?: Maybe<Array<Maybe<(
+        )> }
+      )>>>, shipmentAddons?: Maybe<Array<Maybe<(
       { __typename?: 'ShipmentAddonEntity' }
       & Pick<ShipmentAddonEntity, 'id' | 'cls' | 'quantity' | 'sku' | 'name'>
-    )>>> }
-  )> }
-);
+      )>>> }
+    )> }
+  );
 
 export type ShipmentVoidMutationVariables = Exact<{
   id: Scalars['UUID'];
@@ -6014,19 +6014,19 @@ export type ShipmentVoidMutation = (
     & { salesOrder?: Maybe<(
       { __typename?: 'SalesOrderEntity' }
       & Pick<SalesOrderEntity, 'id' | 'cls' | 'orderNumber' | 'alternateOrderNumber' | 'placedTime' | 'email' | 'status'>
-    )>, shipmentItems?: Maybe<Array<Maybe<(
+      )>, shipmentItems?: Maybe<Array<Maybe<(
       { __typename?: 'ShipmentItemEntity' }
       & Pick<ShipmentItemEntity, 'id' | 'cls' | 'quantity'>
       & { salesOrderItem?: Maybe<(
         { __typename?: 'SalesOrderItemEntity' }
         & Pick<SalesOrderItemEntity, 'id' | 'cls' | 'sku' | 'name'>
-      )> }
-    )>>>, shipmentAddons?: Maybe<Array<Maybe<(
+        )> }
+      )>>>, shipmentAddons?: Maybe<Array<Maybe<(
       { __typename?: 'ShipmentAddonEntity' }
       & Pick<ShipmentAddonEntity, 'id' | 'cls' | 'quantity' | 'sku' | 'name'>
-    )>>> }
-  )> }
-);
+      )>>> }
+    )> }
+  );
 
 export type SimpleProductClearBinMutationVariables = Exact<{
   id: Scalars['UUID'];
@@ -6042,7 +6042,7 @@ export type SimpleProductClearBinMutation = (
     & { warehouses?: Maybe<Array<Maybe<(
       { __typename?: 'WarehouseEntity' }
       & Pick<WarehouseEntity, 'id' | 'name'>
-    )>>>, bins?: Maybe<Array<Maybe<(
+      )>>>, bins?: Maybe<Array<Maybe<(
       { __typename?: 'BinEntity' }
       & Pick<BinEntity, 'id' | 'binId'>
       & { zone?: Maybe<(
@@ -6051,28 +6051,28 @@ export type SimpleProductClearBinMutation = (
         & { warehouse?: Maybe<(
           { __typename?: 'WarehouseEntity' }
           & Pick<WarehouseEntity, 'id' | 'name'>
+          )> }
         )> }
-      )> }
-    )>>>, inventoryQuantityCaches?: Maybe<Array<Maybe<(
+      )>>>, inventoryQuantityCaches?: Maybe<Array<Maybe<(
       { __typename?: 'InventoryQuantityCacheEntity' }
       & Pick<InventoryQuantityCacheEntity, 'id' | 'quantityAvailableForSale'>
-    )>>>, explicitDepartment?: Maybe<(
+      )>>>, explicitDepartment?: Maybe<(
       { __typename?: 'DepartmentEntity' }
       & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
       & { parent?: Maybe<(
         { __typename?: 'DepartmentEntity' }
         & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
-      )> }
-    )>, brand?: Maybe<(
+        )> }
+      )>, brand?: Maybe<(
       { __typename?: 'BrandEntity' }
       & Pick<BrandEntity, 'id' | 'slug' | 'name'>
-    )>, supplier?: Maybe<(
+      )>, supplier?: Maybe<(
       { __typename?: 'SupplierEntity' }
       & Pick<SupplierEntity, 'id' | 'slug' | 'name'>
-    )>, medias?: Maybe<Array<Maybe<(
+      )>, medias?: Maybe<Array<Maybe<(
       { __typename?: 'MediaEntity' }
       & Pick<MediaEntity, 'id' | 'mediaType' | 'url'>
-    )>>>, explicitCategories?: Maybe<Array<Maybe<(
+      )>>>, explicitCategories?: Maybe<Array<Maybe<(
       { __typename?: 'CategoryEntity' }
       & Pick<CategoryEntity, 'id' | 'slug' | 'name'>
       & { parent?: Maybe<(
@@ -6081,14 +6081,14 @@ export type SimpleProductClearBinMutation = (
         & { parent?: Maybe<(
           { __typename?: 'CategoryEntity' }
           & Pick<CategoryEntity, 'id' | 'slug' | 'name'>
+          )> }
         )> }
-      )> }
-    )>>>, shippingRuleSet?: Maybe<(
+      )>>>, shippingRuleSet?: Maybe<(
       { __typename?: 'ShippingRuleSetEntity' }
       & Pick<ShippingRuleSetEntity, 'id' | 'slug' | 'name'>
+      )> }
     )> }
-  )> }
-);
+  );
 
 export type SimpleProductFilterQueryVariables = Exact<{
   pageable: GraphQlPageableInput;
@@ -6116,17 +6116,17 @@ export type SimpleProductFilterQuery = (
         & { parent?: Maybe<(
           { __typename?: 'DepartmentEntity' }
           & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
-        )> }
-      )>, brand?: Maybe<(
+          )> }
+        )>, brand?: Maybe<(
         { __typename?: 'BrandEntity' }
         & Pick<BrandEntity, 'id' | 'slug' | 'name'>
-      )>, supplier?: Maybe<(
+        )>, supplier?: Maybe<(
         { __typename?: 'SupplierEntity' }
         & Pick<SupplierEntity, 'id' | 'slug' | 'name'>
-      )>, medias?: Maybe<Array<Maybe<(
+        )>, medias?: Maybe<Array<Maybe<(
         { __typename?: 'MediaEntity' }
         & Pick<MediaEntity, 'id' | 'mediaType' | 'url'>
-      )>>>, explicitCategories?: Maybe<Array<Maybe<(
+        )>>>, explicitCategories?: Maybe<Array<Maybe<(
         { __typename?: 'CategoryEntity' }
         & Pick<CategoryEntity, 'id' | 'slug' | 'name'>
         & { parent?: Maybe<(
@@ -6135,15 +6135,15 @@ export type SimpleProductFilterQuery = (
           & { parent?: Maybe<(
             { __typename?: 'CategoryEntity' }
             & Pick<CategoryEntity, 'id' | 'slug' | 'name'>
+            )> }
           )> }
-        )> }
-      )>>>, shippingRuleSet?: Maybe<(
+        )>>>, shippingRuleSet?: Maybe<(
         { __typename?: 'ShippingRuleSetEntity' }
         & Pick<ShippingRuleSetEntity, 'id' | 'slug' | 'name'>
-      )> }
-    )>>> }
-  )> }
-);
+        )> }
+      )>>> }
+    )> }
+  );
 
 export type SimpleProductFindByBinQueryVariables = Exact<{
   warehouse: Scalars['String'];
@@ -6159,7 +6159,7 @@ export type SimpleProductFindByBinQuery = (
     & { warehouses?: Maybe<Array<Maybe<(
       { __typename?: 'WarehouseEntity' }
       & Pick<WarehouseEntity, 'id' | 'name'>
-    )>>>, bins?: Maybe<Array<Maybe<(
+      )>>>, bins?: Maybe<Array<Maybe<(
       { __typename?: 'BinEntity' }
       & Pick<BinEntity, 'id' | 'binId'>
       & { zone?: Maybe<(
@@ -6168,28 +6168,28 @@ export type SimpleProductFindByBinQuery = (
         & { warehouse?: Maybe<(
           { __typename?: 'WarehouseEntity' }
           & Pick<WarehouseEntity, 'id' | 'name'>
+          )> }
         )> }
-      )> }
-    )>>>, inventoryQuantityCaches?: Maybe<Array<Maybe<(
+      )>>>, inventoryQuantityCaches?: Maybe<Array<Maybe<(
       { __typename?: 'InventoryQuantityCacheEntity' }
       & Pick<InventoryQuantityCacheEntity, 'id' | 'quantityAvailableForSale'>
-    )>>>, explicitDepartment?: Maybe<(
+      )>>>, explicitDepartment?: Maybe<(
       { __typename?: 'DepartmentEntity' }
       & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
       & { parent?: Maybe<(
         { __typename?: 'DepartmentEntity' }
         & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
-      )> }
-    )>, brand?: Maybe<(
+        )> }
+      )>, brand?: Maybe<(
       { __typename?: 'BrandEntity' }
       & Pick<BrandEntity, 'id' | 'slug' | 'name'>
-    )>, supplier?: Maybe<(
+      )>, supplier?: Maybe<(
       { __typename?: 'SupplierEntity' }
       & Pick<SupplierEntity, 'id' | 'slug' | 'name'>
-    )>, medias?: Maybe<Array<Maybe<(
+      )>, medias?: Maybe<Array<Maybe<(
       { __typename?: 'MediaEntity' }
       & Pick<MediaEntity, 'id' | 'mediaType' | 'url'>
-    )>>>, explicitCategories?: Maybe<Array<Maybe<(
+      )>>>, explicitCategories?: Maybe<Array<Maybe<(
       { __typename?: 'CategoryEntity' }
       & Pick<CategoryEntity, 'id' | 'slug' | 'name'>
       & { parent?: Maybe<(
@@ -6198,14 +6198,14 @@ export type SimpleProductFindByBinQuery = (
         & { parent?: Maybe<(
           { __typename?: 'CategoryEntity' }
           & Pick<CategoryEntity, 'id' | 'slug' | 'name'>
+          )> }
         )> }
-      )> }
-    )>>>, shippingRuleSet?: Maybe<(
+      )>>>, shippingRuleSet?: Maybe<(
       { __typename?: 'ShippingRuleSetEntity' }
       & Pick<ShippingRuleSetEntity, 'id' | 'slug' | 'name'>
+      )> }
     )> }
-  )> }
-);
+  );
 
 export type SimpleProductFindBySkuQueryVariables = Exact<{
   sku: Scalars['String'];
@@ -6220,7 +6220,7 @@ export type SimpleProductFindBySkuQuery = (
     & { warehouses?: Maybe<Array<Maybe<(
       { __typename?: 'WarehouseEntity' }
       & Pick<WarehouseEntity, 'id' | 'name'>
-    )>>>, bins?: Maybe<Array<Maybe<(
+      )>>>, bins?: Maybe<Array<Maybe<(
       { __typename?: 'BinEntity' }
       & Pick<BinEntity, 'id' | 'binId'>
       & { zone?: Maybe<(
@@ -6229,28 +6229,28 @@ export type SimpleProductFindBySkuQuery = (
         & { warehouse?: Maybe<(
           { __typename?: 'WarehouseEntity' }
           & Pick<WarehouseEntity, 'id' | 'name'>
+          )> }
         )> }
-      )> }
-    )>>>, inventoryQuantityCaches?: Maybe<Array<Maybe<(
+      )>>>, inventoryQuantityCaches?: Maybe<Array<Maybe<(
       { __typename?: 'InventoryQuantityCacheEntity' }
       & Pick<InventoryQuantityCacheEntity, 'id' | 'quantityAvailableForSale'>
-    )>>>, explicitDepartment?: Maybe<(
+      )>>>, explicitDepartment?: Maybe<(
       { __typename?: 'DepartmentEntity' }
       & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
       & { parent?: Maybe<(
         { __typename?: 'DepartmentEntity' }
         & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
-      )> }
-    )>, brand?: Maybe<(
+        )> }
+      )>, brand?: Maybe<(
       { __typename?: 'BrandEntity' }
       & Pick<BrandEntity, 'id' | 'slug' | 'name'>
-    )>, supplier?: Maybe<(
+      )>, supplier?: Maybe<(
       { __typename?: 'SupplierEntity' }
       & Pick<SupplierEntity, 'id' | 'slug' | 'name'>
-    )>, medias?: Maybe<Array<Maybe<(
+      )>, medias?: Maybe<Array<Maybe<(
       { __typename?: 'MediaEntity' }
       & Pick<MediaEntity, 'id' | 'mediaType' | 'url'>
-    )>>>, explicitCategories?: Maybe<Array<Maybe<(
+      )>>>, explicitCategories?: Maybe<Array<Maybe<(
       { __typename?: 'CategoryEntity' }
       & Pick<CategoryEntity, 'id' | 'slug' | 'name'>
       & { parent?: Maybe<(
@@ -6259,14 +6259,14 @@ export type SimpleProductFindBySkuQuery = (
         & { parent?: Maybe<(
           { __typename?: 'CategoryEntity' }
           & Pick<CategoryEntity, 'id' | 'slug' | 'name'>
+          )> }
         )> }
-      )> }
-    )>>>, shippingRuleSet?: Maybe<(
+      )>>>, shippingRuleSet?: Maybe<(
       { __typename?: 'ShippingRuleSetEntity' }
       & Pick<ShippingRuleSetEntity, 'id' | 'slug' | 'name'>
+      )> }
     )> }
-  )> }
-);
+  );
 
 export type SimpleProductFindByUpcQueryVariables = Exact<{
   upc: Scalars['String'];
@@ -6281,7 +6281,7 @@ export type SimpleProductFindByUpcQuery = (
     & { warehouses?: Maybe<Array<Maybe<(
       { __typename?: 'WarehouseEntity' }
       & Pick<WarehouseEntity, 'id' | 'name'>
-    )>>>, bins?: Maybe<Array<Maybe<(
+      )>>>, bins?: Maybe<Array<Maybe<(
       { __typename?: 'BinEntity' }
       & Pick<BinEntity, 'id' | 'binId'>
       & { zone?: Maybe<(
@@ -6290,28 +6290,28 @@ export type SimpleProductFindByUpcQuery = (
         & { warehouse?: Maybe<(
           { __typename?: 'WarehouseEntity' }
           & Pick<WarehouseEntity, 'id' | 'name'>
+          )> }
         )> }
-      )> }
-    )>>>, inventoryQuantityCaches?: Maybe<Array<Maybe<(
+      )>>>, inventoryQuantityCaches?: Maybe<Array<Maybe<(
       { __typename?: 'InventoryQuantityCacheEntity' }
       & Pick<InventoryQuantityCacheEntity, 'id' | 'quantityAvailableForSale'>
-    )>>>, explicitDepartment?: Maybe<(
+      )>>>, explicitDepartment?: Maybe<(
       { __typename?: 'DepartmentEntity' }
       & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
       & { parent?: Maybe<(
         { __typename?: 'DepartmentEntity' }
         & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
-      )> }
-    )>, brand?: Maybe<(
+        )> }
+      )>, brand?: Maybe<(
       { __typename?: 'BrandEntity' }
       & Pick<BrandEntity, 'id' | 'slug' | 'name'>
-    )>, supplier?: Maybe<(
+      )>, supplier?: Maybe<(
       { __typename?: 'SupplierEntity' }
       & Pick<SupplierEntity, 'id' | 'slug' | 'name'>
-    )>, medias?: Maybe<Array<Maybe<(
+      )>, medias?: Maybe<Array<Maybe<(
       { __typename?: 'MediaEntity' }
       & Pick<MediaEntity, 'id' | 'mediaType' | 'url'>
-    )>>>, explicitCategories?: Maybe<Array<Maybe<(
+      )>>>, explicitCategories?: Maybe<Array<Maybe<(
       { __typename?: 'CategoryEntity' }
       & Pick<CategoryEntity, 'id' | 'slug' | 'name'>
       & { parent?: Maybe<(
@@ -6320,14 +6320,14 @@ export type SimpleProductFindByUpcQuery = (
         & { parent?: Maybe<(
           { __typename?: 'CategoryEntity' }
           & Pick<CategoryEntity, 'id' | 'slug' | 'name'>
+          )> }
         )> }
-      )> }
-    )>>>, shippingRuleSet?: Maybe<(
+      )>>>, shippingRuleSet?: Maybe<(
       { __typename?: 'ShippingRuleSetEntity' }
       & Pick<ShippingRuleSetEntity, 'id' | 'slug' | 'name'>
+      )> }
     )> }
-  )> }
-);
+  );
 
 export type SimpleProductInfoQueryVariables = Exact<{
   id: Scalars['UUID'];
@@ -6342,7 +6342,7 @@ export type SimpleProductInfoQuery = (
     & { warehouses?: Maybe<Array<Maybe<(
       { __typename?: 'WarehouseEntity' }
       & Pick<WarehouseEntity, 'id' | 'name'>
-    )>>>, bins?: Maybe<Array<Maybe<(
+      )>>>, bins?: Maybe<Array<Maybe<(
       { __typename?: 'BinEntity' }
       & Pick<BinEntity, 'id' | 'binId'>
       & { zone?: Maybe<(
@@ -6351,28 +6351,28 @@ export type SimpleProductInfoQuery = (
         & { warehouse?: Maybe<(
           { __typename?: 'WarehouseEntity' }
           & Pick<WarehouseEntity, 'id' | 'name'>
+          )> }
         )> }
-      )> }
-    )>>>, inventoryQuantityCaches?: Maybe<Array<Maybe<(
+      )>>>, inventoryQuantityCaches?: Maybe<Array<Maybe<(
       { __typename?: 'InventoryQuantityCacheEntity' }
       & Pick<InventoryQuantityCacheEntity, 'id' | 'quantityAvailableForSale'>
-    )>>>, explicitDepartment?: Maybe<(
+      )>>>, explicitDepartment?: Maybe<(
       { __typename?: 'DepartmentEntity' }
       & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
       & { parent?: Maybe<(
         { __typename?: 'DepartmentEntity' }
         & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
-      )> }
-    )>, brand?: Maybe<(
+        )> }
+      )>, brand?: Maybe<(
       { __typename?: 'BrandEntity' }
       & Pick<BrandEntity, 'id' | 'slug' | 'name'>
-    )>, supplier?: Maybe<(
+      )>, supplier?: Maybe<(
       { __typename?: 'SupplierEntity' }
       & Pick<SupplierEntity, 'id' | 'slug' | 'name'>
-    )>, medias?: Maybe<Array<Maybe<(
+      )>, medias?: Maybe<Array<Maybe<(
       { __typename?: 'MediaEntity' }
       & Pick<MediaEntity, 'id' | 'mediaType' | 'url'>
-    )>>>, explicitCategories?: Maybe<Array<Maybe<(
+      )>>>, explicitCategories?: Maybe<Array<Maybe<(
       { __typename?: 'CategoryEntity' }
       & Pick<CategoryEntity, 'id' | 'slug' | 'name'>
       & { parent?: Maybe<(
@@ -6381,14 +6381,14 @@ export type SimpleProductInfoQuery = (
         & { parent?: Maybe<(
           { __typename?: 'CategoryEntity' }
           & Pick<CategoryEntity, 'id' | 'slug' | 'name'>
+          )> }
         )> }
-      )> }
-    )>>>, shippingRuleSet?: Maybe<(
+      )>>>, shippingRuleSet?: Maybe<(
       { __typename?: 'ShippingRuleSetEntity' }
       & Pick<ShippingRuleSetEntity, 'id' | 'slug' | 'name'>
+      )> }
     )> }
-  )> }
-);
+  );
 
 export type SimpleProductSetBinMutationVariables = Exact<{
   id: Scalars['UUID'];
@@ -6405,7 +6405,7 @@ export type SimpleProductSetBinMutation = (
     & { warehouses?: Maybe<Array<Maybe<(
       { __typename?: 'WarehouseEntity' }
       & Pick<WarehouseEntity, 'id' | 'name'>
-    )>>>, bins?: Maybe<Array<Maybe<(
+      )>>>, bins?: Maybe<Array<Maybe<(
       { __typename?: 'BinEntity' }
       & Pick<BinEntity, 'id' | 'binId'>
       & { zone?: Maybe<(
@@ -6414,28 +6414,28 @@ export type SimpleProductSetBinMutation = (
         & { warehouse?: Maybe<(
           { __typename?: 'WarehouseEntity' }
           & Pick<WarehouseEntity, 'id' | 'name'>
+          )> }
         )> }
-      )> }
-    )>>>, inventoryQuantityCaches?: Maybe<Array<Maybe<(
+      )>>>, inventoryQuantityCaches?: Maybe<Array<Maybe<(
       { __typename?: 'InventoryQuantityCacheEntity' }
       & Pick<InventoryQuantityCacheEntity, 'id' | 'quantityAvailableForSale'>
-    )>>>, explicitDepartment?: Maybe<(
+      )>>>, explicitDepartment?: Maybe<(
       { __typename?: 'DepartmentEntity' }
       & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
       & { parent?: Maybe<(
         { __typename?: 'DepartmentEntity' }
         & Pick<DepartmentEntity, 'id' | 'slug' | 'name'>
-      )> }
-    )>, brand?: Maybe<(
+        )> }
+      )>, brand?: Maybe<(
       { __typename?: 'BrandEntity' }
       & Pick<BrandEntity, 'id' | 'slug' | 'name'>
-    )>, supplier?: Maybe<(
+      )>, supplier?: Maybe<(
       { __typename?: 'SupplierEntity' }
       & Pick<SupplierEntity, 'id' | 'slug' | 'name'>
-    )>, medias?: Maybe<Array<Maybe<(
+      )>, medias?: Maybe<Array<Maybe<(
       { __typename?: 'MediaEntity' }
       & Pick<MediaEntity, 'id' | 'mediaType' | 'url'>
-    )>>>, explicitCategories?: Maybe<Array<Maybe<(
+      )>>>, explicitCategories?: Maybe<Array<Maybe<(
       { __typename?: 'CategoryEntity' }
       & Pick<CategoryEntity, 'id' | 'slug' | 'name'>
       & { parent?: Maybe<(
@@ -6444,14 +6444,14 @@ export type SimpleProductSetBinMutation = (
         & { parent?: Maybe<(
           { __typename?: 'CategoryEntity' }
           & Pick<CategoryEntity, 'id' | 'slug' | 'name'>
+          )> }
         )> }
-      )> }
-    )>>>, shippingRuleSet?: Maybe<(
+      )>>>, shippingRuleSet?: Maybe<(
       { __typename?: 'ShippingRuleSetEntity' }
       & Pick<ShippingRuleSetEntity, 'id' | 'slug' | 'name'>
+      )> }
     )> }
-  )> }
-);
+  );
 
 export type SupplierListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -6463,9 +6463,9 @@ export type SupplierListQuery = (
     & { data?: Maybe<Array<Maybe<(
       { __typename?: 'SupplierEntity' }
       & Pick<SupplierEntity, 'id' | 'slug' | 'name'>
-    )>>> }
-  )> }
-);
+      )>>> }
+    )> }
+  );
 
 export type UserSelfQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -6475,8 +6475,8 @@ export type UserSelfQuery = (
   & { userSelf?: Maybe<(
     { __typename?: 'UserEntity' }
     & Pick<UserEntity, 'email' | 'firstName' | 'lastName' | 'admin' | 'emailConfirmed'>
-  )> }
-);
+    )> }
+  );
 
 export type WarehouseListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -6486,1918 +6486,1918 @@ export type WarehouseListQuery = (
   & { warehouseList?: Maybe<Array<Maybe<(
     { __typename?: 'WarehouseEntity' }
     & Pick<WarehouseEntity, 'id' | 'name' | 'line1' | 'line2' | 'city' | 'state' | 'postalCode' | 'country' | 'latitude' | 'longitude'>
-  )>>> }
-);
+    )>>> }
+  );
 
 export const AutoprintAddPrinterDocument = gql`
     mutation autoprintAddPrinter($machineKey: String!, $printerName: String!) {
-  autoprintAddPrinter(machineKey: $machineKey, printerName: $printerName) {
-    id
-    name
+        autoprintAddPrinter(machineKey: $machineKey, printerName: $printerName) {
+            id
+            name
+        }
+    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AutoprintAddPrinterGQL extends Apollo.Mutation<AutoprintAddPrinterMutation, AutoprintAddPrinterMutationVariables> {
+  document = AutoprintAddPrinterDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class AutoprintAddPrinterGQL extends Apollo.Mutation<AutoprintAddPrinterMutation, AutoprintAddPrinterMutationVariables> {
-    document = AutoprintAddPrinterDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const AutoprintCancelAcknowledgeForPrinterDocument = gql`
     mutation autoprintCancelAcknowledgeForPrinter($shipment: UUID!) {
-  autoprintCancelAcknowledgeForPrinter(shipment: $shipment)
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class AutoprintCancelAcknowledgeForPrinterGQL extends Apollo.Mutation<AutoprintCancelAcknowledgeForPrinterMutation, AutoprintCancelAcknowledgeForPrinterMutationVariables> {
-    document = AutoprintCancelAcknowledgeForPrinterDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
+        autoprintCancelAcknowledgeForPrinter(shipment: $shipment)
     }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AutoprintCancelAcknowledgeForPrinterGQL extends Apollo.Mutation<AutoprintCancelAcknowledgeForPrinterMutation, AutoprintCancelAcknowledgeForPrinterMutationVariables> {
+  document = AutoprintCancelAcknowledgeForPrinterDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
+}
 export const AutoprintDownloadAcknowledgeForPrinterDocument = gql`
     mutation autoprintDownloadAcknowledgeForPrinter($shipment: UUID!) {
-  autoprintDownloadAcknowledgeForPrinter(shipment: $shipment)
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class AutoprintDownloadAcknowledgeForPrinterGQL extends Apollo.Mutation<AutoprintDownloadAcknowledgeForPrinterMutation, AutoprintDownloadAcknowledgeForPrinterMutationVariables> {
-    document = AutoprintDownloadAcknowledgeForPrinterDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
+        autoprintDownloadAcknowledgeForPrinter(shipment: $shipment)
     }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AutoprintDownloadAcknowledgeForPrinterGQL extends Apollo.Mutation<AutoprintDownloadAcknowledgeForPrinterMutation, AutoprintDownloadAcknowledgeForPrinterMutationVariables> {
+  document = AutoprintDownloadAcknowledgeForPrinterDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
+}
 export const AutoprintEnrollWorkstationDocument = gql`
     mutation autoprintEnrollWorkstation($warehouse: String!, $name: String!, $machineKey: String!) {
-  autoprintEnrollWorkstation(
-    warehouse: $warehouse
-    name: $name
-    machineKey: $machineKey
-  ) {
-    name
-    machineKey
-    warehouse {
-      name
+        autoprintEnrollWorkstation(
+            warehouse: $warehouse
+            name: $name
+            machineKey: $machineKey
+        ) {
+            name
+            machineKey
+            warehouse {
+                name
+            }
+        }
     }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AutoprintEnrollWorkstationGQL extends Apollo.Mutation<AutoprintEnrollWorkstationMutation, AutoprintEnrollWorkstationMutationVariables> {
+  document = AutoprintEnrollWorkstationDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class AutoprintEnrollWorkstationGQL extends Apollo.Mutation<AutoprintEnrollWorkstationMutation, AutoprintEnrollWorkstationMutationVariables> {
-    document = AutoprintEnrollWorkstationDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const AutoprintGetNextForPrinterDocument = gql`
     mutation autoprintGetNextForPrinter($machineKey: String!, $printerName: String!) {
-  autoprintGetNextForPrinter(machineKey: $machineKey, printerName: $printerName) {
-    name
-    printer
-    tray
-    rotate
-    dataBase64
+        autoprintGetNextForPrinter(machineKey: $machineKey, printerName: $printerName) {
+            name
+            printer
+            tray
+            rotate
+            dataBase64
+        }
+    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AutoprintGetNextForPrinterGQL extends Apollo.Mutation<AutoprintGetNextForPrinterMutation, AutoprintGetNextForPrinterMutationVariables> {
+  document = AutoprintGetNextForPrinterDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class AutoprintGetNextForPrinterGQL extends Apollo.Mutation<AutoprintGetNextForPrinterMutation, AutoprintGetNextForPrinterMutationVariables> {
-    document = AutoprintGetNextForPrinterDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const AutoprintListPrintersDocument = gql`
     mutation autoprintListPrinters($machineKey: String!) {
-  autoprintListPrinters(machineKey: $machineKey) {
-    id
-    name
+        autoprintListPrinters(machineKey: $machineKey) {
+            id
+            name
+        }
+    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AutoprintListPrintersGQL extends Apollo.Mutation<AutoprintListPrintersMutation, AutoprintListPrintersMutationVariables> {
+  document = AutoprintListPrintersDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class AutoprintListPrintersGQL extends Apollo.Mutation<AutoprintListPrintersMutation, AutoprintListPrintersMutationVariables> {
-    document = AutoprintListPrintersDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const AutoprintPrintAcknowledgeForPrinterDocument = gql`
     mutation autoprintPrintAcknowledgeForPrinter($shipment: UUID!) {
-  autoprintPrintAcknowledgeForPrinter(shipment: $shipment)
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class AutoprintPrintAcknowledgeForPrinterGQL extends Apollo.Mutation<AutoprintPrintAcknowledgeForPrinterMutation, AutoprintPrintAcknowledgeForPrinterMutationVariables> {
-    document = AutoprintPrintAcknowledgeForPrinterDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
+        autoprintPrintAcknowledgeForPrinter(shipment: $shipment)
     }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AutoprintPrintAcknowledgeForPrinterGQL extends Apollo.Mutation<AutoprintPrintAcknowledgeForPrinterMutation, AutoprintPrintAcknowledgeForPrinterMutationVariables> {
+  document = AutoprintPrintAcknowledgeForPrinterDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
+}
 export const AutoprintTestWorkstationDocument = gql`
     mutation autoprintTestWorkstation($machineKey: String!) {
-  autoprintTestWorkstation(machineKey: $machineKey) {
-    name
-    machineKey
-    warehouse {
-      name
+        autoprintTestWorkstation(machineKey: $machineKey) {
+            name
+            machineKey
+            warehouse {
+                name
+            }
+        }
     }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AutoprintTestWorkstationGQL extends Apollo.Mutation<AutoprintTestWorkstationMutation, AutoprintTestWorkstationMutationVariables> {
+  document = AutoprintTestWorkstationDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class AutoprintTestWorkstationGQL extends Apollo.Mutation<AutoprintTestWorkstationMutation, AutoprintTestWorkstationMutationVariables> {
-    document = AutoprintTestWorkstationDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const DepartmentListDocument = gql`
     query departmentList {
-  departmentList(page: {page: 1, pageSize: 1000}) {
-    data {
-      id
-      slug
-      name
-      routePath
-      parent {
-        id
-      }
-      children {
-        id
-      }
+        departmentList(page: {page: 1, pageSize: 1000}) {
+            data {
+                id
+                slug
+                name
+                routePath
+                parent {
+                    id
+                }
+                children {
+                    id
+                }
+            }
+        }
     }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DepartmentListGQL extends Apollo.Query<DepartmentListQuery, DepartmentListQueryVariables> {
+  document = DepartmentListDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class DepartmentListGQL extends Apollo.Query<DepartmentListQuery, DepartmentListQueryVariables> {
-    document = DepartmentListDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const InventoryAddDetailsDocument = gql`
     mutation inventoryAddDetails($warehouse: String!, $id: UUID!, $quantity: Long!) {
-  inventoryAddDetails(warehouse: $warehouse, id: $id, quantity: $quantity) {
-    product {
-      id
-      sku
-      slug
-      title
+        inventoryAddDetails(warehouse: $warehouse, id: $id, quantity: $quantity) {
+            product {
+                id
+                sku
+                slug
+                title
+            }
+            warehouseQuantityOnShelf
+            warehouseQuantityUnshipped
+            warehouseQuantityAvailable
+            warehouseWeeklyConsumptionRate
+            warehouseWeeklyConsumptionVariance
+            warehouseRunOutDays85
+            warehouseRunOutDays97
+        }
     }
-    warehouseQuantityOnShelf
-    warehouseQuantityUnshipped
-    warehouseQuantityAvailable
-    warehouseWeeklyConsumptionRate
-    warehouseWeeklyConsumptionVariance
-    warehouseRunOutDays85
-    warehouseRunOutDays97
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class InventoryAddDetailsGQL extends Apollo.Mutation<InventoryAddDetailsMutation, InventoryAddDetailsMutationVariables> {
+  document = InventoryAddDetailsDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class InventoryAddDetailsGQL extends Apollo.Mutation<InventoryAddDetailsMutation, InventoryAddDetailsMutationVariables> {
-    document = InventoryAddDetailsDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const InventoryGetDetailsDocument = gql`
     mutation inventoryGetDetails($id: UUID!, $warehouse: String!) {
-  inventoryGetDetails(warehouse: $warehouse, id: $id) {
-    product {
-      id
-      sku
-      slug
-      title
+        inventoryGetDetails(warehouse: $warehouse, id: $id) {
+            product {
+                id
+                sku
+                slug
+                title
+            }
+            warehouseQuantityOnShelf
+            warehouseQuantityUnshipped
+            warehouseQuantityAvailable
+            warehouseWeeklyConsumptionRate
+            warehouseWeeklyConsumptionVariance
+            warehouseRunOutDays85
+            warehouseRunOutDays97
+        }
     }
-    warehouseQuantityOnShelf
-    warehouseQuantityUnshipped
-    warehouseQuantityAvailable
-    warehouseWeeklyConsumptionRate
-    warehouseWeeklyConsumptionVariance
-    warehouseRunOutDays85
-    warehouseRunOutDays97
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class InventoryGetDetailsGQL extends Apollo.Mutation<InventoryGetDetailsMutation, InventoryGetDetailsMutationVariables> {
+  document = InventoryGetDetailsDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class InventoryGetDetailsGQL extends Apollo.Mutation<InventoryGetDetailsMutation, InventoryGetDetailsMutationVariables> {
-    document = InventoryGetDetailsDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const InventorySetDetailsDocument = gql`
     mutation inventorySetDetails($warehouse: String!, $id: UUID!, $quantity: Long!) {
-  inventorySetDetails(warehouse: $warehouse, id: $id, quantity: $quantity) {
-    product {
-      id
-      sku
-      slug
-      title
+        inventorySetDetails(warehouse: $warehouse, id: $id, quantity: $quantity) {
+            product {
+                id
+                sku
+                slug
+                title
+            }
+            warehouseQuantityOnShelf
+            warehouseQuantityUnshipped
+            warehouseQuantityAvailable
+            warehouseWeeklyConsumptionRate
+            warehouseWeeklyConsumptionVariance
+            warehouseRunOutDays85
+            warehouseRunOutDays97
+        }
     }
-    warehouseQuantityOnShelf
-    warehouseQuantityUnshipped
-    warehouseQuantityAvailable
-    warehouseWeeklyConsumptionRate
-    warehouseWeeklyConsumptionVariance
-    warehouseRunOutDays85
-    warehouseRunOutDays97
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class InventorySetDetailsGQL extends Apollo.Mutation<InventorySetDetailsMutation, InventorySetDetailsMutationVariables> {
+  document = InventorySetDetailsDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class InventorySetDetailsGQL extends Apollo.Mutation<InventorySetDetailsMutation, InventorySetDetailsMutationVariables> {
-    document = InventorySetDetailsDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const MakingStockStatusDocument = gql`
     mutation makingStockStatus($warehouse: String!) {
-  makingStockStatus(warehouse: $warehouse) {
-    product {
-      id
-      title
-      sku
-      medias {
-        id
-        mediaType
-        url
-      }
+        makingStockStatus(warehouse: $warehouse) {
+            product {
+                id
+                title
+                sku
+                medias {
+                    id
+                    mediaType
+                    url
+                }
+            }
+            warehouseQuantityAvailable
+            warehouseWeeklyConsumptionRate
+            warehouseWeeklyConsumptionVariance
+            warehouseRunOutDays85
+            warehouseRunOutDays97
+        }
     }
-    warehouseQuantityAvailable
-    warehouseWeeklyConsumptionRate
-    warehouseWeeklyConsumptionVariance
-    warehouseRunOutDays85
-    warehouseRunOutDays97
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MakingStockStatusGQL extends Apollo.Mutation<MakingStockStatusMutation, MakingStockStatusMutationVariables> {
+  document = MakingStockStatusDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class MakingStockStatusGQL extends Apollo.Mutation<MakingStockStatusMutation, MakingStockStatusMutationVariables> {
-    document = MakingStockStatusDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const PreppedProductsAddPreparationDocument = gql`
     mutation preppedProductsAddPreparation($warehouse: String!, $productId: UUID!, $quantity: Long!) {
-  preppedProductsAddPreparation(
-    warehouse: $warehouse
-    productId: $productId
-    quantity: $quantity
-  ) {
-    quantityNeeded
-    quantityOrdered
-    quantityPrepped
-    quantityShipped
-    simpleProduct {
-      id
-      title
-      sku
-      medias {
-        id
-        mediaType
-        url
-      }
+        preppedProductsAddPreparation(
+            warehouse: $warehouse
+            productId: $productId
+            quantity: $quantity
+        ) {
+            quantityNeeded
+            quantityOrdered
+            quantityPrepped
+            quantityShipped
+            simpleProduct {
+                id
+                title
+                sku
+                medias {
+                    id
+                    mediaType
+                    url
+                }
+            }
+            todaysPreparations {
+                createdAt
+                shipDate
+                id
+                preparer
+                quantity
+            }
+        }
     }
-    todaysPreparations {
-      createdAt
-      shipDate
-      id
-      preparer
-      quantity
-    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PreppedProductsAddPreparationGQL extends Apollo.Mutation<PreppedProductsAddPreparationMutation, PreppedProductsAddPreparationMutationVariables> {
+  document = PreppedProductsAddPreparationDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class PreppedProductsAddPreparationGQL extends Apollo.Mutation<PreppedProductsAddPreparationMutation, PreppedProductsAddPreparationMutationVariables> {
-    document = PreppedProductsAddPreparationDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const PreppedProductsListDocument = gql`
     query preppedProductsList($department: String!, $warehouse: String!) {
-  preppedProductsList(warehouse: $warehouse, department: $department) {
-    quantityNeeded
-    quantityOrdered
-    quantityPrepped
-    quantityShipped
-    simpleProduct {
-      id
-      title
-      sku
-      medias {
-        id
-        mediaType
-        url
-      }
+        preppedProductsList(warehouse: $warehouse, department: $department) {
+            quantityNeeded
+            quantityOrdered
+            quantityPrepped
+            quantityShipped
+            simpleProduct {
+                id
+                title
+                sku
+                medias {
+                    id
+                    mediaType
+                    url
+                }
+            }
+            todaysPreparations {
+                createdAt
+                shipDate
+                id
+                preparer
+                quantity
+            }
+        }
     }
-    todaysPreparations {
-      createdAt
-      shipDate
-      id
-      preparer
-      quantity
-    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PreppedProductsListGQL extends Apollo.Query<PreppedProductsListQuery, PreppedProductsListQueryVariables> {
+  document = PreppedProductsListDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class PreppedProductsListGQL extends Apollo.Query<PreppedProductsListQuery, PreppedProductsListQueryVariables> {
-    document = PreppedProductsListDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const PreppedProductsRemovePreparationDocument = gql`
     mutation preppedProductsRemovePreparation($warehouse: String!, $productId: UUID!, $preparationId: UUID!) {
-  preppedProductsRemovePreparation(
-    warehouse: $warehouse
-    productId: $productId
-    preparationId: $preparationId
-  ) {
-    quantityNeeded
-    quantityOrdered
-    quantityPrepped
-    quantityShipped
-    simpleProduct {
-      id
-      title
-      sku
-      medias {
-        id
-        mediaType
-        url
-      }
+        preppedProductsRemovePreparation(
+            warehouse: $warehouse
+            productId: $productId
+            preparationId: $preparationId
+        ) {
+            quantityNeeded
+            quantityOrdered
+            quantityPrepped
+            quantityShipped
+            simpleProduct {
+                id
+                title
+                sku
+                medias {
+                    id
+                    mediaType
+                    url
+                }
+            }
+            todaysPreparations {
+                createdAt
+                shipDate
+                id
+                preparer
+                quantity
+            }
+        }
     }
-    todaysPreparations {
-      createdAt
-      shipDate
-      id
-      preparer
-      quantity
-    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PreppedProductsRemovePreparationGQL extends Apollo.Mutation<PreppedProductsRemovePreparationMutation, PreppedProductsRemovePreparationMutationVariables> {
+  document = PreppedProductsRemovePreparationDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class PreppedProductsRemovePreparationGQL extends Apollo.Mutation<PreppedProductsRemovePreparationMutation, PreppedProductsRemovePreparationMutationVariables> {
-    document = PreppedProductsRemovePreparationDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const PurchaseOrderFilterDocument = gql`
     query purchaseOrderFilter($pageable: GraphQLPageableInput!, $supplier: String, $orderNumber: String, $status: PurchaseOrderStatus) {
-  purchaseOrderFilter(
-    orderNumber: {pattern: $orderNumber}
-    status: $status
-    supplier: $supplier
-    sort: {field: "placedTime", direction: DESC}
-    page: $pageable
-  ) {
-    count
-    page
-    pageSize
-    data {
-      id
-      cls
-      placedTime
-      orderNumber
-      status
-      supplier {
-        name
-      }
-      warehouse {
-        name
-      }
+        purchaseOrderFilter(
+            orderNumber: {pattern: $orderNumber}
+            status: $status
+            supplier: $supplier
+            sort: {field: "placedTime", direction: DESC}
+            page: $pageable
+        ) {
+            count
+            page
+            pageSize
+            data {
+                id
+                cls
+                placedTime
+                orderNumber
+                status
+                supplier {
+                    name
+                }
+                warehouse {
+                    name
+                }
+            }
+        }
     }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PurchaseOrderFilterGQL extends Apollo.Query<PurchaseOrderFilterQuery, PurchaseOrderFilterQueryVariables> {
+  document = PurchaseOrderFilterDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class PurchaseOrderFilterGQL extends Apollo.Query<PurchaseOrderFilterQuery, PurchaseOrderFilterQueryVariables> {
-    document = PurchaseOrderFilterDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const PurchaseRequestFilterDocument = gql`
     query purchaseRequestFilter($status: PurchaseRequestStatus, $team: String, $pageable: GraphQLPageableInput!) {
-  purchaseRequestFilter(
-    status: $status
-    team: $team
-    sort: {field: "orderedDate", direction: DESC}
-    page: $pageable
-  ) {
-    count
-    page
-    pageSize
-    pagesCount
-    data {
-      id
-      cls
-      approver
-      comments
-      createdAt
-      estimatedAmount
-      finalAmount
-      orderedDate
-      orderer
-      purchaseRequestItems {
-        id
-        cls
-        createdAt
-        name
-        quantity
-        updatedAt
-      }
-      purchaseRequestStatus
-      receivedDate
-      receiver
-      requestNumber
-      requestedDate
-      requester
-      supplier
-      team {
-        id
-        cls
-        createdAt
-        name
-        slug
-        updatedAt
-      }
-      updatedAt
+        purchaseRequestFilter(
+            status: $status
+            team: $team
+            sort: {field: "orderedDate", direction: DESC}
+            page: $pageable
+        ) {
+            count
+            page
+            pageSize
+            pagesCount
+            data {
+                id
+                cls
+                approver
+                comments
+                createdAt
+                estimatedAmount
+                finalAmount
+                orderedDate
+                orderer
+                purchaseRequestItems {
+                    id
+                    cls
+                    createdAt
+                    name
+                    quantity
+                    updatedAt
+                }
+                purchaseRequestStatus
+                receivedDate
+                receiver
+                requestNumber
+                requestedDate
+                requester
+                supplier
+                team {
+                    id
+                    cls
+                    createdAt
+                    name
+                    slug
+                    updatedAt
+                }
+                updatedAt
+            }
+        }
     }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PurchaseRequestFilterGQL extends Apollo.Query<PurchaseRequestFilterQuery, PurchaseRequestFilterQueryVariables> {
+  document = PurchaseRequestFilterDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class PurchaseRequestFilterGQL extends Apollo.Query<PurchaseRequestFilterQuery, PurchaseRequestFilterQueryVariables> {
-    document = PurchaseRequestFilterDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const ShipmentFilterDocument = gql`
     query shipmentFilter($shipmentNumber: String!, $pageable: GraphQLPageableInput!) {
-  shipmentFilter(shipmentNumber: {pattern: $shipmentNumber}, page: $pageable) {
-    data {
-      id
-      cls
-      shipmentNumber
-      shipmentStatus
-      shippingNeeds
-      reseller
-      carrier
-      service
-      packaging
-      options
-      estimatedWeight
-      actualWeight
-      estimatedLength
-      estimatedWidth
-      estimatedHeight
-      actualLength
-      actualWidth
-      actualHeight
-      estimatedShipDate
-      estimatedDeliveryDate
-      shippedAt
-      trackingNo
-      salesOrder {
-        id
-        cls
-        orderNumber
-        alternateOrderNumber
-        placedTime
-        email
-        status
-      }
-      shipmentItems {
-        id
-        cls
-        quantity
-        salesOrderItem {
-          id
-          cls
-          sku
-          name
+        shipmentFilter(shipmentNumber: {pattern: $shipmentNumber}, page: $pageable) {
+            data {
+                id
+                cls
+                shipmentNumber
+                shipmentStatus
+                shippingNeeds
+                reseller
+                carrier
+                service
+                packaging
+                options
+                estimatedWeight
+                actualWeight
+                estimatedLength
+                estimatedWidth
+                estimatedHeight
+                actualLength
+                actualWidth
+                actualHeight
+                estimatedShipDate
+                estimatedDeliveryDate
+                shippedAt
+                trackingNo
+                salesOrder {
+                    id
+                    cls
+                    orderNumber
+                    alternateOrderNumber
+                    placedTime
+                    email
+                    status
+                }
+                shipmentItems {
+                    id
+                    cls
+                    quantity
+                    salesOrderItem {
+                        id
+                        cls
+                        sku
+                        name
+                    }
+                }
+            }
         }
-      }
     }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ShipmentFilterGQL extends Apollo.Query<ShipmentFilterQuery, ShipmentFilterQueryVariables> {
+  document = ShipmentFilterDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ShipmentFilterGQL extends Apollo.Query<ShipmentFilterQuery, ShipmentFilterQueryVariables> {
-    document = ShipmentFilterDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const ShipmentFindDocument = gql`
     query shipmentFind($shipmentNumber: String!) {
-  shipmentFind(shipmentNumber: $shipmentNumber) {
-    id
-    cls
-    shipmentNumber
-    shipmentStatus
-    shippingNeeds
-    reseller
-    carrier
-    service
-    packaging
-    options
-    estimatedWeight
-    actualWeight
-    estimatedLength
-    estimatedWidth
-    estimatedHeight
-    actualLength
-    actualWidth
-    actualHeight
-    placedAt
-    estimatedShipDate
-    estimatedDeliveryDate
-    shippedAt
-    shippedBy
-    trackingNos
-    zplContents
-    firstName
-    lastName
-    company
-    line1
-    line2
-    city
-    state
-    postalCode
-    country
-    residential
-    addressValidationSource
-    salesOrder {
-      id
-      cls
-      orderNumber
-      alternateOrderNumber
-      placedTime
-      email
-      status
+        shipmentFind(shipmentNumber: $shipmentNumber) {
+            id
+            cls
+            shipmentNumber
+            shipmentStatus
+            shippingNeeds
+            reseller
+            carrier
+            service
+            packaging
+            options
+            estimatedWeight
+            actualWeight
+            estimatedLength
+            estimatedWidth
+            estimatedHeight
+            actualLength
+            actualWidth
+            actualHeight
+            placedAt
+            estimatedShipDate
+            estimatedDeliveryDate
+            shippedAt
+            shippedBy
+            trackingNos
+            zplContents
+            firstName
+            lastName
+            company
+            line1
+            line2
+            city
+            state
+            postalCode
+            country
+            residential
+            addressValidationSource
+            salesOrder {
+                id
+                cls
+                orderNumber
+                alternateOrderNumber
+                placedTime
+                email
+                status
+            }
+            shipmentItems {
+                id
+                cls
+                quantity
+                salesOrderItem {
+                    id
+                    cls
+                    sku
+                    name
+                }
+            }
+            shipmentAddons {
+                id
+                cls
+                quantity
+                sku
+                name
+            }
+        }
     }
-    shipmentItems {
-      id
-      cls
-      quantity
-      salesOrderItem {
-        id
-        cls
-        sku
-        name
-      }
-    }
-    shipmentAddons {
-      id
-      cls
-      quantity
-      sku
-      name
-    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ShipmentFindGQL extends Apollo.Query<ShipmentFindQuery, ShipmentFindQueryVariables> {
+  document = ShipmentFindDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ShipmentFindGQL extends Apollo.Query<ShipmentFindQuery, ShipmentFindQueryVariables> {
-    document = ShipmentFindDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const ShipmentInfoDocument = gql`
     query shipmentInfo($id: UUID!) {
-  shipmentInfo(id: $id) {
-    id
-    cls
-    shipmentNumber
-    shipmentStatus
-    shippingNeeds
-    reseller
-    carrier
-    service
-    packaging
-    options
-    estimatedWeight
-    actualWeight
-    estimatedLength
-    estimatedWidth
-    estimatedHeight
-    actualLength
-    actualWidth
-    actualHeight
-    placedAt
-    estimatedShipDate
-    estimatedDeliveryDate
-    shippedAt
-    shippedBy
-    trackingNos
-    zplContents
-    firstName
-    lastName
-    company
-    line1
-    line2
-    city
-    state
-    postalCode
-    country
-    residential
-    addressValidationSource
-    salesOrder {
-      id
-      cls
-      orderNumber
-      alternateOrderNumber
-      placedTime
-      email
-      status
+        shipmentInfo(id: $id) {
+            id
+            cls
+            shipmentNumber
+            shipmentStatus
+            shippingNeeds
+            reseller
+            carrier
+            service
+            packaging
+            options
+            estimatedWeight
+            actualWeight
+            estimatedLength
+            estimatedWidth
+            estimatedHeight
+            actualLength
+            actualWidth
+            actualHeight
+            placedAt
+            estimatedShipDate
+            estimatedDeliveryDate
+            shippedAt
+            shippedBy
+            trackingNos
+            zplContents
+            firstName
+            lastName
+            company
+            line1
+            line2
+            city
+            state
+            postalCode
+            country
+            residential
+            addressValidationSource
+            salesOrder {
+                id
+                cls
+                orderNumber
+                alternateOrderNumber
+                placedTime
+                email
+                status
+            }
+            shipmentItems {
+                id
+                cls
+                quantity
+                salesOrderItem {
+                    id
+                    cls
+                    sku
+                    name
+                }
+            }
+            shipmentAddons {
+                id
+                cls
+                quantity
+                sku
+                name
+            }
+        }
     }
-    shipmentItems {
-      id
-      cls
-      quantity
-      salesOrderItem {
-        id
-        cls
-        sku
-        name
-      }
-    }
-    shipmentAddons {
-      id
-      cls
-      quantity
-      sku
-      name
-    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ShipmentInfoGQL extends Apollo.Query<ShipmentInfoQuery, ShipmentInfoQueryVariables> {
+  document = ShipmentInfoDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ShipmentInfoGQL extends Apollo.Query<ShipmentInfoQuery, ShipmentInfoQueryVariables> {
-    document = ShipmentInfoDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const ShipmentLookupWeatherDocument = gql`
     mutation shipmentLookupWeather($id: UUID!) {
-  shipmentLookupWeather(id: $id) {
-    date
-    high
-    low
+        shipmentLookupWeather(id: $id) {
+            date
+            high
+            low
+        }
+    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ShipmentLookupWeatherGQL extends Apollo.Mutation<ShipmentLookupWeatherMutation, ShipmentLookupWeatherMutationVariables> {
+  document = ShipmentLookupWeatherDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ShipmentLookupWeatherGQL extends Apollo.Mutation<ShipmentLookupWeatherMutation, ShipmentLookupWeatherMutationVariables> {
-    document = ShipmentLookupWeatherDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const ShipmentRateMultiPieceDocument = gql`
     mutation shipmentRateMultiPiece($id: UUID!, $warehouse: String!, $packaging: Packaging, $packages: [PackageSizeInput]!, $applyRestrictions: Boolean!) {
-  shipmentRateMultiPiece(
-    id: $id
-    warehouse: $warehouse
-    packaging: $packaging
-    packages: $packages
-    applyRestrictions: $applyRestrictions
-  ) {
-    domesticServiceType
-    reseller
-    carrier
-    service
-    packaging
-    options
-    cost
-    shipDate
-    deliveryDate
-    fitness
+        shipmentRateMultiPiece(
+            id: $id
+            warehouse: $warehouse
+            packaging: $packaging
+            packages: $packages
+            applyRestrictions: $applyRestrictions
+        ) {
+            domesticServiceType
+            reseller
+            carrier
+            service
+            packaging
+            options
+            cost
+            shipDate
+            deliveryDate
+            fitness
+        }
+    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ShipmentRateMultiPieceGQL extends Apollo.Mutation<ShipmentRateMultiPieceMutation, ShipmentRateMultiPieceMutationVariables> {
+  document = ShipmentRateMultiPieceDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ShipmentRateMultiPieceGQL extends Apollo.Mutation<ShipmentRateMultiPieceMutation, ShipmentRateMultiPieceMutationVariables> {
-    document = ShipmentRateMultiPieceDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const ShipmentSearchDocument = gql`
     query shipmentSearch($query: String!) {
-  shipmentSearch(query: $query) {
-    id
-    cls
-    shipmentNumber
-    shipmentStatus
-    shippingNeeds
-    reseller
-    carrier
-    service
-    packaging
-    options
-    estimatedWeight
-    actualWeight
-    estimatedLength
-    estimatedWidth
-    estimatedHeight
-    actualLength
-    actualWidth
-    actualHeight
-    estimatedShipDate
-    estimatedDeliveryDate
-    printedStart
-    printedEnd
-    shippedAt
-    trackingNo
-    firstName
-    lastName
-    salesOrder {
-      id
-      cls
-      orderNumber
-      alternateOrderNumber
+        shipmentSearch(query: $query) {
+            id
+            cls
+            shipmentNumber
+            shipmentStatus
+            shippingNeeds
+            reseller
+            carrier
+            service
+            packaging
+            options
+            estimatedWeight
+            actualWeight
+            estimatedLength
+            estimatedWidth
+            estimatedHeight
+            actualLength
+            actualWidth
+            actualHeight
+            estimatedShipDate
+            estimatedDeliveryDate
+            printedStart
+            printedEnd
+            shippedAt
+            trackingNo
+            firstName
+            lastName
+            salesOrder {
+                id
+                cls
+                orderNumber
+                alternateOrderNumber
+            }
+            originWarehouse {
+                id
+                name
+            }
+            departingWarehouse {
+                id
+                name
+            }
+            shipmentItems {
+                id
+                cls
+                quantity
+                salesOrderItem {
+                    id
+                    cls
+                    sku
+                    name
+                }
+            }
+        }
     }
-    originWarehouse {
-      id
-      name
-    }
-    departingWarehouse {
-      id
-      name
-    }
-    shipmentItems {
-      id
-      cls
-      quantity
-      salesOrderItem {
-        id
-        cls
-        sku
-        name
-      }
-    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ShipmentSearchGQL extends Apollo.Query<ShipmentSearchQuery, ShipmentSearchQueryVariables> {
+  document = ShipmentSearchDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ShipmentSearchGQL extends Apollo.Query<ShipmentSearchQuery, ShipmentSearchQueryVariables> {
-    document = ShipmentSearchDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const ShipmentShipMultiPieceDocument = gql`
     mutation shipmentShipMultiPiece($id: UUID!, $warehouse: String!, $reseller: Reseller!, $carrier: Carrier!, $service: Service!, $packaging: Packaging!, $options: [String]!, $packages: [PackageSizeInput]!) {
-  shipmentShipMultiPiece(
-    id: $id
-    warehouse: $warehouse
-    reseller: $reseller
-    carrier: $carrier
-    service: $service
-    packaging: $packaging
-    options: $options
-    packages: $packages
-  ) {
-    id
-    cls
-    shipmentNumber
-    shipmentStatus
-    shippingNeeds
-    carrier
-    service
-    packaging
-    options
-    estimatedWeight
-    actualWeight
-    estimatedLength
-    estimatedWidth
-    estimatedHeight
-    actualLength
-    actualWidth
-    actualHeight
-    placedAt
-    estimatedShipDate
-    estimatedDeliveryDate
-    shippedAt
-    shippedBy
-    trackingNos
-    zplContents
-    firstName
-    lastName
-    company
-    line1
-    line2
-    city
-    state
-    postalCode
-    country
-    residential
-    addressValidationSource
-    salesOrder {
-      id
-      cls
-      orderNumber
-      alternateOrderNumber
-      placedTime
-      email
-      status
+        shipmentShipMultiPiece(
+            id: $id
+            warehouse: $warehouse
+            reseller: $reseller
+            carrier: $carrier
+            service: $service
+            packaging: $packaging
+            options: $options
+            packages: $packages
+        ) {
+            id
+            cls
+            shipmentNumber
+            shipmentStatus
+            shippingNeeds
+            carrier
+            service
+            packaging
+            options
+            estimatedWeight
+            actualWeight
+            estimatedLength
+            estimatedWidth
+            estimatedHeight
+            actualLength
+            actualWidth
+            actualHeight
+            placedAt
+            estimatedShipDate
+            estimatedDeliveryDate
+            shippedAt
+            shippedBy
+            trackingNos
+            zplContents
+            firstName
+            lastName
+            company
+            line1
+            line2
+            city
+            state
+            postalCode
+            country
+            residential
+            addressValidationSource
+            salesOrder {
+                id
+                cls
+                orderNumber
+                alternateOrderNumber
+                placedTime
+                email
+                status
+            }
+            shipmentItems {
+                id
+                cls
+                quantity
+                salesOrderItem {
+                    id
+                    cls
+                    sku
+                    name
+                }
+            }
+            shipmentAddons {
+                id
+                cls
+                quantity
+                sku
+                name
+            }
+        }
     }
-    shipmentItems {
-      id
-      cls
-      quantity
-      salesOrderItem {
-        id
-        cls
-        sku
-        name
-      }
-    }
-    shipmentAddons {
-      id
-      cls
-      quantity
-      sku
-      name
-    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ShipmentShipMultiPieceGQL extends Apollo.Mutation<ShipmentShipMultiPieceMutation, ShipmentShipMultiPieceMutationVariables> {
+  document = ShipmentShipMultiPieceDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ShipmentShipMultiPieceGQL extends Apollo.Mutation<ShipmentShipMultiPieceMutation, ShipmentShipMultiPieceMutationVariables> {
-    document = ShipmentShipMultiPieceDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const ShipmentUpdateAddressDocument = gql`
     mutation shipmentUpdateAddress($id: UUID!, $firstName: String!, $lastName: String!, $company: String, $line1: String!, $line2: String, $city: String!, $state: String!, $postalCode: String!, $country: String!, $residential: Boolean!) {
-  shipmentUpdateAddress(
-    id: $id
-    firstName: $firstName
-    lastName: $lastName
-    company: $company
-    line1: $line1
-    line2: $line2
-    city: $city
-    state: $state
-    postalCode: $postalCode
-    country: $country
-    residential: $residential
-  ) {
-    id
-    cls
-    shipmentNumber
-    shipmentStatus
-    shippingNeeds
-    reseller
-    carrier
-    service
-    packaging
-    options
-    estimatedWeight
-    actualWeight
-    estimatedLength
-    estimatedWidth
-    estimatedHeight
-    actualLength
-    actualWidth
-    actualHeight
-    placedAt
-    estimatedShipDate
-    estimatedDeliveryDate
-    shippedAt
-    firstName
-    lastName
-    company
-    line1
-    line2
-    city
-    state
-    postalCode
-    country
-    residential
-    addressValidationSource
-    salesOrder {
-      id
-      cls
-      orderNumber
-      alternateOrderNumber
-      placedTime
-      email
-      status
+        shipmentUpdateAddress(
+            id: $id
+            firstName: $firstName
+            lastName: $lastName
+            company: $company
+            line1: $line1
+            line2: $line2
+            city: $city
+            state: $state
+            postalCode: $postalCode
+            country: $country
+            residential: $residential
+        ) {
+            id
+            cls
+            shipmentNumber
+            shipmentStatus
+            shippingNeeds
+            reseller
+            carrier
+            service
+            packaging
+            options
+            estimatedWeight
+            actualWeight
+            estimatedLength
+            estimatedWidth
+            estimatedHeight
+            actualLength
+            actualWidth
+            actualHeight
+            placedAt
+            estimatedShipDate
+            estimatedDeliveryDate
+            shippedAt
+            firstName
+            lastName
+            company
+            line1
+            line2
+            city
+            state
+            postalCode
+            country
+            residential
+            addressValidationSource
+            salesOrder {
+                id
+                cls
+                orderNumber
+                alternateOrderNumber
+                placedTime
+                email
+                status
+            }
+            shipmentItems {
+                id
+                cls
+                quantity
+                salesOrderItem {
+                    id
+                    cls
+                    sku
+                    name
+                }
+            }
+            shipmentAddons {
+                id
+                cls
+                quantity
+                sku
+                name
+            }
+        }
     }
-    shipmentItems {
-      id
-      cls
-      quantity
-      salesOrderItem {
-        id
-        cls
-        sku
-        name
-      }
-    }
-    shipmentAddons {
-      id
-      cls
-      quantity
-      sku
-      name
-    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ShipmentUpdateAddressGQL extends Apollo.Mutation<ShipmentUpdateAddressMutation, ShipmentUpdateAddressMutationVariables> {
+  document = ShipmentUpdateAddressDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ShipmentUpdateAddressGQL extends Apollo.Mutation<ShipmentUpdateAddressMutation, ShipmentUpdateAddressMutationVariables> {
-    document = ShipmentUpdateAddressDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const ShipmentValidateAddressDocument = gql`
     mutation shipmentValidateAddress($id: UUID!) {
-  shipmentValidateAddress(id: $id) {
-    id
-    cls
-    shipmentNumber
-    shipmentStatus
-    shippingNeeds
-    reseller
-    carrier
-    service
-    packaging
-    options
-    estimatedWeight
-    actualWeight
-    estimatedLength
-    estimatedWidth
-    estimatedHeight
-    actualLength
-    actualWidth
-    actualHeight
-    placedAt
-    estimatedShipDate
-    estimatedDeliveryDate
-    shippedAt
-    firstName
-    lastName
-    company
-    line1
-    line2
-    city
-    state
-    postalCode
-    country
-    residential
-    addressValidationSource
-    salesOrder {
-      id
-      cls
-      orderNumber
-      alternateOrderNumber
-      placedTime
-      email
-      status
+        shipmentValidateAddress(id: $id) {
+            id
+            cls
+            shipmentNumber
+            shipmentStatus
+            shippingNeeds
+            reseller
+            carrier
+            service
+            packaging
+            options
+            estimatedWeight
+            actualWeight
+            estimatedLength
+            estimatedWidth
+            estimatedHeight
+            actualLength
+            actualWidth
+            actualHeight
+            placedAt
+            estimatedShipDate
+            estimatedDeliveryDate
+            shippedAt
+            firstName
+            lastName
+            company
+            line1
+            line2
+            city
+            state
+            postalCode
+            country
+            residential
+            addressValidationSource
+            salesOrder {
+                id
+                cls
+                orderNumber
+                alternateOrderNumber
+                placedTime
+                email
+                status
+            }
+            shipmentItems {
+                id
+                cls
+                quantity
+                salesOrderItem {
+                    id
+                    cls
+                    sku
+                    name
+                }
+            }
+            shipmentAddons {
+                id
+                cls
+                quantity
+                sku
+                name
+            }
+        }
     }
-    shipmentItems {
-      id
-      cls
-      quantity
-      salesOrderItem {
-        id
-        cls
-        sku
-        name
-      }
-    }
-    shipmentAddons {
-      id
-      cls
-      quantity
-      sku
-      name
-    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ShipmentValidateAddressGQL extends Apollo.Mutation<ShipmentValidateAddressMutation, ShipmentValidateAddressMutationVariables> {
+  document = ShipmentValidateAddressDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ShipmentValidateAddressGQL extends Apollo.Mutation<ShipmentValidateAddressMutation, ShipmentValidateAddressMutationVariables> {
-    document = ShipmentValidateAddressDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const ShipmentVoidDocument = gql`
     mutation shipmentVoid($id: UUID!) {
-  shipmentVoid(id: $id) {
-    id
-    cls
-    shipmentNumber
-    shipmentStatus
-    shippingNeeds
-    reseller
-    carrier
-    service
-    packaging
-    options
-    estimatedWeight
-    actualWeight
-    estimatedLength
-    estimatedWidth
-    estimatedHeight
-    actualLength
-    actualWidth
-    actualHeight
-    placedAt
-    estimatedShipDate
-    estimatedDeliveryDate
-    shippedAt
-    shippedBy
-    trackingNos
-    zplContents
-    firstName
-    lastName
-    company
-    line1
-    line2
-    city
-    state
-    postalCode
-    country
-    residential
-    addressValidationSource
-    salesOrder {
-      id
-      cls
-      orderNumber
-      alternateOrderNumber
-      placedTime
-      email
-      status
+        shipmentVoid(id: $id) {
+            id
+            cls
+            shipmentNumber
+            shipmentStatus
+            shippingNeeds
+            reseller
+            carrier
+            service
+            packaging
+            options
+            estimatedWeight
+            actualWeight
+            estimatedLength
+            estimatedWidth
+            estimatedHeight
+            actualLength
+            actualWidth
+            actualHeight
+            placedAt
+            estimatedShipDate
+            estimatedDeliveryDate
+            shippedAt
+            shippedBy
+            trackingNos
+            zplContents
+            firstName
+            lastName
+            company
+            line1
+            line2
+            city
+            state
+            postalCode
+            country
+            residential
+            addressValidationSource
+            salesOrder {
+                id
+                cls
+                orderNumber
+                alternateOrderNumber
+                placedTime
+                email
+                status
+            }
+            shipmentItems {
+                id
+                cls
+                quantity
+                salesOrderItem {
+                    id
+                    cls
+                    sku
+                    name
+                }
+            }
+            shipmentAddons {
+                id
+                cls
+                quantity
+                sku
+                name
+            }
+        }
     }
-    shipmentItems {
-      id
-      cls
-      quantity
-      salesOrderItem {
-        id
-        cls
-        sku
-        name
-      }
-    }
-    shipmentAddons {
-      id
-      cls
-      quantity
-      sku
-      name
-    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ShipmentVoidGQL extends Apollo.Mutation<ShipmentVoidMutation, ShipmentVoidMutationVariables> {
+  document = ShipmentVoidDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ShipmentVoidGQL extends Apollo.Mutation<ShipmentVoidMutation, ShipmentVoidMutationVariables> {
-    document = ShipmentVoidDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const SimpleProductClearBinDocument = gql`
     mutation simpleProductClearBin($id: UUID!, $warehouse: String!) {
-  simpleProductClearBin(id: $id, warehouse: $warehouse) {
-    id
-    slug
-    sku
-    upc
-    title
-    active
-    price
-    cost
-    weight
-    shippingNeeds
-    shippingRestrictions
-    warehouses {
-      id
-      name
-    }
-    bins {
-      id
-      binId
-      zone {
-        id
-        warehouse {
-          id
-          name
-        }
-      }
-    }
-    inventoryQuantityCaches {
-      id
-      quantityAvailableForSale
-    }
-    explicitDepartment {
-      id
-      slug
-      name
-      parent {
-        id
-        slug
-        name
-      }
-    }
-    brand {
-      id
-      slug
-      name
-    }
-    supplier {
-      id
-      slug
-      name
-    }
-    medias {
-      id
-      mediaType
-      url
-    }
-    explicitCategories {
-      id
-      slug
-      name
-      parent {
-        id
-        slug
-        name
-        parent {
-          id
-          slug
-          name
-        }
-      }
-    }
-    shippingRuleSet {
-      id
-      slug
-      name
-    }
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class SimpleProductClearBinGQL extends Apollo.Mutation<SimpleProductClearBinMutation, SimpleProductClearBinMutationVariables> {
-    document = SimpleProductClearBinDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
-export const SimpleProductFilterDocument = gql`
-    query simpleProductFilter($pageable: GraphQLPageableInput!, $title: String, $sku: String, $active: Boolean, $brand: String, $supplier: String, $department: String, $category: String) {
-  simpleProductFilter(
-    title: {pattern: $title}
-    sku: {pattern: $sku}
-    active: {value: $active}
-    brand: $brand
-    supplier: $supplier
-    department: $department
-    category: $category
-    page: $pageable
-    sort: {field: "sku", direction: ASC}
-  ) {
-    data {
-      id
-      slug
-      sku
-      title
-      active
-      explicitDepartment {
-        id
-        slug
-        name
-        parent {
-          id
-          slug
-          name
-        }
-      }
-      brand {
-        id
-        slug
-        name
-      }
-      supplier {
-        id
-        slug
-        name
-      }
-      price
-      shippingNeeds
-      medias {
-        id
-        mediaType
-        url
-      }
-      explicitCategories {
-        id
-        slug
-        name
-        parent {
-          id
-          slug
-          name
-          parent {
+        simpleProductClearBin(id: $id, warehouse: $warehouse) {
             id
             slug
-            name
-          }
+            sku
+            upc
+            title
+            active
+            price
+            cost
+            weight
+            shippingNeeds
+            shippingRestrictions
+            warehouses {
+                id
+                name
+            }
+            bins {
+                id
+                binId
+                zone {
+                    id
+                    warehouse {
+                        id
+                        name
+                    }
+                }
+            }
+            inventoryQuantityCaches {
+                id
+                quantityAvailableForSale
+            }
+            explicitDepartment {
+                id
+                slug
+                name
+                parent {
+                    id
+                    slug
+                    name
+                }
+            }
+            brand {
+                id
+                slug
+                name
+            }
+            supplier {
+                id
+                slug
+                name
+            }
+            medias {
+                id
+                mediaType
+                url
+            }
+            explicitCategories {
+                id
+                slug
+                name
+                parent {
+                    id
+                    slug
+                    name
+                    parent {
+                        id
+                        slug
+                        name
+                    }
+                }
+            }
+            shippingRuleSet {
+                id
+                slug
+                name
+            }
         }
-      }
-      shippingRuleSet {
-        id
-        slug
-        name
-      }
     }
-    count
-    page
-    pageSize
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SimpleProductClearBinGQL extends Apollo.Mutation<SimpleProductClearBinMutation, SimpleProductClearBinMutationVariables> {
+  document = SimpleProductClearBinDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class SimpleProductFilterGQL extends Apollo.Query<SimpleProductFilterQuery, SimpleProductFilterQueryVariables> {
-    document = SimpleProductFilterDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
+export const SimpleProductFilterDocument = gql`
+    query simpleProductFilter($pageable: GraphQLPageableInput!, $title: String, $sku: String, $active: Boolean, $brand: String, $supplier: String, $department: String, $category: String) {
+        simpleProductFilter(
+            title: {pattern: $title}
+            sku: {pattern: $sku}
+            active: {value: $active}
+            brand: $brand
+            supplier: $supplier
+            department: $department
+            category: $category
+            page: $pageable
+            sort: {field: "sku", direction: ASC}
+        ) {
+            data {
+                id
+                slug
+                sku
+                title
+                active
+                explicitDepartment {
+                    id
+                    slug
+                    name
+                    parent {
+                        id
+                        slug
+                        name
+                    }
+                }
+                brand {
+                    id
+                    slug
+                    name
+                }
+                supplier {
+                    id
+                    slug
+                    name
+                }
+                price
+                shippingNeeds
+                medias {
+                    id
+                    mediaType
+                    url
+                }
+                explicitCategories {
+                    id
+                    slug
+                    name
+                    parent {
+                        id
+                        slug
+                        name
+                        parent {
+                            id
+                            slug
+                            name
+                        }
+                    }
+                }
+                shippingRuleSet {
+                    id
+                    slug
+                    name
+                }
+            }
+            count
+            page
+            pageSize
+        }
     }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SimpleProductFilterGQL extends Apollo.Query<SimpleProductFilterQuery, SimpleProductFilterQueryVariables> {
+  document = SimpleProductFilterDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
+}
 export const SimpleProductFindByBinDocument = gql`
     query simpleProductFindByBin($warehouse: String!, $binId: String!) {
-  simpleProductFindByBin(warehouse: $warehouse, binId: $binId) {
-    id
-    slug
-    sku
-    upc
-    title
-    active
-    price
-    cost
-    weight
-    shippingNeeds
-    shippingRestrictions
-    warehouses {
-      id
-      name
-    }
-    bins {
-      id
-      binId
-      zone {
-        id
-        warehouse {
-          id
-          name
+        simpleProductFindByBin(warehouse: $warehouse, binId: $binId) {
+            id
+            slug
+            sku
+            upc
+            title
+            active
+            price
+            cost
+            weight
+            shippingNeeds
+            shippingRestrictions
+            warehouses {
+                id
+                name
+            }
+            bins {
+                id
+                binId
+                zone {
+                    id
+                    warehouse {
+                        id
+                        name
+                    }
+                }
+            }
+            inventoryQuantityCaches {
+                id
+                quantityAvailableForSale
+            }
+            explicitDepartment {
+                id
+                slug
+                name
+                parent {
+                    id
+                    slug
+                    name
+                }
+            }
+            brand {
+                id
+                slug
+                name
+            }
+            supplier {
+                id
+                slug
+                name
+            }
+            medias {
+                id
+                mediaType
+                url
+            }
+            explicitCategories {
+                id
+                slug
+                name
+                parent {
+                    id
+                    slug
+                    name
+                    parent {
+                        id
+                        slug
+                        name
+                    }
+                }
+            }
+            shippingRuleSet {
+                id
+                slug
+                name
+            }
         }
-      }
     }
-    inventoryQuantityCaches {
-      id
-      quantityAvailableForSale
-    }
-    explicitDepartment {
-      id
-      slug
-      name
-      parent {
-        id
-        slug
-        name
-      }
-    }
-    brand {
-      id
-      slug
-      name
-    }
-    supplier {
-      id
-      slug
-      name
-    }
-    medias {
-      id
-      mediaType
-      url
-    }
-    explicitCategories {
-      id
-      slug
-      name
-      parent {
-        id
-        slug
-        name
-        parent {
-          id
-          slug
-          name
-        }
-      }
-    }
-    shippingRuleSet {
-      id
-      slug
-      name
-    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SimpleProductFindByBinGQL extends Apollo.Query<SimpleProductFindByBinQuery, SimpleProductFindByBinQueryVariables> {
+  document = SimpleProductFindByBinDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class SimpleProductFindByBinGQL extends Apollo.Query<SimpleProductFindByBinQuery, SimpleProductFindByBinQueryVariables> {
-    document = SimpleProductFindByBinDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const SimpleProductFindBySkuDocument = gql`
     query simpleProductFindBySku($sku: String!) {
-  simpleProductFindBySku(sku: $sku) {
-    id
-    slug
-    sku
-    upc
-    title
-    active
-    price
-    cost
-    weight
-    shippingNeeds
-    shippingRestrictions
-    warehouses {
-      id
-      name
-    }
-    bins {
-      id
-      binId
-      zone {
-        id
-        warehouse {
-          id
-          name
+        simpleProductFindBySku(sku: $sku) {
+            id
+            slug
+            sku
+            upc
+            title
+            active
+            price
+            cost
+            weight
+            shippingNeeds
+            shippingRestrictions
+            warehouses {
+                id
+                name
+            }
+            bins {
+                id
+                binId
+                zone {
+                    id
+                    warehouse {
+                        id
+                        name
+                    }
+                }
+            }
+            inventoryQuantityCaches {
+                id
+                quantityAvailableForSale
+            }
+            explicitDepartment {
+                id
+                slug
+                name
+                parent {
+                    id
+                    slug
+                    name
+                }
+            }
+            brand {
+                id
+                slug
+                name
+            }
+            supplier {
+                id
+                slug
+                name
+            }
+            medias {
+                id
+                mediaType
+                url
+            }
+            explicitCategories {
+                id
+                slug
+                name
+                parent {
+                    id
+                    slug
+                    name
+                    parent {
+                        id
+                        slug
+                        name
+                    }
+                }
+            }
+            shippingRuleSet {
+                id
+                slug
+                name
+            }
         }
-      }
     }
-    inventoryQuantityCaches {
-      id
-      quantityAvailableForSale
-    }
-    explicitDepartment {
-      id
-      slug
-      name
-      parent {
-        id
-        slug
-        name
-      }
-    }
-    brand {
-      id
-      slug
-      name
-    }
-    supplier {
-      id
-      slug
-      name
-    }
-    medias {
-      id
-      mediaType
-      url
-    }
-    explicitCategories {
-      id
-      slug
-      name
-      parent {
-        id
-        slug
-        name
-        parent {
-          id
-          slug
-          name
-        }
-      }
-    }
-    shippingRuleSet {
-      id
-      slug
-      name
-    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SimpleProductFindBySkuGQL extends Apollo.Query<SimpleProductFindBySkuQuery, SimpleProductFindBySkuQueryVariables> {
+  document = SimpleProductFindBySkuDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class SimpleProductFindBySkuGQL extends Apollo.Query<SimpleProductFindBySkuQuery, SimpleProductFindBySkuQueryVariables> {
-    document = SimpleProductFindBySkuDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const SimpleProductFindByUpcDocument = gql`
     query simpleProductFindByUpc($upc: String!) {
-  simpleProductFindByUpc(upc: $upc) {
-    id
-    slug
-    sku
-    upc
-    title
-    active
-    price
-    cost
-    weight
-    shippingNeeds
-    shippingRestrictions
-    warehouses {
-      id
-      name
-    }
-    bins {
-      id
-      binId
-      zone {
-        id
-        warehouse {
-          id
-          name
+        simpleProductFindByUpc(upc: $upc) {
+            id
+            slug
+            sku
+            upc
+            title
+            active
+            price
+            cost
+            weight
+            shippingNeeds
+            shippingRestrictions
+            warehouses {
+                id
+                name
+            }
+            bins {
+                id
+                binId
+                zone {
+                    id
+                    warehouse {
+                        id
+                        name
+                    }
+                }
+            }
+            inventoryQuantityCaches {
+                id
+                quantityAvailableForSale
+            }
+            explicitDepartment {
+                id
+                slug
+                name
+                parent {
+                    id
+                    slug
+                    name
+                }
+            }
+            brand {
+                id
+                slug
+                name
+            }
+            supplier {
+                id
+                slug
+                name
+            }
+            medias {
+                id
+                mediaType
+                url
+            }
+            explicitCategories {
+                id
+                slug
+                name
+                parent {
+                    id
+                    slug
+                    name
+                    parent {
+                        id
+                        slug
+                        name
+                    }
+                }
+            }
+            shippingRuleSet {
+                id
+                slug
+                name
+            }
         }
-      }
     }
-    inventoryQuantityCaches {
-      id
-      quantityAvailableForSale
-    }
-    explicitDepartment {
-      id
-      slug
-      name
-      parent {
-        id
-        slug
-        name
-      }
-    }
-    brand {
-      id
-      slug
-      name
-    }
-    supplier {
-      id
-      slug
-      name
-    }
-    medias {
-      id
-      mediaType
-      url
-    }
-    explicitCategories {
-      id
-      slug
-      name
-      parent {
-        id
-        slug
-        name
-        parent {
-          id
-          slug
-          name
-        }
-      }
-    }
-    shippingRuleSet {
-      id
-      slug
-      name
-    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SimpleProductFindByUpcGQL extends Apollo.Query<SimpleProductFindByUpcQuery, SimpleProductFindByUpcQueryVariables> {
+  document = SimpleProductFindByUpcDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class SimpleProductFindByUpcGQL extends Apollo.Query<SimpleProductFindByUpcQuery, SimpleProductFindByUpcQueryVariables> {
-    document = SimpleProductFindByUpcDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const SimpleProductInfoDocument = gql`
     query simpleProductInfo($id: UUID!) {
-  simpleProductInfo(id: $id) {
-    id
-    slug
-    sku
-    upc
-    title
-    active
-    price
-    cost
-    weight
-    shippingNeeds
-    shippingRestrictions
-    warehouses {
-      id
-      name
-    }
-    bins {
-      id
-      binId
-      zone {
-        id
-        warehouse {
-          id
-          name
+        simpleProductInfo(id: $id) {
+            id
+            slug
+            sku
+            upc
+            title
+            active
+            price
+            cost
+            weight
+            shippingNeeds
+            shippingRestrictions
+            warehouses {
+                id
+                name
+            }
+            bins {
+                id
+                binId
+                zone {
+                    id
+                    warehouse {
+                        id
+                        name
+                    }
+                }
+            }
+            inventoryQuantityCaches {
+                id
+                quantityAvailableForSale
+            }
+            explicitDepartment {
+                id
+                slug
+                name
+                parent {
+                    id
+                    slug
+                    name
+                }
+            }
+            brand {
+                id
+                slug
+                name
+            }
+            supplier {
+                id
+                slug
+                name
+            }
+            medias {
+                id
+                mediaType
+                url
+            }
+            explicitCategories {
+                id
+                slug
+                name
+                parent {
+                    id
+                    slug
+                    name
+                    parent {
+                        id
+                        slug
+                        name
+                    }
+                }
+            }
+            shippingRuleSet {
+                id
+                slug
+                name
+            }
         }
-      }
     }
-    inventoryQuantityCaches {
-      id
-      quantityAvailableForSale
-    }
-    explicitDepartment {
-      id
-      slug
-      name
-      parent {
-        id
-        slug
-        name
-      }
-    }
-    brand {
-      id
-      slug
-      name
-    }
-    supplier {
-      id
-      slug
-      name
-    }
-    medias {
-      id
-      mediaType
-      url
-    }
-    explicitCategories {
-      id
-      slug
-      name
-      parent {
-        id
-        slug
-        name
-        parent {
-          id
-          slug
-          name
-        }
-      }
-    }
-    shippingRuleSet {
-      id
-      slug
-      name
-    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SimpleProductInfoGQL extends Apollo.Query<SimpleProductInfoQuery, SimpleProductInfoQueryVariables> {
+  document = SimpleProductInfoDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class SimpleProductInfoGQL extends Apollo.Query<SimpleProductInfoQuery, SimpleProductInfoQueryVariables> {
-    document = SimpleProductInfoDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const SimpleProductSetBinDocument = gql`
     mutation simpleProductSetBin($id: UUID!, $bin: String!, $warehouse: String!) {
-  simpleProductSetBin(id: $id, bin: $bin, warehouse: $warehouse) {
-    id
-    slug
-    sku
-    upc
-    title
-    active
-    price
-    cost
-    weight
-    shippingNeeds
-    shippingRestrictions
-    warehouses {
-      id
-      name
-    }
-    bins {
-      id
-      binId
-      zone {
-        id
-        warehouse {
-          id
-          name
+        simpleProductSetBin(id: $id, bin: $bin, warehouse: $warehouse) {
+            id
+            slug
+            sku
+            upc
+            title
+            active
+            price
+            cost
+            weight
+            shippingNeeds
+            shippingRestrictions
+            warehouses {
+                id
+                name
+            }
+            bins {
+                id
+                binId
+                zone {
+                    id
+                    warehouse {
+                        id
+                        name
+                    }
+                }
+            }
+            inventoryQuantityCaches {
+                id
+                quantityAvailableForSale
+            }
+            explicitDepartment {
+                id
+                slug
+                name
+                parent {
+                    id
+                    slug
+                    name
+                }
+            }
+            brand {
+                id
+                slug
+                name
+            }
+            supplier {
+                id
+                slug
+                name
+            }
+            medias {
+                id
+                mediaType
+                url
+            }
+            explicitCategories {
+                id
+                slug
+                name
+                parent {
+                    id
+                    slug
+                    name
+                    parent {
+                        id
+                        slug
+                        name
+                    }
+                }
+            }
+            shippingRuleSet {
+                id
+                slug
+                name
+            }
         }
-      }
     }
-    inventoryQuantityCaches {
-      id
-      quantityAvailableForSale
-    }
-    explicitDepartment {
-      id
-      slug
-      name
-      parent {
-        id
-        slug
-        name
-      }
-    }
-    brand {
-      id
-      slug
-      name
-    }
-    supplier {
-      id
-      slug
-      name
-    }
-    medias {
-      id
-      mediaType
-      url
-    }
-    explicitCategories {
-      id
-      slug
-      name
-      parent {
-        id
-        slug
-        name
-        parent {
-          id
-          slug
-          name
-        }
-      }
-    }
-    shippingRuleSet {
-      id
-      slug
-      name
-    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SimpleProductSetBinGQL extends Apollo.Mutation<SimpleProductSetBinMutation, SimpleProductSetBinMutationVariables> {
+  document = SimpleProductSetBinDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class SimpleProductSetBinGQL extends Apollo.Mutation<SimpleProductSetBinMutation, SimpleProductSetBinMutationVariables> {
-    document = SimpleProductSetBinDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const SupplierListDocument = gql`
     query supplierList {
-  supplierList(page: {page: 1, pageSize: 1000}) {
-    data {
-      id
-      slug
-      name
+        supplierList(page: {page: 1, pageSize: 1000}) {
+            data {
+                id
+                slug
+                name
+            }
+        }
     }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SupplierListGQL extends Apollo.Query<SupplierListQuery, SupplierListQueryVariables> {
+  document = SupplierListDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class SupplierListGQL extends Apollo.Query<SupplierListQuery, SupplierListQueryVariables> {
-    document = SupplierListDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const UserSelfDocument = gql`
     query userSelf {
-  userSelf {
-    email
-    firstName
-    lastName
-    admin
-    emailConfirmed
+        userSelf {
+            email
+            firstName
+            lastName
+            admin
+            emailConfirmed
+        }
+    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserSelfGQL extends Apollo.Query<UserSelfQuery, UserSelfQueryVariables> {
+  document = UserSelfDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class UserSelfGQL extends Apollo.Query<UserSelfQuery, UserSelfQueryVariables> {
-    document = UserSelfDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const WarehouseListDocument = gql`
     query warehouseList {
-  warehouseList {
-    id
-    name
-    line1
-    line2
-    city
-    state
-    postalCode
-    country
-    latitude
-    longitude
+        warehouseList {
+            id
+            name
+            line1
+            line2
+            city
+            state
+            postalCode
+            country
+            latitude
+            longitude
+        }
+    }
+`;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class WarehouseListGQL extends Apollo.Query<WarehouseListQuery, WarehouseListQueryVariables> {
+  document = WarehouseListDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
   }
 }
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class WarehouseListGQL extends Apollo.Query<WarehouseListQuery, WarehouseListQueryVariables> {
-    document = WarehouseListDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }

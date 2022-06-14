@@ -4,7 +4,7 @@ buildscript {
     
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.1'
@@ -20,10 +20,8 @@ apply from: "variables.gradle"
 allprojects {
     repositories {
         google()
-        jcenter()
-        maven {
-            url "https://bin.socketmobile.com/repo/snapshots"
-        }
+        mavenCentral()
+        maven { url "https://bin.socketmobile.com/repo/snapshots" }
     }
 }
 

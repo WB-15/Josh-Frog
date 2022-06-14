@@ -43,7 +43,10 @@ export class BarcodeService {
   private loopTimer: number;
   private windowRef: Window;
 
-  constructor(@Inject(DOCUMENT) private document: Document, private platform: Platform) {
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private platform: Platform
+  ) {
     this.windowRef = this.document.defaultView;
     if (platform.is('capacitor')) {
       CapacitorSocketMobile.addListener(
@@ -73,6 +76,11 @@ export class BarcodeService {
               this.upcDataSubject$.next(null);
               this.shipmentDataSubject$.next(barcodeDataEvent.data);
             }
+          } else if (barcodeDataEvent.type === 'Code 39') {
+            this.shipmentDataSubject$.next(null);
+            this.skuDataSubject$.next(barcodeDataEvent.data);
+            this.upcDataSubject$.next(null);
+            this.binDataSubject$.next(null);
           }
         }
       );
@@ -100,16 +108,18 @@ export class BarcodeService {
       );
 
       CapacitorSocketMobile.addListener(
-        'C',
+        'deviceDisconnectionEvent',
         (barcodeScannerEvent: BarcodeScannerEvent) => {
           console.log(
             'deviceDisconnectionEvent',
             JSON.stringify(barcodeScannerEvent)
           );
 
-          for (let i = 0; i < this.barcodeScanners.length; ++i) {
+          for (let i = 0; i < this.barcodeScanners.length; ) {
             if (this.barcodeScanners[i].serial === barcodeScannerEvent.serial) {
               this.barcodeScanners.splice(i, 1);
+            } else {
+              ++i;
             }
           }
           this.barcodeScannersSubject$.next(this.barcodeScanners);
@@ -162,7 +172,6 @@ export class BarcodeService {
     this.loopTimer = this.windowRef.setTimeout(() => {
       this.loop();
     }, 100);
-
   }
 }
 
