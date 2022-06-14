@@ -6453,6 +6453,20 @@ export type SimpleProductSetBinMutation = (
   )> }
 );
 
+export type SupplierListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SupplierListQuery = (
+  { __typename?: 'Query' }
+  & { supplierList?: Maybe<(
+    { __typename?: 'GraphQLPage_SupplierEntity' }
+    & { data?: Maybe<Array<Maybe<(
+      { __typename?: 'SupplierEntity' }
+      & Pick<SupplierEntity, 'id' | 'slug' | 'name'>
+    )>>> }
+  )> }
+);
+
 export type UserSelfQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -8311,6 +8325,28 @@ export const SimpleProductSetBinDocument = gql`
   })
   export class SimpleProductSetBinGQL extends Apollo.Mutation<SimpleProductSetBinMutation, SimpleProductSetBinMutationVariables> {
     document = SimpleProductSetBinDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const SupplierListDocument = gql`
+    query supplierList {
+  supplierList(page: {page: 1, pageSize: 1000}) {
+    data {
+      id
+      slug
+      name
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class SupplierListGQL extends Apollo.Query<SupplierListQuery, SupplierListQueryVariables> {
+    document = SupplierListDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

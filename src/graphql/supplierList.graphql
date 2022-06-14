@@ -1,0 +1,11 @@
+query supplierList {
+    supplierList (
+        page: { page: 1, pageSize: 1000 }
+    ) {
+        data {
+            id,
+            slug,
+            name,
+        }
+    }
+}

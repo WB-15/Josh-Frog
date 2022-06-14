@@ -1,8 +1,47 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
   <h1 class="text-2xl font-semibold text-gray-900">Purchase Orders</h1>
 </div>
+<div class="flex gap-4 flex-wrap my-4">
+  <div class="filter-input">
+    <label for="orderNumber" class="input-label">Order Number</label>
+    <input id="orderNumber" class="input-base" placeholder="Order Number" autocomplete="off" autocapitalize="words"
+           [(ngModel)]="orderNumber" (ngModelChange)="orderNumber = orderNumber.trim();"
+           (keyup)="loadPurchaseOrders()" />
+  </div>
 
-<div class="purchase-table-container shadow rounded-lg overflow-hidden mt-3 border border-gray-200">
+  <div class="filter-input">
+    <label for="status" class="input-label">Status</label>
+    <div class="relative">
+      <!--      Todo: graphql is throwing an error when trying to use this filter-->
+      <select disabled id="status" class="input-base cursor-pointer pr-6" [(ngModel)]="status"
+              (ngModelChange)="loadPurchaseOrders()" [ngClass]="{ 'text-gray-400': !status }">
+        <option value="" class="text-gray-400">All Statuses</option>
+        <option *ngFor="let statusOption of statusOptions" [ngValue]="statusOption" class="text-black">
+          {{statusOption | purchaseOrderStatus}}
+        </option>
+      </select>
+      <fa-icon class="pointer-events-none icon absolute is-medium inset-y-0 right-0 px-2 flex items-center"
+               [icon]="faAngleDown"></fa-icon>
+    </div>
+  </div>
+
+  <div class="filter-input">
+    <label for="supplier" class="input-label">Supplier</label>
+    <div class="relative">
+      <select id="supplier" class="input-base cursor-pointer pr-6" [(ngModel)]="supplier"
+              (ngModelChange)="loadPurchaseOrders()" [ngClass]="{ 'text-gray-400': !supplier }">
+        <option value="" class="text-gray-400">All Suppliers</option>
+        <option *ngFor="let supplierOption of supplierOptions" [ngValue]="supplierOption.slug" class="text-black">
+          {{supplierOption.name}}
+        </option>
+      </select>
+      <fa-icon class="pointer-events-none icon absolute is-medium inset-y-0 right-0 px-2 flex items-center"
+               [icon]="faAngleDown"></fa-icon>
+    </div>
+  </div>
+</div>
+
+<div class="purchase-table-container shadow rounded-lg overflow-hidden border border-gray-200">
   <table class="align-middle purchase-table bg-jfgreen-100 w-full">
     <thead>
     <tr class="flex text-gray-700 rounded-t-lg overflow-hidden border-b border-gray-200">
