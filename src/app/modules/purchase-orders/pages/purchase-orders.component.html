@@ -3,8 +3,8 @@
 </div>
 <div class="flex gap-4 flex-wrap my-4">
   <div class="filter-input">
-    <label for="orderNumber" class="input-label">Order Number</label>
-    <input id="orderNumber" class="input-base" placeholder="Order Number" autocomplete="off" autocapitalize="words"
+    <label for="orderNumber" class="input-label">PO Number</label>
+    <input id="orderNumber" class="input-base" placeholder="PO Number" autocomplete="off" autocapitalize="words"
            [(ngModel)]="orderNumber" (ngModelChange)="orderNumber = orderNumber.trim();"
            (keyup)="loadPurchaseOrders()" />
   </div>
@@ -46,7 +46,7 @@
     <thead>
     <tr class="flex text-gray-700 rounded-t-lg overflow-hidden border-b border-gray-200">
       <th scope="col" class="text-left text-xs font-medium uppercase tracking-wider order-column">
-        Order #
+        PO #
       </th>
       <th scope="col" class="text-left text-xs font-medium uppercase tracking-wider placed-column">
         Placed
