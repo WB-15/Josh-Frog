@@ -84,16 +84,17 @@ export class ReceivingComponent implements OnInit, OnDestroy {
     this.warehouseChangedSubscription = this.warehouseService.warehouseChanged$.subscribe(
       (warehouse) => {
         this.warehouse = warehouse;
-        this.route.queryParams.subscribe((params) => {
-          if (params.id) {
-            this.load(params.id);
-          }
-        });
       },
       (error) => {
         this.warehouse = null;
       }
     );
+
+    this.route.queryParams.subscribe((params) => {
+      if (params.id) {
+        this.load(params.id);
+      }
+    });
 
     this.upcScannedSubscription = this.barcodeService.upcScanned$.subscribe(
       (upc) => {
