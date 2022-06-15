@@ -1,0 +1,17 @@
+.purchase-order {
+  width: 250px;
+
+  .purchase-data {
+    @apply flex gap-2 items-center;
+
+    .data-label {
+      flex: 0 0 85px;
+    }
+
+    .data-value {
+      @apply text-gray-900 text-sm font-medium truncate flex-1;
+    }
+  }
+}
+
+
