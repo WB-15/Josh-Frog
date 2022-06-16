@@ -11,6 +11,8 @@ import {
   PurchaseOrderStatus,
   SupplierEntity
 } from '../../../../generated/graphql';
+import { DialogBoxOptions } from '../../shared/components/dialog/dialog.component';
+import { PurchaseOrderComponent } from '../../shared/components/purchase-order/purchase-order.component';
 import { DialogService } from '../../shared/services/dialog.service';
 import { SupplierService } from '../../shared/services/supplier.service';
 
@@ -93,8 +95,11 @@ export class PurchaseOrdersComponent implements OnInit, OnDestroy {
       );
   }
 
-  // Todo
   viewPurchaseOrder(purchaseOrder: PurchaseOrderEntity) {
-
+    const options = new DialogBoxOptions();
+    options.component = PurchaseOrderComponent;
+    options.inputs = { purchaseOrder: purchaseOrder };
+    options.title = `Purchase Order #${purchaseOrder.orderNumber}`;
+    this.dialogService.showDialog(options);
   }
 }

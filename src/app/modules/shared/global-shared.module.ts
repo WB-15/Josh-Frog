@@ -12,9 +12,11 @@ import { OrderStatusComponent } from './components/order-status/order-status.com
 import { PackagingIconComponent } from './components/packaging-icon/packaging-icon.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { ProductSearchComponent } from './components/product-search/product-search.component';
+import { PurchaseOrderComponent } from './components/purchase-order/purchase-order.component';
 import { ShipmentContentsComponent } from './components/shipment-contents/shipment-contents.component';
 import { ShipmentStatusComponent } from './components/shipment-status/shipment-status.component';
 import { ShippingAddressComponent } from './components/shipping-address/shipping-address.component';
+import { TabsComponent } from './components/tabs/tabs.component';
 import { ThumbnailLgComponent } from './components/thumbnail-lg/thumbnail-lg.component';
 import { ThumbnailMdComponent } from './components/thumbnail-md/thumbnail-md.component';
 import { ThumbnailSmComponent } from './components/thumbnail-sm/thumbnail-sm.component';
@@ -59,7 +61,9 @@ import { WarehousePipe } from './pipes/warehouse.pipe';
     LoadingComponent,
     ProductSearchComponent,
     PurchaseOrderStatusPipe,
-    WarehousePipe
+    WarehousePipe,
+    PurchaseOrderComponent,
+    TabsComponent
   ],
   exports: [
     DialogComponent,
@@ -88,7 +92,8 @@ import { WarehousePipe } from './pipes/warehouse.pipe';
     LoadingComponent,
     ProductSearchComponent,
     PurchaseOrderStatusPipe,
-    WarehousePipe
+    WarehousePipe,
+    TabsComponent
   ],
   imports: [CommonModule, FontAwesomeModule, FormsModule, ReactiveFormsModule]
 })

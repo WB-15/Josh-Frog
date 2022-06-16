@@ -5745,6 +5745,33 @@ export type PurchaseOrderFilterQuery = (
   )> }
 );
 
+export type PurchaseOrderInfoQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type PurchaseOrderInfoQuery = (
+  { __typename?: 'Query' }
+  & { purchaseOrderInfo?: Maybe<(
+    { __typename?: 'PurchaseOrderEntity' }
+    & Pick<PurchaseOrderEntity, 'cls' | 'id' | 'orderNumber' | 'alternateOrderNumber' | 'placedTime' | 'expectedTime' | 'status'>
+    & { purchaseOrderItems?: Maybe<Array<Maybe<(
+      { __typename?: 'PurchaseOrderItemEntity' }
+      & Pick<PurchaseOrderItemEntity, 'cls' | 'id' | 'name' | 'sku' | 'received' | 'total'>
+      & { simpleProduct?: Maybe<(
+        { __typename?: 'SimpleProductEntity' }
+        & Pick<SimpleProductEntity, 'id'>
+      )> }
+    )>>>, supplier?: Maybe<(
+      { __typename?: 'SupplierEntity' }
+      & Pick<SupplierEntity, 'name'>
+    )>, warehouse?: Maybe<(
+      { __typename?: 'WarehouseEntity' }
+      & Pick<WarehouseEntity, 'name'>
+    )> }
+  )> }
+);
+
 export type PurchaseOrderOpenItemsQueryVariables = Exact<{
   simpleProductId: Scalars['UUID'];
 }>;
@@ -6991,6 +7018,47 @@ export const PurchaseOrderFilterDocument = gql`
   })
   export class PurchaseOrderFilterGQL extends Apollo.Query<PurchaseOrderFilterQuery, PurchaseOrderFilterQueryVariables> {
     document = PurchaseOrderFilterDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const PurchaseOrderInfoDocument = gql`
+    query purchaseOrderInfo($id: UUID!) {
+  purchaseOrderInfo(id: $id) {
+    cls
+    id
+    orderNumber
+    alternateOrderNumber
+    placedTime
+    expectedTime
+    status
+    purchaseOrderItems {
+      cls
+      id
+      name
+      sku
+      received
+      total
+      simpleProduct {
+        id
+      }
+    }
+    supplier {
+      name
+    }
+    warehouse {
+      name
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class PurchaseOrderInfoGQL extends Apollo.Query<PurchaseOrderInfoQuery, PurchaseOrderInfoQueryVariables> {
+    document = PurchaseOrderInfoDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

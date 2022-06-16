@@ -12,8 +12,7 @@
   <div class="filter-input">
     <label for="status" class="input-label">Status</label>
     <div class="relative">
-      <!--      Todo: graphql is throwing an error when trying to use this filter-->
-      <select disabled id="status" class="input-base cursor-pointer pr-6" [(ngModel)]="status"
+      <select id="status" class="input-base cursor-pointer pr-6" [(ngModel)]="status"
               (ngModelChange)="loadPurchaseOrders()" [ngClass]="{ 'text-gray-400': !status }">
         <option value="" class="text-gray-400">All Statuses</option>
         <option *ngFor="let statusOption of statusOptions" [ngValue]="statusOption" class="text-black">
