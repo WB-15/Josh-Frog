@@ -6,7 +6,7 @@ import {
   GraphQlPageableInput,
   PurchaseOrderEntity,
   PurchaseOrderInfoGQL,
-  SimpleProductEntity
+  PurchaseOrderItemEntity
 } from '../../../../../generated/graphql';
 import { DialogComponent } from '../dialog/dialog.component';
 
@@ -53,8 +53,11 @@ export class PurchaseOrderComponent implements OnInit {
       );
   }
 
-  goToReceiving(simpleProduct: SimpleProductEntity) {
-    const queryParams = { id: simpleProduct.id };
+  goToReceiving(purchaseOrderItem: PurchaseOrderItemEntity) {
+    const queryParams = {
+      id: purchaseOrderItem.simpleProduct.id,
+      purchaseOrderItemId: purchaseOrderItem.id
+    };
     this.router.navigate(['/receiving'], { queryParams });
     this.parentRef.pressOK();
   }

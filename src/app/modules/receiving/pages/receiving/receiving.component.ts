@@ -57,6 +57,7 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   simpleProduct: SimpleProductEntity;
   purchaseOrderItems: PurchaseOrderItemEntity[];
   selectedPurchaseOrderItem: PurchaseOrderItemEntity;
+  incomingPurchaseOrderItemId: string;
   //TODO: Add SearchType.VENDOR when it is hooked up
   searchTypes = [SearchType.SKU, SearchType.TITLE];
 
@@ -91,6 +92,9 @@ export class ReceivingComponent implements OnInit, OnDestroy {
     );
 
     this.route.queryParams.subscribe((params) => {
+      if (params.purchaseOrderItemId) {
+        this.incomingPurchaseOrderItemId = params.purchaseOrderItemId;
+      }
       if (params.id) {
         this.load(params.id);
       }
@@ -189,7 +193,15 @@ export class ReceivingComponent implements OnInit, OnDestroy {
         (result) => {
           this.purchaseOrderItems = this.sortPurchaseOrderItemsByPlacedTime([...result]);
           if (this.purchaseOrderItems.length > 0) {
-            this.selectPurchaseOrderItem(this.purchaseOrderItems[0]);
+            if (this.incomingPurchaseOrderItemId) {
+              const expectedPurchaseOrderItem = this.purchaseOrderItems.find(poItem => {
+                return poItem.id === this.incomingPurchaseOrderItemId;
+              });
+              this.selectPurchaseOrderItem(expectedPurchaseOrderItem);
+              delete this.incomingPurchaseOrderItemId;
+            } else {
+              this.selectPurchaseOrderItem(this.purchaseOrderItems[0]);
+            }
           }
           this.loadingPurchaseOrders = false;
           this.changeDetectorRef.detectChanges();
