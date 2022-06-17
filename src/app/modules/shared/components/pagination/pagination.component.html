@@ -1,77 +1,73 @@
-<div class="px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+<div class="px-4 py-3 flex items-center justify-between border-t border-gray-300 sm:px-6">
   <div class="flex-1 flex sm:hidden">
-    <button *ngIf="(page - 1) > 0" (click)="changePage(page - 1)"
-            class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 transition ease-in-out duration-150">
+    <button *ngIf="(page - 1) > 0" (click)="changePage(page - 1)" class="page-change px-4 py-2 rounded-md text-gray-700 hover:text-gray-500">
       Previous
     </button>
     <span class="flex-1 -ml-px relative text-center px-4 py-2">
       Showing
-        <span class="font-medium">{{(pageSize * (page - 1)) + 1 | number: '1.0-0'}}</span>
+        <span class="font-medium">{{(_count > 0 ? (_pageSize * (page - 1)) + 1 : _count) | number: '1.0-0'}}</span>
         to
-        <span class="font-medium">{{((pageSize * page) > (count)) ? count : (pageSize * page) | number: '1.0-0'}}</span>
+        <span class="font-medium">{{(((_pageSize * page) > (_count)) ? _count : (_pageSize * page)) | number: '1.0-0'}}</span>
         of
-        <span class="font-medium">{{count | number: '1.0-0'}}</span>
+        <span class="font-medium">{{_count | number: '1.0-0'}}</span>
         results
     </span>
-    <button *ngIf="(page + 1) < (((count - 1) / pageSize) + 1)" (click)="changePage(page + 1)"
-            class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 transition ease-in-out duration-150">
+    <button *ngIf="page < pageCount" (click)="changePage(page + 1)" class="page-change px-4 py-2 rounded-md text-gray-700 hover:text-gray-500">
       Next
     </button>
   </div>
-  <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-    <div>
-      <p class="text-sm leading-5 text-gray-700">
-        Showing
-        <span class="font-medium">{{(pageSize * (page - 1)) + 1 | number: '1.0-0'}}</span>
-        to
-        <span class="font-medium">{{((pageSize * page) > (count)) ? count : (pageSize * page) | number: '1.0-0'}}</span>
-        of
-        <span class="font-medium">{{count | number: '1.0-0'}}</span>
-        results
-      </p>
-    </div>
-    <div>
-      <nav class="relative z-0 inline-flex shadow-sm">
-        <button (click)="changePage(1)"
-                class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 transition ease-in-out duration-150" aria-label="Previous">
-          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-          </svg>
+  <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between flex-col md:flex-row gap-3">
+    <p class="text-sm leading-5 text-gray-700">
+      Showing
+      <span class="font-medium">{{(_count > 0 ? (_pageSize * (page - 1)) + 1 : _count) | number: '1.0-0'}}</span>
+      to
+      <span class="font-medium">{{(((_pageSize * page) > (_count)) ? _count : (_pageSize * page)) | number: '1.0-0'}}</span>
+      of
+      <span class="font-medium">{{_count | number: '1.0-0'}}</span>
+      results
+    </p>
+    <nav class="relative z-0 inline-flex shadow-sm">
+      <button *ngIf="page > 1" (click)="changePage(page - 1)"
+              class="page-change rounded-l-md text-gray-500 hover:text-gray-400" aria-label="Previous">
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+      </button>
+      <button *ngIf="page > (_pageOffset + 1)" (click)="changePage(1)"
+              class="page-change -ml-px text-gray-700 hover:text-gray-500" aria-label="Previous">
+        1
+      </button>
+      <span *ngIf="page > (_pageOffset + 2)" class="page-item font-semibold whitespace-nowrap -ml-px text-gray-400">
+        ...
+      </span>
+      <ng-container *ngFor="let item of pageOffsetButtons; let i = index">
+        <button *ngIf="page > (_pageOffset - i)" (click)="changePage(page - (_pageOffset - i))"
+                class="page-change -ml-px text-gray-700 hover:text-gray-500">
+          {{page - (_pageOffset - i)}}
         </button>
-        <button *ngIf="(page - 3) > 0" (click)="changePage(page - 3)"
-                class="hidden lg:inline-flex -ml-px relative items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 transition ease-in-out duration-150">
-          {{page - 3}}
+      </ng-container>
+      <span [ngClass]="[page === 1 ? 'rounded-l-md' : '-ml-px', page === pageCount ? 'rounded-r-md' : '']" class="page-item font-semibold text-blue-600">
+        {{page}}
+      </span>
+      <ng-container *ngFor="let item of pageOffsetButtons; let i = index">
+        <button *ngIf="(page + i) < pageCount" (click)="changePage(page + i + 1)"
+                class="page-change -ml-px text-gray-700 hover:text-gray-500">
+          {{page + i + 1}}
         </button>
-        <button *ngIf="(page - 2) > 0" (click)="changePage(page - 2)"
-                class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 transition ease-in-out duration-150">
-          {{page - 2}}
-        </button>
-        <button *ngIf="(page - 1) > 0" (click)="changePage(page - 1)"
-                class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 transition ease-in-out duration-150">
-          {{page - 1}}
-        </button>
-        <span class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-semibold text-blue-600">
-          {{page}}
-        </span>
-        <button *ngIf="(page + 1) < (((count - 1) / pageSize) + 1)" (click)="changePage(page + 1)"
-                class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 transition ease-in-out duration-150">
-          {{page + 1}}
-        </button>
-        <button *ngIf="(page + 2) < (((count - 1) / pageSize) + 1)" (click)="changePage(page + 2)"
-                class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 transition ease-in-out duration-150">
-          {{page + 2}}
-        </button>
-        <button *ngIf="(page + 3) < (((count - 1) / pageSize) + 1)" (click)="changePage(page + 3)"
-                class="hidden lg:inline-flex -ml-px relative items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 transition ease-in-out duration-150">
-          {{page + 3}}
-        </button>
-        <button (click)="changePage(((count - 1) / pageSize) + 1)"
-                class="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 transition ease-in-out duration-150" aria-label="Next">
-          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-          </svg>
-        </button>
-      </nav>
-    </div>
+      </ng-container>
+      <span *ngIf="pageCount - page > (_pageOffset + 1)" class="page-item font-semibold whitespace-nowrap -ml-px text-gray-400">
+        ...
+      </span>
+      <button *ngIf="pageCount - page > _pageOffset" (click)="changePage(pageCount)"
+              class="page-change -ml-px text-gray-700 hover:text-gray-500" aria-label="Next">
+        {{pageCount}}
+      </button>
+      <button *ngIf="page < pageCount" (click)="changePage(page + 1)"
+              class="page-change -ml-px rounded-r-md text-gray-500 hover:text-gray-400" aria-label="Next">
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </nav>
   </div>
 </div>
