@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 
 import {
   InventoryAddDetailsGQL,
+  PurchaseOrderEntity,
   PurchaseOrderItemEntity,
   PurchaseOrderOpenItemsGQL,
   SimpleProductClearBinGQL,
@@ -20,6 +21,7 @@ import {
 } from '../../../../../generated/graphql';
 import { ChangeBinComponent } from '../../../inventory/dialogs/change-bin/change-bin.component';
 import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
+import { PurchaseOrderComponent } from '../../../shared/components/purchase-order/purchase-order.component';
 import { BarcodeService } from '../../../shared/services/barcode.service';
 
 import { DialogService } from '../../../shared/services/dialog.service';
@@ -341,6 +343,14 @@ export class ReceivingComponent implements OnInit, OnDestroy {
           this.changeDetectorRef.detectChanges();
         }
       );
+  }
+
+  viewPurchaseOrder(purchaseOrder: PurchaseOrderEntity) {
+    const options = new DialogBoxOptions();
+    options.component = PurchaseOrderComponent;
+    options.inputs = { purchaseOrder: purchaseOrder };
+    options.title = `Purchase Order #${purchaseOrder.orderNumber}`;
+    this.dialogService.showDialog(options);
   }
 
   ngOnDestroy(): void {
