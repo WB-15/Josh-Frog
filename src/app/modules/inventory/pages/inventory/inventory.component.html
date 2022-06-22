@@ -20,6 +20,7 @@
         <span class="italic pl-1 text-xl font-semibold">Loading Stock</span>
       </div>
       <div class="self-center" *ngIf="inventoryDetails && !inventoryLoading">
+        <p *ngIf="warehouse" class="font-light text-lg text-center">{{warehouse.name}}</p>
         <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf <= 0" class="font-semibold text-xl text-center">Out of Stock</p>
         <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf > 0" class="font-semibold text-xl text-center">{{inventoryDetails.warehouseQuantityOnShelf}} in Stock</p>
         <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf < 0" class="font-semibold text-xl text-center">Over Sold by {{0 - inventoryDetails.warehouseQuantityOnShelf}}</p>

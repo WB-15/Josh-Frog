@@ -58,7 +58,9 @@ export class UserService {
   }
 
   public login(username: string, password: string): Observable<LoginResponse> {
-    this.apollo.getClient().resetStore();
+    // We need to stop all active queries, otherwise clearStore() will throw an error
+    this.apollo.client.stop();
+    this.apollo.client.clearStore();
     const data = this.httpClient
       .post<LoginResponse>(this.BASE_URL + '/login', { username, password })
       .pipe(shareReplay(1));
@@ -132,7 +134,7 @@ export class UserService {
   }
 
   public logout(routeToLogin?: boolean): void {
-    //We need to stop all active queries, otherwise clearStore() will throw an error
+    // We need to stop all active queries, otherwise clearStore() will throw an error
     this.apollo.client.stop();
     this.apollo.client.clearStore();
     localStorage.removeItem(this.ACCESS_TOKEN_KEY);
