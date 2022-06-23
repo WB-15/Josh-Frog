@@ -1,0 +1,42 @@
+.filter-input {
+  flex: 1 1 150px;
+  min-width: 150px;
+}
+
+.purchase-table-container {
+  min-width: 487px;
+}
+
+.purchase-table {
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+
+  th, td {
+    padding: .75rem;
+  }
+}
+
+.order-column {
+  flex: 1 0 60px;
+}
+
+.placed-column {
+  flex: 1 0 85px;
+}
+
+.status-column {
+  flex: 1 0 85px;
+}
+
+.supplier-column {
+  flex: 1 0 90px;
+}
+
+.warehouse-column {
+  flex: 1 0 105px;
+}
+
+.actions-column {
+  flex: 0 0 60px;
+}

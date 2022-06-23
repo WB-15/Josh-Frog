@@ -13,6 +13,7 @@ import {
   faHandReceiving,
   faInventory,
   faTruckLoading,
+  faCreditCard,
   faPrint,
   faTags,
   faPlusCircle,
@@ -52,6 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
   faClock = faClock;
   faWarehouse = faWarehouse;
   faPlusCircle = faPlusCircle;
+  faCreditCard = faCreditCard;
   faSunCloud = faSunCloud;
   faClipboardListCheck = faClipboardListCheck;
 
@@ -127,6 +129,12 @@ export class AppComponent implements OnInit, OnDestroy {
       icon: faClipboardListCheck,
       name: 'Prepping',
       route: 'prepping',
+      platform: null
+    },
+    {
+      icon: faCreditCard,
+      name: 'Purchase Orders',
+      route: 'purchase-orders',
       platform: null
     },
     {

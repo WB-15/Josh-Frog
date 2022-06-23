@@ -1,0 +1,10 @@
+<div>
+  <div class="block">
+    <nav class="flex overflow-x-auto">
+      <button *ngFor="let title of titles; index as i" [ngClass]="{'ml-4': i != 0, 'outline-none': i == index, 'text-jfgreen-900': i == index, 'bg-gray-50': i == index, 'text-gray-500': i != index, 'hover:text-gray-700': i != index}"
+              class="px-3 py-2 font-medium text-sm leading-5 rounded-md" (click)="change(i)">
+        {{title}}
+      </button>
+    </nav>
+  </div>
+</div>

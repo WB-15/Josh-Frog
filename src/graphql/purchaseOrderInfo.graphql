@@ -1,0 +1,36 @@
+query purchaseOrderInfo ($id: UUID!) {
+    purchaseOrderInfo (
+        id: $id
+    ) {
+        cls,
+        id,
+        orderNumber,
+        alternateOrderNumber,
+
+        placedTime,
+        expectedTime,
+        status,
+
+        purchaseOrderItems {
+            cls,
+            id,
+            name,
+            sku,
+
+            received,
+            total,
+
+            simpleProduct {
+                id
+            }
+        },
+
+        supplier {
+            name
+        },
+
+        warehouse {
+            name
+        }
+    }
+}

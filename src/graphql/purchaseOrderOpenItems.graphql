@@ -1,0 +1,25 @@
+query purchaseOrderOpenItems ($simpleProductId: UUID!) {
+    purchaseOrderOpenItems(
+        simpleProductId: $simpleProductId
+    ) {
+        id,
+        sku,
+        name,
+
+        received,
+        total,
+
+        purchaseOrder {
+            id,
+            orderNumber,
+            placedTime,
+            status,
+            supplier {
+                name
+            },
+            warehouse {
+                name
+            }
+        }
+    }
+}
