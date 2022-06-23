@@ -209,7 +209,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   load(id: string) {
-    console.log('load');
+    //console.log('load');
     this.loading++;
     this.changeDetectorRef.detectChanges();
     this.simpleProductInfo
@@ -235,7 +235,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   getInventory() {
-    console.log('getInventory: ' + this.warehouse.name);
+    //console.log('getInventory: ' + this.warehouse.name);
     this.inventoryDetails = null;
     this.inventoryLoading = true;
     this.inventoryGetDetailsGQL
