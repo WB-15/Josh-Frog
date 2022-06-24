@@ -9,6 +9,7 @@ import {
   PurchaseOrderItemEntity
 } from '../../../../../generated/graphql';
 import { DialogComponent } from '../dialog/dialog.component';
+import { QueryOptionsAlone } from 'apollo-angular/types';
 
 @Component({
   selector: 'app-purchase-order',
@@ -37,9 +38,12 @@ export class PurchaseOrderComponent implements OnInit {
 
   info() {
     this.purchaseOrderInfoGQL
-      .fetch({
-        id: this.purchaseOrder.id
-      })
+      .fetch(
+        {
+          id: this.purchaseOrder.id
+        },
+        { fetchPolicy: 'network-only' } as QueryOptionsAlone<any>
+      )
       .pipe(map((result) => result.data.purchaseOrderInfo))
       .subscribe(
         (result) => {
