@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { UserService } from '../../../shared/services/user.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '../../../shared/services/dialog.service';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -12,25 +11,29 @@ import { DialogService } from '../../../shared/services/dialog.service';
 export class LoginComponent implements OnInit {
   email: string;
   password: string;
-  error = false;
+  error: string;
 
   constructor(
     private dialogService: DialogService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      this.error = params.message;
+    });
+  }
 
   login() {
-    this.error = false;
+    this.error = null;
     this.userService.login(this.email, this.password).subscribe(
       (response) => {
         this.router.navigate(['']);
       },
       (error) => {
-        console.error(error);
-        this.dialogService.showErrorMessageBox(error);
+        this.error = error.message ? error.message : JSON.stringify(error);
       }
     );
   }
