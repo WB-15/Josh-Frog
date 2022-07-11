@@ -60,11 +60,10 @@
           <app-loading *ngIf="loadingPurchaseOrders"></app-loading>
           <p *ngIf="!loadingPurchaseOrders && (!purchaseOrderItems || purchaseOrderItems?.length == 0)" class="font-narrow">There are no purchase orders for this product.</p>
           <ul *ngIf="!loadingPurchaseOrders && purchaseOrderItems?.length > 0"  role="list" class="flex flex-wrap gap-4">
-            <li *ngFor="let purchaseOrderItem of purchaseOrderItems;"
-                (click)="selectPurchaseOrderItem(purchaseOrderItem)"
-                [ngClass]="{'border-green-400 shadow-o2utline-green' : selectedPurchaseOrderItem?.id === purchaseOrderItem.id}"
-                class="purchase-order border-4 border-transparent col-span-1 bg-white hover:bg-blue-50 rounded-lg shadow divide-y divide-gray-200 cursor-pointer">
-              <div class="w-full p-6">
+            <li *ngFor="let purchaseOrderItem of purchaseOrderItems;" class="purchase-order">
+              <div (click)="selectPurchaseOrderItem(purchaseOrderItem)"
+                   class="w-full p-4 hover:bg-blue-50 cursor-pointer border-4 border-transparent rounded-t-lg shadow bg-white"
+                   [ngClass]="{'border-green-400 shadow-o2utline-green' : selectedPurchaseOrderItem?.id === purchaseOrderItem.id}">
                 <div class="purchase-data">
                   <div class="data-label">PO #:</div>
                   <div class="data-value">{{purchaseOrderItem.purchaseOrder.orderNumber}}</div>
@@ -90,6 +89,7 @@
                   <div class="data-value">{{purchaseOrderItem.received}} / {{purchaseOrderItem.total}}</div>
                 </div>
               </div>
+              <button type="button" class="button button-green w-full  text-sm  rounded-t-none rounded-b-lg" (click)="viewPurchaseOrder(purchaseOrderItem.purchaseOrder)">View Details</button>
             </li>
           </ul>
         </div>
