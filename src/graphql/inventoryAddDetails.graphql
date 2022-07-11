@@ -1,8 +1,9 @@
-mutation inventoryAddDetails ($warehouse: String!, $id: UUID!, $quantity: Long!) {
+mutation inventoryAddDetails ($warehouse: String!, $id: UUID!, $quantity: Long!, $purchaseOrderItemId: UUID) {
     inventoryAddDetails(
         warehouse: $warehouse,
         id: $id,
-        quantity: $quantity
+        quantity: $quantity,
+        purchaseOrderItemId: $purchaseOrderItemId
     ) {
         product {
             id,

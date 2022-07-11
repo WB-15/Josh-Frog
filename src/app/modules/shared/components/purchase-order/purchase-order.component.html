@@ -1,0 +1,96 @@
+<app-loading *ngIf="loading" class="block text-center py-6"></app-loading>
+<div *ngIf="!loading">
+  <div class="w-full max-w-full text-left my-4 p-2">
+    <div class="purchase-data-grid">
+      <div class="purchase-data">
+        <p class="data-label whitespace-no-wrap">Alt Order #</p>
+        <p class="break-words">{{purchaseOrder.alternateOrderNumber}}</p>
+      </div>
+
+      <div class="purchase-data">
+        <p class="data-label">Supplier</p>
+        <p>{{purchaseOrder.supplier.name}}</p>
+      </div>
+
+      <div class="purchase-data">
+        <p class="data-label">Warehouse</p>
+        <p>{{purchaseOrder.warehouse.name | warehousePipe}}</p>
+      </div>
+
+      <div class="purchase-data">
+        <p class="data-label">Status</p>
+        <p>{{purchaseOrder.status | purchaseOrderStatus}}</p>
+      </div>
+
+      <div class="purchase-data">
+        <p class="data-label">Expected</p>
+        <p>{{purchaseOrder.expectedTime | date: 'mediumDate'}}</p>
+      </div>
+
+      <div class="purchase-data">
+        <p class="data-label">Placed</p>
+        <p>{{purchaseOrder.placedTime | date: 'mediumDate'}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="border-b border-jfgreen-900 mb-4">
+    <app-tabs [titles]="['Items', 'Items Old']" [index]="tab" (valueChanged)="tab = $event"></app-tabs>
+  </div>
+
+  <div class="tabs overflow-x-auto w-full">
+    <div *ngIf="tab === 0"
+         class="purchase-table-container shadow rounded-lg overflow-hidden border border-gray-200 text-left">
+      <table class="align-middle purchase-table bg-jfgreen-100 w-full">
+        <thead>
+        <tr class="flex text-gray-700 rounded-t-lg overflow-hidden border-b border-gray-200">
+          <th scope="col" class="text-left text-xs font-medium uppercase tracking-wider sku-column">
+            Sku
+          </th>
+          <th scope="col" class="text-left text-xs font-medium uppercase tracking-wider name-column">
+            Name
+          </th>
+          <th scope="col" class="text-left text-xs font-medium uppercase tracking-wider received-column">
+            Received
+          </th>
+          <th scope="col" class="relative actions rounded-tr-lg actions-column">
+            <span class="sr-only">View</span>
+          </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngIf="!purchaseOrder.purchaseOrderItems || purchaseOrder.purchaseOrderItems.length === 0"
+            class="bg-white text-center h-40">
+          <td>
+            <fa-icon [icon]="faExclamationCircle"></fa-icon>
+            No results found.
+          </td>
+        </tr>
+        <tr
+          *ngFor="let purchaseOrderItem of purchaseOrder.purchaseOrderItems.slice((itemsPageable.page - 1) * itemsPageable.pageSize, itemsPageable.page * itemsPageable.pageSize - 1); index as i"
+          [ngClass]="i % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
+          class="flex text-sm text-gray-500">
+          <td class="sku-column break-words">{{purchaseOrderItem.sku}}</td>
+
+          <td class="name-column"><p class="multi-ellipsis">{{purchaseOrderItem.name}}</p></td>
+
+          <td class="received-column">{{purchaseOrderItem.received | number}}
+            / {{purchaseOrderItem.total | number}}</td>
+
+          <td class="text-right font-medium actions-column">
+            <button type="button" class="hover:text-jfgreen-900 text-jfgreen-600"
+                    (click)="goToReceiving(purchaseOrderItem)">
+              Receive
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <app-pagination class="block bg-jfgreen-100" [count]="purchaseOrder.purchaseOrderItems.length"
+                      [pageSize]="itemsPageable.pageSize" [page]="itemsPageable.page"
+                      (pageChanged)="this.itemsPageable.page = $event;"></app-pagination>
+    </div>
+  </div>
+</div>
+<div class="text-sm text-gray-300 mt-4">{{purchaseOrder.id}}</div>

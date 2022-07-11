@@ -1,0 +1,17 @@
+.page-item, .page-change {
+  @apply inline-flex items-center justify-center relative border border-gray-300 bg-white text-sm leading-5;
+}
+
+.page-change {
+  @apply font-medium transition ease-in-out duration-150;
+
+  &:hover {
+    @apply bg-gray-50;
+  }
+}
+
+nav {
+  .page-item, .page-change {
+    @apply w-10 h-10;
+  }
+}

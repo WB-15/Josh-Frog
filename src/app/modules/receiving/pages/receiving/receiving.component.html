@@ -25,14 +25,18 @@
 
     <div *ngIf="quantityReceived && quantityReceived != 0" class="p-4 bg-gray-200 rounded-lg">
       <div class="py-10 pl-2">
-        Received <strong>{{quantityReceived}}</strong> into inventory.
+        <div>Received <strong>{{quantityReceived}}</strong> into inventory.<span *ngIf="selectedPurchaseOrderItem"> This amount has been added to the received count for purchase order number <strong>{{selectedPurchaseOrderItem.purchaseOrder.orderNumber}}</strong>.</span></div>
+        <button type="button" class="button button-blue mt-2" (click)="clearReceived()">
+          Receive More
+        </button>
       </div>
+
     </div>
 
     <div *ngIf="!quantityReceived" class="p-4 bg-gray-200 rounded-lg">
-      <div class="p-2">
-        <label for="qty" class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">RECEIVING</label>
+      <form class="p-2" (ngSubmit)="receive()">
         <div class="max-w-xs">
+          <label for="qty" class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">RECEIVING</label>
           <div class="mt-1 flex rounded-md shadow-sm">
             <div class="relative flex-grow focus-within:z-10">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -40,18 +44,56 @@
                   <fa-icon [icon]="faHandReceiving"></fa-icon>
                 </span>
               </div>
-              <input id="qty" class="form-input block w-full pl-10 rounded-none rounded-l-lg" type="number" placeholder="Quantity" autocomplete="off" [(ngModel)]="quantityEntry" />
+              <input id="qty" name="quantity" class="form-input block w-full pl-10 rounded-none rounded-l-lg" type="number" placeholder="Quantity" autocomplete="off" [(ngModel)]="quantityEntry" />
             </div>
-            <button class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 rounded-r-md text-white bg-blue-600 transition ease-in-out duration-150"
-              [disabled]="!(quantityEntry && quantityEntry != 0)" [ngClass]="{'opacity-50': !(quantityEntry && quantityEntry != 0), 'hover:bg-blue-700': (quantityEntry && quantityEntry != 0)}" (click)="receive()">
+            <button type="submit" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 rounded-r-md text-white bg-blue-600 transition ease-in-out duration-150"
+                    [disabled]="!(quantityEntry && quantityEntry != 0)" [ngClass]="{'opacity-50': !(quantityEntry && quantityEntry != 0), 'hover:bg-blue-700': (quantityEntry && quantityEntry != 0)}">
               <span class="icon is-medium is-left">
-                  <fa-icon [icon]="faChevronCircleRight"></fa-icon>
-                </span>
+                <fa-icon [icon]="faChevronCircleRight"></fa-icon>
+              </span>
               <span class="ml-2 leading-5 font-medium">Receive</span>
             </button>
           </div>
         </div>
-      </div>
+        <div class="mt-6">
+          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider mb-2">Receive against a purchase order (optional)</p>
+          <app-loading *ngIf="loadingPurchaseOrders"></app-loading>
+          <p *ngIf="!loadingPurchaseOrders && (!purchaseOrderItems || purchaseOrderItems?.length == 0)" class="font-narrow">There are no purchase orders for this product.</p>
+          <ul *ngIf="!loadingPurchaseOrders && purchaseOrderItems?.length > 0"  role="list" class="flex flex-wrap gap-4">
+            <li *ngFor="let purchaseOrderItem of purchaseOrderItems;" class="purchase-order">
+              <div (click)="selectPurchaseOrderItem(purchaseOrderItem)"
+                   class="w-full p-4 hover:bg-blue-50 cursor-pointer border-4 border-transparent rounded-t-lg shadow bg-white"
+                   [ngClass]="{'border-green-400 shadow-o2utline-green' : selectedPurchaseOrderItem?.id === purchaseOrderItem.id}">
+                <div class="purchase-data">
+                  <div class="data-label">PO #:</div>
+                  <div class="data-value">{{purchaseOrderItem.purchaseOrder.orderNumber}}</div>
+                </div>
+                <div class="purchase-data">
+                  <div class="data-label">Placed:</div>
+                  <div class="data-value">{{purchaseOrderItem.purchaseOrder.placedTime | date: 'mediumDate'}}</div>
+                </div>
+                <div class="purchase-data">
+                  <div class="data-label">Status:</div>
+                  <div class="data-value">{{purchaseOrderItem.purchaseOrder.status | purchaseOrderStatus}}</div>
+                </div>
+                <div class="purchase-data">
+                  <div class="data-label">Supplier:</div>
+                  <div class="data-value">{{purchaseOrderItem.purchaseOrder.supplier.name}}</div>
+                </div>
+                <div class="purchase-data">
+                  <div class="data-label">Warehouse:</div>
+                  <div class="data-value">{{purchaseOrderItem.purchaseOrder.warehouse.name | warehousePipe}}</div>
+                </div>
+                <div class="purchase-data">
+                  <div class="data-label">Received:</div>
+                  <div class="data-value">{{purchaseOrderItem.received}} / {{purchaseOrderItem.total}}</div>
+                </div>
+              </div>
+              <button type="button" class="button button-green w-full  text-sm  rounded-t-none rounded-b-lg" (click)="viewPurchaseOrder(purchaseOrderItem.purchaseOrder)">View Details</button>
+            </li>
+          </ul>
+        </div>
+      </form>
     </div>
 
     <div class="p-4">
