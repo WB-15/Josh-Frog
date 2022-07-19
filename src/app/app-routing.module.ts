@@ -63,11 +63,11 @@ const routes: Routes = [
       )
   },
   {
-    path: 'plant_labels',
+    path: 'product_labels',
     canActivate: [AuthGuardService],
     loadChildren: () =>
-      import('./modules/plant-labels/plant-labels.module').then(
-        (m) => m.PlantLabelsModule
+      import('./modules/product-labels/product-labels.module').then(
+        (m) => m.ProductLabelsModule
       )
   },
   {

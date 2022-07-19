@@ -20,11 +20,11 @@ import { PrinterService } from '../../../shared/services/printer.service';
 import { SearchService, SearchType } from '../../../shared/services/search.service';
 
 @Component({
-  selector: 'app-plant-labels',
-  templateUrl: './plant-labels.component.html',
+  selector: 'app-product-labels',
+  templateUrl: './product-labels.component.html',
   styles: []
 })
-export class PlantLabelsComponent implements OnInit, OnDestroy {
+export class ProductLabelsComponent implements OnInit, OnDestroy {
   faSpinnerThird = faSpinnerThird;
   faSearch = faSearch;
   faDollarSign = faDollarSign;
@@ -144,7 +144,6 @@ export class PlantLabelsComponent implements OnInit, OnDestroy {
           this.changeDetectorRef.detectChanges();
         },
         (error) => {
-          // console.error(error);
           this.loading--;
           this.changeDetectorRef.detectChanges();
         }

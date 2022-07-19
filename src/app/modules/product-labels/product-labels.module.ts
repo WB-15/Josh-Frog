@@ -3,16 +3,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { GlobalSharedModule } from '../shared/global-shared.module';
-import { PlantLabelsRoutingModule } from './plant-labels-routing.module';
-import { PlantLabelsComponent } from './pages/plant-labels/plant-labels.component';
+import { ProductLabelsComponent } from './pages/product-labels/product-labels.component';
+import { ProductLabelsRoutingModule } from './product-labels-routing.module';
+
 
 @NgModule({
-  declarations: [PlantLabelsComponent],
+  declarations: [ProductLabelsComponent],
   imports: [
     CommonModule,
     FormsModule,
     GlobalSharedModule,
-    PlantLabelsRoutingModule
+    ProductLabelsRoutingModule
   ]
 })
-export class PlantLabelsModule {}
+export class ProductLabelsModule {}

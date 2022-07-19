@@ -121,8 +121,8 @@ export class AppComponent implements OnInit, OnDestroy {
     },
     {
       icon: faTags,
-      name: 'Plant Labels',
-      route: 'plant_labels',
+        name: 'Product Labels',
+      route: 'product_labels',
       platform: 'capacitor'
     },
     {
