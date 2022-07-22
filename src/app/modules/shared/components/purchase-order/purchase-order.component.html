@@ -68,7 +68,7 @@
           </td>
         </tr>
         <tr
-          *ngFor="let purchaseOrderItem of purchaseOrder.purchaseOrderItems.slice((itemsPageable.page - 1) * itemsPageable.pageSize, itemsPageable.page * itemsPageable.pageSize - 1); index as i"
+          *ngFor="let purchaseOrderItem of purchaseOrder.purchaseOrderItems.slice((itemsPageable.page - 1) * itemsPageable.pageSize, itemsPageable.page * itemsPageable.pageSize); index as i"
           [ngClass]="i % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
           class="flex text-sm text-gray-500">
           <td class="sku-column break-words">{{purchaseOrderItem.sku}}</td>
