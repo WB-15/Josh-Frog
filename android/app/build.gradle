@@ -6,8 +6,8 @@ android {
         applicationId "com.joshsfrogs.admin"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 35
-        versionName "1.28.3"
+        versionCode 36
+        versionName "1.29.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

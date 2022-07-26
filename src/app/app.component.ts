@@ -96,6 +96,12 @@ export class AppComponent implements OnInit, OnDestroy {
       platform: null
     },
     {
+      icon: faCreditCard,
+      name: 'Purchase Orders',
+      route: 'purchase-orders',
+      platform: null
+    },
+    {
       icon: faInventory,
       name: 'Inventory',
       route: 'inventory',
@@ -121,7 +127,7 @@ export class AppComponent implements OnInit, OnDestroy {
     },
     {
       icon: faTags,
-        name: 'Product Labels',
+      name: 'Product Labels',
       route: 'product_labels',
       platform: 'capacitor'
     },
@@ -129,12 +135,6 @@ export class AppComponent implements OnInit, OnDestroy {
       icon: faClipboardListCheck,
       name: 'Prepping',
       route: 'prepping',
-      platform: null
-    },
-    {
-      icon: faCreditCard,
-      name: 'Purchase Orders',
-      route: 'purchase-orders',
       platform: null
     },
     {
