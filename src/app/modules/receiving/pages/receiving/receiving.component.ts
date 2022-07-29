@@ -1,7 +1,15 @@
 import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { faChevronCircleRight, faHandReceiving, faSearch, faSpinnerThird } from '@fortawesome/pro-duotone-svg-icons';
+import {
+  faCheckCircle,
+  faCheckSquare,
+  faChevronCircleRight,
+  faHandReceiving,
+  faSearch,
+  faSpinnerThird,
+  faTimesSquare
+} from '@fortawesome/pro-duotone-svg-icons';
 import { QueryOptionsAlone } from 'apollo-angular/types';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -38,6 +46,9 @@ export class ReceivingComponent implements OnInit, OnDestroy {
   faSearch = faSearch;
   faHandReceiving = faHandReceiving;
   faChevronCircleRight = faChevronCircleRight;
+  faCheckCircle = faCheckCircle;
+  faCheckSquare = faCheckSquare;
+  faTimesSquare = faTimesSquare;
 
   quantityEntry: number;
   quantityReceived: number;
@@ -77,7 +88,8 @@ export class ReceivingComponent implements OnInit, OnDestroy {
     private simpleProductSetBinGQL: SimpleProductSetBinGQL,
     private simpleProductClearBinGQL: SimpleProductClearBinGQL,
     private inventoryAddDetailsGQL: InventoryAddDetailsGQL,
-    private purchaseOrderOpenItemsGQL: PurchaseOrderOpenItemsGQL
+    private purchaseOrderOpenItemsGQL: PurchaseOrderOpenItemsGQL,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -94,11 +106,16 @@ export class ReceivingComponent implements OnInit, OnDestroy {
     );
 
     this.route.queryParams.subscribe((params) => {
-      if (params.purchaseOrderItemId) {
-        this.incomingPurchaseOrderItemId = params.purchaseOrderItemId;
-      }
       if (params.id) {
-        this.load(params.id);
+        if (params.purchaseOrderItemId) {
+          this.incomingPurchaseOrderItemId = params.purchaseOrderItemId;
+          const queryParams = {
+            id: params.id
+          };
+          this.router.navigate(['/receiving'], { queryParams });
+        } else {
+          this.load(params.id);
+        }
       }
     });
 

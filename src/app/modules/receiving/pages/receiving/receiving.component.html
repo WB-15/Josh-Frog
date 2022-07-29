@@ -56,14 +56,19 @@
           </div>
         </div>
         <div class="mt-6">
-          <p class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider mb-2">Receive against a purchase order (optional)</p>
+          <p class="mb-2">
+            <span class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Receive against a purchase order (optional) </span>
+            <fa-icon *ngIf="selectedPurchaseOrderItem" [icon]="faCheckSquare" class="text-jfgreen-600 inline-flex align-middle"></fa-icon>
+            <fa-icon *ngIf="!selectedPurchaseOrderItem" [icon]="faTimesSquare" class="text-red-600 inline-flex align-middle"></fa-icon>
+          </p>
           <app-loading *ngIf="loadingPurchaseOrders"></app-loading>
           <p *ngIf="!loadingPurchaseOrders && (!purchaseOrderItems || purchaseOrderItems?.length == 0)" class="font-narrow">There are no purchase orders for this product.</p>
           <ul *ngIf="!loadingPurchaseOrders && purchaseOrderItems?.length > 0"  role="list" class="flex flex-wrap gap-4">
             <li *ngFor="let purchaseOrderItem of purchaseOrderItems;" class="purchase-order">
               <div (click)="selectPurchaseOrderItem(purchaseOrderItem)"
-                   class="w-full p-4 hover:bg-blue-50 cursor-pointer border-4 border-transparent rounded-t-lg shadow bg-white"
-                   [ngClass]="{'border-green-400 shadow-o2utline-green' : selectedPurchaseOrderItem?.id === purchaseOrderItem.id}">
+                   class="w-full p-4 hover:bg-blue-50 cursor-pointer border-4 border-transparent rounded-t-lg shadow bg-white relative"
+                   [ngClass]="{'border-green-400' : selectedPurchaseOrderItem?.id === purchaseOrderItem.id}">
+                <fa-icon *ngIf="selectedPurchaseOrderItem?.id === purchaseOrderItem.id" [icon]="faCheckCircle"  class="text-3xl absolute flex top-1 right-1 text-jfgreen-600"></fa-icon>
                 <div class="purchase-data">
                   <div class="data-label">PO #:</div>
                   <div class="data-value">{{purchaseOrderItem.purchaseOrder.orderNumber}}</div>
