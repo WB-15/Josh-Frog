@@ -50,7 +50,8 @@ import {
   ShipmentVoidGQL,
   Reseller,
   ShipmentRateMultiPieceGQL,
-  RateQuote
+  RateQuote,
+  ShipmentCancelGQL
 } from '../../../../../generated/graphql';
 import { MethodComponent } from '../../dialogs/method/method.component';
 import { PackagingComponent } from '../../dialogs/packaging/packaging.component';
@@ -125,6 +126,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
     private shipmentShipMultiPieceGQL: ShipmentShipMultiPieceGQL,
     private shipmentRateMultiPieceGQL: ShipmentRateMultiPieceGQL,
     private shipmentVoidGQL: ShipmentVoidGQL,
+    private shipmentCancelGQL: ShipmentCancelGQL,
     private platform: Platform
   ) {
     this.windowRef = this.document.defaultView;
@@ -307,6 +309,27 @@ export class ShippingComponent implements OnInit, OnDestroy {
     options.inputs = { shipment: this.shipment };
     options.title = 'Shipment Items';
     this.dialogService.showDialog(options);
+  }
+
+  cancelShipment() {
+    const messageBoxOptions = new MessageBoxOptions();
+    messageBoxOptions.title = 'Cancel Shipment';
+    messageBoxOptions.message = 'Are you sure you want to cancel this shipment from the order?';
+    messageBoxOptions.okText = 'Confirm';
+    messageBoxOptions.cancelText = 'Close';
+    messageBoxOptions.severity = 'W';
+    this.dialogService.showMessageBox(messageBoxOptions, () => {
+      /*this.shipmentCancelGQL
+        .mutate({
+          id: this.shipment.id
+        })
+        .pipe(map((result) => result.data.shipmentCancel))
+        .subscribe(
+          (result) => {
+            this.shipment = result as ShipmentEntity;
+          }
+        );*/
+    });
   }
 
   verifyAddress() {

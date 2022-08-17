@@ -1,17 +1,15 @@
-query shipmentInfo ($id: UUID!) {
-    shipmentInfo(
-        id: $id
+mutation shipmentCancel ($id: UUID!) {
+    shipmentCancel (
+        id: $id,
     ) {
         id,
         cls,
         shipmentNumber,
         shipmentStatus,
         shippingNeeds,
-        reseller,
+        actualShippingCost,
         carrier,
         service,
-        packaging,
-        options,
         estimatedWeight,
         actualWeight,
         estimatedLength,
@@ -26,8 +24,7 @@ query shipmentInfo ($id: UUID!) {
         shippedAt,
         shippedBy,
         trackingNos,
-        zplContents,
-
+        email,
         firstName,
         lastName,
         company,
@@ -39,18 +36,27 @@ query shipmentInfo ($id: UUID!) {
         country,
         residential,
         addressValidationSource,
-
+        downloadStart,
+        printedStart,
+        printedEnd,
+        reprint,
+        originWarehouse {
+            id,
+            name
+        },
+        departingWarehouse {
+            id,
+            name
+        },
         salesOrder {
             id,
             cls,
             orderNumber,
             alternateOrderNumber,
             placedTime,
-            email,
-            status,
-            hold
-        },
 
+            status
+        },
         shipmentItems {
             id,
             cls,
@@ -62,10 +68,8 @@ query shipmentInfo ($id: UUID!) {
                 name
             }
         },
-
         shipmentAddons {
             id,
-            cls,
             quantity,
             sku,
             name

@@ -36,6 +36,7 @@
           <div *ngIf="shipment.shipmentNumber" class="ml-4">
             <div *ngIf="shipment.shipmentNumber" class="leading-5 font-medium text-gray-900"><span class="font-light">{{shipment.shipmentNumber.substr(0, 11)}}</span><span class="font-semibold">{{shipment.shipmentNumber.substr(11)}}</span></div>
             <div *ngIf="shipment.salesOrder.alternateOrderNumber" class="text-sm leading-5 font-light text-gray-500">{{shipment.salesOrder.alternateOrderNumber}}</div>
+            <div *ngIf="shipment.salesOrder.hold" class="text-sm leading-5 font-light" style="color:red">(ON HOLD)</div>
           </div>
         </div>
       </div>
@@ -59,6 +60,8 @@
             {{trackingNo}}<ng-container *ngIf="i + 1 !== shipment.trackingNos.length">, </ng-container>
           </span>
         </ng-container>
+        <!--// todo remove the "&& (true == false)" to make this work. -->
+        <button *ngIf="shipment.shipmentStatus === 'Unshipped' && (true == false)"  type="button"  class="block mx-auto jf-link text-red-500	" (click)="cancelShipment()">Cancel Shipment</button>
       </div>
     </div>
   </div>
