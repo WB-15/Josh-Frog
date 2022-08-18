@@ -1,0 +1,67 @@
+<div style="min-height: 20em">
+    <table class="table-fixed w-full max-w-full">
+    <thead>
+    <tr>
+      <td class="w-1/2"></td>
+      <td class="w-1/6 px-6 data-label">Total</td>
+      <td class="w-1/6 px-6 data-label">Keep</td>
+      <td class="w-1/6 px-6 data-label">Move</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of shipment.shipmentItems; index as i">
+      <td class="px-6 py-4 whitespace-normal border-b border-gray-200">
+        <div>
+          <p class="leading-5">
+            <span class="font-semibold text-gray-900">{{item.quantity}}</span><span class="font-extralight">x</span>&nbsp;<span class="font-medium text-gray-900">{{item.salesOrderItem.sku}}</span>:&nbsp;<span class="font-extralight text-gray-900">{{item.salesOrderItem.name}}</span>
+          </p>
+        </div>
+      </td>
+
+      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        {{item.quantity}} {{currentShipmentQuantities[i]}} {{newShipmentQuantities[i]}}
+      </td>
+
+      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <div class="flex">
+          <div class="flex items-center">
+            <input [checked]="currentShipmentQuantities[i] === item.quantity" [disabled]="currentShipmentQuantities[i] === item.quantity" (click)="setCurrentQuantity(i, item.quantity)" type="checkbox" class="input-jf form-checkbox h-4 w-4">
+          </div>
+          <div class="pl-2">
+            <input [(ngModel)]="currentShipmentQuantities[i]" (blur)="setCurrentQuantity(i)" min="0" max="{{item.quantity}}" type="number" class="input-jf w-16">
+          </div>
+        </div>
+      </td>
+
+      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <!--[(ngModel)]="useGiftCard" (ngModelChange)="" -->
+        <div class="flex">
+          <div class="flex items-center">
+            <input [checked]="newShipmentQuantities[i] === item.quantity" [disabled]="newShipmentQuantities[i] === item.quantity" (click)="setNewQuantity(i, item.quantity)" type="checkbox" class="input-jf form-checkbox h-4 w-4">
+          </div>
+          <div class="pl-2">
+            <input [(ngModel)]="newShipmentQuantities[i]" (blur)="setNewQuantity(i)" min="0" max="{{item.quantity}}" type="number" class="input-jf w-16">
+          </div>
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="px-6 py-4 whitespace-normal border-b border-gray-200">
+      </td>
+
+      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+      </td>
+
+      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+      </td>
+
+      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <button style="color:blue" class="link-jf w-full sm:w-auto sm:ml-6 sm:order-last" [disabled]="submitting" (click)="splitShipment()">
+          {{submitting ? 'Splitting...' : 'Split Shipment'}}
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

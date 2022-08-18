@@ -25,6 +25,7 @@ import {
 
 import { DialogService } from '../../../shared/services/dialog.service';
 import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
+import { SplitShipmentComponent } from '../../dialogs/split-shipment/split-shipment.component';
 import { WeightComponent } from '../../dialogs/weight/weight.component';
 import { LengthComponent } from '../../dialogs/length/length.component';
 
@@ -310,7 +311,6 @@ export class ShippingComponent implements OnInit, OnDestroy {
     options.title = 'Shipment Items';
     this.dialogService.showDialog(options);
   }
-
   cancelShipment() {
     const messageBoxOptions = new MessageBoxOptions();
     messageBoxOptions.title = 'Cancel Shipment';

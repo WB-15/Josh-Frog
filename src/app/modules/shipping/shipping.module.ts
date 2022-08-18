@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { GlobalSharedModule } from '../shared/global-shared.module';
+import { SplitShipmentComponent } from './dialogs/split-shipment/split-shipment.component';
 import { ShippingRoutingModule } from './shipping-routing.module';
 import { ShippingComponent } from './pages/shipping/shipping.component';
 import { WeightComponent } from './dialogs/weight/weight.component';
@@ -16,7 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     WeightComponent,
     LengthComponent,
     MethodComponent,
-    PackagingComponent
+    PackagingComponent,
+    SplitShipmentComponent
   ],
   imports: [
     CommonModule,

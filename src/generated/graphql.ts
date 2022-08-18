@@ -6799,6 +6799,35 @@ export type ShipmentShipMultiPieceMutation = (
   )> }
 );
 
+export type ShipmentSplitMutationVariables = Exact<{
+  id: Scalars['UUID'];
+  lineItems: Array<Maybe<LineItemInput>> | Maybe<LineItemInput>;
+  reroute: Scalars['Boolean'];
+}>;
+
+
+export type ShipmentSplitMutation = (
+  { __typename?: 'Mutation' }
+  & { shipmentSplit?: Maybe<(
+    { __typename?: 'ShipmentEntity' }
+    & Pick<ShipmentEntity, 'id' | 'cls' | 'shipmentNumber' | 'shipmentStatus' | 'shippingNeeds' | 'carrier' | 'service' | 'estimatedWeight' | 'actualWeight' | 'estimatedLength' | 'estimatedWidth' | 'estimatedHeight' | 'actualLength' | 'actualWidth' | 'actualHeight' | 'placedAt' | 'estimatedShipDate' | 'estimatedDeliveryDate' | 'shippedAt' | 'email' | 'firstName' | 'lastName' | 'company' | 'line1' | 'line2' | 'city' | 'state' | 'postalCode' | 'country' | 'residential' | 'addressValidationSource' | 'downloadStart' | 'printedStart' | 'printedEnd' | 'reprint'>
+    & { salesOrder?: Maybe<(
+      { __typename?: 'SalesOrderEntity' }
+      & Pick<SalesOrderEntity, 'id' | 'cls' | 'orderNumber' | 'alternateOrderNumber' | 'placedTime' | 'status'>
+    )>, shipmentItems?: Maybe<Array<Maybe<(
+      { __typename?: 'ShipmentItemEntity' }
+      & Pick<ShipmentItemEntity, 'id' | 'cls' | 'quantity'>
+      & { salesOrderItem?: Maybe<(
+        { __typename?: 'SalesOrderItemEntity' }
+        & Pick<SalesOrderItemEntity, 'id' | 'cls' | 'sku' | 'name'>
+      )> }
+    )>>>, shipmentAddons?: Maybe<Array<Maybe<(
+      { __typename?: 'ShipmentAddonEntity' }
+      & Pick<ShipmentAddonEntity, 'id' | 'cls' | 'quantity' | 'sku' | 'name'>
+    )>>> }
+  )> }
+);
+
 export type ShipmentUpdateAddressMutationVariables = Exact<{
   id: Scalars['UUID'];
   firstName: Scalars['String'];
@@ -8474,6 +8503,84 @@ export const ShipmentShipMultiPieceDocument = gql`
   })
   export class ShipmentShipMultiPieceGQL extends Apollo.Mutation<ShipmentShipMultiPieceMutation, ShipmentShipMultiPieceMutationVariables> {
     document = ShipmentShipMultiPieceDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const ShipmentSplitDocument = gql`
+    mutation shipmentSplit($id: UUID!, $lineItems: [LineItemInput]!, $reroute: Boolean!) {
+  shipmentSplit(id: $id, lineItems: $lineItems, reroute: $reroute) {
+    id
+    cls
+    shipmentNumber
+    shipmentStatus
+    shippingNeeds
+    carrier
+    service
+    estimatedWeight
+    actualWeight
+    estimatedLength
+    estimatedWidth
+    estimatedHeight
+    actualLength
+    actualWidth
+    actualHeight
+    placedAt
+    estimatedShipDate
+    estimatedDeliveryDate
+    shippedAt
+    email
+    firstName
+    lastName
+    company
+    line1
+    line2
+    city
+    state
+    postalCode
+    country
+    residential
+    addressValidationSource
+    downloadStart
+    printedStart
+    printedEnd
+    reprint
+    salesOrder {
+      id
+      cls
+      orderNumber
+      alternateOrderNumber
+      placedTime
+      status
+    }
+    shipmentItems {
+      id
+      cls
+      quantity
+      salesOrderItem {
+        id
+        cls
+        sku
+        name
+      }
+    }
+    shipmentAddons {
+      id
+      cls
+      quantity
+      sku
+      name
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ShipmentSplitGQL extends Apollo.Mutation<ShipmentSplitMutation, ShipmentSplitMutationVariables> {
+    document = ShipmentSplitDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

@@ -43,6 +43,15 @@
         <div class="leading-5 flex flex-row"></div>
       </td>
     </tr>
+    <tr *ngIf="shipment.salesOrder.cls !== 'AmazonSalesOrderEntity' && shipment.salesOrder.cls !== 'WalmartSalesOrderEntity'">
+      <td>
+        <div>
+          <button style="color:blue" class="link-jf" (click)="splitShipment()">
+            Split Shipment
+          </button>
+        </div>
+      </td>
+    </tr>
     </tbody>
   </table>
 </div>
