@@ -23,7 +23,7 @@ export class ShipmentContentsComponent implements OnInit {
     options.inputs = {
       shipment: this.shipment,
     };
-    options.title = 'Split shipment';
+    options.title = 'Split Shipment';
     options.okText = 'Done';
     this.dialogService.showDialog(options);
   }
