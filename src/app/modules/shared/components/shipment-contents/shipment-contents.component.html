@@ -67,7 +67,7 @@
           <div class="leading-5 flex flex-row"></div>
         </td>
       </tr>
-      <tr *ngIf="(shipment.salesOrder.cls !== 'AmazonSalesOrderEntity') && (shipment.salesOrder.cls !== 'WalmartSalesOrderEntity')">
+      <tr *ngIf="(shipment.salesOrder.cls !== 'AmazonSalesOrderEntity') && (shipment.salesOrder.cls !== 'WalmartSalesOrderEntity') && (shipment.salesOrder.cls !== 'EbaySalesOrderEntity')">
         <td>
           <div>
             <button  class="text-blue-600 hover:text-blue-800" (click)="splitShipment()">
