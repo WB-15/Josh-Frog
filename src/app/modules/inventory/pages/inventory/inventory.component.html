@@ -15,22 +15,25 @@
       <div class="flex-none h-40 w-40 m-1 mr-3 rounded-lg bg-white">
         <app-thumbnail-md [src]="simpleProduct.medias[0]?.url" [alt]="simpleProduct.title"></app-thumbnail-md>
       </div>
-      <div *ngIf="inventoryLoading" class="self-center items-center flex">
-        <fa-icon class="icon text-2xl" [icon]="faSpinnerThird" [spin]="true"></fa-icon>
-        <span class="italic pl-1 text-xl font-semibold">Loading Stock</span>
-      </div>
-      <div class="self-center" *ngIf="inventoryDetails && !inventoryLoading">
+      <div class="self-center">
         <p *ngIf="warehouse" class="font-light text-lg text-center">{{warehouse.name}}</p>
-        <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf <= 0" class="font-semibold text-xl text-center">Out of Stock</p>
-        <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf > 0" class="font-semibold text-xl text-center">{{inventoryDetails.warehouseQuantityOnShelf}} in Stock</p>
-        <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf < 0" class="font-semibold text-xl text-center">Over Sold by {{0 - inventoryDetails.warehouseQuantityOnShelf}}</p>
-        <!-- TODO: when full inventory support exists, replace above with this
-        <p *ngIf="simpleProduct.inventoryCaches?.length == 0" class="font-semibold text-xl text-center">Not Stocked</p>
-        <p *ngFor="let inventory of simpleProduct.inventoryCaches" class="font-semibold text-3xl text-center">{{inventory.quantityAvailableForSale}}</p>
-        -->
-        <p *ngIf="inventoryDetails?.warehouseQuantityUnshipped != 0" class="font-medium text-lg text-center">{{inventoryDetails.warehouseQuantityUnshipped}} to Ship</p>
-        <p *ngIf="inventoryDetails?.warehouseQuantityUnshipped != 0" class="font-medium text-lg text-center">{{inventoryDetails.warehouseQuantityAvailable}} for Sale</p>
-        <p *ngIf="(inventoryDetails?.warehouseQuantityOnShelf > 0) && (inventoryDetails?.warehouseQuantityUnshipped == 0)" class="font-light text-sm italic text-center">All available for sale.</p>
+        <p *ngIf="!warehouseValid" class="font-semibold text-xl text-center text-red-600">Product Is Not Part of This Warehouse</p>
+        <p *ngIf="inventoryLoading" class="self-center items-center flex">
+          <fa-icon class="icon text-2xl" [icon]="faSpinnerThird" [spin]="true"></fa-icon>
+          <span class="italic pl-1 text-xl font-semibold">Loading Stock</span>
+        </p>
+        <ng-container *ngIf="warehouseValid && inventoryDetails && !inventoryLoading">
+          <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf <= 0" class="font-semibold text-xl text-center">Out of Stock</p>
+          <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf > 0" class="font-semibold text-xl text-center">{{inventoryDetails.warehouseQuantityOnShelf}} in Stock</p>
+          <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf < 0" class="font-semibold text-xl text-center">Over Sold by {{0 - inventoryDetails.warehouseQuantityOnShelf}}</p>
+          <!-- TODO: when full inventory support exists, replace above with this
+          <p *ngIf="simpleProduct.inventoryCaches?.length == 0" class="font-semibold text-xl text-center">Not Stocked</p>
+          <p *ngFor="let inventory of simpleProduct.inventoryCaches" class="font-semibold text-3xl text-center">{{inventory.quantityAvailableForSale}}</p>
+          -->
+          <p *ngIf="inventoryDetails?.warehouseQuantityUnshipped != 0" class="font-medium text-lg text-center">{{inventoryDetails.warehouseQuantityUnshipped}} to Ship</p>
+          <p *ngIf="inventoryDetails?.warehouseQuantityUnshipped != 0" class="font-medium text-lg text-center">{{inventoryDetails.warehouseQuantityAvailable}} for Sale</p>
+          <p *ngIf="(inventoryDetails?.warehouseQuantityOnShelf > 0) && (inventoryDetails?.warehouseQuantityUnshipped == 0)" class="font-light text-sm italic text-center">All available for sale.</p>
+        </ng-container>
       </div>
     </div>
 
@@ -66,7 +69,7 @@
               <input id="qty" class="form-input block w-full pl-10 rounded-none rounded-l-lg" type="number" placeholder="Quantity" autocomplete="off" [(ngModel)]="quantityEntry" />
             </div>
             <button class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 rounded-r-md text-white bg-blue-600 transition ease-in-out duration-150"
-              [disabled]="!((quantityEntry != null) && (quantityEntry >= 0))" [ngClass]="{'opacity-50': !((quantityEntry != null) && (quantityEntry >= 0)), 'hover:bg-blue-700': ((quantityEntry != null) && (quantityEntry >= 0))}" (click)="setInventory()">
+              [disabled]="!warehouseValid || !((quantityEntry != null) && (quantityEntry >= 0))" [ngClass]="{'opacity-50 cursor-not-allowed': !warehouseValid || !((quantityEntry != null) && (quantityEntry >= 0)), 'hover:bg-blue-700': warehouseValid && ((quantityEntry != null) && (quantityEntry >= 0))}" (click)="setInventory()">
               <span class="icon is-medium is-left">
                   <fa-icon [icon]="faChevronCircleRight"></fa-icon>
                 </span>

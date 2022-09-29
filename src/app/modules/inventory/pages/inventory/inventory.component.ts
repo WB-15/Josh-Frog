@@ -61,6 +61,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   warehouse: WarehouseEntity = null;
   warehouseChangedSubscription: Subscription;
+  warehouseValid: boolean;
 
   inventoryLoading = false;
   loading = 0;
@@ -235,25 +236,30 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   getInventory() {
-    //console.log('getInventory: ' + this.warehouse.name);
     this.inventoryDetails = null;
-    this.inventoryLoading = true;
-    this.inventoryGetDetailsGQL
-      .mutate({ warehouse: this.warehouse.name, id: this.simpleProduct.id })
-      .pipe(map((result) => result.data.inventoryGetDetails))
-      .subscribe(
-        (result) => {
-          this.inventoryDetails = result as InventoryDetails;
-          this.inventoryLoading = false;
-          this.changeDetectorRef.detectChanges();
-        },
-        (error) => {
-          this.inventoryDetails = null;
-          this.inventoryLoading = false;
-          this.dialogService.showErrorMessageBox(error);
-          this.changeDetectorRef.detectChanges();
-        }
-      );
+    const found = this.simpleProduct.warehouses.find(w => w.id === this.warehouse.id);
+    if (found) {
+      this.warehouseValid = true;
+      this.inventoryLoading = true;
+      this.inventoryGetDetailsGQL
+        .mutate({ warehouse: this.warehouse.name, id: this.simpleProduct.id })
+        .pipe(map((result) => result.data.inventoryGetDetails))
+        .subscribe(
+          (result) => {
+            this.inventoryDetails = result as InventoryDetails;
+            this.inventoryLoading = false;
+            this.changeDetectorRef.detectChanges();
+          },
+          (error) => {
+            this.inventoryDetails = null;
+            this.inventoryLoading = false;
+            this.dialogService.showErrorMessageBox(error);
+            this.changeDetectorRef.detectChanges();
+          }
+        );
+    } else {
+      this.warehouseValid = false;
+    }
   }
 
   setInventory() {
