@@ -18,11 +18,11 @@ import { StatsComponent } from '../../dialogs/stats/stats.component';
 import { WarehouseService } from '../../../shared/services/warehouse.service';
 
 @Component({
-  selector: 'app-making',
-  templateUrl: './making.component.html',
+  selector: 'app-production',
+  templateUrl: './production.component.html',
   styles: []
 })
-export class MakingComponent implements OnInit, OnDestroy {
+export class ProductionComponent implements OnInit, OnDestroy {
   faSpinnerThird = faSpinnerThird;
   faArrowCircleDown = faArrowCircleDown;
   faArrowCircleUp = faArrowCircleUp;

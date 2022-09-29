@@ -85,8 +85,8 @@ export class AppComponent implements OnInit, OnDestroy {
     },
     {
       icon: faRulerVertical,
-      name: 'Making',
-      route: 'making',
+      name: 'Production',
+      route: 'production',
       platform: null
     },
     {
