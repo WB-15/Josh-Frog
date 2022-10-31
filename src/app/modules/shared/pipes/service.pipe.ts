@@ -1,63 +1,73 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Service } from '../../../../generated/graphql';
 
 @Pipe({
   name: 'service'
 })
 export class ServicePipe implements PipeTransform {
-  transform(value: string, ...args: unknown[]): string {
+  transform(value: Service, ...args: unknown[]): string {
     switch (value) {
-      case 'FEDEX_GROUND':
+      case Service.GenericGround:
         return 'Ground';
-      case 'FEDEX_HOME_DELIVERY':
-        return 'Home Delivery';
-      case 'FEDEX_EXPRESS_SAVER':
-        return 'Express Saver';
-      case 'FEDEX_TWO_DAY':
+      case Service.GenericOvernight:
+        return 'Overnight';
+      case Service.GenericTwoDay:
         return 'Two Day';
-      case 'FEDEX_STANDARD_OVERNIGHT':
+
+      case Service.FedexGround:
+        return 'Ground';
+      case Service.FedexHomeDelivery:
+        return 'Home Delivery';
+      case Service.FedexExpressSaver:
+        return 'Express Saver';
+      case Service.FedexTwoDay:
+        return 'Two Day';
+      case Service.FedexStandardOvernight:
         return 'Standard Overnight';
-      case 'FEDEX_PRIORITY_OVERNIGHT':
+      case Service.FedexPriorityOvernight:
         return 'Priority Overnight';
-      case 'FEDEX_FIRST_OVERNIGHT':
+      case Service.FedexFirstOvernight:
         return 'First Overnight';
-      case 'FEDEX_SMART_POST':
+      case Service.FedexSmartPost:
         return 'Smart Post';
-      case 'FEDEX_INTERNATIONAL_GROUND':
+      case Service.FedexInternationalGround:
         return 'International Ground';
-      case 'FEDEX_INTERNATIONAL_ECONOMY':
+      case Service.FedexInternationalEconomy:
         return 'International Economy';
 
-      case 'UPS_GROUND':
+      case Service.UpsGround:
         return 'Ground';
-      case 'UPS_THREE_DAY_SELECT':
+      case Service.UpsThreeDaySelect:
         return 'Three Day Select';
-      case 'UPS_SECOND_DAY_AIR':
+      case Service.UpsSecondDayAir:
         return 'Second Day Air';
-      case 'UPS_NEXT_DAY_AIR':
+      case Service.UpsNextDayAir:
         return 'Next Day Air';
-      case 'UPS_NEXT_DAY_AIR_SAVER':
+      case Service.UpsNextDayAirSaver:
         return 'Next Day Air Saver';
-      case 'UPS_SURE_POST':
+      case Service.UpsSurePost:
         return 'Sure Post';
-      case 'UPS_WORLDWIDE_EXPRESS':
+      case Service.UpsWorldwideExpress:
         return 'Worldwide Express';
-      case 'UPS_WORLDWIDE_EXPRESS_PLUS':
+      case Service.UpsWorldwideExpressPlus:
         return 'Worldwide Express Plus';
-      case 'UPS_WORLDWIDE_EXPEDITED':
+      case Service.UpsWorldwideExpedited:
         return 'Worldwide Expedited';
 
-      case 'USPS_FIRST_CLASS_MAIL':
+      case Service.UspsFirstClassMail:
         return 'First Class Mail';
-      case 'USPS_PRIORITY_MAIL':
+      case Service.UspsPriorityMail:
         return 'Priority Mail';
-      case 'USPS_PRIORITY_MAIL_EXPRESS':
+      case Service.UspsPriorityMailExpress:
         return 'Priority Mail Express';
-      case 'USPS_PRIORITY_MAIL_INTERNATIONAL':
+      case Service.UspsPriorityMailInternational:
         return 'Priority Mail International';
-      case 'USPS_PARCEL_SELECT':
+      case Service.UspsParcelSelect:
         return 'Parcel Select';
+      case Service.UspsParcelSelectLightweight:
+        return 'Parcel Select Lightweight';
 
-      case 'LASERSHIP_GROUND':
+      case Service.LasershipGround:
         return 'LaserShip Ground';
 
       default:
