@@ -46,13 +46,13 @@
       </div>
     </div>
 
-    <div *ngIf="quantityUpdated" class="p-4 bg-gray-200 rounded-lg">
+    <div *ngIf="quantityUpdated != null" class="p-4 bg-gray-200 rounded-lg">
       <div class="py-10 pl-2">
         Updated inventory to be <strong>{{quantityUpdated}}</strong> on the shelf.
       </div>
     </div>
 
-    <div *ngIf="!quantityUpdated" class="p-4 bg-gray-200 rounded-lg">
+    <div *ngIf="quantityUpdated == null" class="p-4 bg-gray-200 rounded-lg">
       <div class="p-2">
         <label for="qty" class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">INVENTORY</label>
         <div class="max-w-xs">
@@ -66,11 +66,26 @@
               <input id="qty" class="form-input block w-full pl-10 rounded-none rounded-l-lg" type="number" placeholder="Quantity" autocomplete="off" [(ngModel)]="quantityEntry" />
             </div>
             <button class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 rounded-r-md text-white bg-blue-600 transition ease-in-out duration-150"
-              [disabled]="!((quantityEntry != null) && (quantityEntry >= 0))" [ngClass]="{'opacity-50': !((quantityEntry != null) && (quantityEntry >= 0)), 'hover:bg-blue-700': ((quantityEntry != null) && (quantityEntry >= 0))}" (click)="setInventory()">
+              [disabled]="!((quantityEntry != null) && (quantityEntry >= 0))" [ngClass]="{'opacity-50': !((quantityEntry != null) && (quantityEntry >= 0)), 'hover:bg-blue-700': ((quantityEntry != null) && (quantityEntry >= 0))}" (click)="setInventory(quantityEntry)">
               <span class="icon is-medium is-left">
                   <fa-icon [icon]="faChevronCircleRight"></fa-icon>
                 </span>
               <span class="ml-2 leading-5 font-medium">Update</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="max-w-xs">
+          <div class="mt-1 flex rounded-md shadow-sm">
+            <div class="relative flex-grow focus-within:z-10">
+              <div class="block w-full pl-10"></div>
+            </div>
+            <button class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-white bg-blue-600 transition ease-in-out duration-150"
+                [disabled]="!inventoryDetails" [ngClass]="{'opacity-50': !inventoryDetails, 'hover:bg-blue-700': inventoryDetails}" (click)="setInventory(inventoryDetails.warehouseQuantityOnShelf)">
+              <span class="icon is-medium is-left">
+                  <fa-icon [icon]="faChevronCircleRight"></fa-icon>
+                </span>
+              <span class="ml-2 leading-5 font-medium">Confirm {{inventoryDetails?.warehouseQuantityOnShelf}}</span>
             </button>
           </div>
         </div>

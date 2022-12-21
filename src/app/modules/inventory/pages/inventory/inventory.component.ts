@@ -256,7 +256,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
       );
   }
 
-  setInventory() {
+  setInventory(quantity: number) {
     // TODO: when this is returned from server, don't calculate here
     /*
     this.inventoryDetails.warehouseQuantityOnShelf = this.quantityUpdated;
@@ -271,12 +271,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
       .mutate({
         warehouse: this.warehouse.name,
         id: this.simpleProduct.id,
-        quantity: this.quantityEntry
+        quantity
       })
       .pipe(map((result) => result.data.inventorySetDetails))
       .subscribe(
         (result) => {
-          this.quantityUpdated = this.quantityEntry;
+          this.quantityUpdated = quantity;
           this.inventoryDetails = result as InventoryDetails;
           this.inventoryLoading = false;
           this.changeDetectorRef.detectChanges();

@@ -41,6 +41,7 @@
     "express": "^4.15.2",
     "graphql": "^15.6.1",
     "ngx-electron": "^2.2.0",
+    "print-js": "^1.6.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
