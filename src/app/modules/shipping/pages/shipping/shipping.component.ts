@@ -25,7 +25,6 @@ import {
 
 import { DialogService } from '../../../shared/services/dialog.service';
 import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
-import { SplitShipmentComponent } from '../../dialogs/split-shipment/split-shipment.component';
 import { WeightComponent } from '../../dialogs/weight/weight.component';
 import { LengthComponent } from '../../dialogs/length/length.component';
 
@@ -257,7 +256,11 @@ export class ShippingComponent implements OnInit, OnDestroy {
     this.searchResults = [];
     this.changeDetectorRef.detectChanges();
     this.shipmentInfoGQL
-      .fetch({ id })
+      .fetch(
+        {
+          id
+        } /*, { fetchPolicy: skipCache ? 'network-only' : 'cache-first' } */
+      )
       .pipe(map((result) => result.data.shipmentInfo))
       .subscribe(
         (result) => {
@@ -300,21 +303,26 @@ export class ShippingComponent implements OnInit, OnDestroy {
       };
       options.title = 'Edit Shipping Address';
       options.okText = 'Cancel';
-      this.dialogService.showDialog(options);
     }
   }
 
   showShipmentDialog() {
     const options = new DialogBoxOptions();
     options.component = ShipmentContentsComponent;
-    options.inputs = { shipment: this.shipment };
+    options.inputs = {
+      shipment: this.shipment,
+      callback: (shipment: ShipmentEntity) => {
+        this.shipmentLoaded(shipment);
+      }
+    };
     options.title = 'Shipment Items';
     this.dialogService.showDialog(options);
   }
   cancelShipment() {
     const messageBoxOptions = new MessageBoxOptions();
     messageBoxOptions.title = 'Cancel Shipment';
-    messageBoxOptions.message = 'Are you sure you want to cancel this shipment from the order?';
+    messageBoxOptions.message =
+      'Are you sure you want to cancel this shipment from the order?';
     messageBoxOptions.okText = 'Confirm';
     messageBoxOptions.cancelText = 'Close';
     messageBoxOptions.severity = 'W';

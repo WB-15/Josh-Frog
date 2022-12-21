@@ -1,17 +1,22 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { map } from 'rxjs/operators';
-import { LineItemInput, ShipmentEntity, ShipmentSplitGQL } from '../../../../../generated/graphql';
+import {
+  LineItemInput,
+  ShipmentEntity,
+  ShipmentSplitGQL
+} from '../../../../../generated/graphql';
 import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
 
 @Component({
   selector: 'app-split-shipment',
   templateUrl: './split-shipment.component.html',
-  styles: [''],
+  styles: ['']
 })
 export class SplitShipmentComponent implements OnInit {
-  @Input() parentRef: DialogComponent<SplitShipmentComponent>;
   @Input() shipment: ShipmentEntity;
+  @Input() callback: (shipment: ShipmentEntity) => void;
+  @Input() parentRef: DialogComponent<SplitShipmentComponent>;
   currentShipmentQuantities: number[] = [];
   newShipmentQuantities: number[] = [];
   submitting = false;
@@ -29,16 +34,32 @@ export class SplitShipmentComponent implements OnInit {
     if (quantity) {
       this.currentShipmentQuantities[index] = quantity;
     }
-    this.currentShipmentQuantities[index] = Math.max(Math.min(this.currentShipmentQuantities[index], this.shipment.shipmentItems[index].quantity), 0);
-    this.newShipmentQuantities[index] = this.shipment.shipmentItems[index].quantity - this.currentShipmentQuantities[index];
+    this.currentShipmentQuantities[index] = Math.max(
+      Math.min(
+        this.currentShipmentQuantities[index],
+        this.shipment.shipmentItems[index].quantity
+      ),
+      0
+    );
+    this.newShipmentQuantities[index] =
+      this.shipment.shipmentItems[index].quantity -
+      this.currentShipmentQuantities[index];
   }
 
   setNewQuantity(index: number, quantity?: number): void {
     if (quantity) {
       this.newShipmentQuantities[index] = quantity;
     }
-    this.newShipmentQuantities[index] = Math.max(Math.min(this.newShipmentQuantities[index], this.shipment.shipmentItems[index].quantity), 0);
-    this.currentShipmentQuantities[index] = this.shipment.shipmentItems[index].quantity - this.newShipmentQuantities[index];
+    this.newShipmentQuantities[index] = Math.max(
+      Math.min(
+        this.newShipmentQuantities[index],
+        this.shipment.shipmentItems[index].quantity
+      ),
+      0
+    );
+    this.currentShipmentQuantities[index] =
+      this.shipment.shipmentItems[index].quantity -
+      this.newShipmentQuantities[index];
   }
 
   splitShipment(): void {
@@ -65,6 +86,9 @@ export class SplitShipmentComponent implements OnInit {
       .subscribe(
         (result) => {
           this.submitting = false;
+          if (this.callback) {
+            this.callback(result);
+          }
           this.parentRef.pressOK();
         },
         (error) => {

@@ -11,10 +11,9 @@ import { DialogBoxOptions } from '../dialog/dialog.component';
 })
 export class ShipmentContentsComponent implements OnInit {
   @Input() shipment: ShipmentEntity;
+  @Input() callback: (shipment: ShipmentEntity) => void;
 
-  constructor(
-    private dialogService: DialogService,
-  ) {}
+  constructor(private dialogService: DialogService) {}
 
   ngOnInit() {}
   splitShipment() {
@@ -22,9 +21,11 @@ export class ShipmentContentsComponent implements OnInit {
     options.component = SplitShipmentComponent;
     options.inputs = {
       shipment: this.shipment,
+      callback: this.callback
     };
     options.title = 'Split Shipment';
-    options.okText = 'Done';
+    options.okText = null;
+    options.cancelText = 'Cancel';
     this.dialogService.showDialog(options);
   }
 }
