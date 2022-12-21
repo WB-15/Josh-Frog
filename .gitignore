@@ -35,3 +35,6 @@ installer/Josh's Frogs Admin-SetupFiles/Josh's Frogs Admin.msi
 installer/Josh's Frogs Admin-cache/
 
 electron/JoshsFrogsAdmin-win32-x64/
+
+/src/graphql/_schema.graphql
+/src/generated/graphql.ts
