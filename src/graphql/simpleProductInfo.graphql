@@ -13,6 +13,7 @@ query simpleProductInfo ($id: UUID!) {
     weight,
     shippingNeeds,
     shippingRestrictions,
+    discontinuationReason,
     warehouses {
       id,
       name

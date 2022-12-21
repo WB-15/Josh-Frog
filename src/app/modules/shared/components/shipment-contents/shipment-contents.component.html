@@ -8,41 +8,74 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let item of shipment.shipmentItems; index as i">
-      <td class="px-6 py-4 whitespace-normal border-b border-gray-200">
-        <div>
-          <p class="leading-5">
-            <span class="font-semibold text-gray-900">{{item.quantity}}</span><span class="font-thin">x</span>&nbsp;<span class="font-medium text-gray-900">{{item.salesOrderItem.sku}}</span>:&nbsp;<span class="font-thin text-gray-900">{{item.salesOrderItem.name}}</span>
-          </p>
-        </div>
-      </td>
+      <tr *ngFor="let item of shipment.shipmentItems; index as i">
+        <td class="px-6 py-4 whitespace-normal border-b border-gray-200">
+          <div>
+            <p class="leading-5">
+              <span class="font-semibold text-gray-900">
+                {{item.quantity}}
+              </span>
+              <span class="font-thin">
+                x
+              </span>
+              &nbsp;
+              <span class="font-medium text-gray-900">
+                {{item.salesOrderItem.sku}}
+              </span>
+              :&nbsp;
+              <span class="font-thin text-gray-900">
+                {{item.salesOrderItem.name}}
+              </span>
+            </p>
+          </div>
+        </td>
 
-      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div class="leading-5 flex flex-row"></div>
-      </td>
+        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div class="leading-5 flex flex-row"></div>
+        </td>
 
-      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div class="leading-5 flex flex-row"></div>
-      </td>
-    </tr>
+        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div class="leading-5 flex flex-row"></div>
+        </td>
+      </tr>
 
-    <tr *ngFor="let item of shipment.shipmentAddons; index as i">
-      <td class="px-6 py-4 whitespace-normal border-b border-gray-200">
-        <div>
-          <p class="leading-5">
-            <span class="font-semibold text-gray-900">{{item.quantity}}</span><span class="font-thin">x</span>&nbsp;<span class="font-medium text-gray-900">{{item.sku}}</span>:&nbsp;<span class="font-thin text-gray-900">{{item.name}}</span>
-          </p>
-        </div>
-      </td>
+      <tr *ngFor="let item of shipment.shipmentAddons; index as i">
+        <td class="px-6 py-4 whitespace-normal border-b border-gray-200">
+          <div>
+            <p class="leading-5">
+              <span class="font-semibold text-gray-900">
+                {{item.quantity}}
+              </span>
+              <span class="font-thin">
+                x
+              </span>
+              <span class="font-medium text-gray-900">
+                {{item.sku}}
+              </span>
+              :&nbsp;
+              <span class="font-thin text-gray-900">
+                {{item.name}}
+              </span>
+            </p>
+          </div>
+        </td>
 
-      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div class="leading-5 flex flex-row"></div>
-      </td>
-
-      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div class="leading-5 flex flex-row"></div>
-      </td>
-    </tr>
+        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div class="leading-5 flex flex-row"></div>
+        </td>
+        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div class="leading-5 flex flex-row"></div>
+        </td>
+      </tr>
+      <tr *ngIf="(!(shipment.shipmentItems.length == 1 && shipment.shipmentItems[0].quantity <= 1)) && ((shipment.salesOrder.cls == 'MagentoSalesOrderEntity') || (shipment.salesOrder.cls == 'WebSalesOrderEntity') || (shipment.salesOrder.cls == 'PhoneSalesOrderEntity') || (shipment.salesOrder.cls == 'SubscriptionSalesOrderEntity'))">
+        <td class="px-6 py-4 whitespace-normal border-b border-gray-200" colspan="3">
+          <div>
+            <button  class="text-blue-600 hover:text-blue-800" (click)="splitShipment()">
+              Split Shipment
+            </button>
+          </div>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>

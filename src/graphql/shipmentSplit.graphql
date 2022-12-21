@@ -1,17 +1,16 @@
-query shipmentInfo ($id: UUID!) {
-    shipmentInfo(
-        id: $id
+mutation shipmentSplit ($id: UUID!, $lineItems: [LineItemInput]!, $reroute: Boolean!) {
+    shipmentSplit (
+        id: $id,
+        lineItems: $lineItems,
+        reroute: $reroute
     ) {
         id,
         cls,
         shipmentNumber,
         shipmentStatus,
         shippingNeeds,
-        reseller,
         carrier,
         service,
-        packaging,
-        options,
         estimatedWeight,
         actualWeight,
         estimatedLength,
@@ -24,10 +23,7 @@ query shipmentInfo ($id: UUID!) {
         estimatedShipDate,
         estimatedDeliveryDate,
         shippedAt,
-        shippedBy,
-        trackingNos,
-        zplContents,
-
+        email,
         firstName,
         lastName,
         company,
@@ -39,18 +35,18 @@ query shipmentInfo ($id: UUID!) {
         country,
         residential,
         addressValidationSource,
-
+        downloadStart,
+        printedStart,
+        printedEnd,
+        reprint,
         salesOrder {
             id,
             cls,
             orderNumber,
             alternateOrderNumber,
             placedTime,
-            email,
-            status,
-            hold
+            status
         },
-
         shipmentItems {
             id,
             cls,
@@ -62,7 +58,6 @@ query shipmentInfo ($id: UUID!) {
                 name
             }
         },
-
         shipmentAddons {
             id,
             cls,

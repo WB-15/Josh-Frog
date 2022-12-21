@@ -21,6 +21,7 @@ import {
 export class DialogComponent<T> implements OnInit, AfterViewInit {
   @Input() options = new DialogBoxOptions();
   @Output() okPressed = new EventEmitter<void>();
+  @Output() cancelPressed = new EventEmitter<void>();
 
   @ViewChild('content', { read: ViewContainerRef }) container;
 
@@ -50,7 +51,21 @@ export class DialogComponent<T> implements OnInit, AfterViewInit {
   }
 
   pressOK() {
+    if (this.componentRef.instance.onExit) {
+      this.componentRef.instance.onExit();
+    }
     this.okPressed.emit();
+  }
+
+  pressCancel() {
+    if (this.componentRef.instance.onExit) {
+      this.componentRef.instance.onExit();
+    }
+    this.cancelPressed.emit();
+  }
+
+  setTitle(title: string) {
+    this.options.title = title;
   }
 }
 
@@ -60,5 +75,6 @@ export class DialogBoxOptions {
   active = true;
   title = '';
   message = '';
+  cancelText = null;
   okText = 'OK';
 }

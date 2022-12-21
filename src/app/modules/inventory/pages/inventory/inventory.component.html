@@ -26,10 +26,7 @@
           <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf <= 0" class="font-semibold text-xl text-center">Out of Stock</p>
           <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf > 0" class="font-semibold text-xl text-center">{{inventoryDetails.warehouseQuantityOnShelf}} in Stock</p>
           <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf < 0" class="font-semibold text-xl text-center">Over Sold by {{0 - inventoryDetails.warehouseQuantityOnShelf}}</p>
-          <!-- TODO: when full inventory support exists, replace above with this
-          <p *ngIf="simpleProduct.inventoryCaches?.length == 0" class="font-semibold text-xl text-center">Not Stocked</p>
-          <p *ngFor="let inventory of simpleProduct.inventoryCaches" class="font-semibold text-3xl text-center">{{inventory.quantityAvailableForSale}}</p>
-          -->
+        <p  *ngIf="simpleProduct.discontinuationReason" class="font-semibold text-xl text-center text-red-500">(Discontinued)</p>
           <p *ngIf="inventoryDetails?.warehouseQuantityUnshipped != 0" class="font-medium text-lg text-center">{{inventoryDetails.warehouseQuantityUnshipped}} to Ship</p>
           <p *ngIf="inventoryDetails?.warehouseQuantityUnshipped != 0" class="font-medium text-lg text-center">{{inventoryDetails.warehouseQuantityAvailable}} for Sale</p>
           <p *ngIf="(inventoryDetails?.warehouseQuantityOnShelf > 0) && (inventoryDetails?.warehouseQuantityUnshipped == 0)" class="font-light text-sm italic text-center">All available for sale.</p>
