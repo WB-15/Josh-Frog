@@ -1,16 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import {
-  faMagento,
-  faAmazon,
-  faEbay
-} from '@fortawesome/free-brands-svg-icons';
+import { faMagento, faAmazon, faEbay } from '@fortawesome/free-brands-svg-icons';
 import { faDotCircle } from '@fortawesome/pro-duotone-svg-icons';
-import {
-  faGlobeAmericas,
-  faPhone,
-  faHistory
-} from '@fortawesome/pro-regular-svg-icons';
+import { faGlobeAmericas, faPhone, faHistory } from '@fortawesome/pro-regular-svg-icons';
 
 @Component({
   selector: 'app-marketplace-icon',

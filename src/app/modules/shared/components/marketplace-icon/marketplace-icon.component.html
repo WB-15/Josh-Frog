@@ -33,7 +33,7 @@
 <div *ngIf="cls == 'PoyntSalesOrderEntity'" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg" style="background-color: lightblue">
   <span style="font-size: 28px; color: mediumblue"><fa-icon [icon]="faDotCircle"></fa-icon></span>
 </div>
-<div *ngIf="cls == 'PetcoDropshipSalesOrderEntity'" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg" style="background-color: #cccccc">
+<div *ngIf="(cls == 'PetcoDropshipSalesOrderEntity') || (cls == 'PetcoStoreDirectSalesOrderEntity')" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg" style="background-color: #cccccc">
   <span style="font-size: 28px">
     <svg viewBox="5 5 40 30" class="svg-inline--fa fa-w-14" xmlns="http://www.w3.org/2000/svg">
       <g id="g2993" transform="matrix(1.25,0,0,-1.25,331.88099,-44.015841)">
