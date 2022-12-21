@@ -237,29 +237,26 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   getInventory() {
     this.inventoryDetails = null;
-    const found = this.simpleProduct.warehouses.find(w => w.id === this.warehouse.id);
-    if (found) {
-      this.warehouseValid = true;
-      this.inventoryLoading = true;
-      this.inventoryGetDetailsGQL
-        .mutate({ warehouse: this.warehouse.name, id: this.simpleProduct.id })
-        .pipe(map((result) => result.data.inventoryGetDetails))
-        .subscribe(
-          (result) => {
-            this.inventoryDetails = result as InventoryDetails;
-            this.inventoryLoading = false;
-            this.changeDetectorRef.detectChanges();
-          },
-          (error) => {
-            this.inventoryDetails = null;
-            this.inventoryLoading = false;
-            this.dialogService.showErrorMessageBox(error);
-            this.changeDetectorRef.detectChanges();
-          }
-        );
-    } else {
-      this.warehouseValid = false;
-    }
+    this.warehouseValid = !!this.simpleProduct.warehouses.find(
+      (w) => w.id === this.warehouse.id
+    );
+    this.inventoryLoading = true;
+    this.inventoryGetDetailsGQL
+      .mutate({ warehouse: this.warehouse.name, id: this.simpleProduct.id })
+      .pipe(map((result) => result.data.inventoryGetDetails))
+      .subscribe(
+        (result) => {
+          this.inventoryDetails = result as InventoryDetails;
+          this.inventoryLoading = false;
+          this.changeDetectorRef.detectChanges();
+        },
+        (error) => {
+          this.inventoryDetails = null;
+          this.inventoryLoading = false;
+          this.dialogService.showErrorMessageBox(error);
+          this.changeDetectorRef.detectChanges();
+        }
+      );
   }
 
   setInventory() {

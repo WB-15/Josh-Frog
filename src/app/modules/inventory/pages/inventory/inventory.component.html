@@ -17,12 +17,12 @@
       </div>
       <div class="self-center">
         <p *ngIf="warehouse" class="font-light text-lg text-center">{{warehouse.name}}</p>
-        <p *ngIf="!warehouseValid" class="font-semibold text-xl text-center text-red-600">Product Is Not Part of This Warehouse</p>
+        <p *ngIf="!warehouseValid" class="font-semibold text-xl text-center text-red-600">Not usually stocked at this warehouse.</p>
         <p *ngIf="inventoryLoading" class="self-center items-center flex">
           <fa-icon class="icon text-2xl" [icon]="faSpinnerThird" [spin]="true"></fa-icon>
           <span class="italic pl-1 text-xl font-semibold">Loading Stock</span>
         </p>
-        <ng-container *ngIf="warehouseValid && inventoryDetails && !inventoryLoading">
+        <ng-container *ngIf="inventoryDetails && !inventoryLoading">
           <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf <= 0" class="font-semibold text-xl text-center">Out of Stock</p>
           <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf > 0" class="font-semibold text-xl text-center">{{inventoryDetails.warehouseQuantityOnShelf}} in Stock</p>
           <p *ngIf="inventoryDetails?.warehouseQuantityOnShelf < 0" class="font-semibold text-xl text-center">Over Sold by {{0 - inventoryDetails.warehouseQuantityOnShelf}}</p>
