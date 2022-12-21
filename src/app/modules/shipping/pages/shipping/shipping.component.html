@@ -60,8 +60,9 @@
             {{trackingNo}}<ng-container *ngIf="i + 1 !== shipment.trackingNos.length">, </ng-container>
           </span>
         </ng-container>
-        <!--// todo remove the "&& (true == false)" to make this work. -->
-        <button *ngIf="shipment.shipmentStatus === 'Unshipped' && (true == false)"  type="button"  class="block mx-auto jf-link text-red-500" (click)="cancelShipment()">Cancel Shipment</button>
+        <!--
+        <button *ngIf="shipment.shipmentStatus === 'Unshipped'" type="button" class="block mx-auto jf-link text-red-500" (click)="cancelShipment()">Cancel Shipment</button>
+        -->
       </div>
     </div>
   </div>
