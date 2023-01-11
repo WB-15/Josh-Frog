@@ -1,21 +1,26 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Carrier } from '../../../../generated/graphql';
 
 @Pipe({
   name: 'carrier'
 })
 export class CarrierPipe implements PipeTransform {
-  transform(value: string, ...args: unknown[]): string {
+  transform(value: Carrier, ...args: unknown[]): string {
     switch (value) {
-      case 'FEDEX':
+      case Carrier.Fedex:
         return 'FedEx';
-      case 'USPS':
+      case Carrier.Usps:
         return 'USPS';
-      case 'UPS':
+      case Carrier.Ups:
         return 'UPS';
-      case 'DHL':
+      case Carrier.Dhl:
         return 'DHL';
-      case 'LASERSHIP':
+      case Carrier.Lasership:
         return 'LaserShip';
+      case Carrier.Roadie:
+        return 'Roadie';
+      case Carrier.Globaltranz:
+        return 'GlobalTranz';
       default:
         return value;
     }

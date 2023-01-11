@@ -70,6 +70,20 @@ export class ServicePipe implements PipeTransform {
       case Service.LasershipGround:
         return 'LaserShip Ground';
 
+      case Service.RoadieSameDay:
+        return 'Roadie Same-Day';
+      case Service.RoadieNextDay:
+        return 'Roadie Next Day';
+      case Service.RoadieTwoDay:
+        return 'Roadie Two Day';
+
+      case Service.GlobaltranzLtl:
+        return 'GlobalTranz LTL';
+      case Service.GlobaltranzLtlLiftgate:
+        return 'GlobalTranz LTL Liftgate';
+      case Service.GlobaltranzLtlTradeshow:
+        return 'GlobalTranz LTL Tradeshow';
+
       default:
         return value;
     }
