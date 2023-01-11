@@ -1,4 +1,4 @@
-mutation shipmentSplit ($id: UUID!, $lineItems: [LineItemInput]!, $reroute: Boolean!) {
+mutation shipmentSplit ($id: UUID!, $lineItems: [ShipmentLineItemInput]!, $reroute: Boolean!) {
     shipmentSplit (
         id: $id,
         lineItems: $lineItems,

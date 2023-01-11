@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { map } from 'rxjs/operators';
 import {
-  LineItemInput,
+  ShipmentLineItemInput,
   ShipmentEntity,
   ShipmentSplitGQL
 } from '../../../../../generated/graphql';
@@ -64,11 +64,11 @@ export class SplitShipmentComponent implements OnInit {
 
   splitShipment(): void {
     this.submitting = true;
-    const lineItems: LineItemInput[] = [];
+    const lineItems: ShipmentLineItemInput[] = [];
     let i = 0;
     for (const shipmentItem of this.shipment.shipmentItems) {
       if (this.newShipmentQuantities[i] > 0) {
-        const lineItem: LineItemInput = {
+        const lineItem: ShipmentLineItemInput = {
           id: shipmentItem.id,
           quantity: this.newShipmentQuantities[i]
         };
