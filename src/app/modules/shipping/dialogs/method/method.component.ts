@@ -49,7 +49,7 @@ export class MethodComponent implements OnInit {
   threeDayRates: RateQuote[];
   groundRates: RateQuote[];
   economyRates: RateQuote[];
-  showResellers = true;
+  showResellers = false;
 
   constructor(
     private dialogService: DialogService,
