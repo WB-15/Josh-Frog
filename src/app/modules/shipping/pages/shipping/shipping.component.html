@@ -9,13 +9,26 @@
         <input id="searchByShipmentNumber" class="input-base pl-10 pr-2" [ngClass]="searchShipmentNumber?.length > 0 ? 'rounded-b-none' : ''" placeholder="Search Shipments" autocomplete="off" autocapitalize="words"
                [(ngModel)]="searchShipmentNumber" (keyup)="searchKey($event)" (paste)="searchKey($event)" appAutofocus />
         <div *ngIf="searchResults" class="block absolute bg-gray-100 z-30 w-full">
-          <div *ngFor="let result of searchResults" class="flex hover:bg-gray-200 border-gray-200 border-r border-b items-center" (click)="load(result.id)">
-            <div class="flex-none m-1 mr-3">
+          <div *ngFor="let result of searchResults" class="flex hover:bg-blue-200 cursor-pointer border-gray-200 border-l border-r border-b items-center p-1" (click)="load(result.id)"
+               [ngClass]="{'bg-gray-300' : result.shipmentStatus == 'Shipped' || result.shipmentStatus == 'External', 'bg-gray-500' : result.shipmentStatus == 'Cancelled' || result.shipmentStatus == 'Delivered' || result.shipmentStatus == 'Pending'}">
+            <div class="flex-none ml-1">
               <app-marketplace-icon [cls]="result?.salesOrder.cls"></app-marketplace-icon>
             </div>
 
-            <div class="m-1 mr-3">
-              <p class="font-semibold">{{result.shipmentNumber}}</p>
+            <div class="mr-2 flex-grow">
+              <div class="flex gap-3">
+                <p class="font-semibold flex-grow">{{result.shipmentNumber}}</p>
+                <fa-icon *ngIf="result.shipmentStatus == 'Unshipped'" [fixedWidth]="true" [icon]="faBoxOpen" class="self-start pointer-events-none"></fa-icon>
+                <fa-icon *ngIf="result.shipmentStatus == 'Labelled'" [fixedWidth]="true" [icon]="faBox" class="self-start pointer-events-none"></fa-icon>
+                <fa-icon *ngIf="result.shipmentStatus == 'NeedsScheduling'" [fixedWidth]="true" [icon]="faCalendar" class="self-start pointer-events-none"></fa-icon>
+
+                <fa-icon *ngIf="result.shipmentStatus == 'Shipped'" [fixedWidth]="true" [icon]="faShippingFast" class="self-start pointer-events-none"></fa-icon>
+                <fa-icon *ngIf="result.shipmentStatus == 'External'" [fixedWidth]="true" [icon]="faExternalLink" class="self-start pointer-events-none"></fa-icon>
+
+                <fa-icon *ngIf="result.shipmentStatus == 'Cancelled'" [fixedWidth]="true" [icon]="faBan" class="self-start pointer-events-none"></fa-icon>
+                <fa-icon *ngIf="result.shipmentStatus == 'Delivered'" [fixedWidth]="true" [icon]="faBoxCheck" class="self-start pointer-events-none"></fa-icon>
+                <fa-icon *ngIf="result.shipmentStatus == 'Pending'" [fixedWidth]="true" [icon]="faWatch" class="self-start pointer-events-none"></fa-icon>
+              </div>
               <p class="font-light">{{result?.salesOrder.alternateOrderNumber}}</p>
               <p class="font-light">{{result?.departingWarehouse.name}}</p>
             </div>
@@ -204,31 +217,36 @@
   <div class="p-4" *ngIf="shipment && shipmentSent">
     <p class="data-label">DIMENSIONS</p>
     <span *ngIf="shipment.actualLength && shipment.actualWidth && shipment.actualHeight">{{shipment.actualLength}} x {{shipment.actualWidth}} x {{shipment.actualHeight}} IN</span>
-    <span *ngIf="shipment.trackingNos.length > 1">Multi Package</span>
+    <span *ngIf="shipment.trackingNos?.length > 1">Multi Package</span>
     <p class="data-label mt-2">WEIGHT</p>
     <span *ngIf="shipment.actualWeight">{{shipment.actualWeight}} LB</span>
-    <span *ngIf="shipment.trackingNos.length > 1">Multi Package</span>
+    <span *ngIf="shipment.trackingNos?.length > 1">Multi Package</span>
   </div>
 
   <div class="p-4" *ngIf="shipment">
     <p class="data-label">SERVICE</p>
     <div class="flex flex-col gap-4 lg:flex-row lg:items-center">
-      <div class="relative w-full max-w-lg" (click)="shipmentEditable ? showMethodDialog() : ''"
-           [ngClass]="shipmentEditable ? 'click-area-offset ' + (checkMethodRequirements() ? 'click-area' : 'cursor-not-allowed opacity-50') : ''">
+      <button (click)="showMethodDialog()" [disabled]="!shipmentEditable || !checkMethodRequirements()"
+              class="input-button pl-15 pr-3 relative max-w-lg" style="min-height: 5rem"
+              [ngClass]="{'opacity-50' : shipmentEditable && !checkMethodRequirements()}">
         <app-carrier-icon class="absolute inset-y-0 left-3 flex items-center pointer-events-none" [carrier]="shipment.carrier"></app-carrier-icon>
-        <div class="input-base pl-15 pr-3 flex flex-col justify-center" style="min-height: 5rem" [ngClass]="{'cursor-default' : shipmentSent}">
-          <p class="text-2xl">
-            <span *ngIf="(shipment.carrier && shipment.service)" class="font-light text-gray-600">{{shipment.carrier | carrier}}</span> {{shipment.service | service}}
+        <div class="flex flex-col justify-center">
+          <p class="text-2xl leading-6 flex gap-x-1.5 gap-y-0.5 flex-wrap">
+            <ng-container *ngIf="(shipment.carrier && shipment.service)">
+              <span class="font-light text-gray-600">{{shipment.carrier | carrier}}</span>
+              <span>{{shipment.service | service}}</span>
+            </ng-container>
             <span *ngIf="!(shipment.carrier && shipment.service)" class="font-light text-gray-600">Not Specified</span>
           </p>
-          <p class="font-light">
-            <span *ngFor="let option of shipment.options">
-              {{ option | option }}&nbsp;
-            </span>
+          <p *ngIf="shipment.options?.length > 0" class="font-light mt-1.5 text-base leading-5">
+            <ng-container *ngFor="let option of shipment.options; index as i">
+              <span class="text-gray-400" *ngIf="i > 0"> | </span>
+              <span>{{option | option}}</span>
+            </ng-container>
           </p>
         </div>
         <fa-icon *ngIf="shipmentEditable && checkMethodRequirements()" class="absolute inset-y-0 right-3 flex items-center pointer-events-none" [icon]="faPencil"></fa-icon>
-      </div>
+      </button>
       <button *ngIf="shipmentEditable" class="w-64 h-16 font-bold button button-blue"
               [disabled]="!checkShippingRequirements() || rating"
               (click)="rateShipment()">
@@ -241,16 +259,17 @@
   <div class="p-4" *ngIf="shipment">
     <p class="data-label">PACKAGING</p>
     <div class="flex flex-col gap-4 lg:flex-row lg:items-center">
-      <div class="relative w-full max-w-lg" (click)="shipmentEditable ? showPackagingDialog() : ''"
-           [ngClass]="shipmentEditable ? 'click-area-offset ' + (packages.length === 1 ? 'click-area' : 'cursor-not-allowed opacity-50') : ''">
+      <button (click)="showPackagingDialog()" [disabled]="!shipmentEditable || packages.length !== 1"
+              class="input-button pl-15 pr-3 relative max-w-lg" style="min-height: 5rem"
+              [ngClass]="{'opacity-50' : shipmentEditable && packages.length !== 1}">
         <app-packaging-icon [packaging]="shipment.packaging" class="absolute inset-y-0 left-3 flex items-center pointer-events-none"></app-packaging-icon>
-        <div class="input-base pl-15 pr-3 text-4xl font-light text-gray-600">
+        <div class="text-2xl leading-6 font-light text-gray-600">
           {{shipment.packaging ? (shipment.packaging | packaging): 'Not Specified'}}
         </div>
         <fa-icon *ngIf="shipmentEditable && packages.length === 1" [icon]="faPencil" class="absolute inset-y-0 right-3 flex items-center pointer-events-none"></fa-icon>
-      </div>
+      </button>
 
-      <button *ngIf="shipmentEditable" class="w-64 h-16 font-bold button button-green"
+      <button *ngIf="shipmentEditable" id="ship" class="w-64 h-16 font-bold button button-green"
               [disabled]="!checkShippingRequirements() || shipping"
               (click)="shipShipment()">
         <ng-container *ngIf="!shipping">Ship</ng-container>

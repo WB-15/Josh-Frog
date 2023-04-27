@@ -27,6 +27,7 @@ import { HostnamePipe } from './pipes/hostname.pipe';
 import { OptionPipe } from './pipes/option.pipe';
 import { PackagingPipe } from './pipes/packaging.pipe';
 import { PurchaseOrderStatusPipe } from './pipes/purchase-order-status.pipe';
+import { ResellerPipe } from './pipes/reseller.pipe';
 import { ServicePipe } from './pipes/service.pipe';
 import { ShipmentStatusPipe } from './pipes/shipment-status.pipe';
 import { ShippingNeedsPipe } from './pipes/shipping-needs.pipe';
@@ -63,7 +64,8 @@ import { WarehousePipe } from './pipes/warehouse.pipe';
     PurchaseOrderStatusPipe,
     WarehousePipe,
     PurchaseOrderComponent,
-    TabsComponent
+    TabsComponent,
+    ResellerPipe
   ],
   exports: [
     DialogComponent,
@@ -93,7 +95,8 @@ import { WarehousePipe } from './pipes/warehouse.pipe';
     ProductSearchComponent,
     PurchaseOrderStatusPipe,
     WarehousePipe,
-    TabsComponent
+    TabsComponent,
+    ResellerPipe
   ],
   imports: [CommonModule, FontAwesomeModule, FormsModule, ReactiveFormsModule]
 })

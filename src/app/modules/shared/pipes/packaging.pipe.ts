@@ -1,21 +1,24 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Packaging } from '../../../../generated/graphql';
 
 @Pipe({
   name: 'packaging'
 })
 export class PackagingPipe implements PipeTransform {
-  transform(value: string, ...args: unknown[]): string {
+  transform(value: Packaging, ...args: unknown[]): string {
     switch (value) {
-      case 'CARDBOARD_BOX':
+      case Packaging.CardboardBox:
         return 'Cardboard Box';
-      case 'REGIONAL_BOX_A':
+      case Packaging.RegionalBoxA:
         return 'Regional Box A';
-      case 'REGIONAL_BOX_B':
+      case Packaging.RegionalBoxB:
         return 'Regional Box B';
-      case 'FLAT_RATE_ENVELOPE':
+      case Packaging.FlatRateEnvelope:
         return 'Flat Rate Envelope';
-      case 'POLY_BAG_12X15':
+      case Packaging.PolyBag_12X15:
         return 'Poly Bag';
+      case Packaging.FedexEnvelope:
+        return 'Fedex Envelope';
       default:
         return value;
     }

@@ -33,12 +33,12 @@
   }
 
   .click-area {
-    @apply cursor-pointer rounded-lg
-  }
+    @apply cursor-pointer rounded-lg;
 
-  .click-area:hover {
-    @apply text-blue-600 bg-blue-100;
-    outline: 2px solid theme('colors.blue.500');
+    &:hover {
+      @apply text-blue-600 bg-blue-100;
+      outline: 2px solid theme('colors.blue.500');
+    }
   }
 
   .click-area-offset {
@@ -76,6 +76,22 @@
   .button {
     @apply text-white border rounded px-6 py-2.5;
     min-width: 10rem;
+  }
+
+  .input-button {
+    @apply w-full rounded-lg bg-white border border-gray-300 py-2 px-3 text-base text-left;
+
+    &:focus {
+      @apply outline-none border-blue-300 focus-shadow;
+    }
+
+    &:disabled {
+      @apply cursor-default;
+    }
+
+    &:not(:disabled) {
+      @apply click-area click-area-offset;
+    }
   }
 
   .button:disabled {

@@ -1,65 +1,67 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
-import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { DOCUMENT } from '@angular/common';
+import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import {
-  faSearch,
-  faPencil,
   faBalanceScale,
-  faRuler,
-  faRulerVertical,
-  faRulerHorizontal,
+  faBan,
+  faBox,
+  faBoxCheck,
+  faBoxOpen,
+  faCalendar,
+  faExternalLink,
   faLock,
   faLockOpen,
-  faTimesCircle,
+  faPencil,
   faPlusCircle,
-  faSpinnerThird
+  faRuler,
+  faRulerHorizontal,
+  faRulerVertical,
+  faSearch,
+  faShippingFast,
+  faSpinnerThird,
+  faTimesCircle,
+  faWatch
 } from '@fortawesome/pro-duotone-svg-icons';
-
-import { DialogService } from '../../../shared/services/dialog.service';
-import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
-import { WeightComponent } from '../../dialogs/weight/weight.component';
-import { LengthComponent } from '../../dialogs/length/length.component';
-
-import { BarcodeService } from '../../../shared/services/barcode.service';
-import { ScaleService } from '../../../shared/services/scale.service';
-import { PrinterService } from '../../../shared/services/printer.service';
-
-import { WarehouseService } from '../../../shared/services/warehouse.service';
+import { Platform } from '@ionic/angular';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import {
   Carrier,
+  GraphQlPageableInput,
+  Packaging,
+  RateQuote,
+  Reseller,
   Service,
+  ShipmentCancelGQL,
   ShipmentEntity,
+  ShipmentFilterGQL,
   ShipmentFindGQL,
   ShipmentInfoGQL,
-  ShipmentShipMultiPieceGQL,
-  WarehouseEntity,
-  ShipmentFilterGQL,
-  GraphQlPageableInput,
+  ShipmentRateMultiPieceGQL,
   ShipmentSearchGQL,
-  Packaging,
+  ShipmentShipMultiPieceGQL,
   ShipmentValidateAddressGQL,
   ShipmentVoidGQL,
-  Reseller,
-  ShipmentRateMultiPieceGQL,
-  RateQuote,
-  ShipmentCancelGQL
+  WarehouseEntity
 } from '../../../../../generated/graphql';
-import { MethodComponent } from '../../dialogs/method/method.component';
-import { PackagingComponent } from '../../dialogs/packaging/packaging.component';
+import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
 import { MessageBoxOptions } from '../../../shared/components/message-box/message-box.component';
 import { ShipmentContentsComponent } from '../../../shared/components/shipment-contents/shipment-contents.component';
 import { ShippingAddressComponent } from '../../../shared/components/shipping-address/shipping-address.component';
-import { Platform } from '@ionic/angular';
-import { DOCUMENT } from '@angular/common';
+
+import { BarcodeService } from '../../../shared/services/barcode.service';
+
+import { DialogService } from '../../../shared/services/dialog.service';
+import { PrinterService } from '../../../shared/services/printer.service';
+import { ScaleService } from '../../../shared/services/scale.service';
+
+import { WarehouseService } from '../../../shared/services/warehouse.service';
+import { LengthComponent } from '../../dialogs/length/length.component';
+import { MethodComponent } from '../../dialogs/method/method.component';
+import { PackagingComponent } from '../../dialogs/packaging/packaging.component';
+import { WeightComponent } from '../../dialogs/weight/weight.component';
 
 @Component({
   selector: 'app-shipping',
@@ -78,6 +80,15 @@ export class ShippingComponent implements OnInit, OnDestroy {
   faTimesCircle = faTimesCircle;
   faPlusCircle = faPlusCircle;
   faSpinnerThird = faSpinnerThird;
+
+  faShippingFast = faShippingFast;
+  faBoxCheck = faBoxCheck;
+  faBoxOpen = faBoxOpen;
+  faBox = faBox;
+  faExternalLink = faExternalLink;
+  faCalendar = faCalendar;
+  faWatch = faWatch;
+  faBan = faBan;
 
   searchShipmentNumber = '';
   pendingSearchShipmentNumber: string = null;
@@ -303,6 +314,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
       };
       options.title = 'Edit Shipping Address';
       options.okText = 'Cancel';
+      this.dialogService.showDialog(options);
     }
   }
 
@@ -318,6 +330,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
     options.title = 'Shipment Items';
     this.dialogService.showDialog(options);
   }
+
   cancelShipment() {
     const messageBoxOptions = new MessageBoxOptions();
     messageBoxOptions.title = 'Cancel Shipment';
@@ -433,12 +446,18 @@ export class ShippingComponent implements OnInit, OnDestroy {
           this.shipment.service = service;
           this.shipment.packaging = packaging;
           this.shipment.options = options;
+          this.changeDetectorRef.detectChanges();
+          this.focusShipButton();
         }
       };
       opts.title = 'Shipping Method';
       opts.okText = 'Close';
       this.dialogService.showDialog(opts);
     }
+  }
+
+  focusShipButton() {
+    document?.getElementById('ship')?.focus();
   }
 
   showPackagingDialog() {
@@ -481,6 +500,9 @@ export class ShippingComponent implements OnInit, OnDestroy {
               this.shipment.service = rate.service;
               this.shipment.packaging = rate.packaging;
               this.shipment.options = rate.options;
+              this.changeDetectorRef.detectChanges();
+              this.focusShipButton();
+
               found = true;
               break;
             }

@@ -42,3 +42,9 @@
 <div *ngIf="carrier == 'GLOBALTRANZ'" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg" style="background-color: rgb(16, 134, 204)">
   <span style="font-size: 28px; color: white"><fa-icon [icon]="faTruckMoving"></fa-icon></span>
 </div>
+<div *ngIf="carrier == 'DHL'" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg" style="background-color: #FFCC00">
+  <span style="font-size: 28px; color: #D40511"><fa-icon [icon]="faDhl"></fa-icon></span>
+</div>
+<div *ngIf="carrier == 'GENERIC'" class="flex-none h-10 w-10 m-1 mr-3 text-center rounded-lg bg-yellow-300">
+  <span class="text-yellow-500" style="font-size: 28px"><fa-icon [icon]="faQuestion"></fa-icon></span>
+</div>

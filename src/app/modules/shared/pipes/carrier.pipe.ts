@@ -9,6 +9,8 @@ export class CarrierPipe implements PipeTransform {
     switch (value) {
       case Carrier.Fedex:
         return 'FedEx';
+      case Carrier.Generic:
+        return 'Generic';
       case Carrier.Usps:
         return 'USPS';
       case Carrier.Ups:

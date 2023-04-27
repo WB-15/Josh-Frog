@@ -1,9 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { faFedex, faUsps, faUps } from '@fortawesome/free-brands-svg-icons';
-import {
-  faShippingFast,
-  faTruckMoving
-} from '@fortawesome/pro-duotone-svg-icons';
+import { faDhl, faFedex, faUps, faUsps } from '@fortawesome/free-brands-svg-icons';
+import { faQuestion, faShippingFast, faTruckMoving } from '@fortawesome/pro-duotone-svg-icons';
 import { Carrier } from '../../../../../generated/graphql';
 
 @Component({
@@ -17,6 +14,8 @@ export class CarrierIconComponent implements OnInit {
   faUsps = faUsps;
   faShippingFast = faShippingFast;
   faTruckMoving = faTruckMoving;
+  faDhl = faDhl;
+  faQuestion = faQuestion;
 
   @Input() carrier: Carrier;
 

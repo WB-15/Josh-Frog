@@ -9,6 +9,8 @@ export class ServicePipe implements PipeTransform {
     switch (value) {
       case Service.GenericGround:
         return 'Ground';
+      case Service.GenericInternational:
+        return 'International';
       case Service.GenericOvernight:
         return 'Overnight';
       case Service.GenericTwoDay:

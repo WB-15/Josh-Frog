@@ -1,19 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+
+import { faSpinnerThird } from '@fortawesome/pro-duotone-svg-icons';
+import { map } from 'rxjs/operators';
 import {
   Carrier,
   PackageSizeInput,
   Packaging,
   RateQuote,
+  RateQuoteFitness,
   Reseller,
   Service,
   ShipmentEntity,
   ShipmentRateMultiPieceGQL,
   WarehouseEntity
 } from '../../../../../generated/graphql';
-import { map } from 'rxjs/operators';
-
-import { faSpinnerThird } from '@fortawesome/pro-duotone-svg-icons';
+import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
 import { DialogService } from '../../../shared/services/dialog.service';
 
 @Component({
@@ -48,10 +49,12 @@ export class MethodComponent implements OnInit {
   threeDayRates: RateQuote[];
   groundRates: RateQuote[];
   economyRates: RateQuote[];
+  showResellers = true;
 
   constructor(
     private dialogService: DialogService,
-    private shipmentRateMultiPieceGQL: ShipmentRateMultiPieceGQL
+    private shipmentRateMultiPieceGQL: ShipmentRateMultiPieceGQL,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -104,13 +107,44 @@ export class MethodComponent implements OnInit {
               this.economyRates.push(rate);
             }
           }
+          this.overnightEarlyRates.sort(this.sortRates);
+          this.overnightMorningRates.sort(this.sortRates);
+          this.overnightEveningRates.sort(this.sortRates);
+          this.twoDayRates.sort(this.sortRates);
+          this.threeDayRates.sort(this.sortRates);
+          this.groundRates.sort(this.sortRates);
+          this.economyRates.sort(this.sortRates);
+
           this.loading = false;
+          this.changeDetectorRef.detectChanges();
+          document?.getElementById('best')?.focus();
         },
         (error) => {
           console.log(error);
           this.dialogService.showErrorMessageBox(error);
         }
       );
+  }
+
+  sortRates = (a: RateQuote, b: RateQuote) => {
+    if (a.fitness === b.fitness) {
+      return a.cost - b.cost;
+    } else {
+      return this.getFitnessOrder(a.fitness) - this.getFitnessOrder(b.fitness);
+    }
+  };
+
+  getFitnessOrder(rateQuoteFitness: RateQuoteFitness) {
+    switch (rateQuoteFitness) {
+      case RateQuoteFitness.Best:
+        return 1;
+      case RateQuoteFitness.Good:
+        return 2;
+      case RateQuoteFitness.Neutral:
+        return 3;
+      case RateQuoteFitness.Bad:
+        return 4;
+    }
   }
 
   allOptions() {
