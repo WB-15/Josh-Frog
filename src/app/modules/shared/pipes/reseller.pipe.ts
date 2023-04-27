@@ -32,7 +32,7 @@ export class ResellerPipe implements PipeTransform {
       case Reseller.Ups:
         return 'UPS';
       case Reseller.UpsAlt:
-        return 'UPS Alt';
+        return 'UPS Alternate';
       default:
         return value;
     }
