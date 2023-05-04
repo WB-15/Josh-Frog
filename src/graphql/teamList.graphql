@@ -1,0 +1,9 @@
+query teamList {
+  teamList(page: { page: 1, pageSize: 1000 }) {
+    data {
+      id
+      slug
+      name
+    }
+  }
+}

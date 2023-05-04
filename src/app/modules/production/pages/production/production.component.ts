@@ -4,18 +4,24 @@ import { map } from 'rxjs/operators';
 import {
   faSpinnerThird,
   faArrowCircleUp,
-  faArrowCircleDown
+  faArrowCircleDown,
+  faAngleDown
 } from '@fortawesome/pro-duotone-svg-icons';
 import {
   InventoryDetails,
   MakingStockStatusGQL,
-  WarehouseEntity
+  WarehouseEntity,
+  TeamEntity,
+  DepartmentEntity
 } from '../../../../../generated/graphql';
 
 import { DialogService } from '../../../shared/services/dialog.service';
 import { DialogBoxOptions } from '../../../shared/components/dialog/dialog.component';
 import { StatsComponent } from '../../dialogs/stats/stats.component';
 import { WarehouseService } from '../../../shared/services/warehouse.service';
+import { TeamService } from 'src/app/modules/shared/services/team.service';
+import { DepartmentService } from 'src/app/modules/shared/services/department.service';
+import internal from 'events';
 
 @Component({
   selector: 'app-production',
@@ -26,11 +32,20 @@ export class ProductionComponent implements OnInit, OnDestroy {
   faSpinnerThird = faSpinnerThird;
   faArrowCircleDown = faArrowCircleDown;
   faArrowCircleUp = faArrowCircleUp;
+  faAngleDown = faAngleDown;
 
   hideFullyStocked = true;
 
   warehouse: WarehouseEntity = null;
   warehouseChangedSubscription: Subscription;
+
+  // team : TeamEntity;
+  // teams : TeamEntity[];
+  // defaultTeam = 'plants'
+
+  department: DepartmentEntity;
+  departments: DepartmentEntity[];
+  defaultDepartment = 'plants'
 
   loading = 0;
 
@@ -44,16 +59,44 @@ export class ProductionComponent implements OnInit, OnDestroy {
 
   inventoryDetailsMoreThanOneWeek: InventoryDetails[];
 
+
+  // teamsChangedSubscription: Subscription;
+
+
+  departmentsChangedSubscription: Subscription;
+
   constructor(
     private dialogService: DialogService,
     private warehouseService: WarehouseService,
-    private makingStockStatusGQL: MakingStockStatusGQL
+    private makingStockStatusGQL: MakingStockStatusGQL,
+
+    // private teamService: TeamService,
+
+    private departmentService: DepartmentService
   ) {}
 
   ngOnInit() {
     this.warehouseChangedSubscription = this.warehouseService.warehouseChanged$.subscribe(
       (warehouse) => {
         this.warehouse = warehouse;
+
+        // this.teamsChangedSubscription = this.teamService.teamsChanged$.subscribe((teams) => {
+        //   if(teams){
+        //     console.log(teams);
+        //     this.teams = teams
+        //     this.team = this.teams.find(team => team.slug == this.defaultTeam);
+        //     console.log('defaultTeam!@!@!@!@!@!@!@!@!@', this.team)
+        //   }
+        // });
+
+        this.departmentsChangedSubscription = this.departmentService.departmentsChanged$.subscribe((departments) => {
+          if(departments){
+            console.log("departments:::", departments);
+            this.departments = departments
+            this.department = this.departments.find(department => department.slug == this.defaultDepartment);
+            console.log('defaultDepartment!@!@!@!@!@!@!@!@!@', this.department)
+          }
+        });
         this.reload();
       },
       (error) => {
@@ -63,12 +106,17 @@ export class ProductionComponent implements OnInit, OnDestroy {
   }
 
   reload() {
+    console.log("reload~~~~~~~~~~~~~~~~", this.department, this.warehouse)
     this.loading++;
     this.makingStockStatusGQL
-      .mutate({ warehouse: this.warehouse.name })
+
+      // .mutate({ department: this.team.slug, warehouse: this.warehouse.name })
+
+      .mutate({ department: this.department.slug, warehouse: this.warehouse.name })
       .pipe(map((result) => result.data.makingStockStatus))
       .subscribe(
         (result) => {
+          console.log("Production LIST~~~~~~~~~", result)
           this.inventoryDetails = result as InventoryDetails[];
           this.process();
           this.loading--;

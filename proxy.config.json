@@ -1,16 +1,16 @@
 {
   "/api/": {
-    "target": "https://new.joshsfrogs.com",
+    "target": "https://staging.joshsfrogs.com",
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/login": {
-    "target": "https://new.joshsfrogs.com",
+    "target": "https://staging.joshsfrogs.com",
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/media/": {
-    "target": "https://new.joshsfrogs.com",
+    "target": "https://staging.joshsfrogs.com",
     "changeOrigin": true,
     "logLevel": "debug"
   }
