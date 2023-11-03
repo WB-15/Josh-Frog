@@ -11,7 +11,7 @@ https://github.com/Urigo/graphql-cli, version 3.0.14 and no later
 
 ### Building for Android
 
-1. Update release notes on dashboard
+1. Update release notes on dashboard 
 2. Run build scripts
     ``` shell
      ionic build --prod
